@@ -1,0 +1,7 @@
+[1;31mResults: [0m
+[1;36mUppercase: [0m0
+[1;36mLowercase: [0m543271
+[1;36mLines: [0m64130
+[1;36mWords: [0m64154
+[1;36mCharacters: [0m607454
+

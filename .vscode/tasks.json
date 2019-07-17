@@ -1,0 +1,29 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+          "type": "shell",
+          "label": "compile c/c++ on wsl",
+          "options": {
+            "shell": {
+              "executable": "C:\\Windows\\System32\\wsl.exe"
+            }
+          },
+          "command": "make&&./blawn&&exit",
+          "group": {
+            "kind": "build",
+            "isDefault": true
+          },
+          "presentation": {
+              "echo": true,
+              "reveal": "always",
+              "focus": true,
+              "panel": "dedicated",
+              "showReuseMessage":false,
+              "clear": false
+          }
+        },
+      ]
+}
