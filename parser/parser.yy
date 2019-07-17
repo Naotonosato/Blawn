@@ -170,7 +170,7 @@ arguments:
     |arguments COMMA argument;
 argument:
     IDENTIFIER;
-expression: 
+expression:
     expression PLUS term
     {
         $$ = driver.ast_generator->attach_operator($1,$3,"PLUS");
