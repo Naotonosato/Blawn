@@ -42,9 +42,13 @@
 // //                    "%code requires" blocks.
 #line 11 "./parser.yy" // lalr1.cc:377
 
-    #include "../commons/commons.hpp"
+    #include <memory>
+    #include <llvm/IR/IRBuilder.h>
+    #include "../builtins/type.hpp"
+    #include "../ast/node.hpp"
     #include "../ast_generator/ast_generator.hpp"
-    //#include "../ast/node.hpp"
+    //#include "../ast/node.hpp" 
+ 
     #include  <memory>
     namespace Blawn {
         class Driver;
@@ -61,7 +65,7 @@
     # endif
 
 
-#line 65 "parser.tab.hh" // lalr1.cc:377
+#line 69 "parser.tab.hh" // lalr1.cc:377
 
 # include <cassert>
 # include <cstdlib> // std::abort
@@ -138,7 +142,7 @@
 
 #line 6 "./parser.yy" // lalr1.cc:377
 namespace Blawn {
-#line 142 "parser.tab.hh" // lalr1.cc:377
+#line 146 "parser.tab.hh" // lalr1.cc:377
 
 
 
@@ -330,6 +334,7 @@ namespace Blawn {
       char dummy4[sizeof(std::string)];
 
       // block
+      // lines
       char dummy5[sizeof(std::vector<std::shared_ptr<Node>>)];
 };
 
@@ -662,7 +667,7 @@ namespace Blawn {
   // number is the opposite.  If YYTABLE_NINF, syntax error.
   static const unsigned char yytable_[];
 
-  static const signed char yycheck_[];
+  static const unsigned char yycheck_[];
 
   // YYSTOS[STATE-NUM] -- The (internal number of the) accessing
   // symbol of state STATE-NUM.
@@ -779,8 +784,8 @@ namespace Blawn {
     enum
     {
       yyeof_ = 0,
-      yylast_ = 64,     ///< Last index in yytable_.
-      yynnts_ = 16,  ///< Number of nonterminal symbols.
+      yylast_ = 40,     ///< Last index in yytable_.
+      yynnts_ = 17,  ///< Number of nonterminal symbols.
       yyfinal_ = 22, ///< Termination state number.
       yyterror_ = 1,
       yyerrcode_ = 256,
@@ -796,7 +801,7 @@ namespace Blawn {
 
 #line 6 "./parser.yy" // lalr1.cc:377
 } // Blawn
-#line 800 "parser.tab.hh" // lalr1.cc:377
+#line 805 "parser.tab.hh" // lalr1.cc:377
 
 
 

@@ -4,8 +4,6 @@
 #include <istream>
 #include "scanner.hpp"
 #include "parser.tab.hh"
-#include "../ast_generator/ast_generator.hpp"
-
 
 namespace Blawn{
 

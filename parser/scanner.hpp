@@ -4,7 +4,7 @@
 #if ! defined(yyFlexLexerOnce)
 #include <FlexLexer.h>
 #endif
-
+#include <string>
 #include "driver.hpp"
 #include "parser.tab.hh"
 #include "location.hh"
@@ -13,7 +13,8 @@ namespace Blawn{
 
 class Scanner : public yyFlexLexer{
 public:
-   Scanner(std::istream *in) : yyFlexLexer(in)
+   Driver *driver;
+   Scanner(std::istream *in,Driver *driver) : yyFlexLexer(in),driver(driver)
    {
    };
    virtual ~Scanner() {

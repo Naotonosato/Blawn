@@ -1,13 +1,22 @@
 1 + 2
-a = 6
-function a(a,b,c)
+a = 0
+b = 2
+c = a + b
+d = 1 + c
+e = 0.6 + 1.0
+function test_function(argument)
     1 + 1
     1.0
-    value = 8.0
-    return 1
-1
-class Test
-    function member(arg)
+    fa = 7.0
+    fvalue = 8.0 
+    s = fa + fvalue 
+    function in(a)
+    i = 8
+    return i
+    return s
+class TestClass
+    function member_function(arg)
         1 + 2
-        return "1.2"
-    
+        val_in_member_func = 0
+        return 1.2
+        :

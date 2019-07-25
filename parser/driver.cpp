@@ -1,8 +1,10 @@
 #include <cctype>
 #include <fstream>
 #include <cassert>
-
+#include <llvm/IR/IRBuilder.h>
+#include "../ir_generator/ir_generator.hpp"
 #include "driver.hpp"
+
 
 Blawn::Driver::~Driver()
 {
@@ -45,7 +47,7 @@ Blawn::Driver::parse_helper( std::istream &stream )
    delete(scanner);
    try
    {
-      scanner = new Blawn::Scanner( &stream );
+      scanner = new Blawn::Scanner( &stream,this );
    }
    catch( std::bad_alloc &ba )
    {

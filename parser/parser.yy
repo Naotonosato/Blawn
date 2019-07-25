@@ -9,9 +9,13 @@
 %language "c++"
 
 %code requires{
-    #include "../commons/commons.hpp"
+    #include <memory>
+    #include <llvm/IR/IRBuilder.h>
+    #include "../builtins/type.hpp"
+    #include "../ast/node.hpp"
     #include "../ast_generator/ast_generator.hpp"
-    //#include "../ast/node.hpp"
+    //#include "../ast/node.hpp" 
+ 
     #include  <memory>
     namespace Blawn {
         class Driver;
@@ -67,6 +71,7 @@
 %token <double> FLOAT_LITERAL
 %token <std::string> STRING_LITERAL
 %type <std::vector<std::shared_ptr<Node>>> block
+%type <std::vector<std::shared_ptr<Node>>> lines
 %type <std::shared_ptr<Node>> line
 %type <std::shared_ptr<Node>> line_content
 %type <std::shared_ptr<Node>> definition
@@ -84,17 +89,19 @@
 %%
 program: block
     {
-        for (auto &node:$1)
-        {
-            std::cout << node->type->type_name << ",";
-        }
-        std::cout << typeid(driver).name() << "\n"; 
+        driver.ast_generator->break_out_of_namespace();
     };
-block: line
+block:
+    lines
+    {
+        $$ = $1;
+    };
+lines:
+    line
     {
         $$.push_back($1);
     }
-    |block line
+    |lines line
     {
         $$ = $1;
         $$.push_back($2);
@@ -133,38 +140,31 @@ definition:
 variable_definition:
     IDENTIFIER EQUAL expression
     {
-        auto type = $3->type;
-        $$ = $$ = std::shared_ptr<Node>(new Node(type));
+        $$ = driver.ast_generator->add_variable($1,$3);
         //std::cout << "new variable:" << $1 <<"  type:" << (type->type_name) << "\n";
     };
 function_definition:
     FUNCTION_DEFINITION LEFT_PARENTHESIS arguments RIGHT_PARENTHESIS EOL block RETURN expression
     {
-         for (auto &node:$6)
-        {
-            std::cout << node->type->type_name << ",";
-        }
-        std::cout << "\n";
-
-        std::cout << "new function " << $1 <<  "'s definition\n";
         std::shared_ptr<Type> type = std::make_shared<Type>("UNKNOW");
-        $$ = std::shared_ptr<Node>(new Node(type));
+        $$ = std::shared_ptr<Node>(new Node(type,driver.ast_generator->ir_generator));
+        driver.ast_generator->break_out_of_namespace();
     }
     |FUNCTION_DEFINITION LEFT_PARENTHESIS arguments RIGHT_PARENTHESIS EOL RETURN expression
     {
-        std::cout << "new function " << $1 <<  "'s definition\n";
         std::shared_ptr<Type> type = std::make_shared<Type>("UNKNOW");
-        $$ = std::shared_ptr<Node>(new Node(type));
+        $$ = std::shared_ptr<Node>(new Node(type,driver.ast_generator->ir_generator));
+        driver.ast_generator->break_out_of_namespace();
     };
 class_definition:
     CLASS_DEFINITION EOL block class_definition_end
     {
-        std::cout << "start class " << $1 <<  "'s definition\n";
         std::shared_ptr<Type> type = std::make_shared<Type>("UNKNOW");
-        $$ = std::shared_ptr<Node>(new Node(type));
+        $$ = std::shared_ptr<Node>(new Node(type,driver.ast_generator->ir_generator));
+        driver.ast_generator->break_out_of_namespace();
     };
 class_definition_end:
-    EOL|END;
+    COLON;    
 arguments:
     argument
     |arguments COMMA argument;
@@ -195,30 +195,27 @@ term:
     {
     };
 monomial:
-    variable
-    {
-        $$ = $1;
-    }
-    |FLOAT_LITERAL
+    FLOAT_LITERAL
     {
         std::shared_ptr<Type> type = std::make_shared<Type>("FLOAT");
-        $$ = std::shared_ptr<Node>(new Node(type));
+        $$ = std::make_shared<Node>(type,driver.ast_generator->float_ir_generator);
+        $$->set_float_num($1);
     }
     |INT_LITERAL
     { 
         std::shared_ptr<Type> type = std::make_shared<Type>("INT");
-        $$ = std::shared_ptr<Node>(new Node(type));
+        $$ = std::make_shared<Node>(type,driver.ast_generator->int_ir_generator);
+        $$->set_int_num($1);
     }
-    |STRING_LITERAL
+    |variable
     {
-        std::shared_ptr<Type> type = std::make_shared<Type>("STRING");
-        $$ = std::shared_ptr<Node>(new Node(type));
+        $$ = $1;
     };
 variable:
     IDENTIFIER
     {
-        std::shared_ptr<Type> type = std::make_shared<Type>("UNKNOWN");
-        $$ = std::shared_ptr<Node>(new Node(type));
+        $$ = driver.ast_generator->get_variable($1);
+        //std::shared_ptr<Node>(new Node(type));
         //$$ = std::shared_ptr<Node>(new Node());
     };
 

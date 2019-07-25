@@ -1,10 +1,11 @@
 #include <string>
 #include <vector>
 #include <memory>
-#include <llvm/ADT/APInt.h>
-#include <llvm/ADT/APFloat.h>
-#include <llvm/IR/Type.h>
-#include <llvm/IR/Value.h>
+
+namespace llvm
+{
+    class Type;
+}
 
 class Type
 {

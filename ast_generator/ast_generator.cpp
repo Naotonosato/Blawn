@@ -1,8 +1,21 @@
+#include <llvm/IR/IRBuilder.h>
+#include <llvm/IR/Module.h>
+#include <llvm/IR/LLVMContext.h>
+#include "../builtins/type.hpp"
+#include "../ast/node.hpp"
+#include "../ir_generator/ir_generator.hpp"
 #include "ast_generator.hpp"
-#include <iostream>
-#include <vector>
-#include <map>
 
+
+ASTGenerator::~ASTGenerator() {}
+
+ASTGenerator::ASTGenerator(llvm::Module const& module,llvm::IRBuilder<> const& ir_builder)
+:module(module),ir_builder(ir_builder),current_namespace({"__TOP"})
+{
+    ir_generator = std::make_shared<IRGenerator>(ir_builder);
+    int_ir_generator = std::make_shared<IntergerIRGenerator>(ir_builder);
+    float_ir_generator = std::make_shared<FloatIRGenerator>(ir_builder);
+}
 
 void ASTGenerator::generate()
 {/*
@@ -13,10 +26,50 @@ void ASTGenerator::generate()
 */
 }
 
-void ASTGenerator::add_variable(std::string name,std::shared_ptr<Node> value)
+void ASTGenerator::into_namespace(std::string name)
 {
-    std::cout << "name is: " << name;
-    variables.emplace(name,std::move(value));
+    current_namespace.push_back(name);
+    std::map<std::string,std::shared_ptr<Node>> vals;
+    variables[current_namespace] = vals;
+}
+
+void ASTGenerator::break_out_of_namespace()
+{
+    if (!current_namespace.empty())
+    {
+    current_namespace.pop_back();
+    }
+}
+
+std::shared_ptr<Node> ASTGenerator::add_variable(std::string name,std::shared_ptr<Node> right_value)
+{
+    std::string cur = ".";
+    for (auto &i:current_namespace)
+    {
+        cur += "/" + i;
+    }
+    auto variable = std::shared_ptr<Node>(new Node(*right_value));
+    variables[current_namespace][name] = variable;
+    std::cout << "registering new variable '" << name 
+    << "' that typed "<< variable->type->type_name <<" in " 
+    << "namespace '" << cur << "'\n";
+    return variable;
+
+}
+
+std::shared_ptr<Node> ASTGenerator::get_variable(std::string name)
+{
+    if (variables[current_namespace].count(name))
+    {
+        auto type = variables[current_namespace][name]->type;
+        auto ir_generator = variables[current_namespace][name]->ir_generator;
+        return std::shared_ptr<Node>(new Node(type,ir_generator));
+    }
+    else
+    {
+        std::cout << "Error: variable '" << name << "' is not declared.\n";
+        exit(0);
+    }
 }
 
 std::shared_ptr<Node> ASTGenerator::attach_operator(std::shared_ptr<Node> node,std::shared_ptr<Node> other,const std::string operator_type)

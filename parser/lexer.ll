@@ -7,10 +7,9 @@
 #define YY_DECL int Blawn::Scanner::yylex( Blawn::Parser::semantic_type * const lval, Blawn::Parser::location_type *loc )
 #define yyterminate() return Blawn::Parser::token::END;
 #define YY_NO_UNISTD_H
-//#define YY_USER_ACTION loc->step(); loc->columns(yyleng);
+#define YY_USER_ACTION loc->step(); loc->columns(yyleng);
 %}
 
- 
 %option debug
 %option yyclass="Blawn::Scanner"
 %option noyywrap
@@ -18,10 +17,9 @@
 %option nounput
 %option c++
 
-IDENTIFIER  [a-zA-Z_][0-9a-zA-Z_]*
-STRING_LITERAL      ".*"
 INT_LITERAL         [0-9]+
 FLOAT_LITERAL       [0-9]+\.[0-9]*
+STRING_LITERAL      \".*\"
 EOL                 \n
 EQUAL       =
 PLUS        \+
@@ -42,13 +40,12 @@ LEFT_PARENTHESIS \(
 RIGHT_PARENTHESIS \)
 
 CALL        .+\(.*\)
+IDENTIFIER  [a-zA-Z_][0-9a-zA-Z_]*
 
 
 %%
-{EOL} {
-    loc->lines();
-    return Blawn::Parser::token::EOL;
-}
+
+
 {INT_LITERAL} {
     lval->build<int>() = std::stoi(yytext);
     return Blawn::Parser::token::INT_LITERAL;
@@ -56,6 +53,14 @@ CALL        .+\(.*\)
 {FLOAT_LITERAL} {
     lval->build<double>() = std::stod(yytext);
     return Blawn::Parser::token::FLOAT_LITERAL;
+}
+{STRING_LITERAL} {
+    lval->build<std::string>() = yytext;
+    return Blawn::Parser::token::STRING_LITERAL;
+}
+{EOL} {
+    loc->lines();
+    return Blawn::Parser::token::EOL;
 }
 {EQUAL} {
     return Blawn::Parser::token::EQUAL;
@@ -102,7 +107,7 @@ CALL        .+\(.*\)
     std::reverse_copy(definition.begin(),definition.end(),std::back_inserter(reversed));
     int index = definition.size() - reversed.find(" ");
     definition.erase(0,index);
-    std::cout << "func:" <<definition;
+    driver->ast_generator->into_namespace(definition);
     lval->build<std::string>() = definition;
     
     return Blawn::Parser::token::FUNCTION_DEFINITION;
@@ -113,17 +118,12 @@ CALL        .+\(.*\)
     std::reverse_copy(definition.begin(),definition.end(),std::back_inserter(reversed));
     int index = definition.size() - reversed.find(" ");
     definition.erase(0,index);
-    std::cout << "class:" << definition << "\n";
+    driver->ast_generator->into_namespace(definition);
     lval->build<std::string>() = definition;
-    //parser.set_namespace(definition)
     return Blawn::Parser::token::CLASS_DEFINITION;
 }
 {RETURN} {
     return Blawn::Parser::token::RETURN;
-}
-{STRING_LITERAL} {
-    lval->build<std::string>() = yytext;
-    return Blawn::Parser::token::STRING_LITERAL;
 }
 {IDENTIFIER} {
     lval->build<std::string>() = yytext;
