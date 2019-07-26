@@ -173,7 +173,8 @@ argument:
 expression:
     expression PLUS term
     {
-        $$ = driver.ast_generator->attach_operator($1,$3,"PLUS");
+        std::shared_ptr<Type> type = std::make_shared<Type>("FLOAT");
+        $$ = std::make_shared<Node>(type,driver.ast_generator->binary_expression_generator);
     }
     |expression MINUS term
     {
@@ -199,13 +200,13 @@ monomial:
     {
         std::shared_ptr<Type> type = std::make_shared<Type>("FLOAT");
         $$ = std::make_shared<Node>(type,driver.ast_generator->float_ir_generator);
-        $$->set_float_num($1);
+        $$->float_num = $1;
     }
     |INT_LITERAL
     { 
         std::shared_ptr<Type> type = std::make_shared<Type>("INT");
         $$ = std::make_shared<Node>(type,driver.ast_generator->int_ir_generator);
-        $$->set_int_num($1);
+        $$->int_num = $1;
     }
     |variable
     {

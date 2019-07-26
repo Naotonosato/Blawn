@@ -8,46 +8,37 @@
 #include <llvm/ADT/APInt.h>
 
 
-std::shared_ptr<llvm::Value> IntergerIRGenerator::generate(Node& node)
+llvm::Value* IntergerIRGenerator::generate(Node& node)
 {
-    int num = node.int_num;
-    auto val = std::shared_ptr<llvm::Value>(llvm::ConstantInt::get(context, llvm::APInt(global_configuration::INT_BIT,num)));
-    return val;
+    return llvm::ConstantInt::get(context, llvm::APInt(global_configuration::INT_BIT,node.int_num));
 }
 
 
-std::shared_ptr<llvm::Value> FloatIRGenerator::generate(Node& node)
+llvm::Value* FloatIRGenerator::generate(Node& node)
 {
-    double num = node.float_num;
-    auto val = std::shared_ptr<llvm::Value>(llvm::ConstantFP::get(context, llvm::APFloat(num)));
-    return val;
+    return llvm::ConstantFP::get(context, llvm::APFloat(node.float_num));
 }
 
-std::shared_ptr<llvm::Value> BinaryExpressionIRGenerator::generate(Node& node)
+llvm::Value* BinaryExpressionIRGenerator::generate(BinaryExpressionNode& node)
 {
     auto operator_kind = node.operator_kind;
     auto left = node.left_node->generate();
     auto right = node.right_node->generate();
-    std::shared_ptr<llvm::Value> value;
     if (operator_kind == "+")
     {
-        value = std::shared_ptr<llvm::Value>(ir_builder.CreateFAdd(left.get(),right.get()));
-        return value;
-
+        return ir_builder.CreateAdd(left,right);
     }
     if (operator_kind == "-")
     {
-        value = std::shared_ptr<llvm::Value>(ir_builder.CreateFSub(left.get(),right.get()));
-        return value;
+        return ir_builder.CreateSub(left,right);
     }
     if (operator_kind == "*")
     {
-        value = std::shared_ptr<llvm::Value>(ir_builder.CreateFMul(left.get(),right.get()));
-        return value;
+        return ir_builder.CreateFMul(left,right);
     }
     if (operator_kind == "/")
     {
-        value = std::shared_ptr<llvm::Value>(ir_builder.CreateFDiv(left.get(),right.get()));
-        return value;
+        return ir_builder.CreateFDiv(left,right);
     }
+    return 0;
 }

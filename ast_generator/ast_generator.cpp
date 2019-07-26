@@ -9,12 +9,13 @@
 
 ASTGenerator::~ASTGenerator() {}
 
-ASTGenerator::ASTGenerator(llvm::Module const& module,llvm::IRBuilder<> const& ir_builder)
-:module(module),ir_builder(ir_builder),current_namespace({"__TOP"})
+ASTGenerator::ASTGenerator(llvm::Module& module,llvm::IRBuilder<>& ir_builder,llvm::LLVMContext& context)
+:module(module),ir_builder(ir_builder),context(context),current_namespace({"__TOP"})
 {
-    ir_generator = std::make_shared<IRGenerator>(ir_builder);
-    int_ir_generator = std::make_shared<IntergerIRGenerator>(ir_builder);
-    float_ir_generator = std::make_shared<FloatIRGenerator>(ir_builder);
+    ir_generator = std::make_shared<IRGenerator>(ir_builder,context);
+    int_ir_generator = std::make_shared<IntergerIRGenerator>(ir_builder,context);
+    float_ir_generator = std::make_shared<FloatIRGenerator>(ir_builder,context);
+    binary_expression_generator = std::make_shared<BinaryExpressionIRGenerator>(ir_builder,context);
 }
 
 void ASTGenerator::generate()

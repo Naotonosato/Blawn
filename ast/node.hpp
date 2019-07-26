@@ -19,15 +19,21 @@ public:
     std::shared_ptr<Type> type;
     std::shared_ptr<Node> left_node;
     std::shared_ptr<Node> right_node;
-    std::string operator_kind;
     int int_num;
     double float_num;
     std::string string;
     std::shared_ptr<IRGenerator> ir_generator;
     Node(std::shared_ptr<Type> type,std::shared_ptr<IRGenerator> ir_generator)
     :type(type),ir_generator(ir_generator){}
-    std::shared_ptr<llvm::Value> generate();
+    llvm::Value* generate();
 
+};
+
+
+class BinaryExpressionNode: public Node
+{
+public:
+    std::string operator_kind;
 };
 
 

@@ -1,6 +1,7 @@
 #include <memory>
 //forward declaration
 class Node;
+class BinaryExpressionNode;
 namespace llvm
 {
     class LLVMContext;
@@ -16,32 +17,36 @@ namespace llvm
 class IRGenerator
 {
 public:
-    llvm::LLVMContext context;
-    llvm::IRBuilder<> ir_builder;
-    IRGenerator(const llvm::IRBuilder<>& ir_builder):ir_builder(ir_builder){};
-    virtual std::shared_ptr<llvm::Value> generate(Node& node){};
+    llvm::LLVMContext& context;
+    llvm::IRBuilder<> &ir_builder;
+    IRGenerator(llvm::IRBuilder<> &ir_builder, llvm::LLVMContext& context)
+    :ir_builder(ir_builder),context(context){};
+    virtual llvm::Value* generate(Node& node){return 0;};
 };
 
 
 class IntergerIRGenerator: public IRGenerator
 {
 public:
-    IntergerIRGenerator(const llvm::IRBuilder<>& ir_builder): IRGenerator(ir_builder){}
+    IntergerIRGenerator(llvm::IRBuilder<>& ir_builder,llvm::LLVMContext& context)
+    :IRGenerator(ir_builder,context){}
 
-    std::shared_ptr<llvm::Value> generate(Node& node);
+    llvm::Value* generate(Node& node);
 };
 
 
 class FloatIRGenerator: public IRGenerator
 {
 public:
-    FloatIRGenerator(const llvm::IRBuilder<>& ir_builder): IRGenerator(ir_builder){}
-    std::shared_ptr<llvm::Value> generate(Node& node);
+    FloatIRGenerator(llvm::IRBuilder<>& ir_builder,llvm::LLVMContext& context)
+    :IRGenerator(ir_builder,context){}
+    llvm::Value* generate(Node& node);
 };
 
 class BinaryExpressionIRGenerator: public IRGenerator
 {
 public:
-    BinaryExpressionIRGenerator(const llvm::IRBuilder<>& ir_builder): IRGenerator(ir_builder){}
-    std::shared_ptr<llvm::Value> generate(Node& node);
+    BinaryExpressionIRGenerator(llvm::IRBuilder<>& ir_builder,llvm::LLVMContext& context)
+    :IRGenerator(ir_builder,context){}
+    llvm::Value* generate(BinaryExpressionNode& node);
 };

@@ -10,7 +10,7 @@
 #include <memory>
 
 
-std::shared_ptr<llvm::Value> Node::generate()
+llvm::Value* Node::generate()
 {
     return ir_generator->generate(*this);
 } 

@@ -22,8 +22,9 @@ class ASTGenerator
 public:
     ~ASTGenerator();
 private:
-    llvm::Module const& module;
-    llvm::IRBuilder<> const& ir_builder;
+    llvm::Module& module;
+    llvm::IRBuilder<>& ir_builder;
+    llvm::LLVMContext& context;
     std::vector<std::string> current_namespace;
     std::map<
         std::vector<std::string>,
@@ -34,8 +35,9 @@ public:
     std::shared_ptr<IRGenerator> ir_generator;
     std::shared_ptr<IRGenerator> int_ir_generator;
     std::shared_ptr<IRGenerator> float_ir_generator;
+    std::shared_ptr<IRGenerator> binary_expression_generator;
     std::shared_ptr<Node> attach_operator(std::shared_ptr<Node> node,std::shared_ptr<Node> other,const std::string operator_type);
-    ASTGenerator(llvm::Module const& module,llvm::IRBuilder<> const& ir_builder);
+    ASTGenerator(llvm::Module& module,llvm::IRBuilder<>& ir_builder,llvm::LLVMContext& context);
     void into_namespace(std::string name);
     void break_out_of_namespace();
     std::shared_ptr<Node> add_variable(std::string name,std::shared_ptr<Node> node);
