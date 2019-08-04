@@ -30,31 +30,35 @@ Grammar
 
    12 variable_definition: IDENTIFIER EQUAL expression
 
-   13 function_definition: FUNCTION_DEFINITION LEFT_PARENTHESIS arguments RIGHT_PARENTHESIS EOL block RETURN expression
-   14                    | FUNCTION_DEFINITION LEFT_PARENTHESIS arguments RIGHT_PARENTHESIS EOL RETURN expression
+   13 function_definition: FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL block RETURN expression
+   14                    | FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL RETURN expression
 
    15 class_definition: CLASS_DEFINITION EOL block class_definition_end
 
    16 class_definition_end: COLON
 
-   17 arguments: argument
-   18          | arguments COMMA argument
+   17 definition_arguments: IDENTIFIER
+   18                     | definition_arguments COMMA IDENTIFIER
 
-   19 argument: IDENTIFIER
+   19 expressions: expression
+   20            | expressions COMMA expression
 
-   20 expression: expression PLUS term
-   21           | expression MINUS term
-   22           | term
+   21 expression: expression PLUS term
+   22           | expression MINUS term
+   23           | term
+   24           | function_call
 
-   23 term: monomial
-   24     | term ASTERISK monomial
-   25     | term SLASH monomial
+   25 term: monomial
+   26     | term ASTERISK monomial
+   27     | term SLASH monomial
 
-   26 monomial: FLOAT_LITERAL
-   27         | INT_LITERAL
-   28         | variable
+   28 function_call: IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
 
-   29 variable: IDENTIFIER
+   29 monomial: FLOAT_LITERAL
+   30         | INT_LITERAL
+   31         | variable
+
+   32 variable: IDENTIFIER
 
 
 Terminals, with rules where they appear
@@ -64,23 +68,23 @@ error (256)
 FUNCTION_DEFINITION (258) 13 14
 CLASS_DEFINITION (259) 15
 RETURN (260) 13 14
-IDENTIFIER (261) 12 19 29
+IDENTIFIER (261) 12 17 18 28 32
 EQUAL (262) 12
-PLUS (263) 20
-MINUS (264) 21
-ASTERISK (265) 24
-SLASH (266) 25
+PLUS (263) 21
+MINUS (264) 22
+ASTERISK (265) 26
+SLASH (266) 27
 COLON (267) 16
-COMMA (268) 18
-LEFT_PARENTHESIS (269) 13 14
-RIGHT_PARENTHESIS (270) 13 14
+COMMA (268) 18 20
+LEFT_PARENTHESIS (269) 13 14 28
+RIGHT_PARENTHESIS (270) 13 14 28
 IF (271)
 ELSE (272)
 FOR (273)
 WHILE (274)
 EOL (275) 5 13 14 15
-INT_LITERAL (276) 27
-FLOAT_LITERAL (277) 26
+INT_LITERAL (276) 30
+FLOAT_LITERAL (277) 29
 STRING_LITERAL (278)
 
 
@@ -108,18 +112,20 @@ class_definition (33)
     on left: 15, on right: 11
 class_definition_end (34)
     on left: 16, on right: 15
-arguments (35)
+definition_arguments (35)
     on left: 17 18, on right: 13 14 18
-argument (36)
-    on left: 19, on right: 17 18
+expressions (36)
+    on left: 19 20, on right: 20 28
 expression (37)
-    on left: 20 21 22, on right: 8 12 13 14 20 21
+    on left: 21 22 23 24, on right: 8 12 13 14 19 20 21 22
 term (38)
-    on left: 23 24 25, on right: 20 21 22 24 25
-monomial (39)
-    on left: 26 27 28, on right: 23 24 25
-variable (40)
-    on left: 29, on right: 28
+    on left: 25 26 27, on right: 21 22 23 26 27
+function_call (39)
+    on left: 28, on right: 24
+monomial (40)
+    on left: 29 30 31, on right: 25 26 27
+variable (41)
+    on left: 32, on right: 31
 
 
 State 0
@@ -137,19 +143,21 @@ State 0
    10           | . function_definition
    11           | . class_definition
    12 variable_definition: . IDENTIFIER EQUAL expression
-   13 function_definition: . FUNCTION_DEFINITION LEFT_PARENTHESIS arguments RIGHT_PARENTHESIS EOL block RETURN expression
-   14                    | . FUNCTION_DEFINITION LEFT_PARENTHESIS arguments RIGHT_PARENTHESIS EOL RETURN expression
+   13 function_definition: . FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL block RETURN expression
+   14                    | . FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL RETURN expression
    15 class_definition: . CLASS_DEFINITION EOL block class_definition_end
-   20 expression: . expression PLUS term
-   21           | . expression MINUS term
-   22           | . term
-   23 term: . monomial
-   24     | . term ASTERISK monomial
-   25     | . term SLASH monomial
-   26 monomial: . FLOAT_LITERAL
-   27         | . INT_LITERAL
-   28         | . variable
-   29 variable: . IDENTIFIER
+   21 expression: . expression PLUS term
+   22           | . expression MINUS term
+   23           | . term
+   24           | . function_call
+   25 term: . monomial
+   26     | . term ASTERISK monomial
+   27     | . term SLASH monomial
+   28 function_call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   29 monomial: . FLOAT_LITERAL
+   30         | . INT_LITERAL
+   31         | . variable
+   32 variable: . IDENTIFIER
 
     FUNCTION_DEFINITION  shift, and go to state 1
     CLASS_DEFINITION     shift, and go to state 2
@@ -168,54 +176,57 @@ State 0
     class_definition     go to state 14
     expression           go to state 15
     term                 go to state 16
-    monomial             go to state 17
-    variable             go to state 18
+    function_call        go to state 17
+    monomial             go to state 18
+    variable             go to state 19
 
 
 State 1
 
-   13 function_definition: FUNCTION_DEFINITION . LEFT_PARENTHESIS arguments RIGHT_PARENTHESIS EOL block RETURN expression
-   14                    | FUNCTION_DEFINITION . LEFT_PARENTHESIS arguments RIGHT_PARENTHESIS EOL RETURN expression
+   13 function_definition: FUNCTION_DEFINITION . LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL block RETURN expression
+   14                    | FUNCTION_DEFINITION . LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL RETURN expression
 
-    LEFT_PARENTHESIS  shift, and go to state 19
+    LEFT_PARENTHESIS  shift, and go to state 20
 
 
 State 2
 
    15 class_definition: CLASS_DEFINITION . EOL block class_definition_end
 
-    EOL  shift, and go to state 20
+    EOL  shift, and go to state 21
 
 
 State 3
 
    12 variable_definition: IDENTIFIER . EQUAL expression
-   29 variable: IDENTIFIER .  ["end of file", PLUS, MINUS, ASTERISK, SLASH, EOL]
+   28 function_call: IDENTIFIER . LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   32 variable: IDENTIFIER .  ["end of file", PLUS, MINUS, ASTERISK, SLASH, EOL]
 
-    EQUAL  shift, and go to state 21
+    EQUAL             shift, and go to state 22
+    LEFT_PARENTHESIS  shift, and go to state 23
 
-    $default  reduce using rule 29 (variable)
+    $default  reduce using rule 32 (variable)
 
 
 State 4
 
-   27 monomial: INT_LITERAL .
+   30 monomial: INT_LITERAL .
 
-    $default  reduce using rule 27 (monomial)
+    $default  reduce using rule 30 (monomial)
 
 
 State 5
 
-   26 monomial: FLOAT_LITERAL .
+   29 monomial: FLOAT_LITERAL .
 
-    $default  reduce using rule 26 (monomial)
+    $default  reduce using rule 29 (monomial)
 
 
 State 6
 
     0 $accept: program . "end of file"
 
-    "end of file"  shift, and go to state 22
+    "end of file"  shift, and go to state 24
 
 
 State 7
@@ -237,19 +248,21 @@ State 8
    10           | . function_definition
    11           | . class_definition
    12 variable_definition: . IDENTIFIER EQUAL expression
-   13 function_definition: . FUNCTION_DEFINITION LEFT_PARENTHESIS arguments RIGHT_PARENTHESIS EOL block RETURN expression
-   14                    | . FUNCTION_DEFINITION LEFT_PARENTHESIS arguments RIGHT_PARENTHESIS EOL RETURN expression
+   13 function_definition: . FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL block RETURN expression
+   14                    | . FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL RETURN expression
    15 class_definition: . CLASS_DEFINITION EOL block class_definition_end
-   20 expression: . expression PLUS term
-   21           | . expression MINUS term
-   22           | . term
-   23 term: . monomial
-   24     | . term ASTERISK monomial
-   25     | . term SLASH monomial
-   26 monomial: . FLOAT_LITERAL
-   27         | . INT_LITERAL
-   28         | . variable
-   29 variable: . IDENTIFIER
+   21 expression: . expression PLUS term
+   22           | . expression MINUS term
+   23           | . term
+   24           | . function_call
+   25 term: . monomial
+   26     | . term ASTERISK monomial
+   27     | . term SLASH monomial
+   28 function_call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   29 monomial: . FLOAT_LITERAL
+   30         | . INT_LITERAL
+   31         | . variable
+   32 variable: . IDENTIFIER
 
     FUNCTION_DEFINITION  shift, and go to state 1
     CLASS_DEFINITION     shift, and go to state 2
@@ -259,7 +272,7 @@ State 8
 
     $default  reduce using rule 2 (block)
 
-    line                 go to state 23
+    line                 go to state 25
     line_content         go to state 10
     definition           go to state 11
     variable_definition  go to state 12
@@ -267,8 +280,9 @@ State 8
     class_definition     go to state 14
     expression           go to state 15
     term                 go to state 16
-    monomial             go to state 17
-    variable             go to state 18
+    function_call        go to state 17
+    monomial             go to state 18
+    variable             go to state 19
 
 
 State 9
@@ -283,8 +297,8 @@ State 10
     5 line: line_content . EOL
     6     | line_content . "end of file"
 
-    "end of file"  shift, and go to state 24
-    EOL            shift, and go to state 25
+    "end of file"  shift, and go to state 26
+    EOL            shift, and go to state 27
 
 
 State 11
@@ -318,56 +332,61 @@ State 14
 State 15
 
     8 line_content: expression .  ["end of file", EOL]
-   20 expression: expression . PLUS term
-   21           | expression . MINUS term
+   21 expression: expression . PLUS term
+   22           | expression . MINUS term
 
-    PLUS   shift, and go to state 26
-    MINUS  shift, and go to state 27
+    PLUS   shift, and go to state 28
+    MINUS  shift, and go to state 29
 
     $default  reduce using rule 8 (line_content)
 
 
 State 16
 
-   22 expression: term .  ["end of file", PLUS, MINUS, EOL]
-   24 term: term . ASTERISK monomial
-   25     | term . SLASH monomial
+   23 expression: term .  ["end of file", PLUS, MINUS, COMMA, RIGHT_PARENTHESIS, EOL]
+   26 term: term . ASTERISK monomial
+   27     | term . SLASH monomial
 
-    ASTERISK  shift, and go to state 28
-    SLASH     shift, and go to state 29
+    ASTERISK  shift, and go to state 30
+    SLASH     shift, and go to state 31
 
-    $default  reduce using rule 22 (expression)
+    $default  reduce using rule 23 (expression)
 
 
 State 17
 
-   23 term: monomial .
+   24 expression: function_call .
 
-    $default  reduce using rule 23 (term)
+    $default  reduce using rule 24 (expression)
 
 
 State 18
 
-   28 monomial: variable .
+   25 term: monomial .
 
-    $default  reduce using rule 28 (monomial)
+    $default  reduce using rule 25 (term)
 
 
 State 19
 
-   13 function_definition: FUNCTION_DEFINITION LEFT_PARENTHESIS . arguments RIGHT_PARENTHESIS EOL block RETURN expression
-   14                    | FUNCTION_DEFINITION LEFT_PARENTHESIS . arguments RIGHT_PARENTHESIS EOL RETURN expression
-   17 arguments: . argument
-   18          | . arguments COMMA argument
-   19 argument: . IDENTIFIER
+   31 monomial: variable .
 
-    IDENTIFIER  shift, and go to state 30
-
-    arguments  go to state 31
-    argument   go to state 32
+    $default  reduce using rule 31 (monomial)
 
 
 State 20
+
+   13 function_definition: FUNCTION_DEFINITION LEFT_PARENTHESIS . definition_arguments RIGHT_PARENTHESIS EOL block RETURN expression
+   14                    | FUNCTION_DEFINITION LEFT_PARENTHESIS . definition_arguments RIGHT_PARENTHESIS EOL RETURN expression
+   17 definition_arguments: . IDENTIFIER
+   18                     | . definition_arguments COMMA IDENTIFIER
+
+    IDENTIFIER  shift, and go to state 32
+
+    definition_arguments  go to state 33
+
+
+State 21
 
     2 block: . lines
     3 lines: . line
@@ -380,20 +399,22 @@ State 20
    10           | . function_definition
    11           | . class_definition
    12 variable_definition: . IDENTIFIER EQUAL expression
-   13 function_definition: . FUNCTION_DEFINITION LEFT_PARENTHESIS arguments RIGHT_PARENTHESIS EOL block RETURN expression
-   14                    | . FUNCTION_DEFINITION LEFT_PARENTHESIS arguments RIGHT_PARENTHESIS EOL RETURN expression
+   13 function_definition: . FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL block RETURN expression
+   14                    | . FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL RETURN expression
    15 class_definition: . CLASS_DEFINITION EOL block class_definition_end
    15                 | CLASS_DEFINITION EOL . block class_definition_end
-   20 expression: . expression PLUS term
-   21           | . expression MINUS term
-   22           | . term
-   23 term: . monomial
-   24     | . term ASTERISK monomial
-   25     | . term SLASH monomial
-   26 monomial: . FLOAT_LITERAL
-   27         | . INT_LITERAL
-   28         | . variable
-   29 variable: . IDENTIFIER
+   21 expression: . expression PLUS term
+   22           | . expression MINUS term
+   23           | . term
+   24           | . function_call
+   25 term: . monomial
+   26     | . term ASTERISK monomial
+   27     | . term SLASH monomial
+   28 function_call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   29 monomial: . FLOAT_LITERAL
+   30         | . INT_LITERAL
+   31         | . variable
+   32 variable: . IDENTIFIER
 
     FUNCTION_DEFINITION  shift, and go to state 1
     CLASS_DEFINITION     shift, and go to state 2
@@ -401,7 +422,7 @@ State 20
     INT_LITERAL          shift, and go to state 4
     FLOAT_LITERAL        shift, and go to state 5
 
-    block                go to state 33
+    block                go to state 34
     lines                go to state 8
     line                 go to state 9
     line_content         go to state 10
@@ -411,265 +432,354 @@ State 20
     class_definition     go to state 14
     expression           go to state 15
     term                 go to state 16
-    monomial             go to state 17
-    variable             go to state 18
-
-
-State 21
-
-   12 variable_definition: IDENTIFIER EQUAL . expression
-   20 expression: . expression PLUS term
-   21           | . expression MINUS term
-   22           | . term
-   23 term: . monomial
-   24     | . term ASTERISK monomial
-   25     | . term SLASH monomial
-   26 monomial: . FLOAT_LITERAL
-   27         | . INT_LITERAL
-   28         | . variable
-   29 variable: . IDENTIFIER
-
-    IDENTIFIER     shift, and go to state 34
-    INT_LITERAL    shift, and go to state 4
-    FLOAT_LITERAL  shift, and go to state 5
-
-    expression  go to state 35
-    term        go to state 16
-    monomial    go to state 17
-    variable    go to state 18
+    function_call        go to state 17
+    monomial             go to state 18
+    variable             go to state 19
 
 
 State 22
+
+   12 variable_definition: IDENTIFIER EQUAL . expression
+   21 expression: . expression PLUS term
+   22           | . expression MINUS term
+   23           | . term
+   24           | . function_call
+   25 term: . monomial
+   26     | . term ASTERISK monomial
+   27     | . term SLASH monomial
+   28 function_call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   29 monomial: . FLOAT_LITERAL
+   30         | . INT_LITERAL
+   31         | . variable
+   32 variable: . IDENTIFIER
+
+    IDENTIFIER     shift, and go to state 35
+    INT_LITERAL    shift, and go to state 4
+    FLOAT_LITERAL  shift, and go to state 5
+
+    expression     go to state 36
+    term           go to state 16
+    function_call  go to state 17
+    monomial       go to state 18
+    variable       go to state 19
+
+
+State 23
+
+   19 expressions: . expression
+   20            | . expressions COMMA expression
+   21 expression: . expression PLUS term
+   22           | . expression MINUS term
+   23           | . term
+   24           | . function_call
+   25 term: . monomial
+   26     | . term ASTERISK monomial
+   27     | . term SLASH monomial
+   28 function_call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   28              | IDENTIFIER LEFT_PARENTHESIS . expressions RIGHT_PARENTHESIS
+   29 monomial: . FLOAT_LITERAL
+   30         | . INT_LITERAL
+   31         | . variable
+   32 variable: . IDENTIFIER
+
+    IDENTIFIER     shift, and go to state 35
+    INT_LITERAL    shift, and go to state 4
+    FLOAT_LITERAL  shift, and go to state 5
+
+    expressions    go to state 37
+    expression     go to state 38
+    term           go to state 16
+    function_call  go to state 17
+    monomial       go to state 18
+    variable       go to state 19
+
+
+State 24
 
     0 $accept: program "end of file" .
 
     $default  accept
 
 
-State 23
+State 25
 
     4 lines: lines line .
 
     $default  reduce using rule 4 (lines)
 
 
-State 24
+State 26
 
     6 line: line_content "end of file" .
 
     $default  reduce using rule 6 (line)
 
 
-State 25
+State 27
 
     5 line: line_content EOL .
 
     $default  reduce using rule 5 (line)
 
 
-State 26
-
-   20 expression: expression PLUS . term
-   23 term: . monomial
-   24     | . term ASTERISK monomial
-   25     | . term SLASH monomial
-   26 monomial: . FLOAT_LITERAL
-   27         | . INT_LITERAL
-   28         | . variable
-   29 variable: . IDENTIFIER
-
-    IDENTIFIER     shift, and go to state 34
-    INT_LITERAL    shift, and go to state 4
-    FLOAT_LITERAL  shift, and go to state 5
-
-    term      go to state 36
-    monomial  go to state 17
-    variable  go to state 18
-
-
-State 27
-
-   21 expression: expression MINUS . term
-   23 term: . monomial
-   24     | . term ASTERISK monomial
-   25     | . term SLASH monomial
-   26 monomial: . FLOAT_LITERAL
-   27         | . INT_LITERAL
-   28         | . variable
-   29 variable: . IDENTIFIER
-
-    IDENTIFIER     shift, and go to state 34
-    INT_LITERAL    shift, and go to state 4
-    FLOAT_LITERAL  shift, and go to state 5
-
-    term      go to state 37
-    monomial  go to state 17
-    variable  go to state 18
-
-
 State 28
 
-   24 term: term ASTERISK . monomial
-   26 monomial: . FLOAT_LITERAL
-   27         | . INT_LITERAL
-   28         | . variable
-   29 variable: . IDENTIFIER
+   21 expression: expression PLUS . term
+   25 term: . monomial
+   26     | . term ASTERISK monomial
+   27     | . term SLASH monomial
+   29 monomial: . FLOAT_LITERAL
+   30         | . INT_LITERAL
+   31         | . variable
+   32 variable: . IDENTIFIER
 
-    IDENTIFIER     shift, and go to state 34
+    IDENTIFIER     shift, and go to state 39
     INT_LITERAL    shift, and go to state 4
     FLOAT_LITERAL  shift, and go to state 5
 
-    monomial  go to state 38
-    variable  go to state 18
+    term      go to state 40
+    monomial  go to state 18
+    variable  go to state 19
 
 
 State 29
 
-   25 term: term SLASH . monomial
-   26 monomial: . FLOAT_LITERAL
-   27         | . INT_LITERAL
-   28         | . variable
-   29 variable: . IDENTIFIER
+   22 expression: expression MINUS . term
+   25 term: . monomial
+   26     | . term ASTERISK monomial
+   27     | . term SLASH monomial
+   29 monomial: . FLOAT_LITERAL
+   30         | . INT_LITERAL
+   31         | . variable
+   32 variable: . IDENTIFIER
 
-    IDENTIFIER     shift, and go to state 34
+    IDENTIFIER     shift, and go to state 39
     INT_LITERAL    shift, and go to state 4
     FLOAT_LITERAL  shift, and go to state 5
 
-    monomial  go to state 39
-    variable  go to state 18
+    term      go to state 41
+    monomial  go to state 18
+    variable  go to state 19
 
 
 State 30
 
-   19 argument: IDENTIFIER .
+   26 term: term ASTERISK . monomial
+   29 monomial: . FLOAT_LITERAL
+   30         | . INT_LITERAL
+   31         | . variable
+   32 variable: . IDENTIFIER
 
-    $default  reduce using rule 19 (argument)
+    IDENTIFIER     shift, and go to state 39
+    INT_LITERAL    shift, and go to state 4
+    FLOAT_LITERAL  shift, and go to state 5
+
+    monomial  go to state 42
+    variable  go to state 19
 
 
 State 31
 
-   13 function_definition: FUNCTION_DEFINITION LEFT_PARENTHESIS arguments . RIGHT_PARENTHESIS EOL block RETURN expression
-   14                    | FUNCTION_DEFINITION LEFT_PARENTHESIS arguments . RIGHT_PARENTHESIS EOL RETURN expression
-   18 arguments: arguments . COMMA argument
+   27 term: term SLASH . monomial
+   29 monomial: . FLOAT_LITERAL
+   30         | . INT_LITERAL
+   31         | . variable
+   32 variable: . IDENTIFIER
 
-    COMMA              shift, and go to state 40
-    RIGHT_PARENTHESIS  shift, and go to state 41
+    IDENTIFIER     shift, and go to state 39
+    INT_LITERAL    shift, and go to state 4
+    FLOAT_LITERAL  shift, and go to state 5
+
+    monomial  go to state 43
+    variable  go to state 19
 
 
 State 32
 
-   17 arguments: argument .
+   17 definition_arguments: IDENTIFIER .
 
-    $default  reduce using rule 17 (arguments)
+    $default  reduce using rule 17 (definition_arguments)
 
 
 State 33
 
-   15 class_definition: CLASS_DEFINITION EOL block . class_definition_end
-   16 class_definition_end: . COLON
+   13 function_definition: FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments . RIGHT_PARENTHESIS EOL block RETURN expression
+   14                    | FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments . RIGHT_PARENTHESIS EOL RETURN expression
+   18 definition_arguments: definition_arguments . COMMA IDENTIFIER
 
-    COLON  shift, and go to state 42
-
-    class_definition_end  go to state 43
+    COMMA              shift, and go to state 44
+    RIGHT_PARENTHESIS  shift, and go to state 45
 
 
 State 34
 
-   29 variable: IDENTIFIER .
+   15 class_definition: CLASS_DEFINITION EOL block . class_definition_end
+   16 class_definition_end: . COLON
 
-    $default  reduce using rule 29 (variable)
+    COLON  shift, and go to state 46
+
+    class_definition_end  go to state 47
 
 
 State 35
 
-   12 variable_definition: IDENTIFIER EQUAL expression .  ["end of file", EOL]
-   20 expression: expression . PLUS term
-   21           | expression . MINUS term
+   28 function_call: IDENTIFIER . LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   32 variable: IDENTIFIER .  ["end of file", PLUS, MINUS, ASTERISK, SLASH, COMMA, RIGHT_PARENTHESIS, EOL]
 
-    PLUS   shift, and go to state 26
-    MINUS  shift, and go to state 27
+    LEFT_PARENTHESIS  shift, and go to state 23
 
-    $default  reduce using rule 12 (variable_definition)
+    $default  reduce using rule 32 (variable)
 
 
 State 36
 
-   20 expression: expression PLUS term .  ["end of file", PLUS, MINUS, EOL]
-   24 term: term . ASTERISK monomial
-   25     | term . SLASH monomial
+   12 variable_definition: IDENTIFIER EQUAL expression .  ["end of file", EOL]
+   21 expression: expression . PLUS term
+   22           | expression . MINUS term
 
-    ASTERISK  shift, and go to state 28
-    SLASH     shift, and go to state 29
+    PLUS   shift, and go to state 28
+    MINUS  shift, and go to state 29
 
-    $default  reduce using rule 20 (expression)
+    $default  reduce using rule 12 (variable_definition)
 
 
 State 37
 
-   21 expression: expression MINUS term .  ["end of file", PLUS, MINUS, EOL]
-   24 term: term . ASTERISK monomial
-   25     | term . SLASH monomial
+   20 expressions: expressions . COMMA expression
+   28 function_call: IDENTIFIER LEFT_PARENTHESIS expressions . RIGHT_PARENTHESIS
 
-    ASTERISK  shift, and go to state 28
-    SLASH     shift, and go to state 29
-
-    $default  reduce using rule 21 (expression)
+    COMMA              shift, and go to state 48
+    RIGHT_PARENTHESIS  shift, and go to state 49
 
 
 State 38
 
-   24 term: term ASTERISK monomial .
+   19 expressions: expression .  [COMMA, RIGHT_PARENTHESIS]
+   21 expression: expression . PLUS term
+   22           | expression . MINUS term
 
-    $default  reduce using rule 24 (term)
+    PLUS   shift, and go to state 28
+    MINUS  shift, and go to state 29
+
+    $default  reduce using rule 19 (expressions)
 
 
 State 39
 
-   25 term: term SLASH monomial .
+   32 variable: IDENTIFIER .
 
-    $default  reduce using rule 25 (term)
+    $default  reduce using rule 32 (variable)
 
 
 State 40
 
-   18 arguments: arguments COMMA . argument
-   19 argument: . IDENTIFIER
+   21 expression: expression PLUS term .  ["end of file", PLUS, MINUS, COMMA, RIGHT_PARENTHESIS, EOL]
+   26 term: term . ASTERISK monomial
+   27     | term . SLASH monomial
 
-    IDENTIFIER  shift, and go to state 30
+    ASTERISK  shift, and go to state 30
+    SLASH     shift, and go to state 31
 
-    argument  go to state 44
+    $default  reduce using rule 21 (expression)
 
 
 State 41
 
-   13 function_definition: FUNCTION_DEFINITION LEFT_PARENTHESIS arguments RIGHT_PARENTHESIS . EOL block RETURN expression
-   14                    | FUNCTION_DEFINITION LEFT_PARENTHESIS arguments RIGHT_PARENTHESIS . EOL RETURN expression
+   22 expression: expression MINUS term .  ["end of file", PLUS, MINUS, COMMA, RIGHT_PARENTHESIS, EOL]
+   26 term: term . ASTERISK monomial
+   27     | term . SLASH monomial
 
-    EOL  shift, and go to state 45
+    ASTERISK  shift, and go to state 30
+    SLASH     shift, and go to state 31
+
+    $default  reduce using rule 22 (expression)
 
 
 State 42
+
+   26 term: term ASTERISK monomial .
+
+    $default  reduce using rule 26 (term)
+
+
+State 43
+
+   27 term: term SLASH monomial .
+
+    $default  reduce using rule 27 (term)
+
+
+State 44
+
+   18 definition_arguments: definition_arguments COMMA . IDENTIFIER
+
+    IDENTIFIER  shift, and go to state 50
+
+
+State 45
+
+   13 function_definition: FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS . EOL block RETURN expression
+   14                    | FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS . EOL RETURN expression
+
+    EOL  shift, and go to state 51
+
+
+State 46
 
    16 class_definition_end: COLON .
 
     $default  reduce using rule 16 (class_definition_end)
 
 
-State 43
+State 47
 
    15 class_definition: CLASS_DEFINITION EOL block class_definition_end .
 
     $default  reduce using rule 15 (class_definition)
 
 
-State 44
+State 48
 
-   18 arguments: arguments COMMA argument .
+   20 expressions: expressions COMMA . expression
+   21 expression: . expression PLUS term
+   22           | . expression MINUS term
+   23           | . term
+   24           | . function_call
+   25 term: . monomial
+   26     | . term ASTERISK monomial
+   27     | . term SLASH monomial
+   28 function_call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   29 monomial: . FLOAT_LITERAL
+   30         | . INT_LITERAL
+   31         | . variable
+   32 variable: . IDENTIFIER
 
-    $default  reduce using rule 18 (arguments)
+    IDENTIFIER     shift, and go to state 35
+    INT_LITERAL    shift, and go to state 4
+    FLOAT_LITERAL  shift, and go to state 5
+
+    expression     go to state 52
+    term           go to state 16
+    function_call  go to state 17
+    monomial       go to state 18
+    variable       go to state 19
 
 
-State 45
+State 49
+
+   28 function_call: IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS .
+
+    $default  reduce using rule 28 (function_call)
+
+
+State 50
+
+   18 definition_arguments: definition_arguments COMMA IDENTIFIER .
+
+    $default  reduce using rule 18 (definition_arguments)
+
+
+State 51
 
     2 block: . lines
     3 lines: . line
@@ -682,30 +792,32 @@ State 45
    10           | . function_definition
    11           | . class_definition
    12 variable_definition: . IDENTIFIER EQUAL expression
-   13 function_definition: . FUNCTION_DEFINITION LEFT_PARENTHESIS arguments RIGHT_PARENTHESIS EOL block RETURN expression
-   13                    | FUNCTION_DEFINITION LEFT_PARENTHESIS arguments RIGHT_PARENTHESIS EOL . block RETURN expression
-   14                    | . FUNCTION_DEFINITION LEFT_PARENTHESIS arguments RIGHT_PARENTHESIS EOL RETURN expression
-   14                    | FUNCTION_DEFINITION LEFT_PARENTHESIS arguments RIGHT_PARENTHESIS EOL . RETURN expression
+   13 function_definition: . FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL block RETURN expression
+   13                    | FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL . block RETURN expression
+   14                    | . FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL RETURN expression
+   14                    | FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL . RETURN expression
    15 class_definition: . CLASS_DEFINITION EOL block class_definition_end
-   20 expression: . expression PLUS term
-   21           | . expression MINUS term
-   22           | . term
-   23 term: . monomial
-   24     | . term ASTERISK monomial
-   25     | . term SLASH monomial
-   26 monomial: . FLOAT_LITERAL
-   27         | . INT_LITERAL
-   28         | . variable
-   29 variable: . IDENTIFIER
+   21 expression: . expression PLUS term
+   22           | . expression MINUS term
+   23           | . term
+   24           | . function_call
+   25 term: . monomial
+   26     | . term ASTERISK monomial
+   27     | . term SLASH monomial
+   28 function_call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   29 monomial: . FLOAT_LITERAL
+   30         | . INT_LITERAL
+   31         | . variable
+   32 variable: . IDENTIFIER
 
     FUNCTION_DEFINITION  shift, and go to state 1
     CLASS_DEFINITION     shift, and go to state 2
-    RETURN               shift, and go to state 46
+    RETURN               shift, and go to state 53
     IDENTIFIER           shift, and go to state 3
     INT_LITERAL          shift, and go to state 4
     FLOAT_LITERAL        shift, and go to state 5
 
-    block                go to state 47
+    block                go to state 54
     lines                go to state 8
     line                 go to state 9
     line_content         go to state 10
@@ -715,84 +827,103 @@ State 45
     class_definition     go to state 14
     expression           go to state 15
     term                 go to state 16
-    monomial             go to state 17
-    variable             go to state 18
+    function_call        go to state 17
+    monomial             go to state 18
+    variable             go to state 19
 
 
-State 46
+State 52
 
-   14 function_definition: FUNCTION_DEFINITION LEFT_PARENTHESIS arguments RIGHT_PARENTHESIS EOL RETURN . expression
-   20 expression: . expression PLUS term
-   21           | . expression MINUS term
-   22           | . term
-   23 term: . monomial
-   24     | . term ASTERISK monomial
-   25     | . term SLASH monomial
-   26 monomial: . FLOAT_LITERAL
-   27         | . INT_LITERAL
-   28         | . variable
-   29 variable: . IDENTIFIER
+   20 expressions: expressions COMMA expression .  [COMMA, RIGHT_PARENTHESIS]
+   21 expression: expression . PLUS term
+   22           | expression . MINUS term
 
-    IDENTIFIER     shift, and go to state 34
+    PLUS   shift, and go to state 28
+    MINUS  shift, and go to state 29
+
+    $default  reduce using rule 20 (expressions)
+
+
+State 53
+
+   14 function_definition: FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL RETURN . expression
+   21 expression: . expression PLUS term
+   22           | . expression MINUS term
+   23           | . term
+   24           | . function_call
+   25 term: . monomial
+   26     | . term ASTERISK monomial
+   27     | . term SLASH monomial
+   28 function_call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   29 monomial: . FLOAT_LITERAL
+   30         | . INT_LITERAL
+   31         | . variable
+   32 variable: . IDENTIFIER
+
+    IDENTIFIER     shift, and go to state 35
     INT_LITERAL    shift, and go to state 4
     FLOAT_LITERAL  shift, and go to state 5
 
-    expression  go to state 48
-    term        go to state 16
-    monomial    go to state 17
-    variable    go to state 18
+    expression     go to state 55
+    term           go to state 16
+    function_call  go to state 17
+    monomial       go to state 18
+    variable       go to state 19
 
 
-State 47
+State 54
 
-   13 function_definition: FUNCTION_DEFINITION LEFT_PARENTHESIS arguments RIGHT_PARENTHESIS EOL block . RETURN expression
+   13 function_definition: FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL block . RETURN expression
 
-    RETURN  shift, and go to state 49
+    RETURN  shift, and go to state 56
 
 
-State 48
+State 55
 
-   14 function_definition: FUNCTION_DEFINITION LEFT_PARENTHESIS arguments RIGHT_PARENTHESIS EOL RETURN expression .  ["end of file", EOL]
-   20 expression: expression . PLUS term
-   21           | expression . MINUS term
+   14 function_definition: FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL RETURN expression .  ["end of file", EOL]
+   21 expression: expression . PLUS term
+   22           | expression . MINUS term
 
-    PLUS   shift, and go to state 26
-    MINUS  shift, and go to state 27
+    PLUS   shift, and go to state 28
+    MINUS  shift, and go to state 29
 
     $default  reduce using rule 14 (function_definition)
 
 
-State 49
+State 56
 
-   13 function_definition: FUNCTION_DEFINITION LEFT_PARENTHESIS arguments RIGHT_PARENTHESIS EOL block RETURN . expression
-   20 expression: . expression PLUS term
-   21           | . expression MINUS term
-   22           | . term
-   23 term: . monomial
-   24     | . term ASTERISK monomial
-   25     | . term SLASH monomial
-   26 monomial: . FLOAT_LITERAL
-   27         | . INT_LITERAL
-   28         | . variable
-   29 variable: . IDENTIFIER
+   13 function_definition: FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL block RETURN . expression
+   21 expression: . expression PLUS term
+   22           | . expression MINUS term
+   23           | . term
+   24           | . function_call
+   25 term: . monomial
+   26     | . term ASTERISK monomial
+   27     | . term SLASH monomial
+   28 function_call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   29 monomial: . FLOAT_LITERAL
+   30         | . INT_LITERAL
+   31         | . variable
+   32 variable: . IDENTIFIER
 
-    IDENTIFIER     shift, and go to state 34
+    IDENTIFIER     shift, and go to state 35
     INT_LITERAL    shift, and go to state 4
     FLOAT_LITERAL  shift, and go to state 5
 
-    expression  go to state 50
-    term        go to state 16
-    monomial    go to state 17
-    variable    go to state 18
+    expression     go to state 57
+    term           go to state 16
+    function_call  go to state 17
+    monomial       go to state 18
+    variable       go to state 19
 
 
-State 50
+State 57
 
-   13 function_definition: FUNCTION_DEFINITION LEFT_PARENTHESIS arguments RIGHT_PARENTHESIS EOL block RETURN expression .  ["end of file", EOL]
-   20 expression: expression . PLUS term
-   21           | expression . MINUS term
+   13 function_definition: FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL block RETURN expression .  ["end of file", EOL]
+   21 expression: expression . PLUS term
+   22           | expression . MINUS term
 
-    PLUS   shift, and go to state 26
-    MINUS  shift, and go to state 27
+    PLUS   shift, and go to state 28
+    MINUS  shift, and go to state 29
 
     $default  reduce using rule 13 (function_definition)

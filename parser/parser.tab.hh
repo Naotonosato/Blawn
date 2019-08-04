@@ -323,6 +323,7 @@ namespace Blawn {
       // class_definition
       // expression
       // term
+      // function_call
       // monomial
       // variable
       char dummy3[sizeof(std::shared_ptr<Node>)];
@@ -335,7 +336,11 @@ namespace Blawn {
 
       // block
       // lines
+      // expressions
       char dummy5[sizeof(std::vector<std::shared_ptr<Node>>)];
+
+      // definition_arguments
+      char dummy6[sizeof(std::vector<std::string>)];
 };
 
     /// Symbol semantic values.
@@ -426,6 +431,8 @@ namespace Blawn {
   basic_symbol (typename Base::kind_type t, const std::string v, const location_type& l);
 
   basic_symbol (typename Base::kind_type t, const std::vector<std::shared_ptr<Node>> v, const location_type& l);
+
+  basic_symbol (typename Base::kind_type t, const std::vector<std::string> v, const location_type& l);
 
 
       /// Constructor for symbols with semantic value.
@@ -667,7 +674,7 @@ namespace Blawn {
   // number is the opposite.  If YYTABLE_NINF, syntax error.
   static const unsigned char yytable_[];
 
-  static const unsigned char yycheck_[];
+  static const signed char yycheck_[];
 
   // YYSTOS[STATE-NUM] -- The (internal number of the) accessing
   // symbol of state STATE-NUM.
@@ -784,9 +791,9 @@ namespace Blawn {
     enum
     {
       yyeof_ = 0,
-      yylast_ = 40,     ///< Last index in yytable_.
-      yynnts_ = 17,  ///< Number of nonterminal symbols.
-      yyfinal_ = 22, ///< Termination state number.
+      yylast_ = 50,     ///< Last index in yytable_.
+      yynnts_ = 18,  ///< Number of nonterminal symbols.
+      yyfinal_ = 24, ///< Termination state number.
       yyterror_ = 1,
       yyerrcode_ = 256,
       yyntokens_ = 24  ///< Number of tokens.
@@ -801,7 +808,7 @@ namespace Blawn {
 
 #line 6 "./parser.yy" // lalr1.cc:377
 } // Blawn
-#line 805 "parser.tab.hh" // lalr1.cc:377
+#line 812 "parser.tab.hh" // lalr1.cc:377
 
 
 

@@ -6,6 +6,7 @@
 %define parser_class_name {MC_Parser}
 
 %code requires{
+   #include <memory>
    namespace MC {
       class MC_Driver;
       class MC_Scanner;
@@ -26,6 +27,7 @@
 %parse-param { MC_Driver  &driver  }
 
 %code{
+   #include <memory>
    #include <iostream>
    #include <cstdlib>
    #include <fstream>
@@ -43,7 +45,7 @@
 %token               END    0     "end of file"
 %token               UPPER
 %token               LOWER
-%token <std::string> WORD
+%token <std::unique_ptr<std::string>> WORD
 %token               NEWLINE
 %token               CHAR
 
@@ -61,7 +63,7 @@ list
 item
   : UPPER   { driver.add_upper(); }
   | LOWER   { driver.add_lower(); }
-  | WORD    { driver.add_word( $1 ); }
+  | WORD    {  }
   | NEWLINE { driver.add_newline(); }
   | CHAR    { driver.add_char(); }
   ;

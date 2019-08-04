@@ -1,3 +1,4 @@
+#pragma once
 #ifndef __BlawnDRIVER_HPP__
 #define __BlawnDRIVER_HPP__ 1
 #include <cstddef>

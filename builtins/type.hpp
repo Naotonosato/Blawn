@@ -1,3 +1,4 @@
+#pragma once
 #include <string>
 #include <vector>
 #include <memory>
@@ -11,6 +12,7 @@ class Type
 {
 public:
     std::string type_name;
-    std::shared_ptr<llvm::Type> type;
-    Type(std::string type_name):type_name(type_name){}
+    llvm::Type* type;
+    Type(std::string type_name,llvm::Type* llvm_type=nullptr)
+    :type_name(type_name),type(llvm_type){}
 };

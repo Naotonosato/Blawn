@@ -107,7 +107,6 @@ IDENTIFIER  [a-zA-Z_][0-9a-zA-Z_]*
     std::reverse_copy(definition.begin(),definition.end(),std::back_inserter(reversed));
     int index = definition.size() - reversed.find(" ");
     definition.erase(0,index);
-    driver->ast_generator->into_namespace(definition);
     lval->build<std::string>() = definition;
     
     return Blawn::Parser::token::FUNCTION_DEFINITION;
@@ -118,7 +117,6 @@ IDENTIFIER  [a-zA-Z_][0-9a-zA-Z_]*
     std::reverse_copy(definition.begin(),definition.end(),std::back_inserter(reversed));
     int index = definition.size() - reversed.find(" ");
     definition.erase(0,index);
-    driver->ast_generator->into_namespace(definition);
     lval->build<std::string>() = definition;
     return Blawn::Parser::token::CLASS_DEFINITION;
 }

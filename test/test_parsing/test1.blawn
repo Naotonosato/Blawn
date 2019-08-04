@@ -1,23 +1,6 @@
-1 + 2
-a = 0
-b = 2
-c = a + b
-d = 1 + c
-e = 0.6 + 1.0
-5 + 2.0
-function test_function(argument)
-    1 + 1
-    1.0
-    fa = 7.0
-    fvalue = 8.0 
-    s = fa + fvalue 
-    function in(a)
-    i = 8
-    return i
-    return s
-class TestClass
-    function member_function(arg)
-        1 + 2
-        val_in_member_func = 0
-        return 1.2
-        :
+1.0
+2.0190 - 0.9
+function f(a)
+    b = a + 2
+    return b
+f(9 + 2,8,a)
