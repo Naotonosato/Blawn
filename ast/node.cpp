@@ -1,7 +1,5 @@
 #include <llvm/IR/Value.h>
 #include <llvm/IR/LLVMContext.h>
-#include <llvm/IR/Value.h>
-#include <llvm/IR/LLVMContext.h>
 #include <llvm/IR/IRBuilder.h>
 #include <llvm/Support/raw_ostream.h>
 #include "../ir_generator/ir_generator.hpp"
@@ -40,7 +38,7 @@ llvm::Value* BinaryExpressionNode::generate()
     return value;
 }
 
-void FunctionNode::register_type(std::vector<std::shared_ptr<Node>> arguments)
+void FunctionNode::register_type(std::vector<std::unique_ptr<Node>> arguments)
 {
     arguments_kind.push_back(std::move(arguments));
 }

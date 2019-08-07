@@ -11,6 +11,7 @@ blawn: main.o driver.o ../ast/node.o ./parser.o ./lexer.o ../ast_generator/ast_g
 	g++ -g -c -o parser.o parser.tab.cc $(LLVM_OPTION)  
 ./parser.tab.cc ./parser.tab.hh: ./parser.yy
 	bison -d -v ./parser.yy -r all --report-file=log.log
+	python3 patch.py
 ./lexer.o: ./lex.yy.cc
 	g++ -g -c -o lexer.o lex.yy.cc $(LLVM_OPTION)
 ./lex.yy.cc: ./lexer.ll

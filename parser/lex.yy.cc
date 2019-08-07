@@ -511,8 +511,8 @@ static const flex_int16_t yy_chk[116] =
 static const flex_int16_t yy_rule_linenum[23] =
     {   0,
        49,   53,   57,   61,   65,   68,   71,   74,   77,   80,
-       83,   86,   89,   92,   95,   98,  101,  104,  114,  123,
-      126,  131
+       83,   86,   89,   92,   95,   98,  101,  104,  115,  124,
+      127,  132
     } ;
 
 /* The intent behind this definition is that it'll catch
@@ -943,6 +943,7 @@ YY_RULE_SETUP
     std::reverse_copy(definition.begin(),definition.end(),std::back_inserter(reversed));
     int index = definition.size() - reversed.find(" ");
     definition.erase(0,index);
+    driver->ast_generator->into_namespace(definition);
     lval->build<std::string>() = definition;
     
     return Blawn::Parser::token::FUNCTION_DEFINITION;
@@ -950,7 +951,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 114 "./lexer.ll"
+#line 115 "./lexer.ll"
 {
     std::string definition = yytext;
     std::string reversed;
@@ -963,14 +964,14 @@ YY_RULE_SETUP
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 123 "./lexer.ll"
+#line 124 "./lexer.ll"
 {
     return Blawn::Parser::token::RETURN;
 }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 126 "./lexer.ll"
+#line 127 "./lexer.ll"
 {
     lval->build<std::string>() = yytext;
     return Blawn::Parser::token::IDENTIFIER;
@@ -978,19 +979,19 @@ YY_RULE_SETUP
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 131 "./lexer.ll"
+#line 132 "./lexer.ll"
 {}
 	YY_BREAK
 case YY_STATE_EOF(INITIAL):
-#line 132 "./lexer.ll"
+#line 133 "./lexer.ll"
 {return 0;}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 133 "./lexer.ll"
+#line 134 "./lexer.ll"
 ECHO;
 	YY_BREAK
-#line 994 "lex.yy.cc"
+#line 995 "lex.yy.cc"
 
 	case YY_END_OF_BUFFER:
 		{
@@ -2106,5 +2107,5 @@ void yyfree (void * ptr )
 
 /* %ok-for-header */
 
-#line 133 "./lexer.ll"
+#line 134 "./lexer.ll"
 

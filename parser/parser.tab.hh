@@ -49,7 +49,6 @@
     #include "../ast_generator/ast_generator.hpp"
     //#include "../ast/node.hpp" 
  
-    #include  <memory>
     namespace Blawn {
         class Driver;
         class Scanner;
@@ -65,7 +64,7 @@
     # endif
 
 
-#line 69 "parser.tab.hh" // lalr1.cc:377
+#line 68 "parser.tab.hh" // lalr1.cc:377
 
 # include <cassert>
 # include <cstdlib> // std::abort
@@ -142,7 +141,7 @@
 
 #line 6 "./parser.yy" // lalr1.cc:377
 namespace Blawn {
-#line 146 "parser.tab.hh" // lalr1.cc:377
+#line 145 "parser.tab.hh" // lalr1.cc:377
 
 
 
@@ -196,7 +195,7 @@ namespace Blawn {
       YYASSERT (!yytypeid_);
       YYASSERT (sizeof (T) <= S);
       yytypeid_ = & typeid (T);
-      return *new (yyas_<T> ()) T (t);
+      return *new (yyas_<T> ()) T (std::move((T&)t));
     }
 
     /// Accessor to a built \a T.
@@ -315,6 +314,12 @@ namespace Blawn {
       // INT_LITERAL
       char dummy2[sizeof(int)];
 
+      // FUNCTION_DEFINITION
+      // CLASS_DEFINITION
+      // IDENTIFIER
+      // STRING_LITERAL
+      char dummy3[sizeof(std::string)];
+
       // line
       // line_content
       // definition
@@ -325,24 +330,18 @@ namespace Blawn {
       // term
       // function_call
       // monomial
-      char dummy3[sizeof(std::shared_ptr<Node>)];
+      char dummy4[sizeof(std::unique_ptr<Node>)];
 
       // variable
-      char dummy4[sizeof(std::shared_ptr<VariableNode>)];
+      char dummy5[sizeof(std::unique_ptr<VariableNode>)];
 
-      // FUNCTION_DEFINITION
-      // CLASS_DEFINITION
-      // IDENTIFIER
-      // STRING_LITERAL
-      char dummy5[sizeof(std::string)];
+      // definition_arguments
+      char dummy6[sizeof(std::vector<std::string>)];
 
       // block
       // lines
       // expressions
-      char dummy6[sizeof(std::vector<std::shared_ptr<Node>>)];
-
-      // definition_arguments
-      char dummy7[sizeof(std::vector<std::string>)];
+      char dummy7[sizeof(std::vector<std::unique_ptr<Node>>)];
 };
 
     /// Symbol semantic values.
@@ -428,15 +427,15 @@ namespace Blawn {
 
   basic_symbol (typename Base::kind_type t, const int v, const location_type& l);
 
-  basic_symbol (typename Base::kind_type t, const std::shared_ptr<Node> v, const location_type& l);
-
-  basic_symbol (typename Base::kind_type t, const std::shared_ptr<VariableNode> v, const location_type& l);
-
   basic_symbol (typename Base::kind_type t, const std::string v, const location_type& l);
 
-  basic_symbol (typename Base::kind_type t, const std::vector<std::shared_ptr<Node>> v, const location_type& l);
+  basic_symbol (typename Base::kind_type t, const std::unique_ptr<Node> v, const location_type& l);
+
+  basic_symbol (typename Base::kind_type t, const std::unique_ptr<VariableNode> v, const location_type& l);
 
   basic_symbol (typename Base::kind_type t, const std::vector<std::string> v, const location_type& l);
+
+  basic_symbol (typename Base::kind_type t, const std::vector<std::unique_ptr<Node>> v, const location_type& l);
 
 
       /// Constructor for symbols with semantic value.
@@ -678,7 +677,7 @@ namespace Blawn {
   // number is the opposite.  If YYTABLE_NINF, syntax error.
   static const unsigned char yytable_[];
 
-  static const signed char yycheck_[];
+  static const unsigned char yycheck_[];
 
   // YYSTOS[STATE-NUM] -- The (internal number of the) accessing
   // symbol of state STATE-NUM.
@@ -795,7 +794,7 @@ namespace Blawn {
     enum
     {
       yyeof_ = 0,
-      yylast_ = 50,     ///< Last index in yytable_.
+      yylast_ = 42,     ///< Last index in yytable_.
       yynnts_ = 18,  ///< Number of nonterminal symbols.
       yyfinal_ = 24, ///< Termination state number.
       yyterror_ = 1,
@@ -812,7 +811,7 @@ namespace Blawn {
 
 #line 6 "./parser.yy" // lalr1.cc:377
 } // Blawn
-#line 816 "parser.tab.hh" // lalr1.cc:377
+#line 815 "parser.tab.hh" // lalr1.cc:377
 
 
 

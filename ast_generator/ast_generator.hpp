@@ -14,6 +14,7 @@ namespace llvm
     class Module;
     template<typename T,typename Inserter>
     class IRBuilder;
+    class Value;
 }
 
  
@@ -28,31 +29,34 @@ private:
     std::vector<std::string> current_namespace;
     std::map<
         std::vector<std::string>,
-        std::map<std::string,std::shared_ptr<VariableNode>>
+        std::map<std::string,llvm::Value*>
             > 
         variables;
     std::map<
         std::vector<std::string>,
         std::map<std::string,std::shared_ptr<FunctionNode>>
             > 
-        unsolved_functions;
+        functions;
 public:
     std::shared_ptr<IRGenerator> ir_generator;
     std::shared_ptr<IntergerIRGenerator> int_ir_generator;
     std::shared_ptr<FloatIRGenerator> float_ir_generator;
     std::shared_ptr<VariableIRGenerator> variable_generator;
     std::shared_ptr<BinaryExpressionIRGenerator> binary_expression_generator;
+    std::shared_ptr<FunctionIRGenerator> function_generator;
     ASTGenerator(llvm::Module &module,
     llvm::IRBuilder<> &ir_builder,
     llvm::LLVMContext &context);
     void into_namespace(std::string name);
     void break_out_of_namespace();
-    std::shared_ptr<BinaryExpressionNode> attach_operator(std::shared_ptr<Node> node,std::shared_ptr<Node> other,const std::string operator_type);
-    std::shared_ptr<VariableNode> add_variable(std::string name,std::shared_ptr<Node> node);
-    std::shared_ptr<VariableNode> get_variable(std::string name);
-    std::shared_ptr<IntergerNode> create_interger(int num);
-    std::shared_ptr<FloatNode> create_float(double num);
-    void book_function(std::string name,std::vector<std::string> arguments,std::vector<std::shared_ptr<Node>> body);
-    std::shared_ptr<Node> call_function(std::string name,std::vector<std::shared_ptr<Node>> arguments);
+    std::unique_ptr<BinaryExpressionNode> attach_operator(std::unique_ptr<Node> node,std::unique_ptr<Node> other,const std::string operator_type);
+    std::unique_ptr<VariableNode> add_variable(std::string name,std::unique_ptr<Node> node);
+    std::unique_ptr<VariableNode> get_variable(std::string name);
+    void add_argument(std::string);
+    std::unique_ptr<IntergerNode> create_interger(int num);
+    std::unique_ptr<FloatNode> create_float(double num);
+    void book_function(std::string name,std::vector<std::string> arguments,std::vector<std::unique_ptr<Node>> body,std::unique_ptr<Node> return_value);
+    std::unique_ptr<Node> call_function(std::string name,std::vector<std::unique_ptr<Node>> arguments);
     void generate();
+    std::string get_namespace_as_string();
 };

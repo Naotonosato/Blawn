@@ -1,9 +1,3 @@
-/*clang++ -g -O3 toy.cpp `llvm-config --cxxflags --ldflags --system-libs --libs core` -o toy
-# Run
-./toy
-Here is the code:
-*/
-
 #include "llvm/ADT/APFloat.h"
 #include "llvm/ADT/STLExtras.h"
 #include "llvm/IR/BasicBlock.h"
@@ -23,7 +17,6 @@ Here is the code:
 #include <memory>
 #include <string>
 #include <vector>
-#include <iostream>
 
 using namespace llvm;
 
@@ -422,7 +415,6 @@ Value *NumberExprAST::codegen() {
 
 Value *VariableExprAST::codegen() {
   // Look this variable up in the function.
-  std::cout << "variable: " << Name << std::endl;
   Value *V = NamedValues[Name];
   if (!V)
     return LogErrorV("Unknown variable name");
@@ -505,12 +497,7 @@ Function *FunctionAST::codegen() {
   // Record the function arguments in the NamedValues map.
   NamedValues.clear();
   for (auto &Arg : TheFunction->args())
-  {
     NamedValues[Arg.getName()] = &Arg;
-    std::cout << "gen the arg." << std::endl;
-    (&Arg)->print(errs());
-    std::cout << "---end---" << std::endl;
-  } 
 
   if (Value *RetVal = Body->codegen()) {
     // Finish off the function.

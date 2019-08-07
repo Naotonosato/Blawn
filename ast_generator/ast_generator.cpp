@@ -1,6 +1,7 @@
 #include <llvm/IR/IRBuilder.h>
 #include <llvm/IR/Module.h>
 #include <llvm/IR/LLVMContext.h>
+#include <llvm/Support/raw_ostream.h>
 #include "../builtins/type.hpp"
 #include "../ast/node.hpp"
 #include "../ir_generator/ir_generator.hpp"
@@ -21,6 +22,7 @@ ASTGenerator::ASTGenerator(
     float_ir_generator = std::shared_ptr<FloatIRGenerator>(new FloatIRGenerator(context,module,ir_builder));
     variable_generator = std::shared_ptr<VariableIRGenerator>(new VariableIRGenerator(context,module,ir_builder));
     binary_expression_generator = std::shared_ptr<BinaryExpressionIRGenerator>(new BinaryExpressionIRGenerator(context,module,ir_builder));
+    function_generator = std::shared_ptr<FunctionIRGenerator>(new FunctionIRGenerator(context,module,ir_builder));
 }
 
 void ASTGenerator::generate()
@@ -36,7 +38,7 @@ void ASTGenerator::generate()
 void ASTGenerator::into_namespace(std::string name)
 {
     current_namespace.push_back(name);
-    std::map<std::string,std::shared_ptr<VariableNode>> vals;
+    std::map<std::string,llvm::Value*> vals;
     variables[current_namespace] = vals;
 }
 
@@ -48,32 +50,27 @@ void ASTGenerator::break_out_of_namespace()
     }
 }
 
-std::shared_ptr<VariableNode> ASTGenerator::add_variable(std::string name,std::shared_ptr<Node> right_value)
+std::unique_ptr<VariableNode> ASTGenerator::add_variable(std::string name,std::unique_ptr<Node> right_value)
 {
-    std::string cur = ".";
-    for (auto &i:current_namespace)
-    {
-        cur += "/" + i;
-    }
-    auto variable = std::shared_ptr<VariableNode>(
+    auto variable = std::unique_ptr<VariableNode>(
         new VariableNode(*variable_generator,right_value->generate())
         );
-    variables[current_namespace][name] = variable;
+    variables[current_namespace][name] = variable->generate();
   //  std::cout << "registering new variable '" << name 
   //  << "' that typed "<< variable->get_type()->type_name <<" in " 
   //  << "namespace '" << cur << "'\n";
-    return variable;
+    return std::move(variable);
 
 }
 
-std::shared_ptr<VariableNode> ASTGenerator::get_variable(std::string name)
+std::unique_ptr<VariableNode> ASTGenerator::get_variable(std::string name)
 {
     if (variables[current_namespace].count(name))
     {
-        //auto type = variables[current_namespace][name]->type;
-        //auto ir_generator = variables[current_namespace][name]->ir_generator;
-        //return std::shared_ptr<Node>(new Node(type,ir_generator));
-        return variables[current_namespace][name];
+        auto variable = std::unique_ptr<VariableNode>(
+        new VariableNode(*variable_generator,variables[current_namespace][name])
+        );
+        return std::move(variable);
     }
     else
     {
@@ -82,21 +79,37 @@ std::shared_ptr<VariableNode> ASTGenerator::get_variable(std::string name)
     }
 }
 
-void ASTGenerator::book_function(std::string name,std::vector<std::string> arguments,std::vector<std::shared_ptr<Node>> body)
+void add_argument(std::string)
 {
-    auto func = std::shared_ptr<FunctionNode>(new FunctionNode(*ir_generator,arguments));
-    unsolved_functions[current_namespace][name] = func;
+    
 }
 
-std::shared_ptr<Node> ASTGenerator::call_function(std::string name,std::vector<std::shared_ptr<Node>> arguments)
+void ASTGenerator::book_function(std::string name,std::vector<std::string> arguments,std::vector<std::unique_ptr<Node>> body,std::unique_ptr<Node> return_value)
 {
-    if (unsolved_functions[current_namespace].count(name))
+    auto func = std::shared_ptr<FunctionNode>(new FunctionNode(*function_generator,name,arguments,std::move(return_value)));
+    functions[current_namespace][name] = func;
+    func->self_namespace = current_namespace;
+    for (auto &arg: arguments)
     {
-        unsolved_functions[current_namespace][name]->register_type(arguments);
-        auto calling = std::shared_ptr<CallFunctionNode>(
-            new CallFunctionNode(*ir_generator,unsolved_functions[current_namespace][name],arguments)
+        llvm::Value* empty_value;
+        variables[current_namespace][arg] = empty_value;
+    }
+}
+
+std::unique_ptr<Node> ASTGenerator::call_function(std::string name,std::vector<std::unique_ptr<Node>> arguments)
+{
+    if (functions[current_namespace].count(name))
+    {
+        auto function = &functions[current_namespace][name];
+        (*function)->register_type(std::move(arguments));
+        auto calling = std::unique_ptr<CallFunctionNode>(
+            new CallFunctionNode(
+                *ir_generator,*function,
+                std::move(arguments),
+                variables)
             );
-        return calling;
+        calling->generate();
+        return std::move(calling);
     }
     else
     {
@@ -104,38 +117,48 @@ std::shared_ptr<Node> ASTGenerator::call_function(std::string name,std::vector<s
         exit(0);
     }
 }
-std::shared_ptr<IntergerNode> ASTGenerator::create_interger(int num)
+std::unique_ptr<IntergerNode> ASTGenerator::create_interger(int num)
 {
-    auto interger = std::shared_ptr<IntergerNode>(new IntergerNode(*int_ir_generator));
+    auto interger = std::unique_ptr<IntergerNode>(new IntergerNode(*int_ir_generator));
     interger->int_num = num;
-    return interger;
+    return std::move(interger);
 }
 
-std::shared_ptr<FloatNode> ASTGenerator::create_float(double num)
+std::unique_ptr<FloatNode> ASTGenerator::create_float(double num)
 {
-    auto float_ = std::shared_ptr<FloatNode>(new FloatNode(*float_ir_generator));
+    auto float_ = std::unique_ptr<FloatNode>(new FloatNode(*float_ir_generator));
     float_->float_num = num;
-    return float_;
+    return std::move(float_);
 }
 
-std::shared_ptr<BinaryExpressionNode> ASTGenerator::attach_operator(std::shared_ptr<Node> left_node,std::shared_ptr<Node> right_node,const std::string operator_kind)
+std::unique_ptr<BinaryExpressionNode> ASTGenerator::attach_operator(std::unique_ptr<Node> left_node,std::unique_ptr<Node> right_node,const std::string operator_kind)
 {
-    auto expression = std::shared_ptr<BinaryExpressionNode>(new BinaryExpressionNode(*binary_expression_generator));
-    expression->left_node = left_node;
-    expression->right_node = right_node;
+    auto expression = std::unique_ptr<BinaryExpressionNode>(new BinaryExpressionNode(*binary_expression_generator));
+    expression->left_node = std::move(left_node);
+    expression->right_node = std::move(right_node);
     expression->operator_kind = operator_kind;
     //auto value = expression->generate();
-    return expression;
+    return std::move(expression);
     /*try
     {
         auto special_method = node->special_methods.at(operator_type);
-        std::vector<std::shared_ptr<Node>> arg;
+        std::vector<std::unique_ptr<Node>> arg;
         arg.push_back(other);   
-        auto res = std::shared_ptr<Node>(new CallFunctionNode(special_method,arg));
+        auto res = std::unique_ptr<Node>(new CallFunctionNode(*special_method,arg));
         return res;
     }
     catch (std::out_of_range)
     {
         return node; 
     }*/
+}
+
+std::string ASTGenerator::get_namespace_as_string()
+{
+    std::string cur = ".";
+    for (auto &i:current_namespace)
+    {
+        cur += "/" + i;
+    }
+    return cur;
 }

@@ -25,14 +25,12 @@ namespace llvm
 
 class Node
 {
-private:
-    std::shared_ptr<Type> type;
 public:  
     int int_num;
     double float_num;
     std::string string;
-    const IRGenerator& ir_generator;
-    Node(const IRGenerator& ir_generator)
+    IRGenerator& ir_generator;
+    Node(IRGenerator& ir_generator)
     :ir_generator(ir_generator){}
     virtual llvm::Value* generate();
 };
@@ -41,7 +39,7 @@ class IntergerNode:public Node
 {
     public:
     IntergerNode(
-        const IntergerIRGenerator& ir_generator
+        IntergerIRGenerator& ir_generator
         ):Node(ir_generator){}
 };
 
@@ -49,7 +47,7 @@ class FloatNode:public Node
 {
     public:
     FloatNode(
-        const FloatIRGenerator& ir_generator
+        FloatIRGenerator& ir_generator
         ):Node(ir_generator){}
 };
 
@@ -58,7 +56,7 @@ class VariableNode: public Node
     public:
     llvm::Value* right_value;
     VariableNode(
-        const VariableIRGenerator& ir_generator,
+        VariableIRGenerator& ir_generator,
         llvm::Value* right_value
         )
     :Node(ir_generator),right_value(right_value){}
@@ -69,10 +67,10 @@ class VariableNode: public Node
 class BinaryExpressionNode: public Node
 {
 public:
-    std::shared_ptr<Node> left_node;
-    std::shared_ptr<Node> right_node;
+    std::unique_ptr<Node> left_node;
+    std::unique_ptr<Node> right_node;
     std::string operator_kind;
-    BinaryExpressionNode(const BinaryExpressionIRGenerator& ir_generator)
+    BinaryExpressionNode(BinaryExpressionIRGenerator& ir_generator)
     :Node(ir_generator){}
     llvm::Value* generate();
 };
@@ -81,23 +79,36 @@ public:
 class FunctionNode: public Node
 {
 public:
+    std::string name;
     std::vector<std::string> arguments;
-    std::vector<std::vector<std::shared_ptr<Node>>> arguments_kind;
-    FunctionNode(IRGenerator& ir_generator,std::vector<std::string> arguments)
-    :Node(ir_generator),arguments(arguments){}
-    void register_type(std::vector<std::shared_ptr<Node>>);
+    std::unique_ptr<Node> return_value;
+    std::vector<std::vector<std::unique_ptr<Node>>> arguments_kind;
+    std::vector<std::string> self_namespace;
+    FunctionNode(
+        FunctionIRGenerator& ir_generator,
+        std::string name,std::vector<std::string> arguments,
+        std::unique_ptr<Node> return_value
+        )
+    :Node(ir_generator),name(name),arguments(arguments),return_value(std::move(return_value)){}
+    void register_type(std::vector<std::unique_ptr<Node>>);
+    std::string get_name(std::vector<std::unique_ptr<Node>>);
 };
 
 
 class CallFunctionNode: public Node
 {
     public:
-        std::shared_ptr<Node> function;
-        std::vector<std::shared_ptr<Node>> arguments;
+        std::shared_ptr<FunctionNode> function;
+        std::vector<std::unique_ptr<Node>> arguments;
+        std::map<std::vector<std::string>,std::map<std::string,llvm::Value*>>& local_variables;
         CallFunctionNode(
             IRGenerator& ir_generator,
             std::shared_ptr<FunctionNode> function,
-            std::vector<std::shared_ptr<Node>> arguments
+            std::vector<std::unique_ptr<Node>> arguments,
+            std::map<std::vector<std::string>,std::map<std::string,llvm::Value*>>& local_variables
             )
-        :Node(ir_generator),function(function),arguments(arguments){}
+        :Node(ir_generator),function(function),arguments(
+            std::make_move_iterator(arguments.begin()),
+            std::make_move_iterator(arguments.begin())
+            ),local_variables(local_variables){}
 };

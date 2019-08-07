@@ -5,6 +5,9 @@
 class Node;
 class VariableNode;
 class BinaryExpressionNode;
+class FunctionNode;
+class CallFunctionNode;
+
 namespace llvm
 {
     class LLVMContext;
@@ -29,9 +32,11 @@ public:
         llvm::IRBuilder<> &ir_builder
         )
     :context(context),module(module),ir_builder(ir_builder){}
-    virtual llvm::Value* generate(Node &node) const;
-    virtual llvm::Value* generate(VariableNode &node) const;
-    virtual llvm::Value* generate(BinaryExpressionNode &node) const;
+    virtual llvm::Value* generate(Node &node) ;
+    virtual llvm::Value* generate(VariableNode &node) ;
+    virtual llvm::Value* generate(BinaryExpressionNode &node) ;
+    virtual llvm::Function* generate(FunctionNode &node);
+    virtual llvm::Value* generate(CallFunctionNode &node);
 };
 
 
@@ -45,7 +50,7 @@ public:
         )
     :IRGenerator(context,module,ir_builder){}
 
-    llvm::Value* generate(Node &node) const;
+    llvm::Value* generate(Node &node) ;
 };
 
 
@@ -58,7 +63,7 @@ public:
         llvm::IRBuilder<> &ir_builder
         )
     :IRGenerator(context,module,ir_builder){}
-    llvm::Value* generate(Node &node) const;
+    llvm::Value* generate(Node &node) ;
 };
 
 
@@ -72,8 +77,9 @@ public:
         )
     :IRGenerator(context,module,ir_builder){}
 
-    llvm::Value* generate(VariableNode &node) const;
+    llvm::Value* generate(VariableNode &node) ;
 };
+
 
 class BinaryExpressionIRGenerator: public IRGenerator
 {
@@ -84,7 +90,31 @@ public:
         llvm::IRBuilder<> &ir_builder
         )
     :IRGenerator(context,module,ir_builder){}
-    llvm::Value* generate(BinaryExpressionNode &node) const;
+    llvm::Value* generate(BinaryExpressionNode &node);
 };
 
 
+class FunctionIRGenerator: public IRGenerator
+{
+public:
+    FunctionIRGenerator(
+        llvm::LLVMContext &context,
+        llvm::Module &module,
+        llvm::IRBuilder<> &ir_builder
+        )
+    :IRGenerator(context,module,ir_builder){}
+    llvm::Function* generate(FunctionNode &node);
+};
+
+
+class CallFunctionIRGenerator: public IRGenerator
+{
+public:
+    CallFunctionIRGenerator(
+        llvm::LLVMContext &context,
+        llvm::Module &module,
+        llvm::IRBuilder<> &ir_builder
+        )
+    :IRGenerator(context,module,ir_builder){}
+    llvm::Value* generate(CallFunctionNode &node);
+};
