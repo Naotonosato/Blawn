@@ -84,7 +84,7 @@
 %type <std::shared_ptr<Node>> term
 %type <std::shared_ptr<Node>> function_call
 %type <std::shared_ptr<Node>> monomial
-%type <std::shared_ptr<Node>> variable
+%type <std::shared_ptr<VariableNode>> variable
 
 /*std::vector<Type> members_type;
         std::shared_ptr<Type> type = std::make_shared<Type>("FLOAT",members_type);
@@ -151,21 +151,21 @@ function_definition:
     FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL block RETURN expression
     {
         driver.ast_generator->book_function($1,$3,$6);
-        //driver.ast_generator->into_namespace($1);
-        $$ = std::shared_ptr<Node>(new Node(driver.ast_generator->ir_generator));
+        driver.ast_generator->into_namespace($1);
+        $$ = std::shared_ptr<Node>(new Node(*driver.ast_generator->ir_generator));
         driver.ast_generator->break_out_of_namespace();
     }
     |FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL RETURN expression
     {
-        //driver.ast_generator->into_namespace($1);
-        $$ = std::shared_ptr<Node>(new Node(driver.ast_generator->ir_generator));
+        driver.ast_generator->into_namespace($1);
+        $$ = std::shared_ptr<Node>(new Node(*driver.ast_generator->ir_generator));
         driver.ast_generator->break_out_of_namespace();
     };
 class_definition:
     CLASS_DEFINITION EOL block class_definition_end
     {
         driver.ast_generator->into_namespace($1);
-        $$ = std::shared_ptr<Node>(new Node(driver.ast_generator->ir_generator));
+        $$ = std::shared_ptr<Node>(new Node(*driver.ast_generator->ir_generator));
         driver.ast_generator->break_out_of_namespace();
     };
 class_definition_end:
@@ -194,6 +194,7 @@ expression:
     expression PLUS term
     {
         $$ = driver.ast_generator->attach_operator($1,$3,"+");
+         $$->generate();
     }
     |expression MINUS term
     {
@@ -223,18 +224,17 @@ term:
 function_call:
     IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
     {
+        std::cout << "func call." << std::endl;
         $$ = driver.ast_generator->call_function($1,$3);
     };
 monomial:
     FLOAT_LITERAL
     {
-        $$ = std::shared_ptr<Node>(new Node(driver.ast_generator->float_ir_generator));
-        $$->float_num = $1;
+        $$ = driver.ast_generator->create_float($1);
     }
     |INT_LITERAL
     { 
-        $$ = std::shared_ptr<Node>(new Node(driver.ast_generator->int_ir_generator));
-        $$->int_num = $1;
+        $$ = driver.ast_generator->create_interger($1);
     }
     |variable
     {
@@ -244,6 +244,7 @@ variable:
     IDENTIFIER
     {
         $$ = driver.ast_generator->get_variable($1);
+        //$$->generate();
         //std::shared_ptr<Node>(new Node(type));
         //$$ = std::shared_ptr<Node>(new Node());
     };

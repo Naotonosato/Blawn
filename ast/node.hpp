@@ -1,4 +1,6 @@
 #pragma once
+#include <llvm/IR/IRBuilder.h>
+#include "../ir_generator/ir_generator.hpp"
 #include <string>
 #include <memory>
 #include <map>
@@ -6,7 +8,13 @@
 
 //------forward declaration------
 class Type;
+/*
 class IRGenerator;
+class IntergerIRGenerator;
+class FloatIRGenerator;
+class VariableIRGenerator;
+class BinaryExpressionIRGenerator;
+*/
 namespace llvm
 {
     class Value;
@@ -20,25 +28,53 @@ class Node
 private:
     std::shared_ptr<Type> type;
 public:  
-    std::shared_ptr<Node> left_node;
-    std::shared_ptr<Node> right_node;
-    std::string operator_kind;
     int int_num;
     double float_num;
     std::string string;
-    std::shared_ptr<IRGenerator> ir_generator;
-    Node(std::shared_ptr<IRGenerator> ir_generator)
+    const IRGenerator& ir_generator;
+    Node(const IRGenerator& ir_generator)
     :ir_generator(ir_generator){}
-    llvm::Value* generate();
+    virtual llvm::Value* generate();
+};
 
+class IntergerNode:public Node
+{
+    public:
+    IntergerNode(
+        const IntergerIRGenerator& ir_generator
+        ):Node(ir_generator){}
+};
+
+class FloatNode:public Node
+{
+    public:
+    FloatNode(
+        const FloatIRGenerator& ir_generator
+        ):Node(ir_generator){}
+};
+
+class VariableNode: public Node
+{
+    public:
+    llvm::Value* right_value;
+    VariableNode(
+        const VariableIRGenerator& ir_generator,
+        llvm::Value* right_value
+        )
+    :Node(ir_generator),right_value(right_value){}
+    llvm::Value* generate();
 };
 
 
 class BinaryExpressionNode: public Node
 {
 public:
-    BinaryExpressionNode(std::shared_ptr<IRGenerator> ir_generator)
+    std::shared_ptr<Node> left_node;
+    std::shared_ptr<Node> right_node;
+    std::string operator_kind;
+    BinaryExpressionNode(const BinaryExpressionIRGenerator& ir_generator)
     :Node(ir_generator){}
+    llvm::Value* generate();
 };
 
 
@@ -47,7 +83,7 @@ class FunctionNode: public Node
 public:
     std::vector<std::string> arguments;
     std::vector<std::vector<std::shared_ptr<Node>>> arguments_kind;
-    FunctionNode(std::shared_ptr<IRGenerator> ir_generator,std::vector<std::string> arguments)
+    FunctionNode(IRGenerator& ir_generator,std::vector<std::string> arguments)
     :Node(ir_generator),arguments(arguments){}
     void register_type(std::vector<std::shared_ptr<Node>>);
 };
@@ -59,7 +95,7 @@ class CallFunctionNode: public Node
         std::shared_ptr<Node> function;
         std::vector<std::shared_ptr<Node>> arguments;
         CallFunctionNode(
-            std::shared_ptr<IRGenerator> ir_generator,
+            IRGenerator& ir_generator,
             std::shared_ptr<FunctionNode> function,
             std::vector<std::shared_ptr<Node>> arguments
             )

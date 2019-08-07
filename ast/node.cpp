@@ -14,7 +14,7 @@
 
 llvm::Value* Node::generate()
 {
-    auto value =  ir_generator->generate(*this);
+    auto value =  ir_generator.generate(*this);
     
     //std::cout << "-----LLVM IR------(generator class: " << typeid(*ir_generator).name() << ")\n";
     //std::cout << "is value null?" << (value == 0) << "\n";
@@ -24,7 +24,21 @@ llvm::Value* Node::generate()
     
     return value;
 }
+llvm::Value* VariableNode::generate()
+{
+    //std::cout << "start gen variable." << std::endl;
+    auto value =  ir_generator.generate(*this);
+    //std::cout << "succes." << std::endl;
+    return value;
+}
 
+llvm::Value* BinaryExpressionNode::generate()
+{
+    //std::cout << "start gen bin expr." << std::endl;
+    auto value =  ir_generator.generate(*this);
+    //std::cout << "succes." << std::endl;
+    return value;
+}
 
 void FunctionNode::register_type(std::vector<std::shared_ptr<Node>> arguments)
 {

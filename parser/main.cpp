@@ -31,7 +31,7 @@ int main(int argc, char** argv)
     */
 
 
-    std::shared_ptr<ASTGenerator> ast_generator(new ASTGenerator(module,ir_builder,context));
+    std::shared_ptr<ASTGenerator> ast_generator(new ASTGenerator(*module,*ir_builder,*context));
     Blawn::Driver* driver = new Blawn::Driver(ast_generator);
     std::cout << "start compile.\n";
     driver->parse("../test/test_parsing/test1.blawn");

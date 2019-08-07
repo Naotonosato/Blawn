@@ -325,22 +325,24 @@ namespace Blawn {
       // term
       // function_call
       // monomial
-      // variable
       char dummy3[sizeof(std::shared_ptr<Node>)];
+
+      // variable
+      char dummy4[sizeof(std::shared_ptr<VariableNode>)];
 
       // FUNCTION_DEFINITION
       // CLASS_DEFINITION
       // IDENTIFIER
       // STRING_LITERAL
-      char dummy4[sizeof(std::string)];
+      char dummy5[sizeof(std::string)];
 
       // block
       // lines
       // expressions
-      char dummy5[sizeof(std::vector<std::shared_ptr<Node>>)];
+      char dummy6[sizeof(std::vector<std::shared_ptr<Node>>)];
 
       // definition_arguments
-      char dummy6[sizeof(std::vector<std::string>)];
+      char dummy7[sizeof(std::vector<std::string>)];
 };
 
     /// Symbol semantic values.
@@ -427,6 +429,8 @@ namespace Blawn {
   basic_symbol (typename Base::kind_type t, const int v, const location_type& l);
 
   basic_symbol (typename Base::kind_type t, const std::shared_ptr<Node> v, const location_type& l);
+
+  basic_symbol (typename Base::kind_type t, const std::shared_ptr<VariableNode> v, const location_type& l);
 
   basic_symbol (typename Base::kind_type t, const std::string v, const location_type& l);
 
@@ -808,7 +812,7 @@ namespace Blawn {
 
 #line 6 "./parser.yy" // lalr1.cc:377
 } // Blawn
-#line 812 "parser.tab.hh" // lalr1.cc:377
+#line 816 "parser.tab.hh" // lalr1.cc:377
 
 
 

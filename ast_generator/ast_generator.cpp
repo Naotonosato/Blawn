@@ -10,15 +10,16 @@
 ASTGenerator::~ASTGenerator() {}
 
 ASTGenerator::ASTGenerator(
-    std::shared_ptr<llvm::Module> module,
-    std::shared_ptr<llvm::IRBuilder<>> ir_builder,
-    std::shared_ptr<llvm::LLVMContext> context
+    llvm::Module &module,
+    llvm::IRBuilder<> &ir_builder,
+    llvm::LLVMContext &context
     )
 :module(module),ir_builder(ir_builder),context(context),current_namespace({"__TOP"})
 {
     ir_generator = std::shared_ptr<IRGenerator>(new IRGenerator(context,module,ir_builder));
     int_ir_generator = std::shared_ptr<IntergerIRGenerator>(new IntergerIRGenerator(context,module,ir_builder));
     float_ir_generator = std::shared_ptr<FloatIRGenerator>(new FloatIRGenerator(context,module,ir_builder));
+    variable_generator = std::shared_ptr<VariableIRGenerator>(new VariableIRGenerator(context,module,ir_builder));
     binary_expression_generator = std::shared_ptr<BinaryExpressionIRGenerator>(new BinaryExpressionIRGenerator(context,module,ir_builder));
 }
 
@@ -35,7 +36,7 @@ void ASTGenerator::generate()
 void ASTGenerator::into_namespace(std::string name)
 {
     current_namespace.push_back(name);
-    std::map<std::string,std::shared_ptr<Node>> vals;
+    std::map<std::string,std::shared_ptr<VariableNode>> vals;
     variables[current_namespace] = vals;
 }
 
@@ -47,14 +48,16 @@ void ASTGenerator::break_out_of_namespace()
     }
 }
 
-std::shared_ptr<Node> ASTGenerator::add_variable(std::string name,std::shared_ptr<Node> right_value)
+std::shared_ptr<VariableNode> ASTGenerator::add_variable(std::string name,std::shared_ptr<Node> right_value)
 {
     std::string cur = ".";
     for (auto &i:current_namespace)
     {
         cur += "/" + i;
     }
-    auto variable = std::shared_ptr<Node>(new Node(*right_value));
+    auto variable = std::shared_ptr<VariableNode>(
+        new VariableNode(*variable_generator,right_value->generate())
+        );
     variables[current_namespace][name] = variable;
   //  std::cout << "registering new variable '" << name 
   //  << "' that typed "<< variable->get_type()->type_name <<" in " 
@@ -63,7 +66,7 @@ std::shared_ptr<Node> ASTGenerator::add_variable(std::string name,std::shared_pt
 
 }
 
-std::shared_ptr<Node> ASTGenerator::get_variable(std::string name)
+std::shared_ptr<VariableNode> ASTGenerator::get_variable(std::string name)
 {
     if (variables[current_namespace].count(name))
     {
@@ -81,10 +84,8 @@ std::shared_ptr<Node> ASTGenerator::get_variable(std::string name)
 
 void ASTGenerator::book_function(std::string name,std::vector<std::string> arguments,std::vector<std::shared_ptr<Node>> body)
 {
-    auto func = std::shared_ptr<FunctionNode>(new FunctionNode(ir_generator,arguments));
+    auto func = std::shared_ptr<FunctionNode>(new FunctionNode(*ir_generator,arguments));
     unsolved_functions[current_namespace][name] = func;
-    into_namespace(name);
-    //for 
 }
 
 std::shared_ptr<Node> ASTGenerator::call_function(std::string name,std::vector<std::shared_ptr<Node>> arguments)
@@ -93,7 +94,7 @@ std::shared_ptr<Node> ASTGenerator::call_function(std::string name,std::vector<s
     {
         unsolved_functions[current_namespace][name]->register_type(arguments);
         auto calling = std::shared_ptr<CallFunctionNode>(
-            new CallFunctionNode(ir_generator,unsolved_functions[current_namespace][name],arguments)
+            new CallFunctionNode(*ir_generator,unsolved_functions[current_namespace][name],arguments)
             );
         return calling;
     }
@@ -103,10 +104,23 @@ std::shared_ptr<Node> ASTGenerator::call_function(std::string name,std::vector<s
         exit(0);
     }
 }
-
-std::shared_ptr<Node> ASTGenerator::attach_operator(std::shared_ptr<Node> left_node,std::shared_ptr<Node> right_node,const std::string operator_kind)
+std::shared_ptr<IntergerNode> ASTGenerator::create_interger(int num)
 {
-    auto expression = std::shared_ptr<Node>(new Node(binary_expression_generator));
+    auto interger = std::shared_ptr<IntergerNode>(new IntergerNode(*int_ir_generator));
+    interger->int_num = num;
+    return interger;
+}
+
+std::shared_ptr<FloatNode> ASTGenerator::create_float(double num)
+{
+    auto float_ = std::shared_ptr<FloatNode>(new FloatNode(*float_ir_generator));
+    float_->float_num = num;
+    return float_;
+}
+
+std::shared_ptr<BinaryExpressionNode> ASTGenerator::attach_operator(std::shared_ptr<Node> left_node,std::shared_ptr<Node> right_node,const std::string operator_kind)
+{
+    auto expression = std::shared_ptr<BinaryExpressionNode>(new BinaryExpressionNode(*binary_expression_generator));
     expression->left_node = left_node;
     expression->right_node = right_node;
     expression->operator_kind = operator_kind;
