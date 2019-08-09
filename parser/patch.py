@@ -1,3 +1,5 @@
+#use http://www.comrite.com/wp/c11-stdunique_ptr-as-semantic-value-in-bison-c-mode/
+#as reference. thanks!
 with open("./parser.tab.hh") as file:
     source = file.read()
     source = source.replace(
