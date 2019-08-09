@@ -61,7 +61,15 @@ llvm::Value* FloatIRGenerator::generate(Node& node)
 
 llvm::Value* VariableIRGenerator::generate(VariableNode& node) 
 {
-    return node.right_value;
+    auto right_value = node.get_right_value();
+    if (right_value == nullptr)
+    {
+        return node.right_node->generate();
+    }
+    else
+    {
+        return right_value;
+    }
 }
 
 llvm::Value* BinaryExpressionIRGenerator::generate(BinaryExpressionNode& node) 
@@ -124,15 +132,13 @@ llvm::Value* CallFunctionIRGenerator::generate(CallFunctionNode &node)
         types.push_back(v->getType());
         argument_values.push_back(v);
     }
-    auto iter = node.function->signatures.find(types);
     
-    if (iter != node.function->signatures.end())
+    auto f = node.function->get_function(types);
+    if (f != nullptr)
     //function is already generated
     {
-        std::cout << "already exist function with the signature" << std::endl;
-        return 0;
+        return ir_builder.CreateCall(f,argument_values);
     }
-    node.function->register_signature(types);
     
     auto temporary_block = llvm::BasicBlock::Create(context,"temporary");
     ir_builder.SetInsertPoint(temporary_block);
@@ -141,13 +147,8 @@ llvm::Value* CallFunctionIRGenerator::generate(CallFunctionNode &node)
     for (auto &name:node.function->arguments)
     {
         auto argument = new llvm::Argument(node.arguments[count]->generate()->getType(),name);
-        node.local_variables[node.function->self_namespace][name] = argument;
+        node.local_variables[node.function->self_namespace][name]->set_right_value(argument);
         count += 1;
-    }
-    
-    for (auto &line:node.function->body)
-    {
-        line->generate()->print(llvm::errs());
     }
     auto func_type = llvm::FunctionType::get(node.function->return_value->generate()->getType(),types,false);
     auto function = llvm::Function::Create(
@@ -156,11 +157,22 @@ llvm::Value* CallFunctionIRGenerator::generate(CallFunctionNode &node)
         node.function->name,
         &module
     );
+    count = 0;
+    for (auto &a:function->args())
+    {
+        std::string arg_name = node.function->arguments[count];
+        a.setName(arg_name);
+        node.local_variables[
+            node.function->self_namespace
+            ][arg_name]->set_right_value(&a);
+        count += 1;
+    }
+    node.function->register_function(types,function);
     auto block = llvm::BasicBlock::Create(context,"entry",function);
     ir_builder.SetInsertPoint(block);
     for (auto &line:node.function->body)
     {
-        line->generate()->print(llvm::errs());
+        line->generate();
     }
     ir_builder.CreateRet(node.function->return_value->generate());
     ir_builder.SetInsertPoint(callee_block);

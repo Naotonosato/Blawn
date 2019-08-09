@@ -29,7 +29,7 @@ private:
     std::vector<std::string> current_namespace;
     std::map<
         std::vector<std::string>,
-        std::map<std::string,llvm::Value*>
+        std::map<std::string,std::shared_ptr<VariableNode>>
             > 
         variables;
     std::map<

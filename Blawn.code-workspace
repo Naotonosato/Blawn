@@ -67,7 +67,12 @@
 			"mutex": "cpp",
 			"ratio": "cpp",
 			"thread": "cpp",
-			"list": "cpp"
+			"list": "cpp",
+			"cstdarg": "cpp",
+			"algorithm": "cpp",
+			"iterator": "cpp",
+			"memory_resource": "cpp",
+			"set": "cpp"
 		}
 	}
 }

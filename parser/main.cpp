@@ -33,9 +33,12 @@ int main(int argc, char** argv)
 
     std::shared_ptr<ASTGenerator> ast_generator(new ASTGenerator(*module,*ir_builder,*context));
     Blawn::Driver* driver = new Blawn::Driver(ast_generator);
-    std::cout << "start compile.\n";
+    //std::cout << "start compile.\n";
     driver->parse("../test/test_parsing/test1.blawn");
-    std::cout << "done.\n";
-    module->print(llvm::outs(),nullptr);
+    //std::cout << "done.\n";
+    
+    std::error_code error;
+    llvm::raw_fd_ostream stream("result.ll",error,llvm::sys::fs::OpenFlags::F_None);
+    module->print(stream,nullptr);
     return 0;
 }

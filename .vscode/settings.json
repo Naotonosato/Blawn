@@ -1,7 +1,6 @@
 {
 	
 		"terminal.integrated.shell.windows": "C:\\WINDOWS\\System32\\wsl.exe",
-		"C_Cpp.errorSquiggles": "EnabledIfIncludesResolve",
 		"files.associations": {
 			"array": "cpp",
 			"*.tcc": "cpp",

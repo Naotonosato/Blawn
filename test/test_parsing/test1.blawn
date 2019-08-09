@@ -1,6 +1,14 @@
-function fn(arg) *comment*
-    1 + 2 *any 処理*
-    return 7 + 0.2
-fn(2) *intで呼び出してる！*
-fn(2.98) *floatで呼び出してる！*
-fn(1111111)
+function twice(num)
+    res = num * 2
+    return res
+function add_seven(num)
+    res = num + 7
+    return res
+twice(7)*comment*
+add_seven(7)*7 + 7 = 14*
+add_seven(1)
+twice(add_seven(0.5))*(0.5 + 7) x 2 = 15*
+twice(7)*comment*
+add_seven(7)*7 + 7 = 14*
+add_seven(1)
+twice(add_seven(0.5))*(0.5 + 7) x 2 = 15*

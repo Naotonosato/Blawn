@@ -39,7 +39,7 @@ void ASTGenerator::generate()
 void ASTGenerator::into_namespace(std::string name)
 {
     current_namespace.push_back(name);
-    std::map<std::string,llvm::Value*> vals;
+    std::map<std::string,std::shared_ptr<VariableNode>> vals;
     variables[current_namespace] = vals;
 }
 
@@ -51,17 +51,17 @@ void ASTGenerator::break_out_of_namespace()
     }
 }
 
-std::unique_ptr<VariableNode> ASTGenerator::add_variable(std::string name,std::unique_ptr<Node> right_value)
+std::unique_ptr<VariableNode> ASTGenerator::add_variable(std::string name,std::unique_ptr<Node> right_node)
 {
-    auto value = right_value->generate();
-    auto variable = std::unique_ptr<VariableNode>(
-        new VariableNode(*variable_generator,value)
+    auto variable = std::shared_ptr<VariableNode>(
+        new VariableNode(*variable_generator,std::move(right_node))
         );
-    variables[current_namespace][name] = variable->generate();
+    variables[current_namespace][name] = variable;
+    auto copy = std::unique_ptr<VariableNode>(new VariableNode(*variable));
   //  std::cout << "registering new variable '" << name 
   //  << "' that typed "<< variable->get_type()->type_name <<" in " 
   //  << "namespace '" << cur << "'\n";
-    return std::move(variable);
+    return std::move(copy);
 
 }
 
@@ -81,14 +81,14 @@ std::unique_ptr<VariableNode> ASTGenerator::get_variable(std::string name)
     }
 }
 
-void ASTGenerator::add_argument(std::string arg)
+void ASTGenerator::add_argument(std::string arg_name)
 {
-    variables[current_namespace][arg] = nullptr;
+    auto argument = std::shared_ptr<VariableNode>(new VariableNode(*variable_generator,nullptr));
+    variables[current_namespace][arg_name] = argument;
 }
 
 void ASTGenerator::book_function(std::string name,std::vector<std::string> arguments,std::vector<std::unique_ptr<Node>> body,std::unique_ptr<Node> return_value)
 {
-    std::cout << "booking func." << std::endl;
     auto func = std::shared_ptr<FunctionNode>(new FunctionNode(
         *function_generator,name,arguments,std::move(body),std::move(return_value))
         );
@@ -96,7 +96,7 @@ void ASTGenerator::book_function(std::string name,std::vector<std::string> argum
     std::copy(current_namespace.begin(),current_namespace.end()-1,
     std::back_inserter(previous_namespace));
     functions[previous_namespace][name] = func;
-    std::copy(current_namespace.begin(),current_namespace.end()-1,
+    std::copy(current_namespace.begin(),current_namespace.end(),
     std::back_inserter(func->self_namespace));
     func->generate();
 }
