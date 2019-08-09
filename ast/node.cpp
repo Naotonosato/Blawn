@@ -1,4 +1,5 @@
 #include <llvm/IR/Value.h>
+#include <llvm/IR/Function.h>
 #include <llvm/IR/LLVMContext.h>
 #include <llvm/IR/IRBuilder.h>
 #include <llvm/Support/raw_ostream.h>
@@ -38,7 +39,21 @@ llvm::Value* BinaryExpressionNode::generate()
     return value;
 }
 
-void FunctionNode::register_type(std::vector<std::unique_ptr<Node>> arguments)
+void FunctionNode::register_signature(std::vector<llvm::Type*> signature)
 {
-    arguments_kind.push_back(std::move(arguments));
+    signatures.insert(signature);
+}
+
+llvm::Function* FunctionNode::generate()
+{
+    auto value =  ir_generator.generate(*this);
+    std::cout << "gen func;" << std::endl;
+    return value;
+}
+
+llvm::Value* CallFunctionNode::generate()
+{
+    std::cout << "call func" << std::endl;
+    auto value =  ir_generator.generate(*this);
+    return value;
 }

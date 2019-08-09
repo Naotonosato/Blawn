@@ -1,8 +1,6 @@
-a = 1 + 2
-b = a * 2 + 3 + a
-c = a + b * 1 +2/ 2.98
-function fn(arg)
-    arg + 2 * 2
-    b = 3 * arg
-    return arg
-fn(1)
+function fn(arg) *comment*
+    1 + 2 *any 処理*
+    return 7 + 0.2
+fn(2) *intで呼び出してる！*
+fn(2.98) *floatで呼び出してる！*
+fn(1111111)

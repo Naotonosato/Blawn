@@ -1203,168 +1203,161 @@ namespace Blawn {
   case 14:
 #line 151 "./parser.yy" // lalr1.cc:859
     {
-        std::cout << "start definition of function" << yystack_[7].value.as< std::string > () << std::endl;
         driver.ast_generator->book_function(yystack_[7].value.as< std::string > (),std::move(yystack_[5].value.as< std::vector<std::string> > ()),std::move(yystack_[2].value.as< std::vector<std::unique_ptr<Node>> > ()),std::move(yystack_[0].value.as< std::unique_ptr<Node> > ()));
         //driver.ast_generator->into_namespace($1);
         yylhs.value.as< std::unique_ptr<Node> > () = std::unique_ptr<Node>(new Node(*driver.ast_generator->ir_generator));
         driver.ast_generator->break_out_of_namespace();
     }
-#line 1213 "parser.tab.cc" // lalr1.cc:859
+#line 1212 "parser.tab.cc" // lalr1.cc:859
     break;
 
   case 15:
-#line 160 "./parser.yy" // lalr1.cc:859
+#line 159 "./parser.yy" // lalr1.cc:859
     {
         driver.ast_generator->into_namespace(yystack_[3].value.as< std::string > ());
         yylhs.value.as< std::unique_ptr<Node> > () = std::unique_ptr<Node>(new Node(*driver.ast_generator->ir_generator));
         driver.ast_generator->break_out_of_namespace();
     }
-#line 1223 "parser.tab.cc" // lalr1.cc:859
+#line 1222 "parser.tab.cc" // lalr1.cc:859
     break;
 
   case 17:
-#line 169 "./parser.yy" // lalr1.cc:859
+#line 168 "./parser.yy" // lalr1.cc:859
     {
-        std::cout << "i discovered argument " << yystack_[0].value.as< std::string > () 
-        << " in namespace " << driver.ast_generator->get_namespace_as_string() 
-        << ". whooo!!" << std::endl;
         yylhs.value.as< std::vector<std::string> > ().push_back(yystack_[0].value.as< std::string > ());
+        driver.ast_generator->add_argument(yystack_[0].value.as< std::string > ());
     }
-#line 1234 "parser.tab.cc" // lalr1.cc:859
+#line 1231 "parser.tab.cc" // lalr1.cc:859
     break;
 
   case 18:
-#line 176 "./parser.yy" // lalr1.cc:859
+#line 173 "./parser.yy" // lalr1.cc:859
     {
         yylhs.value.as< std::vector<std::string> > () = std::move(yystack_[2].value.as< std::vector<std::string> > ());
         yylhs.value.as< std::vector<std::string> > ().push_back(yystack_[0].value.as< std::string > ());
+        driver.ast_generator->add_argument(yystack_[0].value.as< std::string > ());
     }
-#line 1243 "parser.tab.cc" // lalr1.cc:859
+#line 1241 "parser.tab.cc" // lalr1.cc:859
     break;
 
   case 19:
-#line 182 "./parser.yy" // lalr1.cc:859
+#line 180 "./parser.yy" // lalr1.cc:859
     {
         yylhs.value.as< std::vector<std::unique_ptr<Node>> > ().push_back(std::move(yystack_[0].value.as< std::unique_ptr<Node> > ()));
     }
-#line 1251 "parser.tab.cc" // lalr1.cc:859
+#line 1249 "parser.tab.cc" // lalr1.cc:859
     break;
 
   case 20:
-#line 186 "./parser.yy" // lalr1.cc:859
+#line 184 "./parser.yy" // lalr1.cc:859
     {
         yylhs.value.as< std::vector<std::unique_ptr<Node>> > () = std::move(yystack_[2].value.as< std::vector<std::unique_ptr<Node>> > ());
         yylhs.value.as< std::vector<std::unique_ptr<Node>> > ().push_back(std::move(yystack_[0].value.as< std::unique_ptr<Node> > ()));
     }
-#line 1260 "parser.tab.cc" // lalr1.cc:859
+#line 1258 "parser.tab.cc" // lalr1.cc:859
     break;
 
   case 21:
-#line 192 "./parser.yy" // lalr1.cc:859
+#line 190 "./parser.yy" // lalr1.cc:859
     {
         yylhs.value.as< std::unique_ptr<Node> > () = driver.ast_generator->attach_operator(std::move(yystack_[2].value.as< std::unique_ptr<Node> > ()),std::move(yystack_[0].value.as< std::unique_ptr<Node> > ()),"+");
-        yylhs.value.as< std::unique_ptr<Node> > ()->generate();
     }
-#line 1269 "parser.tab.cc" // lalr1.cc:859
+#line 1266 "parser.tab.cc" // lalr1.cc:859
     break;
 
   case 22:
-#line 197 "./parser.yy" // lalr1.cc:859
+#line 194 "./parser.yy" // lalr1.cc:859
     {
         yylhs.value.as< std::unique_ptr<Node> > () = driver.ast_generator->attach_operator(std::move(yystack_[2].value.as< std::unique_ptr<Node> > ()),std::move(yystack_[0].value.as< std::unique_ptr<Node> > ()),"-");
     }
-#line 1277 "parser.tab.cc" // lalr1.cc:859
+#line 1274 "parser.tab.cc" // lalr1.cc:859
     break;
 
   case 23:
-#line 201 "./parser.yy" // lalr1.cc:859
+#line 198 "./parser.yy" // lalr1.cc:859
     {
         yylhs.value.as< std::unique_ptr<Node> > () = std::move(yystack_[0].value.as< std::unique_ptr<Node> > ());
     }
-#line 1285 "parser.tab.cc" // lalr1.cc:859
+#line 1282 "parser.tab.cc" // lalr1.cc:859
     break;
 
   case 24:
-#line 205 "./parser.yy" // lalr1.cc:859
+#line 202 "./parser.yy" // lalr1.cc:859
     {
         yylhs.value.as< std::unique_ptr<Node> > () = std::move(yystack_[0].value.as< std::unique_ptr<Node> > ());
     }
-#line 1293 "parser.tab.cc" // lalr1.cc:859
+#line 1290 "parser.tab.cc" // lalr1.cc:859
     break;
 
   case 25:
-#line 210 "./parser.yy" // lalr1.cc:859
+#line 207 "./parser.yy" // lalr1.cc:859
     {
         yylhs.value.as< std::unique_ptr<Node> > () = std::move(yystack_[0].value.as< std::unique_ptr<Node> > ());
     }
-#line 1301 "parser.tab.cc" // lalr1.cc:859
+#line 1298 "parser.tab.cc" // lalr1.cc:859
     break;
 
   case 26:
-#line 214 "./parser.yy" // lalr1.cc:859
+#line 211 "./parser.yy" // lalr1.cc:859
     {
       yylhs.value.as< std::unique_ptr<Node> > () = driver.ast_generator->attach_operator(std::move(yystack_[2].value.as< std::unique_ptr<Node> > ()),std::move(yystack_[0].value.as< std::unique_ptr<Node> > ()),"*");
     }
-#line 1309 "parser.tab.cc" // lalr1.cc:859
+#line 1306 "parser.tab.cc" // lalr1.cc:859
     break;
 
   case 27:
-#line 218 "./parser.yy" // lalr1.cc:859
+#line 215 "./parser.yy" // lalr1.cc:859
     {
        yylhs.value.as< std::unique_ptr<Node> > () = driver.ast_generator->attach_operator(std::move(yystack_[2].value.as< std::unique_ptr<Node> > ()),std::move(yystack_[0].value.as< std::unique_ptr<Node> > ()),"/");
     }
-#line 1317 "parser.tab.cc" // lalr1.cc:859
+#line 1314 "parser.tab.cc" // lalr1.cc:859
     break;
 
   case 28:
-#line 223 "./parser.yy" // lalr1.cc:859
+#line 220 "./parser.yy" // lalr1.cc:859
     {
-        std::cout << "func call." << std::endl;
         yylhs.value.as< std::unique_ptr<Node> > () = driver.ast_generator->call_function(yystack_[3].value.as< std::string > (),std::move(yystack_[1].value.as< std::vector<std::unique_ptr<Node>> > ()));
     }
-#line 1326 "parser.tab.cc" // lalr1.cc:859
+#line 1322 "parser.tab.cc" // lalr1.cc:859
     break;
 
   case 29:
-#line 229 "./parser.yy" // lalr1.cc:859
+#line 225 "./parser.yy" // lalr1.cc:859
     {
         yylhs.value.as< std::unique_ptr<Node> > () = driver.ast_generator->create_float(yystack_[0].value.as< double > ());
     }
-#line 1334 "parser.tab.cc" // lalr1.cc:859
+#line 1330 "parser.tab.cc" // lalr1.cc:859
     break;
 
   case 30:
-#line 233 "./parser.yy" // lalr1.cc:859
+#line 229 "./parser.yy" // lalr1.cc:859
     { 
         yylhs.value.as< std::unique_ptr<Node> > () = driver.ast_generator->create_interger(yystack_[0].value.as< int > ());
     }
-#line 1342 "parser.tab.cc" // lalr1.cc:859
+#line 1338 "parser.tab.cc" // lalr1.cc:859
     break;
 
   case 31:
-#line 237 "./parser.yy" // lalr1.cc:859
+#line 233 "./parser.yy" // lalr1.cc:859
     {
         yylhs.value.as< std::unique_ptr<Node> > () = std::move(yystack_[0].value.as< std::unique_ptr<VariableNode> > ());
     }
-#line 1350 "parser.tab.cc" // lalr1.cc:859
+#line 1346 "parser.tab.cc" // lalr1.cc:859
     break;
 
   case 32:
-#line 242 "./parser.yy" // lalr1.cc:859
+#line 238 "./parser.yy" // lalr1.cc:859
     {
-        std::cout << "i discovered variable " << yystack_[0].value.as< std::string > () 
-        << " in namespace " << driver.ast_generator->get_namespace_as_string() << ". whooo!!" << std::endl;
-        
         yylhs.value.as< std::unique_ptr<VariableNode> > () = driver.ast_generator->get_variable(yystack_[0].value.as< std::string > ());
         //$$->generate();
         //std::unique_ptr<Node>(new Node(type));
         //$$ = std::unique_ptr<Node>(new Node());
     }
-#line 1364 "parser.tab.cc" // lalr1.cc:859
+#line 1357 "parser.tab.cc" // lalr1.cc:859
     break;
 
 
-#line 1368 "parser.tab.cc" // lalr1.cc:859
+#line 1361 "parser.tab.cc" // lalr1.cc:859
             default:
               break;
             }
@@ -1642,9 +1635,9 @@ namespace Blawn {
   Parser::yyrline_[] =
   {
        0,    93,    93,    98,   103,   107,   113,   117,   122,   126,
-     131,   135,   139,   144,   150,   159,   166,   168,   175,   181,
-     185,   191,   196,   200,   204,   209,   213,   217,   222,   228,
-     232,   236,   241
+     131,   135,   139,   144,   150,   158,   165,   167,   172,   179,
+     183,   189,   193,   197,   201,   206,   210,   214,   219,   224,
+     228,   232,   237
   };
 
   // Print the state stack on the debug stream.
@@ -1727,8 +1720,8 @@ namespace Blawn {
 
 #line 6 "./parser.yy" // lalr1.cc:1167
 } // Blawn
-#line 1731 "parser.tab.cc" // lalr1.cc:1167
-#line 253 "./parser.yy" // lalr1.cc:1168
+#line 1724 "parser.tab.cc" // lalr1.cc:1167
+#line 246 "./parser.yy" // lalr1.cc:1168
 
 
 void Blawn::Parser::error( const location_type &l, const std::string &err_message )

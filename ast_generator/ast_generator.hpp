@@ -44,6 +44,7 @@ public:
     std::shared_ptr<VariableIRGenerator> variable_generator;
     std::shared_ptr<BinaryExpressionIRGenerator> binary_expression_generator;
     std::shared_ptr<FunctionIRGenerator> function_generator;
+    std::shared_ptr<CallFunctionIRGenerator> calling_generator;
     ASTGenerator(llvm::Module &module,
     llvm::IRBuilder<> &ir_builder,
     llvm::LLVMContext &context);

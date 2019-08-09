@@ -23,6 +23,7 @@ ASTGenerator::ASTGenerator(
     variable_generator = std::shared_ptr<VariableIRGenerator>(new VariableIRGenerator(context,module,ir_builder));
     binary_expression_generator = std::shared_ptr<BinaryExpressionIRGenerator>(new BinaryExpressionIRGenerator(context,module,ir_builder));
     function_generator = std::shared_ptr<FunctionIRGenerator>(new FunctionIRGenerator(context,module,ir_builder));
+    calling_generator = std::shared_ptr<CallFunctionIRGenerator>(new CallFunctionIRGenerator(context,module,ir_builder));
 }
 
 void ASTGenerator::generate()
@@ -52,8 +53,9 @@ void ASTGenerator::break_out_of_namespace()
 
 std::unique_ptr<VariableNode> ASTGenerator::add_variable(std::string name,std::unique_ptr<Node> right_value)
 {
+    auto value = right_value->generate();
     auto variable = std::unique_ptr<VariableNode>(
-        new VariableNode(*variable_generator,right_value->generate())
+        new VariableNode(*variable_generator,value)
         );
     variables[current_namespace][name] = variable->generate();
   //  std::cout << "registering new variable '" << name 
@@ -79,21 +81,24 @@ std::unique_ptr<VariableNode> ASTGenerator::get_variable(std::string name)
     }
 }
 
-void add_argument(std::string)
+void ASTGenerator::add_argument(std::string arg)
 {
-    
+    variables[current_namespace][arg] = nullptr;
 }
 
 void ASTGenerator::book_function(std::string name,std::vector<std::string> arguments,std::vector<std::unique_ptr<Node>> body,std::unique_ptr<Node> return_value)
 {
-    auto func = std::shared_ptr<FunctionNode>(new FunctionNode(*function_generator,name,arguments,std::move(return_value)));
-    functions[current_namespace][name] = func;
-    func->self_namespace = current_namespace;
-    for (auto &arg: arguments)
-    {
-        llvm::Value* empty_value;
-        variables[current_namespace][arg] = empty_value;
-    }
+    std::cout << "booking func." << std::endl;
+    auto func = std::shared_ptr<FunctionNode>(new FunctionNode(
+        *function_generator,name,arguments,std::move(body),std::move(return_value))
+        );
+    std::vector<std::string> previous_namespace;
+    std::copy(current_namespace.begin(),current_namespace.end()-1,
+    std::back_inserter(previous_namespace));
+    functions[previous_namespace][name] = func;
+    std::copy(current_namespace.begin(),current_namespace.end()-1,
+    std::back_inserter(func->self_namespace));
+    func->generate();
 }
 
 std::unique_ptr<Node> ASTGenerator::call_function(std::string name,std::vector<std::unique_ptr<Node>> arguments)
@@ -101,10 +106,9 @@ std::unique_ptr<Node> ASTGenerator::call_function(std::string name,std::vector<s
     if (functions[current_namespace].count(name))
     {
         auto function = &functions[current_namespace][name];
-        (*function)->register_type(std::move(arguments));
         auto calling = std::unique_ptr<CallFunctionNode>(
             new CallFunctionNode(
-                *ir_generator,*function,
+                *calling_generator,*function,
                 std::move(arguments),
                 variables)
             );

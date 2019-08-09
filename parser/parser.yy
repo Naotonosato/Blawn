@@ -149,7 +149,6 @@ variable_definition:
 function_definition:
     FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL block RETURN expression
     {
-        std::cout << "start definition of function" << $1 << std::endl;
         driver.ast_generator->book_function($1,std::move($3),std::move($6),std::move($8));
         //driver.ast_generator->into_namespace($1);
         $$ = std::unique_ptr<Node>(new Node(*driver.ast_generator->ir_generator));
@@ -167,9 +166,6 @@ class_definition_end:
 definition_arguments:
     IDENTIFIER
     {
-        std::cout << "i discovered argument " << $1 
-        << " in namespace " << driver.ast_generator->get_namespace_as_string() 
-        << ". whooo!!" << std::endl;
         $$.push_back($1);
         driver.ast_generator->add_argument($1);
     }
@@ -193,7 +189,6 @@ expression:
     expression PLUS term
     {
         $$ = driver.ast_generator->attach_operator(std::move($1),std::move($3),"+");
-        $$->generate();
     }
     |expression MINUS term
     {
@@ -223,7 +218,6 @@ term:
 function_call:
     IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
     {
-        std::cout << "func call." << std::endl;
         $$ = driver.ast_generator->call_function($1,std::move($3));
     };
 monomial:
@@ -242,9 +236,6 @@ monomial:
 variable:
     IDENTIFIER
     {
-        std::cout << "i discovered variable " << $1 
-        << " in namespace " << driver.ast_generator->get_namespace_as_string() << ". whooo!!" << std::endl;
-        
         $$ = driver.ast_generator->get_variable($1);
         //$$->generate();
         //std::unique_ptr<Node>(new Node(type));

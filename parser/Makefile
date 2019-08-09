@@ -30,3 +30,4 @@ blawn: main.o driver.o ../ast/node.o ./parser.o ./lexer.o ../ast_generator/ast_g
 clean:
 	rm ../**/*.o
 	-fsanitize=address
+	

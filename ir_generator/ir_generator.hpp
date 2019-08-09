@@ -20,6 +20,9 @@ namespace llvm
 //forward declaration
 
 
+void initialize();
+
+
 class IRGenerator
 {
 public:
@@ -30,8 +33,7 @@ public:
         llvm::LLVMContext &context,
         llvm::Module &module,
         llvm::IRBuilder<> &ir_builder
-        )
-    :context(context),module(module),ir_builder(ir_builder){}
+        );
     virtual llvm::Value* generate(Node &node) ;
     virtual llvm::Value* generate(VariableNode &node) ;
     virtual llvm::Value* generate(BinaryExpressionNode &node) ;

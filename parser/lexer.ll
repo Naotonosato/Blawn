@@ -17,6 +17,7 @@
 %option nounput
 %option c++
 
+COMMENT             \*[\s\S\n]*.*\*
 INT_LITERAL         [0-9]+
 FLOAT_LITERAL       [0-9]+\.[0-9]*
 STRING_LITERAL      \".*\"
@@ -45,7 +46,7 @@ IDENTIFIER  [a-zA-Z_][0-9a-zA-Z_]*
 
 %%
 
-
+{COMMENT} {}
 {INT_LITERAL} {
     lval->build<int>() = std::stoi(yytext);
     return Blawn::Parser::token::INT_LITERAL;

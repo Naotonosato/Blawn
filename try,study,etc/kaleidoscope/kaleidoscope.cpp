@@ -604,6 +604,14 @@ int main() {
   MainLoop();
 
   // Print out all of the generated code.
+  llvm::Value* v = new llvm::Argument(Builder.getInt16Ty());
+  llvm::Value* v2 = new llvm::Argument(Builder.getInt32Ty());
+  std::vector<Type*> types;
+  types.push_back(v2->getType());
+  auto expr = Builder.CreateAdd(v,v);
+  auto ft = FunctionType::get(expr->getType(),types,false);
+  auto func = Function::Create(ft,Function::ExternalLinkage,"tf",TheModule.get());
+  expr->print(errs());
   TheModule->print(errs(), nullptr);
 
   return 0;

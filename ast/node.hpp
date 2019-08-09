@@ -5,6 +5,7 @@
 #include <memory>
 #include <map>
 #include <vector>
+#include <set>
 
 //------forward declaration------
 class Type;
@@ -19,6 +20,8 @@ namespace llvm
 {
     class Value;
     class Type;
+    class Function;
+    class FunctionType;
 }
 //------forward declaration------
 
@@ -81,17 +84,21 @@ class FunctionNode: public Node
 public:
     std::string name;
     std::vector<std::string> arguments;
+    std::vector<std::unique_ptr<Node>> body;
     std::unique_ptr<Node> return_value;
-    std::vector<std::vector<std::unique_ptr<Node>>> arguments_kind;
+    std::set<std::vector<llvm::Type*>> signatures;
     std::vector<std::string> self_namespace;
     FunctionNode(
         FunctionIRGenerator& ir_generator,
         std::string name,std::vector<std::string> arguments,
+        std::vector<std::unique_ptr<Node>> body,
         std::unique_ptr<Node> return_value
         )
-    :Node(ir_generator),name(name),arguments(arguments),return_value(std::move(return_value)){}
-    void register_type(std::vector<std::unique_ptr<Node>>);
-    std::string get_name(std::vector<std::unique_ptr<Node>>);
+    :Node(ir_generator),name(name),arguments(arguments),
+    body(std::make_move_iterator(body.begin()),std::make_move_iterator(body.end())),
+    return_value(std::move(return_value)){}
+    void register_signature(std::vector<llvm::Type*>);
+    llvm::Function* generate();
 };
 
 
@@ -102,13 +109,14 @@ class CallFunctionNode: public Node
         std::vector<std::unique_ptr<Node>> arguments;
         std::map<std::vector<std::string>,std::map<std::string,llvm::Value*>>& local_variables;
         CallFunctionNode(
-            IRGenerator& ir_generator,
+            CallFunctionIRGenerator& ir_generator,
             std::shared_ptr<FunctionNode> function,
             std::vector<std::unique_ptr<Node>> arguments,
             std::map<std::vector<std::string>,std::map<std::string,llvm::Value*>>& local_variables
             )
         :Node(ir_generator),function(function),arguments(
             std::make_move_iterator(arguments.begin()),
-            std::make_move_iterator(arguments.begin())
+            std::make_move_iterator(arguments.end())
             ),local_variables(local_variables){}
+        llvm::Value* generate();
 };
