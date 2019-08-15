@@ -5,7 +5,6 @@
 #include <llvm/IR/IRBuilder.h>
 #include <llvm/Support/raw_ostream.h>
 #include "../ir_generator/ir_generator.hpp"
-#include "../builtins/type.hpp"
 #include "node.hpp"
 #include <vector>
 #include <memory>
@@ -25,50 +24,44 @@ llvm::Value* Node::generate()
     return value;
 }
 
-void VariableNode::set_right_value(llvm::Argument* value)
+void VariableNode::assign(std::shared_ptr<Node> node)
 {
-    if (right_value == nullptr)
-    {
-        is_null_parent = (value->getParent() == nullptr);
-        right_value = value;
-    }
-    else
-    {
-        if (is_null_parent)
-        {
-            right_value = value;
-        }
-        else
-        {
-            std::cout << "you can't set right_value more than two times." << std::endl;
-        }
-    }
+    right_node = node;
 }
 
-llvm::Value* VariableNode::get_right_value()
+void ArgumentNode::set_right_value(llvm::Value* value)
+{
+    right_value = value;
+}
+
+llvm::Value* ArgumentNode::get_right_value()
 {
     return right_value;
 }
 
-llvm::Value* VariableNode::generate()
+std::shared_ptr<VariableNode> AssigmentNode::get_target() const
 {
-    //std::cout << "start gen variable." << std::endl;
-    auto value =  ir_generator.generate(*this);
-    //std::cout << "succes." << std::endl;
-    return value;
+    return target;
 }
 
-llvm::Value* BinaryExpressionNode::generate()
+std::shared_ptr<Node> AssigmentNode::get_right_node() const
 {
-    //std::cout << "start gen bin expr." << std::endl;
-    auto value =  ir_generator.generate(*this);
-    //std::cout << "succes." << std::endl;
-    return value;
+    return right_node;
 }
 
 void FunctionNode::register_function(std::vector<llvm::Type*> types,llvm::Function* function) 
 {
     functions[types] = function;
+}
+
+void FunctionNode::set_temporary_function(llvm::Function* func)
+{
+    temporary_function = func;
+}
+
+llvm::Function* FunctionNode::get_temporary_function()
+{
+    return temporary_function;
 }
 
 llvm::Function* FunctionNode::get_function(std::vector<llvm::Type*> types)
@@ -80,14 +73,13 @@ llvm::Function* FunctionNode::get_function(std::vector<llvm::Type*> types)
     return functions[types];
 }
 
-llvm::Function* FunctionNode::generate()
+void FunctionNode::set_self_namespace(std::vector<std::string> self)
 {
-    auto value =  ir_generator.generate(*this);
-    return value;
+    self_namespace = self;
 }
 
-llvm::Value* CallFunctionNode::generate()
+std::vector<std::string> FunctionNode::get_self_namespace()
 {
-    auto value =  ir_generator.generate(*this);
-    return value;
+    return self_namespace;
 }
+

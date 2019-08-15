@@ -9,6 +9,8 @@
 #include "llvm/IR/Module.h"
 #include "llvm/IR/Type.h"
 #include "llvm/IR/Verifier.h"
+#include <llvm/IR/Instructions.h>
+#include <llvm/Transforms/Utils/Cloning.h>
 #include <algorithm>
 #include <cctype>
 #include <cstdio>
@@ -17,7 +19,8 @@
 #include <memory>
 #include <string>
 #include <vector>
-
+#include <iostream>
+/* g++ -g -O3 kaleidoscope.cpp `llvm-config --cxxflags --ldflags --system-libs --libs core` -o toy*/
 using namespace llvm;
 
 //===----------------------------------------------------------------------===//
@@ -604,15 +607,36 @@ int main() {
   MainLoop();
 
   // Print out all of the generated code.
-  llvm::Value* v = new llvm::Argument(Builder.getInt16Ty());
-  llvm::Value* v2 = new llvm::Argument(Builder.getInt32Ty());
+  llvm::Value* v = llvm::ConstantInt::get(TheContext, llvm::APInt(16,8));
   std::vector<Type*> types;
-  types.push_back(v2->getType());
-  auto expr = Builder.CreateAdd(v,v);
-  auto ft = FunctionType::get(expr->getType(),types,false);
+  //types.push_back(v->getType());
+  auto ft = FunctionType::get(Builder.getInt16Ty(),types,false);
   auto func = Function::Create(ft,Function::ExternalLinkage,"tf",TheModule.get());
-  expr->print(errs());
-  TheModule->print(errs(), nullptr);
+  auto block = BasicBlock::Create(TheContext,"entry",func);
+  Builder.SetInsertPoint(block);
+  Builder.CreateRet(v);
+  
+  std::vector<llvm::Type*> ArgTypes;
+  ArgTypes.push_back(Builder.getInt16Ty());
+  ArgTypes.push_back(Builder.getInt8PtrTy());
+      llvm::ValueToValueMapTy VMap;
+      llvm::FunctionType *FTy = llvm::FunctionType::get(Builder.getInt64Ty(), ArgTypes, false);
+      llvm::Function *NewF = llvm::Function::Create(FTy, Function::ExternalLinkage, "clnd",TheModule.get());
 
+  llvm::ValueToValueMapTy vmap;
+  std::cout << "clone." << std::endl;
+  //vmap[func->arg_begin()] = NewF->arg_begin();
+  llvm::SmallVector<llvm::ReturnInst*,0> Returns;
+  llvm::CloneFunctionInto(NewF,func,vmap,false,Returns,"clonedfnc");
+ // auto cloned = llvm::CloneFunction(func,vmap);
+  
+  std::cout << "cloned." << Returns.size() << std::endl;
+  //llvm::verifyFunction(*NewF);
+  //cloned->print(errs());
+  
+  NewF->print(outs());
+  std::cout << std::endl;
+  TheModule->print(errs(), nullptr);
   return 0;
 }
+/* g++ -g -O0 kaleidoscope.cpp `llvm-config --cxxflags --ldflags --system-libs --libs core` -o toy*/

@@ -44,7 +44,6 @@
 
     #include <memory>
     #include <llvm/IR/IRBuilder.h>
-    #include "../builtins/type.hpp"
     #include "../ast/node.hpp"
     #include "../ast_generator/ast_generator.hpp"
     //#include "../ast/node.hpp" 
@@ -64,7 +63,7 @@
     # endif
 
 
-#line 68 "parser.tab.hh" // lalr1.cc:377
+#line 67 "parser.tab.hh" // lalr1.cc:377
 
 # include <cassert>
 # include <cstdlib> // std::abort
@@ -141,7 +140,7 @@
 
 #line 6 "./parser.yy" // lalr1.cc:377
 namespace Blawn {
-#line 145 "parser.tab.hh" // lalr1.cc:377
+#line 144 "parser.tab.hh" // lalr1.cc:377
 
 
 
@@ -312,36 +311,36 @@ namespace Blawn {
       char dummy1[sizeof(double)];
 
       // INT_LITERAL
-      char dummy2[sizeof(int)];
+      char dummy2[sizeof(long long)];
+
+      // line
+      // line_content
+      // definition
+      // assign_variable
+      // function_definition
+      // expression
+      // term
+      // function_call
+      // monomial
+      // variable
+      char dummy3[sizeof(std::shared_ptr<Node>)];
 
       // FUNCTION_DEFINITION
       // CLASS_DEFINITION
       // IDENTIFIER
       // STRING_LITERAL
-      char dummy3[sizeof(std::string)];
+      char dummy4[sizeof(std::string)];
 
-      // line
-      // line_content
-      // definition
-      // variable_definition
-      // function_definition
       // class_definition
-      // expression
-      // term
-      // function_call
-      // monomial
-      char dummy4[sizeof(std::unique_ptr<Node>)];
-
-      // variable
-      char dummy5[sizeof(std::unique_ptr<VariableNode>)];
-
-      // definition_arguments
-      char dummy6[sizeof(std::vector<std::string>)];
+      char dummy5[sizeof(std::unique_ptr<Node>)];
 
       // block
       // lines
       // expressions
-      char dummy7[sizeof(std::vector<std::unique_ptr<Node>>)];
+      char dummy6[sizeof(std::vector<std::shared_ptr<Node>>)];
+
+      // definition_arguments
+      char dummy7[sizeof(std::vector<std::string>)];
 };
 
     /// Symbol semantic values.
@@ -374,18 +373,19 @@ namespace Blawn {
         MINUS = 264,
         ASTERISK = 265,
         SLASH = 266,
-        COLON = 267,
-        COMMA = 268,
-        LEFT_PARENTHESIS = 269,
-        RIGHT_PARENTHESIS = 270,
-        IF = 271,
-        ELSE = 272,
-        FOR = 273,
-        WHILE = 274,
-        EOL = 275,
-        INT_LITERAL = 276,
-        FLOAT_LITERAL = 277,
-        STRING_LITERAL = 278
+        USE = 267,
+        COLON = 268,
+        COMMA = 269,
+        LEFT_PARENTHESIS = 270,
+        RIGHT_PARENTHESIS = 271,
+        IF = 272,
+        ELSE = 273,
+        FOR = 274,
+        WHILE = 275,
+        EOL = 276,
+        INT_LITERAL = 277,
+        FLOAT_LITERAL = 278,
+        STRING_LITERAL = 279
       };
     };
 
@@ -425,17 +425,17 @@ namespace Blawn {
 
   basic_symbol (typename Base::kind_type t, const double v, const location_type& l);
 
-  basic_symbol (typename Base::kind_type t, const int v, const location_type& l);
+  basic_symbol (typename Base::kind_type t, const long long v, const location_type& l);
+
+  basic_symbol (typename Base::kind_type t, const std::shared_ptr<Node> v, const location_type& l);
 
   basic_symbol (typename Base::kind_type t, const std::string v, const location_type& l);
 
   basic_symbol (typename Base::kind_type t, const std::unique_ptr<Node> v, const location_type& l);
 
-  basic_symbol (typename Base::kind_type t, const std::unique_ptr<VariableNode> v, const location_type& l);
+  basic_symbol (typename Base::kind_type t, const std::vector<std::shared_ptr<Node>> v, const location_type& l);
 
   basic_symbol (typename Base::kind_type t, const std::vector<std::string> v, const location_type& l);
-
-  basic_symbol (typename Base::kind_type t, const std::vector<std::unique_ptr<Node>> v, const location_type& l);
 
 
       /// Constructor for symbols with semantic value.
@@ -546,6 +546,10 @@ namespace Blawn {
 
     static inline
     symbol_type
+    make_USE (const location_type& l);
+
+    static inline
+    symbol_type
     make_COLON (const location_type& l);
 
     static inline
@@ -582,7 +586,7 @@ namespace Blawn {
 
     static inline
     symbol_type
-    make_INT_LITERAL (const int& v, const location_type& l);
+    make_INT_LITERAL (const long long& v, const location_type& l);
 
     static inline
     symbol_type
@@ -799,7 +803,7 @@ namespace Blawn {
       yyfinal_ = 24, ///< Termination state number.
       yyterror_ = 1,
       yyerrcode_ = 256,
-      yyntokens_ = 24  ///< Number of tokens.
+      yyntokens_ = 25  ///< Number of tokens.
     };
 
 
@@ -811,7 +815,7 @@ namespace Blawn {
 
 #line 6 "./parser.yy" // lalr1.cc:377
 } // Blawn
-#line 815 "parser.tab.hh" // lalr1.cc:377
+#line 819 "parser.tab.hh" // lalr1.cc:377
 
 
 

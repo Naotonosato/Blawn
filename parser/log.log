@@ -1,5 +1,6 @@
 Terminals unused in grammar
 
+   USE
    IF
    ELSE
    FOR
@@ -24,11 +25,11 @@ Grammar
     7 line_content: definition
     8             | expression
 
-    9 definition: variable_definition
+    9 definition: assign_variable
    10           | function_definition
    11           | class_definition
 
-   12 variable_definition: IDENTIFIER EQUAL expression
+   12 assign_variable: IDENTIFIER EQUAL expression
 
    13 function_definition: FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL block RETURN expression
 
@@ -73,57 +74,58 @@ PLUS (263) 20
 MINUS (264) 21
 ASTERISK (265) 25
 SLASH (266) 26
-COLON (267) 15
-COMMA (268) 17 19
-LEFT_PARENTHESIS (269) 13 27
-RIGHT_PARENTHESIS (270) 13 27
-IF (271)
-ELSE (272)
-FOR (273)
-WHILE (274)
-EOL (275) 5 13 14
-INT_LITERAL (276) 29
-FLOAT_LITERAL (277) 28
-STRING_LITERAL (278)
+USE (267)
+COLON (268) 15
+COMMA (269) 17 19
+LEFT_PARENTHESIS (270) 13 27
+RIGHT_PARENTHESIS (271) 13 27
+IF (272)
+ELSE (273)
+FOR (274)
+WHILE (275)
+EOL (276) 5 13 14
+INT_LITERAL (277) 29
+FLOAT_LITERAL (278) 28
+STRING_LITERAL (279)
 
 
 Nonterminals, with rules where they appear
 
-$accept (24)
+$accept (25)
     on left: 0
-program (25)
+program (26)
     on left: 1, on right: 0
-block (26)
+block (27)
     on left: 2, on right: 1 13 14
-lines (27)
+lines (28)
     on left: 3 4, on right: 2 4
-line (28)
+line (29)
     on left: 5 6, on right: 3 4
-line_content (29)
+line_content (30)
     on left: 7 8, on right: 5 6
-definition (30)
+definition (31)
     on left: 9 10 11, on right: 7
-variable_definition (31)
+assign_variable (32)
     on left: 12, on right: 9
-function_definition (32)
+function_definition (33)
     on left: 13, on right: 10
-class_definition (33)
+class_definition (34)
     on left: 14, on right: 11
-class_definition_end (34)
+class_definition_end (35)
     on left: 15, on right: 14
-definition_arguments (35)
+definition_arguments (36)
     on left: 16 17, on right: 13 17
-expressions (36)
+expressions (37)
     on left: 18 19, on right: 19 27
-expression (37)
+expression (38)
     on left: 20 21 22 23, on right: 8 12 13 18 19 20 21
-term (38)
+term (39)
     on left: 24 25 26, on right: 20 21 22 25 26
-function_call (39)
+function_call (40)
     on left: 27, on right: 23
-monomial (40)
+monomial (41)
     on left: 28 29 30, on right: 24 25 26
-variable (41)
+variable (42)
     on left: 31, on right: 30
 
 
@@ -138,10 +140,10 @@ State 0
     6     | . line_content "end of file"
     7 line_content: . definition
     8             | . expression
-    9 definition: . variable_definition
+    9 definition: . assign_variable
    10           | . function_definition
    11           | . class_definition
-   12 variable_definition: . IDENTIFIER EQUAL expression
+   12 assign_variable: . IDENTIFIER EQUAL expression
    13 function_definition: . FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL block RETURN expression
    14 class_definition: . CLASS_DEFINITION EOL block class_definition_end
    20 expression: . expression PLUS term
@@ -169,7 +171,7 @@ State 0
     line                 go to state 9
     line_content         go to state 10
     definition           go to state 11
-    variable_definition  go to state 12
+    assign_variable      go to state 12
     function_definition  go to state 13
     class_definition     go to state 14
     expression           go to state 15
@@ -195,7 +197,7 @@ State 2
 
 State 3
 
-   12 variable_definition: IDENTIFIER . EQUAL expression
+   12 assign_variable: IDENTIFIER . EQUAL expression
    27 function_call: IDENTIFIER . LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
    31 variable: IDENTIFIER .  ["end of file", PLUS, MINUS, ASTERISK, SLASH, EOL]
 
@@ -241,10 +243,10 @@ State 8
     6     | . line_content "end of file"
     7 line_content: . definition
     8             | . expression
-    9 definition: . variable_definition
+    9 definition: . assign_variable
    10           | . function_definition
    11           | . class_definition
-   12 variable_definition: . IDENTIFIER EQUAL expression
+   12 assign_variable: . IDENTIFIER EQUAL expression
    13 function_definition: . FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL block RETURN expression
    14 class_definition: . CLASS_DEFINITION EOL block class_definition_end
    20 expression: . expression PLUS term
@@ -271,7 +273,7 @@ State 8
     line                 go to state 25
     line_content         go to state 10
     definition           go to state 11
-    variable_definition  go to state 12
+    assign_variable      go to state 12
     function_definition  go to state 13
     class_definition     go to state 14
     expression           go to state 15
@@ -306,7 +308,7 @@ State 11
 
 State 12
 
-    9 definition: variable_definition .
+    9 definition: assign_variable .
 
     $default  reduce using rule 9 (definition)
 
@@ -390,10 +392,10 @@ State 21
     6     | . line_content "end of file"
     7 line_content: . definition
     8             | . expression
-    9 definition: . variable_definition
+    9 definition: . assign_variable
    10           | . function_definition
    11           | . class_definition
-   12 variable_definition: . IDENTIFIER EQUAL expression
+   12 assign_variable: . IDENTIFIER EQUAL expression
    13 function_definition: . FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL block RETURN expression
    14 class_definition: . CLASS_DEFINITION EOL block class_definition_end
    14                 | CLASS_DEFINITION EOL . block class_definition_end
@@ -421,7 +423,7 @@ State 21
     line                 go to state 9
     line_content         go to state 10
     definition           go to state 11
-    variable_definition  go to state 12
+    assign_variable      go to state 12
     function_definition  go to state 13
     class_definition     go to state 14
     expression           go to state 15
@@ -433,7 +435,7 @@ State 21
 
 State 22
 
-   12 variable_definition: IDENTIFIER EQUAL . expression
+   12 assign_variable: IDENTIFIER EQUAL . expression
    20 expression: . expression PLUS term
    21           | . expression MINUS term
    22           | . term
@@ -626,14 +628,14 @@ State 35
 
 State 36
 
-   12 variable_definition: IDENTIFIER EQUAL expression .  ["end of file", EOL]
+   12 assign_variable: IDENTIFIER EQUAL expression .  ["end of file", EOL]
    20 expression: expression . PLUS term
    21           | expression . MINUS term
 
     PLUS   shift, and go to state 28
     MINUS  shift, and go to state 29
 
-    $default  reduce using rule 12 (variable_definition)
+    $default  reduce using rule 12 (assign_variable)
 
 
 State 37
@@ -780,10 +782,10 @@ State 51
     6     | . line_content "end of file"
     7 line_content: . definition
     8             | . expression
-    9 definition: . variable_definition
+    9 definition: . assign_variable
    10           | . function_definition
    11           | . class_definition
-   12 variable_definition: . IDENTIFIER EQUAL expression
+   12 assign_variable: . IDENTIFIER EQUAL expression
    13 function_definition: . FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL block RETURN expression
    13                    | FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL . block RETURN expression
    14 class_definition: . CLASS_DEFINITION EOL block class_definition_end
@@ -811,7 +813,7 @@ State 51
     line                 go to state 9
     line_content         go to state 10
     definition           go to state 11
-    variable_definition  go to state 12
+    assign_variable      go to state 12
     function_definition  go to state 13
     class_definition     go to state 14
     expression           go to state 15

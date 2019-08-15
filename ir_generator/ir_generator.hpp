@@ -4,6 +4,7 @@
 //forward declaration
 class Node;
 class VariableNode;
+class ArgumentNode;
 class BinaryExpressionNode;
 class FunctionNode;
 class CallFunctionNode;
@@ -34,11 +35,7 @@ public:
         llvm::Module &module,
         llvm::IRBuilder<> &ir_builder
         );
-    virtual llvm::Value* generate(Node &node) ;
-    virtual llvm::Value* generate(VariableNode &node) ;
-    virtual llvm::Value* generate(BinaryExpressionNode &node) ;
-    virtual llvm::Function* generate(FunctionNode &node);
-    virtual llvm::Value* generate(CallFunctionNode &node);
+    virtual llvm::Value* generate(Node &node);
 };
 
 
@@ -65,7 +62,20 @@ public:
         llvm::IRBuilder<> &ir_builder
         )
     :IRGenerator(context,module,ir_builder){}
-    llvm::Value* generate(Node &node) ;
+    llvm::Value* generate(Node &node);
+};
+
+
+class ArgumentIRGenerator: public IRGenerator
+{
+    public:
+    ArgumentIRGenerator(
+        llvm::LLVMContext &context,
+        llvm::Module &module,
+        llvm::IRBuilder<> &ir_builder
+        )
+    :IRGenerator(context,module,ir_builder){}
+    llvm::Value* generate(Node& node);
 };
 
 
@@ -78,8 +88,20 @@ public:
         llvm::IRBuilder<> &ir_builder
         )
     :IRGenerator(context,module,ir_builder){}
+    llvm::Value* generate(Node&);
+};
 
-    llvm::Value* generate(VariableNode &node) ;
+
+class AssigmentIRGenerator: public IRGenerator
+{
+public:
+    AssigmentIRGenerator(
+        llvm::LLVMContext &context,
+        llvm::Module &module,
+        llvm::IRBuilder<> &ir_builder
+        )
+    :IRGenerator(context,module,ir_builder){}
+    llvm::Value* generate(Node&);
 };
 
 
@@ -92,7 +114,7 @@ public:
         llvm::IRBuilder<> &ir_builder
         )
     :IRGenerator(context,module,ir_builder){}
-    llvm::Value* generate(BinaryExpressionNode &node);
+    llvm::Value* generate(Node &node);
 };
 
 
@@ -105,7 +127,7 @@ public:
         llvm::IRBuilder<> &ir_builder
         )
     :IRGenerator(context,module,ir_builder){}
-    llvm::Function* generate(FunctionNode &node);
+    llvm::Function* generate(Node &node);
 };
 
 
@@ -118,5 +140,5 @@ public:
         llvm::IRBuilder<> &ir_builder
         )
     :IRGenerator(context,module,ir_builder){}
-    llvm::Value* generate(CallFunctionNode &node);
+    llvm::Value* generate(Node &node);
 };

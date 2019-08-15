@@ -3,54 +3,46 @@ source_filename = "Blawn"
 
 define i8 @main() {
 entry:
-  %0 = call i64 @twice.1(i64 7)
-  %1 = call i64 @add_seven.2(i64 7)
-  %2 = call i64 @add_seven.2(i64 1)
-  %3 = call double @add_seven.3(double 5.000000e-01)
-  %4 = call double @add_seven.3(double 5.000000e-01)
-  %5 = call double @twice.4(double %4)
-  %6 = call i64 @twice.1(i64 7)
-  %7 = call i64 @add_seven.2(i64 7)
-  %8 = call i64 @add_seven.2(i64 1)
-  %9 = call double @add_seven.3(double 5.000000e-01)
-  %10 = call double @add_seven.3(double 5.000000e-01)
-  %11 = call double @twice.4(double %10)
+  %0 = call i64 @twice.4(i64 9)
+  %var = alloca i64
+  store i64 %0, i64* %var
+  %1 = load i64, i64* %var
+  %2 = call i64 @twice.4(i64 9)
+  %3 = load i64, i64* %var
+  %4 = add i64 %3, 9
+  store i64 %4, i64* %var
+  %5 = call i64 @twice.4(i64 9)
+  %6 = mul i64 0, %3
+  %a = alloca i64
+  store i64 %6, i64* %a
+  %7 = load i64, i64* %a
+  ret i8 0
 }
 
-define void @twice(i8) {
-entry:
+define void @add() {
+empty_entry:
   ret void
 }
 
-define void @add_seven(i8) {
-entry:
+define void @twice() {
+empty_entry:
   ret void
 }
 
-define i64 @twice.1(i64 %num) {
+define i64 @add.3(i64 %l, i64 %r) {
 entry:
-  %0 = fmul i64 %num, 2
-  %1 = fmul i64 %num, 2
+  %0 = add i64 %l, %r
+  %sum = alloca i64
+  store i64 %0, i64* %sum
+  %1 = load i64, i64* %sum
   ret i64 %1
 }
 
-define i64 @add_seven.2(i64 %num) {
+define i64 @twice.4(i64 %num) {
 entry:
-  %0 = fadd i64 %num, 7
-  %1 = fadd i64 %num, 7
+  %0 = call i64 @add.3(i64 %num, i64 %num)
+  %num_x_2 = alloca i64
+  store i64 %0, i64* %num_x_2
+  %1 = load i64, i64* %num_x_2
   ret i64 %1
-}
-
-define double @add_seven.3(double %num) {
-entry:
-  %0 = fadd double %num, i64 7
-  %1 = fadd double %num, i64 7
-  ret double %1
-}
-
-define double @twice.4(double %num) {
-entry:
-  %0 = fmul double %num, i64 2
-  %1 = fmul double %num, i64 2
-  ret double %1
 }

@@ -17,10 +17,11 @@
 %option nounput
 %option c++
 
-COMMENT             \*[\s\S\n]*.*\*
+COMMENT             !.*\n
+STRING_LITERAL      \".*\"
 INT_LITERAL         [0-9]+
 FLOAT_LITERAL       [0-9]+\.[0-9]*
-STRING_LITERAL      \".*\"
+USE                 use
 EOL                 \n
 EQUAL       =
 PLUS        \+
@@ -47,14 +48,6 @@ IDENTIFIER  [a-zA-Z_][0-9a-zA-Z_]*
 %%
 
 {COMMENT} {}
-{INT_LITERAL} {
-    lval->build<int>() = std::stoi(yytext);
-    return Blawn::Parser::token::INT_LITERAL;
-}
-{FLOAT_LITERAL} {
-    lval->build<double>() = std::stod(yytext);
-    return Blawn::Parser::token::FLOAT_LITERAL;
-}
 {STRING_LITERAL} {
     lval->build<std::string>() = yytext;
     return Blawn::Parser::token::STRING_LITERAL;
@@ -62,6 +55,17 @@ IDENTIFIER  [a-zA-Z_][0-9a-zA-Z_]*
 {EOL} {
     loc->lines();
     return Blawn::Parser::token::EOL;
+}
+{INT_LITERAL} {
+    lval->build<long long>() = std::stoll(yytext);
+    return Blawn::Parser::token::INT_LITERAL;
+}
+{FLOAT_LITERAL} {
+    lval->build<double>() = std::stod(yytext);
+    return Blawn::Parser::token::FLOAT_LITERAL;
+}
+{USE} {
+    return Blawn::Parser::token::USE;
 }
 {EQUAL} {
     return Blawn::Parser::token::EQUAL;
