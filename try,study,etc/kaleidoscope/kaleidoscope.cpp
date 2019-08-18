@@ -621,7 +621,7 @@ int main() {
   ArgTypes.push_back(Builder.getInt8PtrTy());
       llvm::ValueToValueMapTy VMap;
       llvm::FunctionType *FTy = llvm::FunctionType::get(Builder.getInt64Ty(), ArgTypes, false);
-      llvm::Function *NewF = llvm::Function::Create(FTy, Function::ExternalLinkage, "clnd",TheModule.get());
+      llvm::Function *NewF = llvm::Function::Create(FTy, Function::ExternalLinkage, "tf",TheModule.get());
 
   llvm::ValueToValueMapTy vmap;
   std::cout << "clone." << std::endl;
@@ -633,6 +633,10 @@ int main() {
   std::cout << "cloned." << Returns.size() << std::endl;
   //llvm::verifyFunction(*NewF);
   //cloned->print(errs());
+  std::string n = NewF->getName();
+  std::cout << n << std::endl;
+  std::string n2 = TheModule->getFunction("tf")->getName();
+  std::cout << n2 << std::endl;
   
   NewF->print(outs());
   std::cout << std::endl;

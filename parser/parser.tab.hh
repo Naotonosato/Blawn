@@ -316,31 +316,31 @@ namespace Blawn {
       // line
       // line_content
       // definition
-      // assign_variable
       // function_definition
+      // class_definition
       // expression
-      // term
-      // function_call
+      // assign_variable
       // monomial
+      // function_call
       // variable
       char dummy3[sizeof(std::shared_ptr<Node>)];
 
       // FUNCTION_DEFINITION
       // CLASS_DEFINITION
+      // C_FUNCTION
+      // MEMBER_IDENTIFIER
       // IDENTIFIER
       // STRING_LITERAL
       char dummy4[sizeof(std::string)];
 
-      // class_definition
-      char dummy5[sizeof(std::unique_ptr<Node>)];
-
       // block
       // lines
+      // members_definition
       // expressions
-      char dummy6[sizeof(std::vector<std::shared_ptr<Node>>)];
+      char dummy5[sizeof(std::vector<std::shared_ptr<Node>>)];
 
       // definition_arguments
-      char dummy7[sizeof(std::vector<std::string>)];
+      char dummy6[sizeof(std::vector<std::string>)];
 };
 
     /// Symbol semantic values.
@@ -367,25 +367,28 @@ namespace Blawn {
         FUNCTION_DEFINITION = 258,
         CLASS_DEFINITION = 259,
         RETURN = 260,
-        IDENTIFIER = 261,
-        EQUAL = 262,
-        PLUS = 263,
-        MINUS = 264,
-        ASTERISK = 265,
-        SLASH = 266,
-        USE = 267,
-        COLON = 268,
-        COMMA = 269,
-        LEFT_PARENTHESIS = 270,
-        RIGHT_PARENTHESIS = 271,
-        IF = 272,
-        ELSE = 273,
-        FOR = 274,
-        WHILE = 275,
-        EOL = 276,
-        INT_LITERAL = 277,
-        FLOAT_LITERAL = 278,
-        STRING_LITERAL = 279
+        C_FUNCTION = 261,
+        MEMBER_IDENTIFIER = 262,
+        IDENTIFIER = 263,
+        EQUAL = 264,
+        PLUS = 265,
+        MINUS = 266,
+        ASTERISK = 267,
+        SLASH = 268,
+        USE = 269,
+        COLON = 270,
+        SEMICOLON = 271,
+        COMMA = 272,
+        LEFT_PARENTHESIS = 273,
+        RIGHT_PARENTHESIS = 274,
+        IF = 275,
+        ELSE = 276,
+        FOR = 277,
+        WHILE = 278,
+        EOL = 279,
+        INT_LITERAL = 280,
+        FLOAT_LITERAL = 281,
+        STRING_LITERAL = 282
       };
     };
 
@@ -430,8 +433,6 @@ namespace Blawn {
   basic_symbol (typename Base::kind_type t, const std::shared_ptr<Node> v, const location_type& l);
 
   basic_symbol (typename Base::kind_type t, const std::string v, const location_type& l);
-
-  basic_symbol (typename Base::kind_type t, const std::unique_ptr<Node> v, const location_type& l);
 
   basic_symbol (typename Base::kind_type t, const std::vector<std::shared_ptr<Node>> v, const location_type& l);
 
@@ -522,6 +523,14 @@ namespace Blawn {
 
     static inline
     symbol_type
+    make_C_FUNCTION (const std::string& v, const location_type& l);
+
+    static inline
+    symbol_type
+    make_MEMBER_IDENTIFIER (const std::string& v, const location_type& l);
+
+    static inline
+    symbol_type
     make_IDENTIFIER (const std::string& v, const location_type& l);
 
     static inline
@@ -551,6 +560,10 @@ namespace Blawn {
     static inline
     symbol_type
     make_COLON (const location_type& l);
+
+    static inline
+    symbol_type
+    make_SEMICOLON (const location_type& l);
 
     static inline
     symbol_type
@@ -681,7 +694,7 @@ namespace Blawn {
   // number is the opposite.  If YYTABLE_NINF, syntax error.
   static const unsigned char yytable_[];
 
-  static const unsigned char yycheck_[];
+  static const signed char yycheck_[];
 
   // YYSTOS[STATE-NUM] -- The (internal number of the) accessing
   // symbol of state STATE-NUM.
@@ -798,12 +811,12 @@ namespace Blawn {
     enum
     {
       yyeof_ = 0,
-      yylast_ = 42,     ///< Last index in yytable_.
-      yynnts_ = 18,  ///< Number of nonterminal symbols.
-      yyfinal_ = 24, ///< Termination state number.
+      yylast_ = 96,     ///< Last index in yytable_.
+      yynnts_ = 17,  ///< Number of nonterminal symbols.
+      yyfinal_ = 25, ///< Termination state number.
       yyterror_ = 1,
       yyerrcode_ = 256,
-      yyntokens_ = 25  ///< Number of tokens.
+      yyntokens_ = 28  ///< Number of tokens.
     };
 
 
@@ -815,7 +828,7 @@ namespace Blawn {
 
 #line 6 "./parser.yy" // lalr1.cc:377
 } // Blawn
-#line 819 "parser.tab.hh" // lalr1.cc:377
+#line 832 "parser.tab.hh" // lalr1.cc:377
 
 
 

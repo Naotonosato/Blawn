@@ -1,10 +1,17 @@
 function add(l,r)
     sum = l + r
-    return sum
+    return sum   
 function twice(num)
     num_x_2 = add(num,num)
     return num_x_2
-! This is comment
-var = twice(9)
-var = var + 9
-a = 0 * var
+var = twice(1)
+aa = twice(0.9)
+class Test(arg)
+(
+    @member = arg
+    @num = 0.5
+    @instance_var = twice(arg)
+    1 + 2
+)
+instance_with_int_arg = Test(7)
+instance_with_float_arg = Test(0.01)

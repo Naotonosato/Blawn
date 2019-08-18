@@ -4,6 +4,7 @@
 #include <llvm/IR/LLVMContext.h>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/raw_ostream.h>
+#include <llvm/IR/Verifier.h>
 #include "driver.hpp"
 #include "../ast_generator/ast_generator.hpp"
 
@@ -38,6 +39,7 @@ int main(int argc, char** argv)
     auto zero = llvm::ConstantInt::get(*context, llvm::APInt(8,0));
     ir_builder->CreateRet(zero);
     //std::cout << "done.\n";
+    //llvm::verifyModule(*module,&llvm::outs());
     std::error_code error;
     llvm::raw_fd_ostream stream("result.ll",error,llvm::sys::fs::OpenFlags::F_None);
     module->print(stream,nullptr);

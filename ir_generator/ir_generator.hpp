@@ -35,6 +35,7 @@ public:
         llvm::Module &module,
         llvm::IRBuilder<> &ir_builder
         );
+    IRGenerator& operator=(const IRGenerator&) = default;
     virtual llvm::Value* generate(Node &node);
 };
 
@@ -135,6 +136,32 @@ class CallFunctionIRGenerator: public IRGenerator
 {
 public:
     CallFunctionIRGenerator(
+        llvm::LLVMContext &context,
+        llvm::Module &module,
+        llvm::IRBuilder<> &ir_builder
+        )
+    :IRGenerator(context,module,ir_builder){}
+    llvm::Value* generate(Node &node);
+};
+
+
+class ClassIRGenerator: public IRGenerator
+{
+    public:
+    ClassIRGenerator(
+        llvm::LLVMContext &context,
+        llvm::Module &module,
+        llvm::IRBuilder<> &ir_builder
+        )
+    :IRGenerator(context,module,ir_builder){}
+    llvm::Value* generate(Node &node);
+};
+
+
+class CallConstructorIRGenerator:public IRGenerator
+{
+    public:
+    CallConstructorIRGenerator(
         llvm::LLVMContext &context,
         llvm::Module &module,
         llvm::IRBuilder<> &ir_builder

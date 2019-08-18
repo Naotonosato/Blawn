@@ -31,17 +31,20 @@ private:
     std::shared_ptr<NodeCollector<VariableNode>> variable_collector;
     std::shared_ptr<NodeCollector<FunctionNode>> function_collector;
     std::shared_ptr<NodeCollector<ArgumentNode>> argument_collector;
+     std::shared_ptr<NodeCollector<ClassNode>> class_collector;
     std::map<std::string,std::shared_ptr<VariableNode>&> access_namespace(std::vector<std::string>);
 public:
-    std::shared_ptr<IRGenerator> ir_generator;
-    std::shared_ptr<IntergerIRGenerator> int_ir_generator;
-    std::shared_ptr<FloatIRGenerator> float_ir_generator;
-    std::shared_ptr<VariableIRGenerator> variable_generator;
-    std::shared_ptr<ArgumentIRGenerator> argument_generator;
-    std::shared_ptr<AssigmentIRGenerator> assigment_generator;
-    std::shared_ptr<BinaryExpressionIRGenerator> binary_expression_generator;
-    std::shared_ptr<FunctionIRGenerator> function_generator;
-    std::shared_ptr<CallFunctionIRGenerator> calling_generator;
+    IRGenerator ir_generator;
+    IntergerIRGenerator int_ir_generator;
+    FloatIRGenerator float_ir_generator;
+    VariableIRGenerator variable_generator;
+    ArgumentIRGenerator argument_generator;
+    AssigmentIRGenerator assigment_generator;
+    BinaryExpressionIRGenerator binary_expression_generator;
+    FunctionIRGenerator function_generator;
+    CallFunctionIRGenerator calling_generator;
+    ClassIRGenerator class_generator;
+    CallConstructorIRGenerator call_constructor_generator;
     ASTGenerator(llvm::Module &module,
     llvm::IRBuilder<> &ir_builder,
     llvm::LLVMContext &context);
@@ -54,6 +57,7 @@ public:
     std::unique_ptr<IntergerNode> create_interger(int num);
     std::unique_ptr<FloatNode> create_float(double num);
     std::shared_ptr<FunctionNode> book_function(std::string name,std::vector<std::string> arguments,std::vector<std::shared_ptr<Node>> body,std::shared_ptr<Node> return_value);
-    std::unique_ptr<Node> call_function(std::string name,std::vector<std::shared_ptr<Node>> arguments);
+    std::unique_ptr<Node> create_call(std::string name,std::vector<std::shared_ptr<Node>> arguments);
+    std::shared_ptr<ClassNode> add_class(std::string,std::vector<std::string> arguments,std::vector<std::shared_ptr<Node>> members_definition,std::vector<std::shared_ptr<Node>> body);
     void generate();
 };

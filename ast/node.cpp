@@ -14,19 +14,27 @@
 llvm::Value* Node::generate()
 {
     auto value =  ir_generator.generate(*this);
-    
-    //std::cout << "-----LLVM IR------(generator class: " << typeid(*ir_generator).name() << ")\n";
-    //std::cout << "is value null?" << (value == 0) << "\n";
-    //value->print(llvm::errs());
-    //std::cout << std::endl;
-    //std::cout << "\n------LLVM IR END------\n\n";
-    
     return value;
 }
 
 void VariableNode::assign(std::shared_ptr<Node> node)
 {
     right_node = node;
+}
+
+void VariableNode::initialize()
+{
+    _is_generated = false;
+}
+
+bool VariableNode::is_generated()
+{
+    return _is_generated;
+}
+
+void VariableNode::generated()
+{
+    _is_generated = true;
 }
 
 void ArgumentNode::set_right_value(llvm::Value* value)
@@ -64,6 +72,16 @@ llvm::Function* FunctionNode::get_temporary_function()
     return temporary_function;
 }
 
+void FunctionNode::set_base_function(llvm::Function* base)
+{
+    base_function = base;
+}
+
+llvm::Function* FunctionNode::get_base_function()
+{
+    return base_function;
+}
+
 llvm::Function* FunctionNode::get_function(std::vector<llvm::Type*> types)
 {
     if (functions.count(types) == 0)
@@ -71,6 +89,16 @@ llvm::Function* FunctionNode::get_function(std::vector<llvm::Type*> types)
         return nullptr;
     }
     return functions[types];
+}
+
+std::vector<llvm::Function*> FunctionNode::get_functions()
+{
+    std::vector<llvm::Function*> res;
+    for (auto &pair:functions)
+    {
+        res.push_back(pair.second);
+    }
+    return res;
 }
 
 void FunctionNode::set_self_namespace(std::vector<std::string> self)
@@ -83,3 +111,11 @@ std::vector<std::string> FunctionNode::get_self_namespace()
     return self_namespace;
 }
 
+void ClassNode::register_constructor(std::vector<llvm::Type*> types,llvm::Function* constructor)
+{
+    constructors[types] = constructor;
+}
+llvm::Function* ClassNode::get_constructor(std::vector<llvm::Type*> types)
+{
+    return constructors[types];
+}

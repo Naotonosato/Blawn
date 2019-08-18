@@ -50,14 +50,15 @@
 %token <std::string> FUNCTION_DEFINITION
 %token <std::string> CLASS_DEFINITION
 %token  RETURN
+%token <std::string> C_FUNCTION
+%token <std::string> MEMBER_IDENTIFIER
 %token <std::string> IDENTIFIER
-%token  EQUAL
-        PLUS
-        MINUS
-        ASTERISK
-        SLASH
-        USE
+%right EQUAL
+%left PLUS MINUS
+%left ASTERISK SLASH
+%token   USE
         COLON
+        SEMICOLON
         COMMA
         LEFT_PARENTHESIS
         RIGHT_PARENTHESIS
@@ -76,11 +77,11 @@
 %type <std::shared_ptr<Node>> definition
 %type <std::shared_ptr<Node>> assign_variable
 %type <std::shared_ptr<Node>> function_definition
-%type <std::unique_ptr<Node>> class_definition
+%type <std::shared_ptr<Node>> class_definition
+%type <std::vector<std::shared_ptr<Node>>> members_definition
 %type <std::vector<std::string>> definition_arguments
 %type <std::vector<std::shared_ptr<Node>>> expressions
 %type <std::shared_ptr<Node>> expression
-%type <std::shared_ptr<Node>> term
 %type <std::shared_ptr<Node>> function_call
 %type <std::shared_ptr<Node>> monomial
 %type <std::shared_ptr<Node>> variable
@@ -111,7 +112,7 @@ lines:
     |lines line
     {
         $$ = std::move($1);
-        $$.push_back(std::move($2));
+        $$.push_back($2);
     };
 line:
     line_content EOL
@@ -123,20 +124,16 @@ line:
         $$ = std::move($1);
     };
 line_content:
-    definition
+    expression
     {
         $$ = std::move($1);
     }
-    |expression
+    |definition
     {
         $$ = std::move($1);
     };
 definition:
-    assign_variable
-    {
-        $$ = std::move($1);
-    }
-    |function_definition
+    function_definition
     {
         $$ = std::move($1);
     }
@@ -144,28 +141,28 @@ definition:
     {
         $$ = std::move($1);
     };
-assign_variable:
-    IDENTIFIER EQUAL expression
-    {
-        $$ = driver.ast_generator->assign($1,std::move($3));
-        //std::cout << "new variable:" << std::move($1) <<"  type:" << (type->type_name) << "\n";
-    };
 function_definition:
-    FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL block RETURN expression
+    FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL lines RETURN expression
     {
         $$ = driver.ast_generator->book_function($1,std::move($3),std::move($6),std::move($8));
-        //driver.ast_generator->into_namespace($1);
         driver.ast_generator->break_out_of_namespace();
     };
 class_definition:
-    CLASS_DEFINITION EOL block class_definition_end
+    CLASS_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL LEFT_PARENTHESIS EOL members_definition block RIGHT_PARENTHESIS
     {
-        driver.ast_generator->into_namespace($1);
-        $$ = std::unique_ptr<Node>(new Node(*driver.ast_generator->ir_generator));
+        $$ = std::move(driver.ast_generator->add_class($1,$3,$8,$9));
         driver.ast_generator->break_out_of_namespace();
     };
-class_definition_end:
-    COLON;    
+members_definition:
+    MEMBER_IDENTIFIER EQUAL expression EOL
+    {
+        $$.push_back(driver.ast_generator->assign($1,std::move($3)));
+    }
+    |members_definition MEMBER_IDENTIFIER EQUAL expression EOL
+    {
+        $$ = std::move($1);
+        $$.push_back(driver.ast_generator->assign($2,std::move($4)));
+    };
 definition_arguments:
     IDENTIFIER
     {
@@ -189,42 +186,46 @@ expressions:
         $$.push_back(std::move($3));
     };
 expression:
-    expression PLUS term
+    IF expression EOL block
+    {
+        $$ = std::shared_ptr<Node>(new Node(driver.ast_generator->ir_generator));
+    }
+    |monomial
+    {
+        $$ = std::move($1);
+    }
+    |assign_variable
+    {
+        $$ = $1;
+    }
+    |expression PLUS expression
     {
         $$ = driver.ast_generator->attach_operator(std::move($1),std::move($3),"+");
     }
-    |expression MINUS term
+    |expression MINUS expression
     {
         $$ = driver.ast_generator->attach_operator(std::move($1),std::move($3),"-");
     }
-    |term
+    |expression ASTERISK expression
     {
-        $$ = std::move($1);
+        $$ = driver.ast_generator->attach_operator(std::move($1),std::move($3),"*");
     }
-    |function_call
+    |expression SLASH expression
     {
-        $$ = std::move($1);
+        $$ = driver.ast_generator->attach_operator(std::move($1),std::move($3),"/");
     };
-term:
-    monomial
+assign_variable:
+    IDENTIFIER EQUAL expression
     {
-        $$ = std::move($1);
-    }
-    |term ASTERISK monomial
-    {
-      $$ = driver.ast_generator->attach_operator(std::move($1),std::move($3),"*");
-    }
-    |term SLASH monomial
-    {
-       $$ = driver.ast_generator->attach_operator(std::move($1),std::move($3),"/");
-    };
-function_call:
-    IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-    {
-        $$ = driver.ast_generator->call_function($1,std::move($3));
+        $$ = driver.ast_generator->assign($1,std::move($3));
+        //std::cout << "new variable:" << std::move($1) <<"  type:" << (type->type_name) << "\n";
     };
 monomial:
-    FLOAT_LITERAL
+    function_call
+    {
+        $$ = $1;
+    }
+    |FLOAT_LITERAL
     {
         $$ = driver.ast_generator->create_float($1);
     }
@@ -236,16 +237,16 @@ monomial:
     {
         $$ = std::move($1);
     };
+function_call:
+    IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+    {
+        $$ = driver.ast_generator->create_call($1,std::move($3));
+    };
 variable:
     IDENTIFIER
     {
         $$ = driver.ast_generator->get_named_value($1);
-        //$$->generate();
-        //std::unique_ptr<Node>(new Node(type));
-        //$$ = std::unique_ptr<Node>(new Node());
     };
-
-
 %%
 
 void Blawn::Parser::error( const location_type &l, const std::string &err_message )

@@ -6,16 +6,19 @@
 main:                                   # @main
 	.cfi_startproc
 # %bb.0:                                # %entry
-	pushq	%rax
-	.cfi_def_cfa_offset 16
+	subq	$24, %rsp
+	.cfi_def_cfa_offset 32
 	movl	$9, %edi
 	callq	twice.4
-	movq	%rax, (%rsp)
+	movq	%rax, 8(%rsp)
 	movl	$9, %edi
 	callq	twice.4
-	addq	$9, (%rsp)
+	addq	$9, 8(%rsp)
+	movl	$9, %edi
+	callq	twice.4
+	movq	$0, 16(%rsp)
 	xorl	%eax, %eax
-	popq	%rcx
+	addq	$24, %rsp
 	retq
 .Lfunc_end0:
 	.size	main, .Lfunc_end0-main

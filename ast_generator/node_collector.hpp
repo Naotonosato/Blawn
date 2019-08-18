@@ -11,14 +11,18 @@ class NodeCollector
 private:
 std::map<
         std::vector<std::string>,
-        std::map<std::string,std::shared_ptr<T>>
-            > 
+        std::pair<
+        std::map<std::string,std::shared_ptr<T>>,
+        std::vector<std::string>>
+        > 
         nodes;
 std::vector<std::string> current_namespace;
 public:
     NodeCollector(std::string top="TOP");
     std::shared_ptr<T> get(std::string);
     std::shared_ptr<T> get(std::string name,std::vector<std::string> namespace_);
+    std::vector<std::shared_ptr<T>> get_all();
+    std::vector<std::shared_ptr<T>> get_all(std::vector<std::string> namespace_);
     void set(std::string,std::shared_ptr<T>);
     void set(std::string,std::shared_ptr<T>,std::vector<std::string>);
     void into_namespace(std::string);
@@ -51,9 +55,9 @@ NodeCollector<T>::get(std::string name)
     for (auto &n:current_namespace)
     {
         upper_namespace.push_back(n);
-        if (nodes[upper_namespace].count(name))
+        if (nodes[upper_namespace].first.count(name))
         {
-            return nodes[upper_namespace][name];
+            return nodes[upper_namespace].first[name];
         }
     }
     return nullptr;
@@ -67,31 +71,56 @@ NodeCollector<T>::get(std::string name,std::vector<std::string> namespace_)
     for (auto &n:namespace_)
     {
         upper_namespace.push_back(n);
-        if (nodes[upper_namespace].count(name))
+        if (nodes[upper_namespace].first.count(name))
         {
-            return nodes[upper_namespace][name];
+            return nodes[upper_namespace].first[name];
         }
     }
     return nullptr;
 }
 
 template<typename T>
+std::vector<std::shared_ptr<T>> NodeCollector<T>::get_all()
+{
+    std::vector<std::shared_ptr<T>> res;
+    for (auto& name:nodes[current_namespace].second)
+    {
+        res.push_back(nodes[current_namespace].first[name]);
+    }
+    return res;
+}
+
+template<typename T>
+std::vector<std::shared_ptr<T>> NodeCollector<T>::get_all(std::vector<std::string> namespace_)
+{
+    std::vector<std::shared_ptr<T>> res;
+    for (auto& name:nodes[namespace_].second)
+    {
+        res.push_back(nodes[namespace_].first[name]);
+    }
+    return res;
+}
+    
+
+template<typename T>
 void NodeCollector<T>::set(std::string name,std::shared_ptr<T> node)
 {
-    nodes[current_namespace][name] = node;
+    nodes[current_namespace].first[name] = node;
+    nodes[current_namespace].second.push_back(name);
 }
 
 template<typename T>
 void NodeCollector<T>::set(std::string name,std::shared_ptr<T> node,std::vector<std::string> namespace_)
 {
-    nodes[namespace_][name] = node;
+    nodes[namespace_].first[name] = node;
+    nodes[namespace_].second.push_back(name);
 }
 
 template<typename T>
 void NodeCollector<T>::into_namespace(std::string namespace_)
 {
     current_namespace.push_back(namespace_);
-    std::map<std::string,std::shared_ptr<T>> empty;
+    std::pair<std::map<std::string,std::shared_ptr<T>>,std::vector<std::string>> empty;
     nodes[current_namespace] = empty;
 }
 

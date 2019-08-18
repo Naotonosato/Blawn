@@ -29,6 +29,7 @@ MINUS       -
 ASTERISK    \*
 SLASH       \/
 COLON       \:
+SEMICOLON   ;
 COMMA       ,
 
 IF          if
@@ -42,6 +43,8 @@ LEFT_PARENTHESIS \(
 RIGHT_PARENTHESIS \)
 
 CALL        .+\(.*\)
+C_FUNCTION  c\.[a-zA-Z_][0-9a-zA-Z_]*
+MEMBER_IDENTIFIER @[a-zA-Z_][0-9a-zA-Z_]*
 IDENTIFIER  [a-zA-Z_][0-9a-zA-Z_]*
 
 
@@ -85,6 +88,9 @@ IDENTIFIER  [a-zA-Z_][0-9a-zA-Z_]*
 {COLON} {
     return Blawn::Parser::token::COLON;
 }
+{SEMICOLON} {
+    return Blawn::Parser::token::SEMICOLON;
+}
 {COMMA} {
     return Blawn::Parser::token::COMMA;
 }
@@ -123,11 +129,20 @@ IDENTIFIER  [a-zA-Z_][0-9a-zA-Z_]*
     std::reverse_copy(definition.begin(),definition.end(),std::back_inserter(reversed));
     int index = definition.size() - reversed.find(" ");
     definition.erase(0,index);
+    driver->ast_generator->into_namespace(definition);
     lval->build<std::string>() = definition;
     return Blawn::Parser::token::CLASS_DEFINITION;
 }
 {RETURN} {
     return Blawn::Parser::token::RETURN;
+}
+{C_FUNCTION} {
+    lval->build<std::string>() = yytext;
+    return Blawn::Parser::token::C_FUNCTION;
+}
+{MEMBER_IDENTIFIER} {
+    lval->build<std::string>() = yytext;
+    return Blawn::Parser::token::MEMBER_IDENTIFIER;
 }
 {IDENTIFIER} {
     lval->build<std::string>() = yytext;
