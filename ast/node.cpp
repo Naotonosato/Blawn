@@ -115,7 +115,19 @@ void ClassNode::register_constructor(std::vector<llvm::Type*> types,llvm::Functi
 {
     constructors[types] = constructor;
 }
+
 llvm::Function* ClassNode::get_constructor(std::vector<llvm::Type*> types)
 {
-    return constructors[types];
+    if (constructors.count(types)) return constructors[types];
+    else return nullptr;
+}
+
+void ClassNode::register_destructor(std::vector<llvm::Type*> types,llvm::Function* destructor)
+{
+    destructors[types] = destructor;
+}
+llvm::Function* ClassNode::get_destructor(std::vector<llvm::Type*> types)
+{
+    if (destructors.count(types)) return destructors[types];
+    else return nullptr;
 }

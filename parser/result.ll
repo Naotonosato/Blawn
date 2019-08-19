@@ -4,6 +4,10 @@ source_filename = "Blawn"
 %Test = type { i64, double, i64 }
 %Test.0 = type { double, double, double }
 
+declare i64* @malloc(i64)
+
+declare void @free(i64*)
+
 define i8 @main() {
 entry:
   %0 = call i64 @twice.4(i64 1)
@@ -14,26 +18,20 @@ entry:
   %aa = alloca double
   store double %2, double* %aa
   %3 = load double, double* %aa
-  %4 = call %Test @Test.10(i64 7)
-  %instance_with_int_arg = alloca %Test
-  store %Test %4, %Test* %instance_with_int_arg
-  %5 = load %Test, %Test* %instance_with_int_arg
-  %6 = call %Test.0 @Test.12(double 1.000000e-02)
-  %instance_with_float_arg = alloca %Test.0
-  store %Test.0 %6, %Test.0* %instance_with_float_arg
-  %7 = load %Test.0, %Test.0* %instance_with_float_arg
+  %4 = call %Test* @Test.10(i64 7)
+  %instance_with_int_arg = alloca %Test*
+  store %Test* %4, %Test** %instance_with_int_arg
+  %5 = load %Test*, %Test** %instance_with_int_arg
+  %6 = call %Test.0* @Test.12(double 1.000000e-02)
+  %instance_with_float_arg = alloca %Test.0*
+  store %Test.0* %6, %Test.0** %instance_with_float_arg
+  %7 = load %Test.0*, %Test.0** %instance_with_float_arg
   ret i8 0
 }
 
-define void @add() {
-empty_entry:
-  ret void
-}
+declare void @add()
 
-define void @twice() {
-empty_entry:
-  ret void
-}
+declare void @twice()
 
 define void @twice.1(i64 %num) {
 entry:
@@ -115,10 +113,7 @@ entry:
   ret double %2
 }
 
-define void @Test() {
-temporary_constructor:
-  ret void
-}
+declare void @Test()
 
 define void @Test.9(i64 %arg) {
 entry:
@@ -132,18 +127,18 @@ entry:
   %"@instance_var" = alloca i64
   store i64 %2, i64* %"@instance_var"
   %3 = load i64, i64* %"@instance_var"
-  %4 = alloca %Test
-  %5 = getelementptr inbounds %Test, %Test* %4, i32 0, i32 0
-  store i64 %0, i64* %5
-  %6 = getelementptr inbounds %Test, %Test* %4, i32 0, i32 1
-  store double %1, double* %6
-  %7 = getelementptr inbounds %Test, %Test* %4, i32 0, i32 2
-  store i64 %3, i64* %7
-  %8 = load %Test, %Test* %4
-  ret %Test %8
+  %4 = call i64* @malloc(i64 24)
+  %5 = bitcast i64* %4 to %Test*
+  %6 = getelementptr inbounds %Test, %Test* %5, i32 0, i32 0
+  store i64 %0, i64* %6
+  %7 = getelementptr inbounds %Test, %Test* %5, i32 0, i32 1
+  store double %1, double* %7
+  %8 = getelementptr inbounds %Test, %Test* %5, i32 0, i32 2
+  store i64 %3, i64* %8
+  ret %Test* %5
 }
 
-define %Test @Test.10(i64 %arg) {
+define %Test* @Test.10(i64 %arg) {
 entry:
   %"@member" = alloca i64
   store i64 %arg, i64* %"@member"
@@ -155,15 +150,21 @@ entry:
   %"@instance_var" = alloca i64
   store i64 %2, i64* %"@instance_var"
   %3 = load i64, i64* %"@instance_var"
-  %4 = alloca %Test
-  %5 = getelementptr inbounds %Test, %Test* %4, i32 0, i32 0
-  store i64 %0, i64* %5
-  %6 = getelementptr inbounds %Test, %Test* %4, i32 0, i32 1
-  store double %1, double* %6
-  %7 = getelementptr inbounds %Test, %Test* %4, i32 0, i32 2
-  store i64 %3, i64* %7
-  %8 = load %Test, %Test* %4
-  ret %Test %8
+  %4 = call i64* @malloc(i64 24)
+  %5 = bitcast i64* %4 to %Test*
+  %6 = getelementptr inbounds %Test, %Test* %5, i32 0, i32 0
+  store i64 %0, i64* %6
+  %7 = getelementptr inbounds %Test, %Test* %5, i32 0, i32 1
+  store double %1, double* %7
+  %8 = getelementptr inbounds %Test, %Test* %5, i32 0, i32 2
+  store i64 %3, i64* %8
+  ret %Test* %5
+}
+
+define void @destructor_of_Test(%Test) {
+entry:
+  call void @free(%Test %0)
+  ret void
 }
 
 define void @Test.11(double %arg) {
@@ -178,18 +179,18 @@ entry:
   %"@instance_var" = alloca double
   store double %2, double* %"@instance_var"
   %3 = load double, double* %"@instance_var"
-  %4 = alloca %Test.0
-  %5 = getelementptr inbounds %Test.0, %Test.0* %4, i32 0, i32 0
-  store double %0, double* %5
-  %6 = getelementptr inbounds %Test.0, %Test.0* %4, i32 0, i32 1
-  store double %1, double* %6
-  %7 = getelementptr inbounds %Test.0, %Test.0* %4, i32 0, i32 2
-  store double %3, double* %7
-  %8 = load %Test.0, %Test.0* %4
-  ret %Test.0 %8
+  %4 = call i64* @malloc(i64 24)
+  %5 = bitcast i64* %4 to %Test.0*
+  %6 = getelementptr inbounds %Test.0, %Test.0* %5, i32 0, i32 0
+  store double %0, double* %6
+  %7 = getelementptr inbounds %Test.0, %Test.0* %5, i32 0, i32 1
+  store double %1, double* %7
+  %8 = getelementptr inbounds %Test.0, %Test.0* %5, i32 0, i32 2
+  store double %3, double* %8
+  ret %Test.0* %5
 }
 
-define %Test.0 @Test.12(double %arg) {
+define %Test.0* @Test.12(double %arg) {
 entry:
   %"@member" = alloca double
   store double %arg, double* %"@member"
@@ -201,13 +202,19 @@ entry:
   %"@instance_var" = alloca double
   store double %2, double* %"@instance_var"
   %3 = load double, double* %"@instance_var"
-  %4 = alloca %Test.0
-  %5 = getelementptr inbounds %Test.0, %Test.0* %4, i32 0, i32 0
-  store double %0, double* %5
-  %6 = getelementptr inbounds %Test.0, %Test.0* %4, i32 0, i32 1
-  store double %1, double* %6
-  %7 = getelementptr inbounds %Test.0, %Test.0* %4, i32 0, i32 2
-  store double %3, double* %7
-  %8 = load %Test.0, %Test.0* %4
-  ret %Test.0 %8
+  %4 = call i64* @malloc(i64 24)
+  %5 = bitcast i64* %4 to %Test.0*
+  %6 = getelementptr inbounds %Test.0, %Test.0* %5, i32 0, i32 0
+  store double %0, double* %6
+  %7 = getelementptr inbounds %Test.0, %Test.0* %5, i32 0, i32 1
+  store double %1, double* %7
+  %8 = getelementptr inbounds %Test.0, %Test.0* %5, i32 0, i32 2
+  store double %3, double* %8
+  ret %Test.0* %5
+}
+
+define void @destructor_of_Test.13(%Test.0) {
+entry:
+  call void @free(%Test.0 %0)
+  ret void
 }

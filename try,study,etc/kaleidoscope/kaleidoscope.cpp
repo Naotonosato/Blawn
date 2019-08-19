@@ -637,10 +637,13 @@ int main() {
   std::cout << n << std::endl;
   std::string n2 = TheModule->getFunction("tf")->getName();
   std::cout << n2 << std::endl;
+  std::string n3 = TheModule->getFunction("puts")->getName();
+  std::cout << n3 << std::endl;
   
   NewF->print(outs());
   std::cout << std::endl;
   TheModule->print(errs(), nullptr);
   return 0;
 }
-/* g++ -g -O0 kaleidoscope.cpp `llvm-config --cxxflags --ldflags --system-libs --libs core` -o toy*/
+/*g++ -g -O0 kaleidoscope.cpp `llvm-config --cxxflags --ldflags --system-libs --libs core` -o toy
+*/

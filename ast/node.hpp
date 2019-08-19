@@ -186,6 +186,7 @@ class ClassNode:public Node
         llvm::Function* temporary_constructor;
         llvm::Function* base_constructor;
         std::map<std::vector<llvm::Type*>,llvm::Function*> constructors;
+        std::map<std::vector<llvm::Type*>,llvm::Function*> destructors;
         std::vector<std::string> self_namespace;
         std::vector<std::string> arguments_names;
     public:
@@ -205,6 +206,8 @@ class ClassNode:public Node
 
     void register_constructor(std::vector<llvm::Type*>,llvm::Function*);
     llvm::Function* get_constructor(std::vector<llvm::Type*>);
+    void register_destructor(std::vector<llvm::Type*>,llvm::Function*);
+    llvm::Function* get_destructor(std::vector<llvm::Type*>);
     void set_self_namespace(std::vector<std::string> n){self_namespace=n;}
     std::vector<std::string> get_self_namespace(){return self_namespace;}
     void set_temporary_constructor(llvm::Function* c){temporary_constructor=c;}

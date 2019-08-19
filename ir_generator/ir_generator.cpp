@@ -11,6 +11,7 @@
 #include <llvm/IR/Verifier.h>
 #include <llvm/IR/LLVMContext.h>
 #include <llvm/IR/IRBuilder.h>
+#include <llvm/IR/DataLayout.h>
 #include <llvm/Support/raw_ostream.h>
 #include "ir_generator.hpp"
 #include "../global_configuration/global_configuration.hpp"
@@ -19,16 +20,50 @@
 #include <llvm/ADT/APFloat.h>
 #include <iostream>
 
+namespace utils
+{
+    uint64_t get_sizeof(llvm::Type* type,llvm::Module& module)
+    {
+        auto layout = llvm::DataLayout(&module);
+        return layout.getTypeAllocSize(type);
+    }
+
+    llvm::Value* malloc_value(llvm::Type* type,llvm::LLVMContext& context,llvm::Module& module,llvm::IRBuilder<>& ir_builder)
+    {
+        auto malloc_func = module.getFunction("malloc");
+        uint64_t size = get_sizeof(type,module);
+        auto size_ir = llvm::ConstantInt::get(context, llvm::APInt(64,size));
+        std::vector<llvm::Value*> arg(1,size_ir);
+        auto pointer = ir_builder.CreateCall(malloc_func,arg);
+        return ir_builder.CreateBitCast(pointer,type->getPointerTo());
+    }
+
+    llvm::Value* free_value(llvm::Value* to_delete_ptr,llvm::Module& module,llvm::IRBuilder<>& ir_builder)
+    {
+        auto free_func = module.getFunction("free");
+        auto cast_inst = llvm::CastInst::CreatePointerCast(to_delete_ptr,ir_builder.getInt64Ty()->getPointerTo());
+        std::vector<llvm::Value*> arg(1,cast_inst);
+        return ir_builder.CreateCall(free_func,arg);
+    }
+}
 
 void initialize(llvm::LLVMContext &context,llvm::Module &module,llvm::IRBuilder<> &ir_builder)
 {
-    std::vector<llvm::Type*> types;
-    auto function_type = llvm::FunctionType::get(llvm::Type::getInt8Ty(context),types, false);
+    //declare malloc
+    std::vector<llvm::Type*> malloc_types(1,ir_builder.getInt64Ty());
+    auto malloc_declaration_type = llvm::FunctionType::get(ir_builder.getInt64Ty()->getPointerTo(),malloc_types,false);
+    llvm::Function::Create(malloc_declaration_type,llvm::Function::ExternalLinkage,"malloc",&module);
+    //declare free
+    std::vector<llvm::Type*> free_types(1,ir_builder.getInt64Ty()->getPointerTo());
+    auto free_declaration_type = llvm::FunctionType::get(ir_builder.getVoidTy(),free_types,false);
+    llvm::Function::Create(free_declaration_type,llvm::Function::ExternalLinkage,"free",&module);
+    //create main function
+    std::vector<llvm::Type*> main_types;
+    auto function_type = llvm::FunctionType::get(llvm::Type::getInt8Ty(context),main_types, false);
     auto function = llvm::Function::Create(function_type,llvm::Function::ExternalLinkage,"main",&module);
     auto block = llvm::BasicBlock::Create(context,"entry",function);
     ir_builder.SetInsertPoint(block);
 }
-
 
 IRGenerator::IRGenerator(
         llvm::LLVMContext &context,
@@ -130,7 +165,6 @@ llvm::Value* BinaryExpressionIRGenerator::generate(Node& node_)
 llvm::Function* FunctionIRGenerator::generate(Node& node_)
 {
     auto& node = *static_cast<FunctionNode*>(&node_);
-    auto previous_block = ir_builder.GetInsertBlock();
     std::vector<llvm::Type*> types;
     auto func_type = llvm::FunctionType::get(
         llvm::Type::getVoidTy(context),types,false
@@ -142,11 +176,6 @@ llvm::Function* FunctionIRGenerator::generate(Node& node_)
         &module
         );
     node.set_temporary_function(function);
-    auto block = llvm::BasicBlock::Create(context,"empty_entry",function);
-    ir_builder.SetInsertPoint(block);
-    ir_builder.CreateRetVoid();
-    llvm::verifyFunction(*function,&llvm::outs());
-    ir_builder.SetInsertPoint(previous_block);
     return function;
 } 
 
@@ -245,7 +274,6 @@ llvm::Value* CallFunctionIRGenerator::generate(Node &node_)
 llvm::Value* ClassIRGenerator::generate(Node& node_)
 {
     auto& node = *static_cast<ClassNode*>(&node_);
-    auto previous_block = ir_builder.GetInsertBlock();
     std::vector<llvm::Type*> types;
     auto type = llvm::FunctionType::get(
         llvm::Type::getVoidTy(context),types,false
@@ -257,10 +285,6 @@ llvm::Value* ClassIRGenerator::generate(Node& node_)
         &module
         );
     node.set_temporary_constructor(constructor);
-    auto block = llvm::BasicBlock::Create(context,"temporary_constructor",constructor);
-    ir_builder.SetInsertPoint(block);
-    ir_builder.CreateRetVoid();
-    ir_builder.SetInsertPoint(previous_block);
     return constructor;
 }
 
@@ -328,7 +352,7 @@ llvm::Value* CallConstructorIRGenerator::generate(Node& node_)
     }
 
     auto instance_type/*class*/ = llvm::StructType::create(context,fields,node.get_class()->name);
-    auto instance_alloca = ir_builder.CreateAlloca(instance_type);
+    auto instance_alloca = utils::malloc_value(instance_type,context,module,ir_builder);
     for (unsigned int idx=0;idx<=fields.size()-1;idx++)
     {
         ir_builder.CreateStore(
@@ -336,11 +360,10 @@ llvm::Value* CallConstructorIRGenerator::generate(Node& node_)
             ir_builder.CreateStructGEP(instance_type,instance_alloca,idx)
             );
     }
-    auto instance = ir_builder.CreateLoad(instance_alloca);
-    ir_builder.CreateRet(instance);
+    ir_builder.CreateRet(instance_alloca);
 
     auto new_constructor_type = llvm::FunctionType::get(
-        instance_type,
+        instance_type->getPointerTo(),
         types,
         false
         );
@@ -366,6 +389,25 @@ llvm::Value* CallConstructorIRGenerator::generate(Node& node_)
     node.get_class()->register_constructor(types,new_constructor);
     node.get_class()->get_temporary_constructor()->replaceAllUsesWith(new_constructor);
     llvm::verifyFunction(*new_constructor,&llvm::outs());
+
+    std::vector<llvm::Type*> destructor_args;
+    destructor_args.push_back(instance_type);
+    if (node.get_class()->get_destructor(destructor_args) == nullptr)
+    {
+        auto destructor_type = llvm::FunctionType::get(ir_builder.getVoidTy(),destructor_args,false);
+        auto destructor = llvm::Function::Create(
+            destructor_type,
+            llvm::Function::ExternalLinkage,
+            "destructor_of_" + node.get_class()->name,
+            &module
+            );
+        auto destructor_entry = llvm::BasicBlock::Create(context,"entry",destructor);
+        ir_builder.SetInsertPoint(destructor_entry);
+        auto to_delete_instance = destructor->arg_begin();
+        ir_builder.CreateCall(module.getFunction("free"),to_delete_instance);
+        ir_builder.CreateRetVoid(); 
+        node.get_class()->register_destructor(destructor_args,destructor);
+    }
     ir_builder.SetInsertPoint(callee_block);
     return ir_builder.CreateCall(new_constructor,argument_values);
 
