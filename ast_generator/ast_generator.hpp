@@ -9,7 +9,7 @@ template<typename T>
 class NodeCollector;
 class Node;
 class FunctionNode;
-class IntergerIRGenerator;
+class IntegerIRGenerator;
 class FloatIRGenerator;
 namespace llvm
 {
@@ -22,8 +22,6 @@ namespace llvm
  
 class ASTGenerator
 {
-public:
-    ~ASTGenerator();
 private:
     llvm::Module &module;
     llvm::IRBuilder<> &ir_builder;
@@ -35,7 +33,7 @@ private:
     std::map<std::string,std::shared_ptr<VariableNode>&> access_namespace(std::vector<std::string>);
 public:
     IRGenerator ir_generator;
-    IntergerIRGenerator int_ir_generator;
+    IntegerIRGenerator int_ir_generator;
     FloatIRGenerator float_ir_generator;
     VariableIRGenerator variable_generator;
     ArgumentIRGenerator argument_generator;
@@ -54,10 +52,11 @@ public:
     std::shared_ptr<Node> assign(std::string name,std::shared_ptr<Node> node);
     std::shared_ptr<Node> get_named_value(std::string name);
     void add_argument(std::string);
-    std::unique_ptr<IntergerNode> create_interger(int num);
+    std::unique_ptr<IntegerNode> create_integer(int num);
     std::unique_ptr<FloatNode> create_float(double num);
-    std::shared_ptr<FunctionNode> book_function(std::string name,std::vector<std::string> arguments,std::vector<std::shared_ptr<Node>> body,std::shared_ptr<Node> return_value);
+    void book_function(std::string name);
+    std::shared_ptr<FunctionNode> add_function(std::string name,std::vector<std::string> arguments,std::vector<std::shared_ptr<Node>> body,std::shared_ptr<Node> return_value);
     std::unique_ptr<Node> create_call(std::string name,std::vector<std::shared_ptr<Node>> arguments);
     std::shared_ptr<ClassNode> add_class(std::string,std::vector<std::string> arguments,std::vector<std::shared_ptr<Node>> members_definition,std::vector<std::shared_ptr<Node>> body);
-    void generate();
+    void generate(std::vector<std::shared_ptr<Node>>);
 };

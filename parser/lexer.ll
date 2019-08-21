@@ -10,7 +10,6 @@
 #define YY_USER_ACTION loc->step(); loc->columns(yyleng);
 %}
 
-%option debug
 %option yyclass="Blawn::Scanner"
 %option noyywrap
 %option noinput
@@ -50,6 +49,8 @@ IDENTIFIER  [a-zA-Z_][0-9a-zA-Z_]*
 
 %%
 
+^[ \t]*\r\n {}
+[ \t] {}
 {COMMENT} {}
 {STRING_LITERAL} {
     lval->build<std::string>() = yytext;
@@ -119,6 +120,7 @@ IDENTIFIER  [a-zA-Z_][0-9a-zA-Z_]*
     int index = definition.size() - reversed.find(" ");
     definition.erase(0,index);
     driver->ast_generator->into_namespace(definition);
+    driver->ast_generator->book_function(definition);
     lval->build<std::string>() = definition;
     
     return Blawn::Parser::token::FUNCTION_DEFINITION;
@@ -148,7 +150,5 @@ IDENTIFIER  [a-zA-Z_][0-9a-zA-Z_]*
     lval->build<std::string>() = yytext;
     return Blawn::Parser::token::IDENTIFIER;
 }
-
-[ \t] {}
 <<EOF>> {return 0;}
 %%

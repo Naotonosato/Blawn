@@ -40,7 +40,7 @@
 #ifndef YY_YY_PARSER_TAB_HH_INCLUDED
 # define YY_YY_PARSER_TAB_HH_INCLUDED
 // //                    "%code requires" blocks.
-#line 11 "./parser.yy" // lalr1.cc:377
+#line 10 "./parser.yy" // lalr1.cc:377
 
     #include <memory>
     #include <llvm/IR/IRBuilder.h>
@@ -135,10 +135,10 @@
 
 /* Debug traces.  */
 #ifndef YYDEBUG
-# define YYDEBUG 1
+# define YYDEBUG 0
 #endif
 
-#line 6 "./parser.yy" // lalr1.cc:377
+#line 5 "./parser.yy" // lalr1.cc:377
 namespace Blawn {
 #line 144 "parser.tab.hh" // lalr1.cc:377
 
@@ -321,7 +321,7 @@ namespace Blawn {
       // expression
       // assign_variable
       // monomial
-      // function_call
+      // call
       // variable
       char dummy3[sizeof(std::shared_ptr<Node>)];
 
@@ -826,7 +826,7 @@ namespace Blawn {
   };
 
 
-#line 6 "./parser.yy" // lalr1.cc:377
+#line 5 "./parser.yy" // lalr1.cc:377
 } // Blawn
 #line 832 "parser.tab.hh" // lalr1.cc:377
 

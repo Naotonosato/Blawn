@@ -40,10 +40,10 @@ public:
 };
 
 
-class IntergerIRGenerator: public IRGenerator
+class IntegerIRGenerator: public IRGenerator
 {
 public:
-    IntergerIRGenerator(
+    IntegerIRGenerator(
         llvm::LLVMContext &context,
         llvm::Module &module,
         llvm::IRBuilder<> &ir_builder
@@ -131,6 +131,16 @@ public:
     llvm::Function* generate(Node &node);
 };
 
+class CallUnsolvedFunctionIRGenerator:public IRGenerator
+{
+    CallUnsolvedFunctionIRGenerator(
+        llvm::LLVMContext &context,
+        llvm::Module &module,
+        llvm::IRBuilder<> &ir_builder
+        )
+    :IRGenerator(context,module,ir_builder){}
+    llvm::Function* generate(Node &node) override;
+};
 
 class CallFunctionIRGenerator: public IRGenerator
 {

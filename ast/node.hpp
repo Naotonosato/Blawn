@@ -12,7 +12,7 @@
 class Type;
 /*
 class IRGenerator;
-class IntergerIRGenerator;
+class IntegerIRGenerator;
 class FloatIRGenerator;
 class VariableIRGenerator;
 class BinaryExpressionIRGenerator;
@@ -43,15 +43,16 @@ public:
     :_is_argument(is_argument),ir_generator(ir_generator),name(name){}
     virtual bool is_argument(){return false;}
     virtual bool is_function(){return false;}
+    virtual bool is_calling_constructor(){return false;}
     virtual llvm::Value* generate();
     virtual void initialize(){}
 };
 
-class IntergerNode:public Node
+class IntegerNode:public Node
 {
     public:
-    IntergerNode(
-        IntergerIRGenerator& ir_generator
+    IntegerNode(
+        IntegerIRGenerator& ir_generator
         ):Node(ir_generator){}
 };
 
@@ -159,6 +160,26 @@ public:
 };
 
 
+class UnsolvedFunctionNode:public Node
+{
+};
+
+
+class CallUnsolvedFunctionNode:public Node
+{
+    private:
+    NodeCollector<FunctionNode>& function_collector;
+    std::vector<std::shared_ptr<Node>> passed_arguments;
+    public:
+    CallUnsolvedFunctionNode(
+        CallUnsolvedFunctionIRGenerator& ir_generator,
+        NodeCollector<Function>& function_collector,
+        std::vector<std::shared_ptr<Node>> passed_arguments
+        ):Node(ir_generator),function_collector(function_collector),
+        passed_arguments(passed_arguments){}
+};
+
+
 class CallFunctionNode: public Node
 {
     public:
@@ -219,6 +240,7 @@ class CallConstructorNode:public Node
     private:
     std::shared_ptr<ClassNode> class_node;
     std::vector<std::shared_ptr<Node>> passed_arguments;
+    std::pair<llvm::Function*,llvm::Value*> destructor;
     public:
     NodeCollector<ArgumentNode>& argument_collector;
     CallConstructorNode(
@@ -232,4 +254,7 @@ class CallConstructorNode:public Node
     passed_arguments(passed_arguments),argument_collector(argument_collector){}
     std::shared_ptr<ClassNode> get_class(){return class_node;}
     std::vector<std::shared_ptr<Node>> get_passed_arguments(){return passed_arguments;}
+    void set_destructor(llvm::Function* destructor_,llvm::Value* instance){destructor = std::make_pair(destructor_,instance);}
+    std::pair<llvm::Function*,llvm::Value*> get_destructor(){return destructor;}
+    bool is_calling_constructor() override{return true;}
 };

@@ -1,6 +1,5 @@
 %skeleton "lalr1.cc"
 %require  "3.0"
-%debug 
 
 %defines 
 %define api.namespace {Blawn}
@@ -82,7 +81,7 @@
 %type <std::vector<std::string>> definition_arguments
 %type <std::vector<std::shared_ptr<Node>>> expressions
 %type <std::shared_ptr<Node>> expression
-%type <std::shared_ptr<Node>> function_call
+%type <std::shared_ptr<Node>> call
 %type <std::shared_ptr<Node>> monomial
 %type <std::shared_ptr<Node>> variable
 
@@ -94,10 +93,7 @@ program:
     block
     {
         driver.ast_generator->break_out_of_namespace();
-        for (auto &node:$1)
-        {
-            node->generate();
-        }
+        driver.ast_generator->generate(std::move($1));
     };
 block:
     lines
@@ -144,7 +140,7 @@ definition:
 function_definition:
     FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL lines RETURN expression
     {
-        $$ = driver.ast_generator->book_function($1,std::move($3),std::move($6),std::move($8));
+        $$ = driver.ast_generator->add_function($1,std::move($3),std::move($6),std::move($8));
         driver.ast_generator->break_out_of_namespace();
     };
 class_definition:
@@ -188,6 +184,7 @@ expressions:
 expression:
     IF expression EOL block
     {
+        std::cout << $4.size() << std::endl;
         $$ = std::shared_ptr<Node>(new Node(driver.ast_generator->ir_generator));
     }
     |monomial
@@ -221,7 +218,7 @@ assign_variable:
         //std::cout << "new variable:" << std::move($1) <<"  type:" << (type->type_name) << "\n";
     };
 monomial:
-    function_call
+    call
     {
         $$ = $1;
     }
@@ -231,13 +228,13 @@ monomial:
     }
     |INT_LITERAL
     { 
-        $$ = driver.ast_generator->create_interger($1);
+        $$ = driver.ast_generator->create_integer($1);
     }
     |variable
     {
         $$ = std::move($1);
     };
-function_call:
+call:
     IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
     {
         $$ = driver.ast_generator->create_call($1,std::move($3));

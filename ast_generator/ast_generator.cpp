@@ -8,7 +8,6 @@
 #include "ast_generator.hpp"
 
 
-ASTGenerator::~ASTGenerator() {}
 
 ASTGenerator::ASTGenerator(
     llvm::Module &module,
@@ -33,16 +32,20 @@ call_constructor_generator(context,module,ir_builder)
     argument_collector = std::shared_ptr<NodeCollector<ArgumentNode>>(new NodeCollector<ArgumentNode>("TOP")); 
     class_collector = std::shared_ptr<NodeCollector<ClassNode>>(new NodeCollector<ClassNode>("TOP")); 
 }
-
-void ASTGenerator::generate()
-{}
+void ASTGenerator::generate(std::vector<std::shared_ptr<Node>> all)
+{
+    for (auto& line:all)
+    {
+        line->generate();
+    }
+}
 
 
 void ASTGenerator::into_namespace(std::string name)
 {
     variable_collector->into_namespace(name);
     function_collector->into_namespace(name);
-    variable_collector->into_namespace(name);
+    argument_collector->into_namespace(name);
     class_collector->into_namespace(name);
 }
 
@@ -50,7 +53,7 @@ void ASTGenerator::break_out_of_namespace()
 {
     variable_collector->break_out_of_namespace();
     function_collector->break_out_of_namespace();
-    variable_collector->break_out_of_namespace();
+    argument_collector->break_out_of_namespace();
     class_collector->break_out_of_namespace();
 }
 
@@ -58,12 +61,7 @@ std::shared_ptr<Node> ASTGenerator::assign(std::string name,std::shared_ptr<Node
 {
     if (variable_collector->exist(name))
     {
-        /*std::cout << "assign " << name << std::endl;
-        right_node->generate()->print(llvm::outs());
-        std::cout << std::endl;
-        */
         auto variable = variable_collector->get(name);
-        //variable->assign(right_node);
         auto assigment = std::shared_ptr<AssigmentNode>(new AssigmentNode(assigment_generator,variable,right_node));
         return assigment;
     }
@@ -73,9 +71,6 @@ std::shared_ptr<Node> ASTGenerator::assign(std::string name,std::shared_ptr<Node
             new VariableNode(variable_generator,std::move(right_node),name)
             );
         variable_collector->set(name,variable);
-        //  std::cout << "registering new variable '" << name 
-        //  << "' that typed "<< variable->get_type()->type_name <<" in " 
-        //  << "namespace '" << cur << "'\n";
         return variable;
     }
 }
@@ -108,7 +103,11 @@ void ASTGenerator::add_argument(std::string arg_name)
     argument_collector->set(arg_name,argument);
 }
 
-std::shared_ptr<FunctionNode> ASTGenerator::book_function(std::string name,std::vector<std::string> arguments,std::vector<std::shared_ptr<Node>> body,std::shared_ptr<Node> return_value)
+void ASTGenerator::book_function(std::string name)
+{
+}
+
+std::shared_ptr<FunctionNode> ASTGenerator::add_function(std::string name,std::vector<std::string> arguments,std::vector<std::shared_ptr<Node>> body,std::shared_ptr<Node> return_value)
 {
     auto func = std::shared_ptr<FunctionNode>(new FunctionNode(
         function_generator,name,arguments,std::move(body),std::move(return_value))
@@ -130,9 +129,9 @@ std::shared_ptr<ClassNode> ASTGenerator::add_class(std::string name,std::vector<
         arguments,
         name)
         );
-    std::vector<std::string> previous_namespace = function_collector->get_namespace();
+    std::vector<std::string> previous_namespace = class_collector->get_namespace();
     previous_namespace.pop_back();
-    class_->set_self_namespace(previous_namespace);
+    class_->set_self_namespace(class_collector->get_namespace());
     class_collector->set(name,class_,previous_namespace);
     return class_;
 }
@@ -149,32 +148,30 @@ std::unique_ptr<Node> ASTGenerator::create_call(std::string name,std::vector<std
             );
         return std::move(calling);
     }
+    
+    if (class_collector->exist(name))
+    {
+        auto class_ = class_collector->get(name);
+        auto constructor = std::unique_ptr<CallConstructorNode>(
+            new CallConstructorNode(
+                call_constructor_generator,
+                class_,
+                arguments,
+                *argument_collector
+            ));
+        return std::move(constructor);
+    }
     else
     {
-        if (class_collector->exist(name))
-        {
-            auto class_ = class_collector->get(name);
-            auto constructor = std::unique_ptr<CallConstructorNode>(
-                new CallConstructorNode(
-                    call_constructor_generator,
-                    class_,
-                    arguments,
-                    *argument_collector
-                ));
-            return std::move(constructor);
-        }
-        else
-        {
-            std::cout << "Error: function " << name << " is not defined." << std::endl;
-            exit(0);
-        }
+        std::cout << "Error: function or class '" << name << "' is not defined." << std::endl;
+        exit(0);
     }
 }
-std::unique_ptr<IntergerNode> ASTGenerator::create_interger(int num)
+std::unique_ptr<IntegerNode> ASTGenerator::create_integer(int num)
 {
-    auto interger = std::unique_ptr<IntergerNode>(new IntergerNode(int_ir_generator));
-    interger->int_num = num;
-    return std::move(interger);
+    auto Integer = std::unique_ptr<IntegerNode>(new IntegerNode(int_ir_generator));
+    Integer->int_num = num;
+    return std::move(Integer);
 }
 
 std::unique_ptr<FloatNode> ASTGenerator::create_float(double num)

@@ -1,6 +1,7 @@
 {
 	
-		"terminal.integrated.shell.windows": "C:\\WINDOWS\\System32\\wsl.exe",
+	"C_Cpp.errorSquiggles": "Enabled",	
+	"terminal.integrated.shell.windows": "C:\\WINDOWS\\System32\\wsl.exe",
 		"files.associations": {
 			"array": "cpp",
 			"*.tcc": "cpp",
@@ -37,5 +38,7 @@
 			"typeinfo": "cpp",
 			"utility": "cpp",
 			"deque": "cpp"
-        }
+		},
+		"C_Cpp.intelliSenseEngineFallback": "Disabled",
+		"C_Cpp.default.cppStandard": "c++14"
 }

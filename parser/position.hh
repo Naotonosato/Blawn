@@ -50,7 +50,7 @@
 #  endif
 # endif
 
-#line 6 "./parser.yy" // location.cc:296
+#line 5 "./parser.yy" // location.cc:296
 namespace Blawn {
 #line 56 "position.hh" // location.cc:296
   /// Abstract a position.
@@ -174,7 +174,7 @@ namespace Blawn {
     return ostr << pos.line << '.' << pos.column;
   }
 
-#line 6 "./parser.yy" // location.cc:296
+#line 5 "./parser.yy" // location.cc:296
 } // Blawn
 #line 180 "position.hh" // location.cc:296
 #endif // !YY_YY_POSITION_HH_INCLUDED

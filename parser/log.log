@@ -53,12 +53,12 @@ Grammar
 
    26 assign_variable: IDENTIFIER EQUAL expression
 
-   27 monomial: function_call
+   27 monomial: call
    28         | FLOAT_LITERAL
    29         | INT_LITERAL
    30         | variable
 
-   31 function_call: IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   31 call: IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
 
    32 variable: IDENTIFIER
 
@@ -127,7 +127,7 @@ assign_variable (41)
     on left: 26, on right: 21
 monomial (42)
     on left: 27 28 29 30, on right: 20
-function_call (43)
+call (43)
     on left: 31, on right: 27
 variable (44)
     on left: 32, on right: 30
@@ -156,11 +156,11 @@ State 0
    24           | . expression ASTERISK expression
    25           | . expression SLASH expression
    26 assign_variable: . IDENTIFIER EQUAL expression
-   27 monomial: . function_call
+   27 monomial: . call
    28         | . FLOAT_LITERAL
    29         | . INT_LITERAL
    30         | . variable
-   31 function_call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   31 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
    32 variable: . IDENTIFIER
 
     FUNCTION_DEFINITION  shift, and go to state 1
@@ -181,7 +181,7 @@ State 0
     expression           go to state 15
     assign_variable      go to state 16
     monomial             go to state 17
-    function_call        go to state 18
+    call                 go to state 18
     variable             go to state 19
 
 
@@ -202,7 +202,7 @@ State 2
 State 3
 
    26 assign_variable: IDENTIFIER . EQUAL expression
-   31 function_call: IDENTIFIER . LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   31 call: IDENTIFIER . LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
    32 variable: IDENTIFIER .  ["end of file", PLUS, MINUS, ASTERISK, SLASH, COMMA, RIGHT_PARENTHESIS, EOL]
 
     EQUAL             shift, and go to state 22
@@ -222,11 +222,11 @@ State 4
    24           | . expression ASTERISK expression
    25           | . expression SLASH expression
    26 assign_variable: . IDENTIFIER EQUAL expression
-   27 monomial: . function_call
+   27 monomial: . call
    28         | . FLOAT_LITERAL
    29         | . INT_LITERAL
    30         | . variable
-   31 function_call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   31 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
    32 variable: . IDENTIFIER
 
     IDENTIFIER     shift, and go to state 3
@@ -237,7 +237,7 @@ State 4
     expression       go to state 24
     assign_variable  go to state 16
     monomial         go to state 17
-    function_call    go to state 18
+    call             go to state 18
     variable         go to state 19
 
 
@@ -289,11 +289,11 @@ State 9
    24           | . expression ASTERISK expression
    25           | . expression SLASH expression
    26 assign_variable: . IDENTIFIER EQUAL expression
-   27 monomial: . function_call
+   27 monomial: . call
    28         | . FLOAT_LITERAL
    29         | . INT_LITERAL
    30         | . variable
-   31 function_call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   31 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
    32 variable: . IDENTIFIER
 
     FUNCTION_DEFINITION  shift, and go to state 1
@@ -313,7 +313,7 @@ State 9
     expression           go to state 15
     assign_variable      go to state 16
     monomial             go to state 17
-    function_call        go to state 18
+    call                 go to state 18
     variable             go to state 19
 
 
@@ -386,7 +386,7 @@ State 17
 
 State 18
 
-   27 monomial: function_call .
+   27 monomial: call .
 
     $default  reduce using rule 27 (monomial)
 
@@ -431,11 +431,11 @@ State 22
    25           | . expression SLASH expression
    26 assign_variable: . IDENTIFIER EQUAL expression
    26                | IDENTIFIER EQUAL . expression
-   27 monomial: . function_call
+   27 monomial: . call
    28         | . FLOAT_LITERAL
    29         | . INT_LITERAL
    30         | . variable
-   31 function_call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   31 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
    32 variable: . IDENTIFIER
 
     IDENTIFIER     shift, and go to state 3
@@ -446,7 +446,7 @@ State 22
     expression       go to state 36
     assign_variable  go to state 16
     monomial         go to state 17
-    function_call    go to state 18
+    call             go to state 18
     variable         go to state 19
 
 
@@ -462,12 +462,12 @@ State 23
    24           | . expression ASTERISK expression
    25           | . expression SLASH expression
    26 assign_variable: . IDENTIFIER EQUAL expression
-   27 monomial: . function_call
+   27 monomial: . call
    28         | . FLOAT_LITERAL
    29         | . INT_LITERAL
    30         | . variable
-   31 function_call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-   31              | IDENTIFIER LEFT_PARENTHESIS . expressions RIGHT_PARENTHESIS
+   31 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   31     | IDENTIFIER LEFT_PARENTHESIS . expressions RIGHT_PARENTHESIS
    32 variable: . IDENTIFIER
 
     IDENTIFIER     shift, and go to state 3
@@ -479,7 +479,7 @@ State 23
     expression       go to state 38
     assign_variable  go to state 16
     monomial         go to state 17
-    function_call    go to state 18
+    call             go to state 18
     variable         go to state 19
 
 
@@ -537,11 +537,11 @@ State 29
    24           | . expression ASTERISK expression
    25           | . expression SLASH expression
    26 assign_variable: . IDENTIFIER EQUAL expression
-   27 monomial: . function_call
+   27 monomial: . call
    28         | . FLOAT_LITERAL
    29         | . INT_LITERAL
    30         | . variable
-   31 function_call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   31 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
    32 variable: . IDENTIFIER
 
     IDENTIFIER     shift, and go to state 3
@@ -552,7 +552,7 @@ State 29
     expression       go to state 40
     assign_variable  go to state 16
     monomial         go to state 17
-    function_call    go to state 18
+    call             go to state 18
     variable         go to state 19
 
 
@@ -567,11 +567,11 @@ State 30
    24           | . expression ASTERISK expression
    25           | . expression SLASH expression
    26 assign_variable: . IDENTIFIER EQUAL expression
-   27 monomial: . function_call
+   27 monomial: . call
    28         | . FLOAT_LITERAL
    29         | . INT_LITERAL
    30         | . variable
-   31 function_call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   31 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
    32 variable: . IDENTIFIER
 
     IDENTIFIER     shift, and go to state 3
@@ -582,7 +582,7 @@ State 30
     expression       go to state 41
     assign_variable  go to state 16
     monomial         go to state 17
-    function_call    go to state 18
+    call             go to state 18
     variable         go to state 19
 
 
@@ -597,11 +597,11 @@ State 31
    24           | expression ASTERISK . expression
    25           | . expression SLASH expression
    26 assign_variable: . IDENTIFIER EQUAL expression
-   27 monomial: . function_call
+   27 monomial: . call
    28         | . FLOAT_LITERAL
    29         | . INT_LITERAL
    30         | . variable
-   31 function_call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   31 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
    32 variable: . IDENTIFIER
 
     IDENTIFIER     shift, and go to state 3
@@ -612,7 +612,7 @@ State 31
     expression       go to state 42
     assign_variable  go to state 16
     monomial         go to state 17
-    function_call    go to state 18
+    call             go to state 18
     variable         go to state 19
 
 
@@ -627,11 +627,11 @@ State 32
    25           | . expression SLASH expression
    25           | expression SLASH . expression
    26 assign_variable: . IDENTIFIER EQUAL expression
-   27 monomial: . function_call
+   27 monomial: . call
    28         | . FLOAT_LITERAL
    29         | . INT_LITERAL
    30         | . variable
-   31 function_call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   31 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
    32 variable: . IDENTIFIER
 
     IDENTIFIER     shift, and go to state 3
@@ -642,7 +642,7 @@ State 32
     expression       go to state 43
     assign_variable  go to state 16
     monomial         go to state 17
-    function_call    go to state 18
+    call             go to state 18
     variable         go to state 19
 
 
@@ -695,7 +695,7 @@ State 36
 State 37
 
    18 expressions: expressions . COMMA expression
-   31 function_call: IDENTIFIER LEFT_PARENTHESIS expressions . RIGHT_PARENTHESIS
+   31 call: IDENTIFIER LEFT_PARENTHESIS expressions . RIGHT_PARENTHESIS
 
     COMMA              shift, and go to state 47
     RIGHT_PARENTHESIS  shift, and go to state 48
@@ -739,11 +739,11 @@ State 39
    24           | . expression ASTERISK expression
    25           | . expression SLASH expression
    26 assign_variable: . IDENTIFIER EQUAL expression
-   27 monomial: . function_call
+   27 monomial: . call
    28         | . FLOAT_LITERAL
    29         | . INT_LITERAL
    30         | . variable
-   31 function_call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   31 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
    32 variable: . IDENTIFIER
 
     FUNCTION_DEFINITION  shift, and go to state 1
@@ -763,7 +763,7 @@ State 39
     expression           go to state 15
     assign_variable      go to state 16
     monomial             go to state 17
-    function_call        go to state 18
+    call                 go to state 18
     variable             go to state 19
 
 
@@ -869,11 +869,11 @@ State 47
    24           | . expression ASTERISK expression
    25           | . expression SLASH expression
    26 assign_variable: . IDENTIFIER EQUAL expression
-   27 monomial: . function_call
+   27 monomial: . call
    28         | . FLOAT_LITERAL
    29         | . INT_LITERAL
    30         | . variable
-   31 function_call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   31 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
    32 variable: . IDENTIFIER
 
     IDENTIFIER     shift, and go to state 3
@@ -884,15 +884,15 @@ State 47
     expression       go to state 53
     assign_variable  go to state 16
     monomial         go to state 17
-    function_call    go to state 18
+    call             go to state 18
     variable         go to state 19
 
 
 State 48
 
-   31 function_call: IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS .
+   31 call: IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS .
 
-    $default  reduce using rule 31 (function_call)
+    $default  reduce using rule 31 (call)
 
 
 State 49
@@ -930,11 +930,11 @@ State 51
    24           | . expression ASTERISK expression
    25           | . expression SLASH expression
    26 assign_variable: . IDENTIFIER EQUAL expression
-   27 monomial: . function_call
+   27 monomial: . call
    28         | . FLOAT_LITERAL
    29         | . INT_LITERAL
    30         | . variable
-   31 function_call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   31 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
    32 variable: . IDENTIFIER
 
     FUNCTION_DEFINITION  shift, and go to state 1
@@ -953,7 +953,7 @@ State 51
     expression           go to state 15
     assign_variable      go to state 16
     monomial             go to state 17
-    function_call        go to state 18
+    call                 go to state 18
     variable             go to state 19
 
 
@@ -1000,11 +1000,11 @@ State 54
    24           | . expression ASTERISK expression
    25           | . expression SLASH expression
    26 assign_variable: . IDENTIFIER EQUAL expression
-   27 monomial: . function_call
+   27 monomial: . call
    28         | . FLOAT_LITERAL
    29         | . INT_LITERAL
    30         | . variable
-   31 function_call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   31 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
    32 variable: . IDENTIFIER
 
     FUNCTION_DEFINITION  shift, and go to state 1
@@ -1023,7 +1023,7 @@ State 54
     expression           go to state 15
     assign_variable      go to state 16
     monomial             go to state 17
-    function_call        go to state 18
+    call                 go to state 18
     variable             go to state 19
 
 
@@ -1045,11 +1045,11 @@ State 56
    24           | . expression ASTERISK expression
    25           | . expression SLASH expression
    26 assign_variable: . IDENTIFIER EQUAL expression
-   27 monomial: . function_call
+   27 monomial: . call
    28         | . FLOAT_LITERAL
    29         | . INT_LITERAL
    30         | . variable
-   31 function_call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   31 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
    32 variable: . IDENTIFIER
 
     IDENTIFIER     shift, and go to state 3
@@ -1060,7 +1060,7 @@ State 56
     expression       go to state 58
     assign_variable  go to state 16
     monomial         go to state 17
-    function_call    go to state 18
+    call             go to state 18
     variable         go to state 19
 
 
@@ -1121,11 +1121,11 @@ State 60
    24           | . expression ASTERISK expression
    25           | . expression SLASH expression
    26 assign_variable: . IDENTIFIER EQUAL expression
-   27 monomial: . function_call
+   27 monomial: . call
    28         | . FLOAT_LITERAL
    29         | . INT_LITERAL
    30         | . variable
-   31 function_call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   31 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
    32 variable: . IDENTIFIER
 
     FUNCTION_DEFINITION  shift, and go to state 1
@@ -1146,7 +1146,7 @@ State 60
     expression           go to state 15
     assign_variable      go to state 16
     monomial             go to state 17
-    function_call        go to state 18
+    call                 go to state 18
     variable             go to state 19
 
 
@@ -1161,11 +1161,11 @@ State 61
    24           | . expression ASTERISK expression
    25           | . expression SLASH expression
    26 assign_variable: . IDENTIFIER EQUAL expression
-   27 monomial: . function_call
+   27 monomial: . call
    28         | . FLOAT_LITERAL
    29         | . INT_LITERAL
    30         | . variable
-   31 function_call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   31 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
    32 variable: . IDENTIFIER
 
     IDENTIFIER     shift, and go to state 3
@@ -1176,7 +1176,7 @@ State 61
     expression       go to state 64
     assign_variable  go to state 16
     monomial         go to state 17
-    function_call    go to state 18
+    call             go to state 18
     variable         go to state 19
 
 
@@ -1220,11 +1220,11 @@ State 65
    24           | . expression ASTERISK expression
    25           | . expression SLASH expression
    26 assign_variable: . IDENTIFIER EQUAL expression
-   27 monomial: . function_call
+   27 monomial: . call
    28         | . FLOAT_LITERAL
    29         | . INT_LITERAL
    30         | . variable
-   31 function_call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   31 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
    32 variable: . IDENTIFIER
 
     IDENTIFIER     shift, and go to state 3
@@ -1235,7 +1235,7 @@ State 65
     expression       go to state 68
     assign_variable  go to state 16
     monomial         go to state 17
-    function_call    go to state 18
+    call             go to state 18
     variable         go to state 19
 
 
