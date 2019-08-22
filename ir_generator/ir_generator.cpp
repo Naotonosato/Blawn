@@ -19,7 +19,9 @@
 #include <llvm/ADT/APInt.h>
 #include <llvm/ADT/APFloat.h>
 #include <iostream>
+#include <set>
 #include "../utils/utils.hpp"
+#include "../blawn_context/blawn_context.hpp"
 
 
 void initialize(llvm::LLVMContext &context,llvm::Module &module,llvm::IRBuilder<> &ir_builder)
@@ -58,12 +60,17 @@ llvm::Value* IRGenerator::generate(Node& node)
 
 llvm::Value* IntegerIRGenerator::generate(Node& node) 
 {
-    return llvm::ConstantInt::get(context, llvm::APInt(global_configuration::INT_BIT,node.int_num));
+    return llvm::ConstantInt::get(context, llvm::APInt(64,node.int_num,true));
 }
 
 llvm::Value* FloatIRGenerator::generate(Node& node) 
 {
     return llvm::ConstantFP::get(context, llvm::APFloat(node.float_num));
+}
+
+llvm::Value* StringIRGenerator::generate(Node& node)
+{
+    return 0;
 }
 
 llvm::Value* VariableIRGenerator::generate(Node& node_) 
@@ -114,25 +121,38 @@ llvm::Value* BinaryExpressionIRGenerator::generate(Node& node_)
     auto left = node.left_node->generate();
     auto right = node.right_node->generate();
     bool both_int = (left->getType()->isIntegerTy() && right->getType()->isIntegerTy());
-    
+    auto f_cast = llvm::CastInst::SIToFP;
+        
     if (operator_kind == "+")
     {
         if(both_int) return ir_builder.CreateAdd(left,right);
-        else return ir_builder.CreateFAdd(left,right);
+        else return ir_builder.CreateFAdd(
+            ir_builder.CreateCast(f_cast,left,ir_builder.getDoubleTy()),
+            ir_builder.CreateCast(f_cast,right,ir_builder.getDoubleTy())
+            );
     }
     if (operator_kind == "-")
     {
         if(both_int) return ir_builder.CreateSub(left,right);
-        else return ir_builder.CreateFSub(left,right);
+        else return ir_builder.CreateFSub(
+            ir_builder.CreateCast(f_cast,left,ir_builder.getDoubleTy()),
+            ir_builder.CreateCast(f_cast,right,ir_builder.getDoubleTy())
+            );
     }
     if (operator_kind == "*")
     {
         if(both_int) return ir_builder.CreateMul(left,right);
-        else return ir_builder.CreateFMul(left,right);
+        else return ir_builder.CreateFMul(
+            ir_builder.CreateCast(f_cast,left,ir_builder.getDoubleTy()),
+            ir_builder.CreateCast(f_cast,right,ir_builder.getDoubleTy())
+            );
     }
     if (operator_kind == "/")
     {
-        return ir_builder.CreateFDiv(left,right);
+        return ir_builder.CreateFDiv(
+            ir_builder.CreateCast(f_cast,left,ir_builder.getDoubleTy()),
+            ir_builder.CreateCast(f_cast,right,ir_builder.getDoubleTy())
+        );
     }
     return 0;
 }
@@ -153,34 +173,6 @@ llvm::Function* FunctionIRGenerator::generate(Node& node_)
     node.set_temporary_function(function);
     return function;
 } 
-
-llvm::Value* CallUnsolvedFunctionIRGenerator::generate(Node& node_)
-{
-    auto& node = *static_cast<CallUnsolvedFunctionNode*>(&node_);
-    if (node.function_collector->exist(node.name))
-    {
-        std::vector<llvm::Type*> types;
-        std::vector<llvm::Value*> args;
-        for (auto& arg:node.passed_arguments)
-        {
-            auto value = arg->generate();
-            types.push_back(value->getType());
-            args.push_back(value);
-        }
-        auto func_node = node.function_collector->get(node.name);
-        auto func = func_node.get_function(types);
-        if (func == nullptr)
-        {   
-            std::cout << "Error: No Function with the signature." << std::endl;
-            exit(1);
-        }
-        else
-        {
-            return ir_builder.CreateCall(func,args);
-            aospcm;@;@@;@;@;@@;@@@@;@;@;@;@;@;@;@;@;@;@;@;@;@;@;@;@;@;
-        }
-    }
-}
 
 llvm::Value* CallFunctionIRGenerator::generate(Node &node_)
 {
@@ -240,16 +232,8 @@ llvm::Value* CallFunctionIRGenerator::generate(Node &node_)
         line->generate();
     }
     auto return_value = node.function->return_value->generate();
-    /*
-    for (auto &d:node.function->destructors)
-    {
-        std::vector<llvm::Value*> arg(1,d.second);
-        ir_builder.CreateCall(d.first,arg);
-    }
-    */
     ir_builder.CreateRet(return_value);
-    //base_function->print(llvm::outs());
-
+    
     auto new_function_type = llvm::FunctionType::get(
         return_value->getType(),
         types,
@@ -274,11 +258,10 @@ llvm::Value* CallFunctionIRGenerator::generate(Node &node_)
     
     llvm::SmallVector<llvm::ReturnInst*,0> returns;
     llvm::CloneFunctionInto(new_function,base_function,vmap,false,returns);
-    //llvm::CloneFunctionInto(new_function,vmap,true,returns);
+    
     node.function->register_function(types,new_function);
-    node.function->get_temporary_function()->replaceAllUsesWith(new_function);
-    //base_function->eraseFromParent();
-    //llvm::verifyFunction(*new_function,&llvm::outs());
+    //node.function->get_temporary_function()->replaceAllUsesWith(new_function);
+    
     ir_builder.SetInsertPoint(callee_block);
     return ir_builder.CreateCall(new_function,argument_values);
 
@@ -355,19 +338,24 @@ llvm::Value* CallConstructorIRGenerator::generate(Node& node_)
 
     std::vector<llvm::Type*> fields;
     std::vector<llvm::Value*> initial_values;
-
+    std::vector<std::string> names;
     for (auto& line:node.get_class()->get_members_definition())
     {
         line->initialize();
         auto value = line->generate();
         fields.push_back(value->getType());
         initial_values.push_back(value);
+        names.push_back(line->name);
     }
 
     auto instance_type/*class*/ = llvm::StructType::create(context,fields,node.get_class()->name);
     auto instance_alloca = utils::malloc_value(instance_type,context,module,ir_builder);
+    std::string str;
+    llvm::raw_string_ostream rso(str);
+    instance_alloca->getType()->print(rso);
     for (unsigned int idx=0;idx<=fields.size()-1;idx++)
     {
+        get_blawn_context().register_element_name(rso.str(),names[idx],idx);
         ir_builder.CreateStore(
             initial_values[idx],
             ir_builder.CreateStructGEP(instance_type,instance_alloca,idx)
@@ -424,4 +412,66 @@ llvm::Value* CallConstructorIRGenerator::generate(Node& node_)
     ir_builder.SetInsertPoint(callee_block);
     return ir_builder.CreateCall(new_constructor,argument_values);
 
+}
+
+llvm::Value* IfIRGenerator::generate(Node& node_)
+{
+    auto& node = *static_cast<IfNode*>(&node_);
+    std::set<llvm::Value*> false_values;
+    false_values.insert(llvm::ConstantInt::get(context,llvm::APInt(64,0,true)));
+    false_values.insert(llvm::ConstantFP::get(context, llvm::APFloat(double(0.0))));
+    false_values.insert(ir_builder.getInt1(false));
+
+    auto cond = node.get_conditions()->generate();
+    llvm::Value* cond_value = ir_builder.getInt1(false);
+    if (false_values.find(cond) == false_values.end())// condition is true.
+    {
+        cond_value = ir_builder.getInt1(true);
+    }
+
+    auto parent = ir_builder.GetInsertBlock()->getParent();
+    auto then_block = llvm::BasicBlock::Create(context,"then of if expr",parent);
+    auto else_block = llvm::BasicBlock::Create(context,"else of if_expr");
+    auto merge_block = llvm::BasicBlock::Create(context,"merge of if_expr");
+
+    ir_builder.CreateCondBr(cond_value,then_block,else_block);
+    ir_builder.SetInsertPoint(then_block);
+    for (auto& line:node.get_if_body())
+    {
+        line->initialize();
+        line->generate();
+    }
+    ir_builder.CreateBr(merge_block);
+    then_block = ir_builder.GetInsertBlock();
+    parent->getBasicBlockList().push_back(else_block);
+    ir_builder.SetInsertPoint(else_block);
+    for (auto& line:node.get_else_body())
+    {
+        line->initialize();
+        line->generate();
+    }
+    ir_builder.CreateBr(merge_block);
+    else_block = ir_builder.GetInsertBlock();
+    parent->getBasicBlockList().push_back(merge_block);
+    ir_builder.SetInsertPoint(merge_block);
+    return 0;
+}
+
+llvm::Value* AccessIRGenerator::generate(Node& node_)
+{
+    auto& node = *static_cast<AccessNode*>(&node_);
+    auto left = node.get_left_node()->generate();
+    if (left->getType()->getPointerElementType()->isStructTy())
+    {
+        std::string str;
+        llvm::raw_string_ostream rso(str);
+        left->getType()->print(rso);
+        unsigned int index = get_blawn_context().get_element_index(rso.str(),"@"+node.get_right_name());
+        return ir_builder.CreateLoad(ir_builder.CreateStructGEP(nullptr,left,index));
+    }
+    else
+    {
+        std::cerr << "invalid use of '.'!" << std::endl;
+        return 0;
+    }
 }

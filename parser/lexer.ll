@@ -21,7 +21,7 @@ STRING_LITERAL      \".*\"
 INT_LITERAL         [0-9]+
 FLOAT_LITERAL       [0-9]+\.[0-9]*
 USE                 use
-EOL                 \n
+DOT         \.
 EQUAL       =
 PLUS        \+
 MINUS       -
@@ -35,30 +35,28 @@ IF          if
 ELSE        else
 FOR         for
 WHILE       while
-FUNCTION_DEFINITION function[ \t]+[a-zA-Z_][0-9a-zA-Z_]*
-CLASS_DEFINITION class[ \t]+[a-zA-Z_][0-9a-zA-Z_]*
-RETURN      return
-LEFT_PARENTHESIS \(
-RIGHT_PARENTHESIS \)
+FUNCTION_DEFINITION     function[ \t]+[a-zA-Z_][0-9a-zA-Z_]*
+METHOD_DEFINITION       @function[ \t]+[a-zA-Z_][0-9a-zA-Z_]*
+CLASS_DEFINITION        class[ \t]+[a-zA-Z_][0-9a-zA-Z_]*
+RETURN                  return
+LEFT_PARENTHESIS        \(
+RIGHT_PARENTHESIS       \)
 
 CALL        .+\(.*\)
 C_FUNCTION  c\.[a-zA-Z_][0-9a-zA-Z_]*
 MEMBER_IDENTIFIER @[a-zA-Z_][0-9a-zA-Z_]*
 IDENTIFIER  [a-zA-Z_][0-9a-zA-Z_]*
+EOL                 \n
 
 
 %%
 
-^[ \t]*\r\n {}
+^[ \t]*\r\n {loc->lines();}
 [ \t] {}
 {COMMENT} {}
 {STRING_LITERAL} {
     lval->build<std::string>() = yytext;
     return Blawn::Parser::token::STRING_LITERAL;
-}
-{EOL} {
-    loc->lines();
-    return Blawn::Parser::token::EOL;
 }
 {INT_LITERAL} {
     lval->build<long long>() = std::stoll(yytext);
@@ -70,6 +68,9 @@ IDENTIFIER  [a-zA-Z_][0-9a-zA-Z_]*
 }
 {USE} {
     return Blawn::Parser::token::USE;
+}
+{DOT} {
+    return Blawn::Parser::token::DOT;
 }
 {EQUAL} {
     return Blawn::Parser::token::EQUAL;
@@ -113,6 +114,18 @@ IDENTIFIER  [a-zA-Z_][0-9a-zA-Z_]*
 {WHILE} {
     return Blawn::Parser::token::WHILE;
 }
+{METHOD_DEFINITION} {
+    std::string definition = yytext;
+    std::string reversed;
+    std::reverse_copy(definition.begin(),definition.end(),std::back_inserter(reversed));
+    int index = definition.size() - reversed.find(" ");
+    definition.erase(0,index);
+    driver->ast_generator->into_namespace(definition);
+    driver->ast_generator->book_function(definition);
+    lval->build<std::string>() = definition;
+    
+    return Blawn::Parser::token::METHOD_DEFINITION;
+}
 {FUNCTION_DEFINITION} {
     std::string definition = yytext;
     std::string reversed;
@@ -149,6 +162,10 @@ IDENTIFIER  [a-zA-Z_][0-9a-zA-Z_]*
 {IDENTIFIER} {
     lval->build<std::string>() = yytext;
     return Blawn::Parser::token::IDENTIFIER;
+}
+{EOL} {
+    loc->lines();
+    return Blawn::Parser::token::EOL;
 }
 <<EOF>> {return 0;}
 %%

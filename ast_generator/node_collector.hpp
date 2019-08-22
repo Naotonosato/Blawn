@@ -4,22 +4,7 @@
 #include <string>
 #include <memory>
 
-
-class NamespaceManager
-{
-    private:
-    unsigned int number;
-    public:
-    NamespaceManager():number(0){}
-    std::string get_unique_name()
-    {
-        unsigned int n = number;
-        number += 1;
-        std::string unique_name = "#" + std::to_string(n);
-        return unique_name;
-    }
-};
-
+static unsigned int unique_number = 0;
 
 template <typename T>
 class NodeCollector
@@ -62,6 +47,12 @@ public:
             }
         }
         return nullptr;
+    }
+
+    std::shared_ptr<T> get_previous()
+    {
+        auto name = nodes[current_namespace].second.back();
+        return nodes[current_namespace].first[name];
     }
 
     std::vector<std::shared_ptr<T>> get_all()
@@ -132,7 +123,13 @@ public:
     {
         return (current_namespace.size() == 1);
     }
-
+    std::string get_unique_name()
+    {
+        unsigned int n = unique_number;
+        unique_number += 1;
+        std::string unique_name = "#" + std::to_string(n);
+        return unique_name;
+    }
     std::string get_namespace_as_string()
     {
         std::string cur = ".";

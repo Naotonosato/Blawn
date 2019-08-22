@@ -49,7 +49,7 @@
 
 #line 51 "parser.tab.cc" // lalr1.cc:412
 // Unqualified %code blocks.
-#line 36 "./parser.yy" // lalr1.cc:413
+#line 35 "./parser.yy" // lalr1.cc:413
 
     #include <iostream>
     #include <cstdlib>
@@ -58,8 +58,14 @@
     #include "driver.hpp"
     #undef yylex
     #define yylex scanner.yylex
+    enum BLAWN_STATE
+    {
+        EXIST_IF = 0,
+        NO_IF = 1
+    };
+    BLAWN_STATE blawn_state = NO_IF;
 
-#line 63 "parser.tab.cc" // lalr1.cc:413
+#line 69 "parser.tab.cc" // lalr1.cc:413
 
 
 #ifndef YY_
@@ -145,7 +151,7 @@
 
 #line 5 "./parser.yy" // lalr1.cc:479
 namespace Blawn {
-#line 149 "parser.tab.cc" // lalr1.cc:479
+#line 155 "parser.tab.cc" // lalr1.cc:479
 
   /// Build a parser object.
   Parser::Parser (Scanner  &scanner_yyarg, Driver  &driver_yyarg)
@@ -188,44 +194,48 @@ namespace Blawn {
   {
       switch (other.type_get ())
     {
-      case 26: // FLOAT_LITERAL
+      case 28: // FLOAT_LITERAL
         value.copy< double > (other.value);
         break;
 
-      case 25: // INT_LITERAL
+      case 27: // INT_LITERAL
         value.copy< long long > (other.value);
         break;
 
-      case 32: // line
-      case 33: // line_content
-      case 34: // definition
-      case 35: // function_definition
-      case 36: // class_definition
-      case 40: // expression
-      case 41: // assign_variable
-      case 42: // monomial
-      case 43: // call
-      case 44: // variable
+      case 34: // line
+      case 35: // line_content
+      case 36: // definition
+      case 37: // function_definition
+      case 38: // class_definition
+      case 40: // method_definition
+      case 44: // expression
+      case 45: // assign_variable
+      case 46: // monomial
+      case 47: // call
+      case 48: // variable
+      case 49: // accessing
         value.copy< std::shared_ptr<Node> > (other.value);
         break;
 
       case 3: // FUNCTION_DEFINITION
-      case 4: // CLASS_DEFINITION
-      case 6: // C_FUNCTION
-      case 7: // MEMBER_IDENTIFIER
-      case 8: // IDENTIFIER
-      case 27: // STRING_LITERAL
+      case 4: // METHOD_DEFINITION
+      case 5: // CLASS_DEFINITION
+      case 7: // C_FUNCTION
+      case 8: // MEMBER_IDENTIFIER
+      case 9: // IDENTIFIER
+      case 29: // STRING_LITERAL
         value.copy< std::string > (other.value);
         break;
 
-      case 30: // block
-      case 31: // lines
-      case 37: // members_definition
-      case 39: // expressions
+      case 32: // block
+      case 33: // lines
+      case 39: // methods
+      case 41: // members_definition
+      case 43: // expressions
         value.copy< std::vector<std::shared_ptr<Node>> > (other.value);
         break;
 
-      case 38: // definition_arguments
+      case 42: // definition_arguments
         value.copy< std::vector<std::string> > (other.value);
         break;
 
@@ -246,44 +256,48 @@ namespace Blawn {
     (void) v;
       switch (this->type_get ())
     {
-      case 26: // FLOAT_LITERAL
+      case 28: // FLOAT_LITERAL
         value.copy< double > (v);
         break;
 
-      case 25: // INT_LITERAL
+      case 27: // INT_LITERAL
         value.copy< long long > (v);
         break;
 
-      case 32: // line
-      case 33: // line_content
-      case 34: // definition
-      case 35: // function_definition
-      case 36: // class_definition
-      case 40: // expression
-      case 41: // assign_variable
-      case 42: // monomial
-      case 43: // call
-      case 44: // variable
+      case 34: // line
+      case 35: // line_content
+      case 36: // definition
+      case 37: // function_definition
+      case 38: // class_definition
+      case 40: // method_definition
+      case 44: // expression
+      case 45: // assign_variable
+      case 46: // monomial
+      case 47: // call
+      case 48: // variable
+      case 49: // accessing
         value.copy< std::shared_ptr<Node> > (v);
         break;
 
       case 3: // FUNCTION_DEFINITION
-      case 4: // CLASS_DEFINITION
-      case 6: // C_FUNCTION
-      case 7: // MEMBER_IDENTIFIER
-      case 8: // IDENTIFIER
-      case 27: // STRING_LITERAL
+      case 4: // METHOD_DEFINITION
+      case 5: // CLASS_DEFINITION
+      case 7: // C_FUNCTION
+      case 8: // MEMBER_IDENTIFIER
+      case 9: // IDENTIFIER
+      case 29: // STRING_LITERAL
         value.copy< std::string > (v);
         break;
 
-      case 30: // block
-      case 31: // lines
-      case 37: // members_definition
-      case 39: // expressions
+      case 32: // block
+      case 33: // lines
+      case 39: // methods
+      case 41: // members_definition
+      case 43: // expressions
         value.copy< std::vector<std::shared_ptr<Node>> > (v);
         break;
 
-      case 38: // definition_arguments
+      case 42: // definition_arguments
         value.copy< std::vector<std::string> > (v);
         break;
 
@@ -370,44 +384,48 @@ namespace Blawn {
     // Type destructor.
     switch (yytype)
     {
-      case 26: // FLOAT_LITERAL
+      case 28: // FLOAT_LITERAL
         value.template destroy< double > ();
         break;
 
-      case 25: // INT_LITERAL
+      case 27: // INT_LITERAL
         value.template destroy< long long > ();
         break;
 
-      case 32: // line
-      case 33: // line_content
-      case 34: // definition
-      case 35: // function_definition
-      case 36: // class_definition
-      case 40: // expression
-      case 41: // assign_variable
-      case 42: // monomial
-      case 43: // call
-      case 44: // variable
+      case 34: // line
+      case 35: // line_content
+      case 36: // definition
+      case 37: // function_definition
+      case 38: // class_definition
+      case 40: // method_definition
+      case 44: // expression
+      case 45: // assign_variable
+      case 46: // monomial
+      case 47: // call
+      case 48: // variable
+      case 49: // accessing
         value.template destroy< std::shared_ptr<Node> > ();
         break;
 
       case 3: // FUNCTION_DEFINITION
-      case 4: // CLASS_DEFINITION
-      case 6: // C_FUNCTION
-      case 7: // MEMBER_IDENTIFIER
-      case 8: // IDENTIFIER
-      case 27: // STRING_LITERAL
+      case 4: // METHOD_DEFINITION
+      case 5: // CLASS_DEFINITION
+      case 7: // C_FUNCTION
+      case 8: // MEMBER_IDENTIFIER
+      case 9: // IDENTIFIER
+      case 29: // STRING_LITERAL
         value.template destroy< std::string > ();
         break;
 
-      case 30: // block
-      case 31: // lines
-      case 37: // members_definition
-      case 39: // expressions
+      case 32: // block
+      case 33: // lines
+      case 39: // methods
+      case 41: // members_definition
+      case 43: // expressions
         value.template destroy< std::vector<std::shared_ptr<Node>> > ();
         break;
 
-      case 38: // definition_arguments
+      case 42: // definition_arguments
         value.template destroy< std::vector<std::string> > ();
         break;
 
@@ -434,44 +452,48 @@ namespace Blawn {
     super_type::move(s);
       switch (this->type_get ())
     {
-      case 26: // FLOAT_LITERAL
+      case 28: // FLOAT_LITERAL
         value.move< double > (s.value);
         break;
 
-      case 25: // INT_LITERAL
+      case 27: // INT_LITERAL
         value.move< long long > (s.value);
         break;
 
-      case 32: // line
-      case 33: // line_content
-      case 34: // definition
-      case 35: // function_definition
-      case 36: // class_definition
-      case 40: // expression
-      case 41: // assign_variable
-      case 42: // monomial
-      case 43: // call
-      case 44: // variable
+      case 34: // line
+      case 35: // line_content
+      case 36: // definition
+      case 37: // function_definition
+      case 38: // class_definition
+      case 40: // method_definition
+      case 44: // expression
+      case 45: // assign_variable
+      case 46: // monomial
+      case 47: // call
+      case 48: // variable
+      case 49: // accessing
         value.move< std::shared_ptr<Node> > (s.value);
         break;
 
       case 3: // FUNCTION_DEFINITION
-      case 4: // CLASS_DEFINITION
-      case 6: // C_FUNCTION
-      case 7: // MEMBER_IDENTIFIER
-      case 8: // IDENTIFIER
-      case 27: // STRING_LITERAL
+      case 4: // METHOD_DEFINITION
+      case 5: // CLASS_DEFINITION
+      case 7: // C_FUNCTION
+      case 8: // MEMBER_IDENTIFIER
+      case 9: // IDENTIFIER
+      case 29: // STRING_LITERAL
         value.move< std::string > (s.value);
         break;
 
-      case 30: // block
-      case 31: // lines
-      case 37: // members_definition
-      case 39: // expressions
+      case 32: // block
+      case 33: // lines
+      case 39: // methods
+      case 41: // members_definition
+      case 43: // expressions
         value.move< std::vector<std::shared_ptr<Node>> > (s.value);
         break;
 
-      case 38: // definition_arguments
+      case 42: // definition_arguments
         value.move< std::vector<std::string> > (s.value);
         break;
 
@@ -530,6 +552,12 @@ namespace Blawn {
   Parser::make_FUNCTION_DEFINITION (const std::string& v, const location_type& l)
   {
     return symbol_type (token::FUNCTION_DEFINITION, v, l);
+  }
+
+  Parser::symbol_type
+  Parser::make_METHOD_DEFINITION (const std::string& v, const location_type& l)
+  {
+    return symbol_type (token::METHOD_DEFINITION, v, l);
   }
 
   Parser::symbol_type
@@ -596,6 +624,12 @@ namespace Blawn {
   Parser::make_USE (const location_type& l)
   {
     return symbol_type (token::USE, l);
+  }
+
+  Parser::symbol_type
+  Parser::make_DOT (const location_type& l)
+  {
+    return symbol_type (token::DOT, l);
   }
 
   Parser::symbol_type
@@ -730,44 +764,48 @@ namespace Blawn {
   {
       switch (that.type_get ())
     {
-      case 26: // FLOAT_LITERAL
+      case 28: // FLOAT_LITERAL
         value.move< double > (that.value);
         break;
 
-      case 25: // INT_LITERAL
+      case 27: // INT_LITERAL
         value.move< long long > (that.value);
         break;
 
-      case 32: // line
-      case 33: // line_content
-      case 34: // definition
-      case 35: // function_definition
-      case 36: // class_definition
-      case 40: // expression
-      case 41: // assign_variable
-      case 42: // monomial
-      case 43: // call
-      case 44: // variable
+      case 34: // line
+      case 35: // line_content
+      case 36: // definition
+      case 37: // function_definition
+      case 38: // class_definition
+      case 40: // method_definition
+      case 44: // expression
+      case 45: // assign_variable
+      case 46: // monomial
+      case 47: // call
+      case 48: // variable
+      case 49: // accessing
         value.move< std::shared_ptr<Node> > (that.value);
         break;
 
       case 3: // FUNCTION_DEFINITION
-      case 4: // CLASS_DEFINITION
-      case 6: // C_FUNCTION
-      case 7: // MEMBER_IDENTIFIER
-      case 8: // IDENTIFIER
-      case 27: // STRING_LITERAL
+      case 4: // METHOD_DEFINITION
+      case 5: // CLASS_DEFINITION
+      case 7: // C_FUNCTION
+      case 8: // MEMBER_IDENTIFIER
+      case 9: // IDENTIFIER
+      case 29: // STRING_LITERAL
         value.move< std::string > (that.value);
         break;
 
-      case 30: // block
-      case 31: // lines
-      case 37: // members_definition
-      case 39: // expressions
+      case 32: // block
+      case 33: // lines
+      case 39: // methods
+      case 41: // members_definition
+      case 43: // expressions
         value.move< std::vector<std::shared_ptr<Node>> > (that.value);
         break;
 
-      case 38: // definition_arguments
+      case 42: // definition_arguments
         value.move< std::vector<std::string> > (that.value);
         break;
 
@@ -786,44 +824,48 @@ namespace Blawn {
     state = that.state;
       switch (that.type_get ())
     {
-      case 26: // FLOAT_LITERAL
+      case 28: // FLOAT_LITERAL
         value.copy< double > (that.value);
         break;
 
-      case 25: // INT_LITERAL
+      case 27: // INT_LITERAL
         value.copy< long long > (that.value);
         break;
 
-      case 32: // line
-      case 33: // line_content
-      case 34: // definition
-      case 35: // function_definition
-      case 36: // class_definition
-      case 40: // expression
-      case 41: // assign_variable
-      case 42: // monomial
-      case 43: // call
-      case 44: // variable
+      case 34: // line
+      case 35: // line_content
+      case 36: // definition
+      case 37: // function_definition
+      case 38: // class_definition
+      case 40: // method_definition
+      case 44: // expression
+      case 45: // assign_variable
+      case 46: // monomial
+      case 47: // call
+      case 48: // variable
+      case 49: // accessing
         value.copy< std::shared_ptr<Node> > (that.value);
         break;
 
       case 3: // FUNCTION_DEFINITION
-      case 4: // CLASS_DEFINITION
-      case 6: // C_FUNCTION
-      case 7: // MEMBER_IDENTIFIER
-      case 8: // IDENTIFIER
-      case 27: // STRING_LITERAL
+      case 4: // METHOD_DEFINITION
+      case 5: // CLASS_DEFINITION
+      case 7: // C_FUNCTION
+      case 8: // MEMBER_IDENTIFIER
+      case 9: // IDENTIFIER
+      case 29: // STRING_LITERAL
         value.copy< std::string > (that.value);
         break;
 
-      case 30: // block
-      case 31: // lines
-      case 37: // members_definition
-      case 39: // expressions
+      case 32: // block
+      case 33: // lines
+      case 39: // methods
+      case 41: // members_definition
+      case 43: // expressions
         value.copy< std::vector<std::shared_ptr<Node>> > (that.value);
         break;
 
-      case 38: // definition_arguments
+      case 42: // definition_arguments
         value.copy< std::vector<std::string> > (that.value);
         break;
 
@@ -1054,44 +1096,48 @@ namespace Blawn {
          when using variants.  */
         switch (yyr1_[yyn])
     {
-      case 26: // FLOAT_LITERAL
+      case 28: // FLOAT_LITERAL
         yylhs.value.build< double > ();
         break;
 
-      case 25: // INT_LITERAL
+      case 27: // INT_LITERAL
         yylhs.value.build< long long > ();
         break;
 
-      case 32: // line
-      case 33: // line_content
-      case 34: // definition
-      case 35: // function_definition
-      case 36: // class_definition
-      case 40: // expression
-      case 41: // assign_variable
-      case 42: // monomial
-      case 43: // call
-      case 44: // variable
+      case 34: // line
+      case 35: // line_content
+      case 36: // definition
+      case 37: // function_definition
+      case 38: // class_definition
+      case 40: // method_definition
+      case 44: // expression
+      case 45: // assign_variable
+      case 46: // monomial
+      case 47: // call
+      case 48: // variable
+      case 49: // accessing
         yylhs.value.build< std::shared_ptr<Node> > ();
         break;
 
       case 3: // FUNCTION_DEFINITION
-      case 4: // CLASS_DEFINITION
-      case 6: // C_FUNCTION
-      case 7: // MEMBER_IDENTIFIER
-      case 8: // IDENTIFIER
-      case 27: // STRING_LITERAL
+      case 4: // METHOD_DEFINITION
+      case 5: // CLASS_DEFINITION
+      case 7: // C_FUNCTION
+      case 8: // MEMBER_IDENTIFIER
+      case 9: // IDENTIFIER
+      case 29: // STRING_LITERAL
         yylhs.value.build< std::string > ();
         break;
 
-      case 30: // block
-      case 31: // lines
-      case 37: // members_definition
-      case 39: // expressions
+      case 32: // block
+      case 33: // lines
+      case 39: // methods
+      case 41: // members_definition
+      case 43: // expressions
         yylhs.value.build< std::vector<std::shared_ptr<Node>> > ();
         break;
 
-      case 38: // definition_arguments
+      case 42: // definition_arguments
         yylhs.value.build< std::vector<std::string> > ();
         break;
 
@@ -1113,274 +1159,339 @@ namespace Blawn {
           switch (yyn)
             {
   case 2:
-#line 94 "./parser.yy" // lalr1.cc:859
+#line 104 "./parser.yy" // lalr1.cc:859
     {
         driver.ast_generator->break_out_of_namespace();
         driver.ast_generator->generate(std::move(yystack_[0].value.as< std::vector<std::shared_ptr<Node>> > ()));
     }
-#line 1122 "parser.tab.cc" // lalr1.cc:859
+#line 1168 "parser.tab.cc" // lalr1.cc:859
     break;
 
   case 3:
-#line 100 "./parser.yy" // lalr1.cc:859
+#line 110 "./parser.yy" // lalr1.cc:859
     {
         yylhs.value.as< std::vector<std::shared_ptr<Node>> > () = std::move(yystack_[0].value.as< std::vector<std::shared_ptr<Node>> > ());
     }
-#line 1130 "parser.tab.cc" // lalr1.cc:859
+#line 1176 "parser.tab.cc" // lalr1.cc:859
     break;
 
   case 4:
-#line 105 "./parser.yy" // lalr1.cc:859
+#line 115 "./parser.yy" // lalr1.cc:859
     {
         yylhs.value.as< std::vector<std::shared_ptr<Node>> > ().push_back(std::move(yystack_[0].value.as< std::shared_ptr<Node> > ()));
     }
-#line 1138 "parser.tab.cc" // lalr1.cc:859
+#line 1184 "parser.tab.cc" // lalr1.cc:859
     break;
 
   case 5:
-#line 109 "./parser.yy" // lalr1.cc:859
+#line 119 "./parser.yy" // lalr1.cc:859
     {
         yylhs.value.as< std::vector<std::shared_ptr<Node>> > () = std::move(yystack_[1].value.as< std::vector<std::shared_ptr<Node>> > ());
         yylhs.value.as< std::vector<std::shared_ptr<Node>> > ().push_back(yystack_[0].value.as< std::shared_ptr<Node> > ());
     }
-#line 1147 "parser.tab.cc" // lalr1.cc:859
+#line 1193 "parser.tab.cc" // lalr1.cc:859
     break;
 
   case 6:
-#line 115 "./parser.yy" // lalr1.cc:859
+#line 125 "./parser.yy" // lalr1.cc:859
     {
         yylhs.value.as< std::shared_ptr<Node> > () = std::move(yystack_[1].value.as< std::shared_ptr<Node> > ());
     }
-#line 1155 "parser.tab.cc" // lalr1.cc:859
+#line 1201 "parser.tab.cc" // lalr1.cc:859
     break;
 
   case 7:
-#line 119 "./parser.yy" // lalr1.cc:859
+#line 129 "./parser.yy" // lalr1.cc:859
     {
         yylhs.value.as< std::shared_ptr<Node> > () = std::move(yystack_[1].value.as< std::shared_ptr<Node> > ());
     }
-#line 1163 "parser.tab.cc" // lalr1.cc:859
+#line 1209 "parser.tab.cc" // lalr1.cc:859
     break;
 
   case 8:
-#line 124 "./parser.yy" // lalr1.cc:859
+#line 134 "./parser.yy" // lalr1.cc:859
     {
         yylhs.value.as< std::shared_ptr<Node> > () = std::move(yystack_[0].value.as< std::shared_ptr<Node> > ());
     }
-#line 1171 "parser.tab.cc" // lalr1.cc:859
+#line 1217 "parser.tab.cc" // lalr1.cc:859
     break;
 
   case 9:
-#line 128 "./parser.yy" // lalr1.cc:859
+#line 138 "./parser.yy" // lalr1.cc:859
     {
         yylhs.value.as< std::shared_ptr<Node> > () = std::move(yystack_[0].value.as< std::shared_ptr<Node> > ());
     }
-#line 1179 "parser.tab.cc" // lalr1.cc:859
+#line 1225 "parser.tab.cc" // lalr1.cc:859
     break;
 
   case 10:
-#line 133 "./parser.yy" // lalr1.cc:859
+#line 143 "./parser.yy" // lalr1.cc:859
     {
         yylhs.value.as< std::shared_ptr<Node> > () = std::move(yystack_[0].value.as< std::shared_ptr<Node> > ());
     }
-#line 1187 "parser.tab.cc" // lalr1.cc:859
+#line 1233 "parser.tab.cc" // lalr1.cc:859
     break;
 
   case 11:
-#line 137 "./parser.yy" // lalr1.cc:859
+#line 147 "./parser.yy" // lalr1.cc:859
     {
         yylhs.value.as< std::shared_ptr<Node> > () = std::move(yystack_[0].value.as< std::shared_ptr<Node> > ());
     }
-#line 1195 "parser.tab.cc" // lalr1.cc:859
+#line 1241 "parser.tab.cc" // lalr1.cc:859
     break;
 
   case 12:
-#line 142 "./parser.yy" // lalr1.cc:859
+#line 152 "./parser.yy" // lalr1.cc:859
     {
         yylhs.value.as< std::shared_ptr<Node> > () = driver.ast_generator->add_function(yystack_[7].value.as< std::string > (),std::move(yystack_[5].value.as< std::vector<std::string> > ()),std::move(yystack_[2].value.as< std::vector<std::shared_ptr<Node>> > ()),std::move(yystack_[0].value.as< std::shared_ptr<Node> > ()));
         driver.ast_generator->break_out_of_namespace();
     }
-#line 1204 "parser.tab.cc" // lalr1.cc:859
+#line 1250 "parser.tab.cc" // lalr1.cc:859
     break;
 
   case 13:
-#line 148 "./parser.yy" // lalr1.cc:859
+#line 158 "./parser.yy" // lalr1.cc:859
     {
-        yylhs.value.as< std::shared_ptr<Node> > () = std::move(driver.ast_generator->add_class(yystack_[9].value.as< std::string > (),yystack_[7].value.as< std::vector<std::string> > (),yystack_[2].value.as< std::vector<std::shared_ptr<Node>> > (),yystack_[1].value.as< std::vector<std::shared_ptr<Node>> > ()));
+        yylhs.value.as< std::shared_ptr<Node> > () = std::move(driver.ast_generator->add_class(yystack_[6].value.as< std::string > (),yystack_[4].value.as< std::vector<std::string> > (),yystack_[1].value.as< std::vector<std::shared_ptr<Node>> > (),yystack_[0].value.as< std::vector<std::shared_ptr<Node>> > ()));
         driver.ast_generator->break_out_of_namespace();
     }
-#line 1213 "parser.tab.cc" // lalr1.cc:859
+#line 1259 "parser.tab.cc" // lalr1.cc:859
     break;
 
   case 14:
-#line 154 "./parser.yy" // lalr1.cc:859
+#line 164 "./parser.yy" // lalr1.cc:859
     {
-        yylhs.value.as< std::vector<std::shared_ptr<Node>> > ().push_back(driver.ast_generator->assign(yystack_[3].value.as< std::string > (),std::move(yystack_[1].value.as< std::shared_ptr<Node> > ())));
+        yylhs.value.as< std::vector<std::shared_ptr<Node>> > ().push_back(yystack_[0].value.as< std::shared_ptr<Node> > ());
     }
-#line 1221 "parser.tab.cc" // lalr1.cc:859
+#line 1267 "parser.tab.cc" // lalr1.cc:859
     break;
 
   case 15:
-#line 158 "./parser.yy" // lalr1.cc:859
+#line 168 "./parser.yy" // lalr1.cc:859
+    {
+        yylhs.value.as< std::vector<std::shared_ptr<Node>> > () = std::move(yystack_[1].value.as< std::vector<std::shared_ptr<Node>> > ());
+        yylhs.value.as< std::vector<std::shared_ptr<Node>> > ().push_back(yystack_[0].value.as< std::shared_ptr<Node> > ());
+    }
+#line 1276 "parser.tab.cc" // lalr1.cc:859
+    break;
+
+  case 16:
+#line 175 "./parser.yy" // lalr1.cc:859
+    {
+        yylhs.value.as< std::shared_ptr<Node> > () = driver.ast_generator->add_function(yystack_[7].value.as< std::string > (),std::move(yystack_[5].value.as< std::vector<std::string> > ()),std::move(yystack_[2].value.as< std::vector<std::shared_ptr<Node>> > ()),std::move(yystack_[0].value.as< std::shared_ptr<Node> > ()));
+        driver.ast_generator->break_out_of_namespace();
+    }
+#line 1285 "parser.tab.cc" // lalr1.cc:859
+    break;
+
+  case 17:
+#line 181 "./parser.yy" // lalr1.cc:859
+    {
+        yylhs.value.as< std::vector<std::shared_ptr<Node>> > ().push_back(driver.ast_generator->assign(yystack_[3].value.as< std::string > (),std::move(yystack_[1].value.as< std::shared_ptr<Node> > ())));
+    }
+#line 1293 "parser.tab.cc" // lalr1.cc:859
+    break;
+
+  case 18:
+#line 185 "./parser.yy" // lalr1.cc:859
     {
         yylhs.value.as< std::vector<std::shared_ptr<Node>> > () = std::move(yystack_[4].value.as< std::vector<std::shared_ptr<Node>> > ());
         yylhs.value.as< std::vector<std::shared_ptr<Node>> > ().push_back(driver.ast_generator->assign(yystack_[3].value.as< std::string > (),std::move(yystack_[1].value.as< std::shared_ptr<Node> > ())));
     }
-#line 1230 "parser.tab.cc" // lalr1.cc:859
+#line 1302 "parser.tab.cc" // lalr1.cc:859
     break;
 
-  case 16:
-#line 164 "./parser.yy" // lalr1.cc:859
+  case 19:
+#line 191 "./parser.yy" // lalr1.cc:859
     {
         yylhs.value.as< std::vector<std::string> > ().push_back(yystack_[0].value.as< std::string > ());
         driver.ast_generator->add_argument(yystack_[0].value.as< std::string > ());
     }
-#line 1239 "parser.tab.cc" // lalr1.cc:859
+#line 1311 "parser.tab.cc" // lalr1.cc:859
     break;
 
-  case 17:
-#line 169 "./parser.yy" // lalr1.cc:859
+  case 20:
+#line 196 "./parser.yy" // lalr1.cc:859
     {
         yylhs.value.as< std::vector<std::string> > () = std::move(yystack_[2].value.as< std::vector<std::string> > ());
         yylhs.value.as< std::vector<std::string> > ().push_back(yystack_[0].value.as< std::string > ());
         driver.ast_generator->add_argument(yystack_[0].value.as< std::string > ());
     }
-#line 1249 "parser.tab.cc" // lalr1.cc:859
+#line 1321 "parser.tab.cc" // lalr1.cc:859
     break;
 
-  case 18:
-#line 176 "./parser.yy" // lalr1.cc:859
+  case 21:
+#line 203 "./parser.yy" // lalr1.cc:859
     {
         yylhs.value.as< std::vector<std::shared_ptr<Node>> > ().push_back(std::move(yystack_[0].value.as< std::shared_ptr<Node> > ()));
     }
-#line 1257 "parser.tab.cc" // lalr1.cc:859
+#line 1329 "parser.tab.cc" // lalr1.cc:859
     break;
 
-  case 19:
-#line 180 "./parser.yy" // lalr1.cc:859
+  case 22:
+#line 207 "./parser.yy" // lalr1.cc:859
     {
         yylhs.value.as< std::vector<std::shared_ptr<Node>> > () = std::move(yystack_[2].value.as< std::vector<std::shared_ptr<Node>> > ());
         yylhs.value.as< std::vector<std::shared_ptr<Node>> > ().push_back(std::move(yystack_[0].value.as< std::shared_ptr<Node> > ()));
     }
-#line 1266 "parser.tab.cc" // lalr1.cc:859
-    break;
-
-  case 20:
-#line 186 "./parser.yy" // lalr1.cc:859
-    {
-        std::cout << yystack_[0].value.as< std::vector<std::shared_ptr<Node>> > ().size() << std::endl;
-        yylhs.value.as< std::shared_ptr<Node> > () = std::shared_ptr<Node>(new Node(driver.ast_generator->ir_generator));
-    }
-#line 1275 "parser.tab.cc" // lalr1.cc:859
-    break;
-
-  case 21:
-#line 191 "./parser.yy" // lalr1.cc:859
-    {
-        yylhs.value.as< std::shared_ptr<Node> > () = std::move(yystack_[0].value.as< std::shared_ptr<Node> > ());
-    }
-#line 1283 "parser.tab.cc" // lalr1.cc:859
-    break;
-
-  case 22:
-#line 195 "./parser.yy" // lalr1.cc:859
-    {
-        yylhs.value.as< std::shared_ptr<Node> > () = yystack_[0].value.as< std::shared_ptr<Node> > ();
-    }
-#line 1291 "parser.tab.cc" // lalr1.cc:859
+#line 1338 "parser.tab.cc" // lalr1.cc:859
     break;
 
   case 23:
-#line 199 "./parser.yy" // lalr1.cc:859
+#line 213 "./parser.yy" // lalr1.cc:859
     {
-        yylhs.value.as< std::shared_ptr<Node> > () = driver.ast_generator->attach_operator(std::move(yystack_[2].value.as< std::shared_ptr<Node> > ()),std::move(yystack_[0].value.as< std::shared_ptr<Node> > ()),"+");
+        blawn_state = EXIST_IF;
+        yylhs.value.as< std::shared_ptr<Node> > () = driver.ast_generator->create_if(yystack_[3].value.as< std::shared_ptr<Node> > (),yystack_[1].value.as< std::vector<std::shared_ptr<Node>> > ());
     }
-#line 1299 "parser.tab.cc" // lalr1.cc:859
+#line 1347 "parser.tab.cc" // lalr1.cc:859
     break;
 
   case 24:
-#line 203 "./parser.yy" // lalr1.cc:859
+#line 218 "./parser.yy" // lalr1.cc:859
     {
-        yylhs.value.as< std::shared_ptr<Node> > () = driver.ast_generator->attach_operator(std::move(yystack_[2].value.as< std::shared_ptr<Node> > ()),std::move(yystack_[0].value.as< std::shared_ptr<Node> > ()),"-");
+        if (blawn_state != EXIST_IF)
+        {
+            std::cerr << "Error: If expression is not exist." << std::endl;
+            exit(1);
+        }
+        std::cout << yystack_[1].value.as< std::vector<std::shared_ptr<Node>> > ().size() << std::endl;
+        yylhs.value.as< std::shared_ptr<Node> > () = driver.ast_generator->add_else(yystack_[1].value.as< std::vector<std::shared_ptr<Node>> > ());
+        blawn_state = NO_IF;
     }
-#line 1307 "parser.tab.cc" // lalr1.cc:859
+#line 1362 "parser.tab.cc" // lalr1.cc:859
     break;
 
   case 25:
-#line 207 "./parser.yy" // lalr1.cc:859
+#line 229 "./parser.yy" // lalr1.cc:859
     {
-        yylhs.value.as< std::shared_ptr<Node> > () = driver.ast_generator->attach_operator(std::move(yystack_[2].value.as< std::shared_ptr<Node> > ()),std::move(yystack_[0].value.as< std::shared_ptr<Node> > ()),"*");
+        yylhs.value.as< std::shared_ptr<Node> > () = std::move(yystack_[0].value.as< std::shared_ptr<Node> > ());
     }
-#line 1315 "parser.tab.cc" // lalr1.cc:859
+#line 1370 "parser.tab.cc" // lalr1.cc:859
     break;
 
   case 26:
-#line 211 "./parser.yy" // lalr1.cc:859
+#line 233 "./parser.yy" // lalr1.cc:859
     {
-        yylhs.value.as< std::shared_ptr<Node> > () = driver.ast_generator->attach_operator(std::move(yystack_[2].value.as< std::shared_ptr<Node> > ()),std::move(yystack_[0].value.as< std::shared_ptr<Node> > ()),"/");
+        yylhs.value.as< std::shared_ptr<Node> > () = yystack_[0].value.as< std::shared_ptr<Node> > ();
     }
-#line 1323 "parser.tab.cc" // lalr1.cc:859
+#line 1378 "parser.tab.cc" // lalr1.cc:859
     break;
 
   case 27:
-#line 216 "./parser.yy" // lalr1.cc:859
+#line 237 "./parser.yy" // lalr1.cc:859
+    {
+        yylhs.value.as< std::shared_ptr<Node> > () = driver.ast_generator->attach_operator(std::move(yystack_[2].value.as< std::shared_ptr<Node> > ()),std::move(yystack_[0].value.as< std::shared_ptr<Node> > ()),"+");
+    }
+#line 1386 "parser.tab.cc" // lalr1.cc:859
+    break;
+
+  case 28:
+#line 241 "./parser.yy" // lalr1.cc:859
+    {
+        yylhs.value.as< std::shared_ptr<Node> > () = driver.ast_generator->attach_operator(std::move(yystack_[2].value.as< std::shared_ptr<Node> > ()),std::move(yystack_[0].value.as< std::shared_ptr<Node> > ()),"-");
+    }
+#line 1394 "parser.tab.cc" // lalr1.cc:859
+    break;
+
+  case 29:
+#line 245 "./parser.yy" // lalr1.cc:859
+    {
+        yylhs.value.as< std::shared_ptr<Node> > () = driver.ast_generator->attach_operator(std::move(yystack_[2].value.as< std::shared_ptr<Node> > ()),std::move(yystack_[0].value.as< std::shared_ptr<Node> > ()),"*");
+    }
+#line 1402 "parser.tab.cc" // lalr1.cc:859
+    break;
+
+  case 30:
+#line 249 "./parser.yy" // lalr1.cc:859
+    {
+        yylhs.value.as< std::shared_ptr<Node> > () = driver.ast_generator->attach_operator(std::move(yystack_[2].value.as< std::shared_ptr<Node> > ()),std::move(yystack_[0].value.as< std::shared_ptr<Node> > ()),"/");
+    }
+#line 1410 "parser.tab.cc" // lalr1.cc:859
+    break;
+
+  case 31:
+#line 254 "./parser.yy" // lalr1.cc:859
     {
         yylhs.value.as< std::shared_ptr<Node> > () = driver.ast_generator->assign(yystack_[2].value.as< std::string > (),std::move(yystack_[0].value.as< std::shared_ptr<Node> > ()));
         //std::cout << "new variable:" << std::move($1) <<"  type:" << (type->type_name) << "\n";
     }
-#line 1332 "parser.tab.cc" // lalr1.cc:859
-    break;
-
-  case 28:
-#line 222 "./parser.yy" // lalr1.cc:859
-    {
-        yylhs.value.as< std::shared_ptr<Node> > () = yystack_[0].value.as< std::shared_ptr<Node> > ();
-    }
-#line 1340 "parser.tab.cc" // lalr1.cc:859
-    break;
-
-  case 29:
-#line 226 "./parser.yy" // lalr1.cc:859
-    {
-        yylhs.value.as< std::shared_ptr<Node> > () = driver.ast_generator->create_float(yystack_[0].value.as< double > ());
-    }
-#line 1348 "parser.tab.cc" // lalr1.cc:859
-    break;
-
-  case 30:
-#line 230 "./parser.yy" // lalr1.cc:859
-    { 
-        yylhs.value.as< std::shared_ptr<Node> > () = driver.ast_generator->create_integer(yystack_[0].value.as< long long > ());
-    }
-#line 1356 "parser.tab.cc" // lalr1.cc:859
-    break;
-
-  case 31:
-#line 234 "./parser.yy" // lalr1.cc:859
-    {
-        yylhs.value.as< std::shared_ptr<Node> > () = std::move(yystack_[0].value.as< std::shared_ptr<Node> > ());
-    }
-#line 1364 "parser.tab.cc" // lalr1.cc:859
+#line 1419 "parser.tab.cc" // lalr1.cc:859
     break;
 
   case 32:
-#line 239 "./parser.yy" // lalr1.cc:859
+#line 260 "./parser.yy" // lalr1.cc:859
     {
-        yylhs.value.as< std::shared_ptr<Node> > () = driver.ast_generator->create_call(yystack_[3].value.as< std::string > (),std::move(yystack_[1].value.as< std::vector<std::shared_ptr<Node>> > ()));
+        yylhs.value.as< std::shared_ptr<Node> > () = yystack_[0].value.as< std::shared_ptr<Node> > ();
     }
-#line 1372 "parser.tab.cc" // lalr1.cc:859
+#line 1427 "parser.tab.cc" // lalr1.cc:859
     break;
 
   case 33:
-#line 244 "./parser.yy" // lalr1.cc:859
+#line 264 "./parser.yy" // lalr1.cc:859
+    {
+        yylhs.value.as< std::shared_ptr<Node> > () = driver.ast_generator->create_float(yystack_[0].value.as< double > ());
+    }
+#line 1435 "parser.tab.cc" // lalr1.cc:859
+    break;
+
+  case 34:
+#line 268 "./parser.yy" // lalr1.cc:859
+    { 
+        yylhs.value.as< std::shared_ptr<Node> > () = driver.ast_generator->create_integer(yystack_[0].value.as< long long > ());
+    }
+#line 1443 "parser.tab.cc" // lalr1.cc:859
+    break;
+
+  case 35:
+#line 272 "./parser.yy" // lalr1.cc:859
+    {
+        yylhs.value.as< std::shared_ptr<Node> > () = std::move(yystack_[0].value.as< std::shared_ptr<Node> > ());
+    }
+#line 1451 "parser.tab.cc" // lalr1.cc:859
+    break;
+
+  case 36:
+#line 277 "./parser.yy" // lalr1.cc:859
+    {
+        yylhs.value.as< std::shared_ptr<Node> > () = driver.ast_generator->create_call(yystack_[3].value.as< std::string > (),std::move(yystack_[1].value.as< std::vector<std::shared_ptr<Node>> > ()));
+    }
+#line 1459 "parser.tab.cc" // lalr1.cc:859
+    break;
+
+  case 37:
+#line 282 "./parser.yy" // lalr1.cc:859
     {
         yylhs.value.as< std::shared_ptr<Node> > () = driver.ast_generator->get_named_value(yystack_[0].value.as< std::string > ());
     }
-#line 1380 "parser.tab.cc" // lalr1.cc:859
+#line 1467 "parser.tab.cc" // lalr1.cc:859
+    break;
+
+  case 38:
+#line 286 "./parser.yy" // lalr1.cc:859
+    {
+        yylhs.value.as< std::shared_ptr<Node> > () = std::move(yystack_[0].value.as< std::shared_ptr<Node> > ());
+    }
+#line 1475 "parser.tab.cc" // lalr1.cc:859
+    break;
+
+  case 39:
+#line 291 "./parser.yy" // lalr1.cc:859
+    {
+        yylhs.value.as< std::shared_ptr<Node> > () = driver.ast_generator->create_access(yystack_[2].value.as< std::string > (),yystack_[0].value.as< std::string > ());
+    }
+#line 1483 "parser.tab.cc" // lalr1.cc:859
+    break;
+
+  case 40:
+#line 295 "./parser.yy" // lalr1.cc:859
+    {
+        yylhs.value.as< std::shared_ptr<Node> > () = driver.ast_generator->create_access(yystack_[2].value.as< std::shared_ptr<Node> > (),yystack_[0].value.as< std::string > ());
+    }
+#line 1491 "parser.tab.cc" // lalr1.cc:859
     break;
 
 
-#line 1384 "parser.tab.cc" // lalr1.cc:859
+#line 1495 "parser.tab.cc" // lalr1.cc:859
             default:
               break;
             }
@@ -1546,106 +1657,116 @@ namespace Blawn {
   }
 
 
-  const signed char Parser::yypact_ninf_ = -38;
+  const signed char Parser::yypact_ninf_ = -58;
 
   const signed char Parser::yytable_ninf_ = -1;
 
   const signed char
   Parser::yypact_[] =
   {
-      55,    -7,     6,    -6,    14,   -38,   -38,    30,   -38,    55,
-     -38,     5,   -38,   -38,   -38,    57,   -38,   -38,   -38,   -38,
-      23,    23,    14,    14,    -3,   -38,   -38,   -38,   -38,    14,
-      14,    14,    14,   -38,   -13,    16,    57,    25,    57,    55,
-       1,     1,   -38,   -38,    28,    17,    21,    14,   -38,   -38,
-     -38,    55,    29,    57,    12,    24,    14,    44,    57,    47,
-      46,    14,    51,    36,    66,    14,   -38,   -38,    72,   -38
+      64,   -15,    -7,    26,    61,     2,   -58,   -58,    19,   -58,
+      64,   -58,     7,   -58,   -58,   -58,    65,   -58,   -58,   -58,
+     -58,    33,    36,    36,    61,    43,    61,    -2,    64,   -58,
+     -58,   -58,   -58,    61,    61,    61,    61,    44,   -58,    -5,
+       6,    65,   -58,    29,    65,    64,    50,    24,    24,   -58,
+     -58,   -58,    53,    48,    54,    61,   -58,    67,   -58,   -58,
+      64,    74,    65,   -58,    12,    80,     0,    61,    61,    81,
+      88,    96,   -58,    65,    45,    36,    61,   -58,   -58,    78,
+      82,    76,   -58,    64,    38,    61,    65
   };
 
   const unsigned char
   Parser::yydefact_[] =
   {
-       0,     0,     0,    33,     0,    30,    29,     0,     2,     3,
-       4,     0,     9,    10,    11,     8,    22,    21,    28,    31,
-       0,     0,     0,     0,     0,     1,     5,     7,     6,     0,
-       0,     0,     0,    16,     0,     0,    27,     0,    18,     0,
-      23,    24,    25,    26,     0,     0,     0,     0,    32,    20,
-      17,     0,     0,    19,     0,     0,     0,     0,    12,     0,
-       0,     0,     0,     0,     0,     0,    13,    14,     0,    15
+       0,     0,     0,    37,     0,     0,    34,    33,     0,     2,
+       3,     4,     0,     9,    10,    11,     8,    26,    25,    32,
+      35,    38,     0,     0,     0,     0,     0,     0,     0,     1,
+       5,     7,     6,     0,     0,     0,     0,     0,    19,     0,
+       0,    31,    39,     0,    21,     0,     0,    27,    28,    29,
+      30,    40,     0,     0,     0,     0,    36,     0,    24,    20,
+       0,     0,    22,    23,     0,     0,     0,     0,     0,     0,
+       0,    13,    14,    12,     0,     0,     0,    15,    17,     0,
+       0,     0,    18,     0,     0,     0,    16
   };
 
   const signed char
   Parser::yypgoto_[] =
   {
-     -38,   -38,   -37,    11,    -8,   -38,   -38,   -38,   -38,   -38,
-      43,   -38,    -4,   -38,   -38,   -38,   -38
+     -58,   -58,   -22,   -57,    -9,   -58,   -58,   -58,   -58,   -58,
+      32,   -58,   -21,   -58,    -4,   -58,   -58,   -58,   -58,   -58
   };
 
   const signed char
   Parser::yydefgoto_[] =
   {
-      -1,     7,     8,     9,    10,    11,    12,    13,    14,    60,
-      34,    37,    15,    16,    17,    18,    19
+      -1,     8,     9,    10,    11,    12,    13,    14,    15,    71,
+      72,    66,    39,    43,    16,    17,    18,    19,    20,    21
   };
 
   const unsigned char
   Parser::yytable_[] =
   {
-      24,    26,    49,    22,    44,    27,    45,    29,    30,    31,
-      32,    20,    23,    31,    32,     1,     2,    56,    36,    38,
-       3,    39,     3,    63,    21,    40,    41,    42,    43,    28,
-      25,    33,     4,    44,     4,    46,    50,     5,     6,     5,
-       6,    51,    47,    53,    48,    52,    26,    55,    57,     1,
-       2,    59,    58,    62,     3,    66,    61,    64,     1,     2,
-      65,    68,    54,     3,    35,     0,     4,    29,    30,    31,
-      32,     5,     6,     0,     0,     4,    29,    30,    31,    32,
-       5,     6,    29,    30,    31,    32,     0,     0,     0,     0,
-      67,     0,     0,     0,     0,     0,    69
+      27,    30,    40,    64,    69,    22,    46,    31,    70,    33,
+      34,    35,    36,    23,    52,     1,    53,     2,    67,    29,
+      41,     3,    44,    57,    45,    52,    84,    54,    28,    47,
+      48,    49,    50,    32,     4,     5,    24,    35,    36,     6,
+       7,     1,    25,     2,    85,    38,    26,     3,    55,    37,
+      56,    62,    42,    51,    79,    30,    33,    34,    35,    36,
+       4,     5,    59,    73,    74,     6,     7,     1,    58,     2,
+       3,    78,    80,     3,    60,    30,    33,    34,    35,    36,
+      61,    86,    65,     4,     5,    63,     4,     5,     6,     7,
+      68,     6,     7,    33,    34,    35,    36,    52,    76,    81,
+      69,    75,    83,    77,     0,     0,     0,     0,    82
   };
 
   const signed char
   Parser::yycheck_[] =
   {
-       4,     9,    39,     9,    17,     0,    19,    10,    11,    12,
-      13,    18,    18,    12,    13,     3,     4,     5,    22,    23,
-       8,    24,     8,    60,    18,    29,    30,    31,    32,    24,
-       0,     8,    20,    17,    20,    19,     8,    25,    26,    25,
-      26,    24,    17,    47,    19,    24,    54,    18,    24,     3,
-       4,     7,    56,     7,     8,    19,     9,    61,     3,     4,
-       9,    65,    51,     8,    21,    -1,    20,    10,    11,    12,
-      13,    25,    26,    -1,    -1,    20,    10,    11,    12,    13,
-      25,    26,    10,    11,    12,    13,    -1,    -1,    -1,    -1,
-      24,    -1,    -1,    -1,    -1,    -1,    24
+       4,    10,    23,    60,     4,    20,    28,     0,     8,    11,
+      12,    13,    14,    20,    19,     3,    21,     5,     6,     0,
+      24,     9,    26,    45,    26,    19,    83,    21,    26,    33,
+      34,    35,    36,    26,    22,    23,    10,    13,    14,    27,
+      28,     3,    16,     5,     6,     9,    20,     9,    19,    16,
+      21,    55,     9,     9,    75,    64,    11,    12,    13,    14,
+      22,    23,     9,    67,    68,    27,    28,     3,    18,     5,
+       9,    26,    76,     9,    26,    84,    11,    12,    13,    14,
+      26,    85,     8,    22,    23,    18,    22,    23,    27,    28,
+      10,    27,    28,    11,    12,    13,    14,    19,    10,    21,
+       4,    20,    26,    71,    -1,    -1,    -1,    -1,    26
   };
 
   const unsigned char
   Parser::yystos_[] =
   {
-       0,     3,     4,     8,    20,    25,    26,    29,    30,    31,
-      32,    33,    34,    35,    36,    40,    41,    42,    43,    44,
-      18,    18,     9,    18,    40,     0,    32,     0,    24,    10,
-      11,    12,    13,     8,    38,    38,    40,    39,    40,    24,
-      40,    40,    40,    40,    17,    19,    19,    17,    19,    30,
-       8,    24,    24,    40,    31,    18,     5,    24,    40,     7,
-      37,     9,     7,    30,    40,     9,    19,    24,    40,    24
+       0,     3,     5,     9,    22,    23,    27,    28,    31,    32,
+      33,    34,    35,    36,    37,    38,    44,    45,    46,    47,
+      48,    49,    20,    20,    10,    16,    20,    44,    26,     0,
+      34,     0,    26,    11,    12,    13,    14,    16,     9,    42,
+      42,    44,     9,    43,    44,    26,    32,    44,    44,    44,
+      44,     9,    19,    21,    21,    19,    21,    32,    18,     9,
+      26,    26,    44,    18,    33,     8,    41,     6,    10,     4,
+       8,    39,    40,    44,    44,    20,    10,    40,    26,    42,
+      44,    21,    26,    26,    33,     6,    44
   };
 
   const unsigned char
   Parser::yyr1_[] =
   {
-       0,    28,    29,    30,    31,    31,    32,    32,    33,    33,
-      34,    34,    35,    36,    37,    37,    38,    38,    39,    39,
-      40,    40,    40,    40,    40,    40,    40,    41,    42,    42,
-      42,    42,    43,    44
+       0,    30,    31,    32,    33,    33,    34,    34,    35,    35,
+      36,    36,    37,    38,    39,    39,    40,    41,    41,    42,
+      42,    43,    43,    44,    44,    44,    44,    44,    44,    44,
+      44,    45,    46,    46,    46,    46,    47,    48,    48,    49,
+      49
   };
 
   const unsigned char
   Parser::yyr2_[] =
   {
        0,     2,     1,     1,     1,     2,     2,     2,     1,     1,
-       1,     1,     8,    10,     4,     5,     1,     3,     1,     3,
-       4,     1,     1,     3,     3,     3,     3,     3,     1,     1,
-       1,     1,     4,     1
+       1,     1,     8,     7,     1,     2,     8,     4,     5,     1,
+       3,     1,     3,     5,     4,     1,     1,     3,     3,     3,
+       3,     3,     1,     1,     1,     1,     4,     1,     1,     3,
+       3
   };
 
 
@@ -1656,24 +1777,26 @@ namespace Blawn {
   const Parser::yytname_[] =
   {
   "\"end of file\"", "error", "$undefined", "FUNCTION_DEFINITION",
-  "CLASS_DEFINITION", "RETURN", "C_FUNCTION", "MEMBER_IDENTIFIER",
-  "IDENTIFIER", "EQUAL", "PLUS", "MINUS", "ASTERISK", "SLASH", "USE",
-  "COLON", "SEMICOLON", "COMMA", "LEFT_PARENTHESIS", "RIGHT_PARENTHESIS",
-  "IF", "ELSE", "FOR", "WHILE", "EOL", "INT_LITERAL", "FLOAT_LITERAL",
-  "STRING_LITERAL", "$accept", "program", "block", "lines", "line",
-  "line_content", "definition", "function_definition", "class_definition",
-  "members_definition", "definition_arguments", "expressions",
-  "expression", "assign_variable", "monomial", "call", "variable", YY_NULLPTR
+  "METHOD_DEFINITION", "CLASS_DEFINITION", "RETURN", "C_FUNCTION",
+  "MEMBER_IDENTIFIER", "IDENTIFIER", "EQUAL", "PLUS", "MINUS", "ASTERISK",
+  "SLASH", "USE", "DOT", "COLON", "SEMICOLON", "COMMA", "LEFT_PARENTHESIS",
+  "RIGHT_PARENTHESIS", "IF", "ELSE", "FOR", "WHILE", "EOL", "INT_LITERAL",
+  "FLOAT_LITERAL", "STRING_LITERAL", "$accept", "program", "block",
+  "lines", "line", "line_content", "definition", "function_definition",
+  "class_definition", "methods", "method_definition", "members_definition",
+  "definition_arguments", "expressions", "expression", "assign_variable",
+  "monomial", "call", "variable", "accessing", YY_NULLPTR
   };
 
 
-  const unsigned char
+  const unsigned short int
   Parser::yyrline_[] =
   {
-       0,    93,    93,    99,   104,   108,   114,   118,   123,   127,
-     132,   136,   141,   147,   153,   157,   163,   168,   175,   179,
-     185,   190,   194,   198,   202,   206,   210,   215,   221,   225,
-     229,   233,   238,   243
+       0,   103,   103,   109,   114,   118,   124,   128,   133,   137,
+     142,   146,   151,   157,   163,   167,   174,   180,   184,   190,
+     195,   202,   206,   212,   217,   228,   232,   236,   240,   244,
+     248,   253,   259,   263,   267,   271,   276,   281,   285,   290,
+     294
   };
 
   // Print the state stack on the debug stream.
@@ -1742,9 +1865,9 @@ namespace Blawn {
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
        5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
       15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
-      25,    26,    27
+      25,    26,    27,    28,    29
     };
-    const unsigned int user_token_number_max_ = 282;
+    const unsigned int user_token_number_max_ = 284;
     const token_number_type undef_token_ = 2;
 
     if (static_cast<int>(t) <= yyeof_)
@@ -1757,8 +1880,8 @@ namespace Blawn {
 
 #line 5 "./parser.yy" // lalr1.cc:1167
 } // Blawn
-#line 1761 "parser.tab.cc" // lalr1.cc:1167
-#line 247 "./parser.yy" // lalr1.cc:1168
+#line 1884 "parser.tab.cc" // lalr1.cc:1167
+#line 298 "./parser.yy" // lalr1.cc:1168
 
 
 void Blawn::Parser::error( const location_type &l, const std::string &err_message )

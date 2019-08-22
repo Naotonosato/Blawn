@@ -1,4 +1,40 @@
+function add(l,r)
+    sum = l + r
+    return sum
 function f(arg)
-    res = arg * 2
-    return f(res)
+    res = add(arg * 2,arg)
+    return res
+
 f(1)
+
+class In(ar)
+    @inmem = ar
+    @function inf(aa)
+        0
+        return 0
+
+class T(a)
+    @mt = In(0)
+    @function mem(argmem)
+        res = 0
+        return 0
+
+class C(arg)
+    @mem = add(0.1,0)
+    @mem2 = arg / 2
+    @i = T(0)
+    @function method(arg1,arg2)
+        res = arg1 * arg2
+        return res
+
+
+instance = C(2)
+if 0
+    add(0,0)
+    ;
+else 
+    f(0.01)
+    ;
+f(7)
+i = C(0)
+e = i.i.mt.inmem

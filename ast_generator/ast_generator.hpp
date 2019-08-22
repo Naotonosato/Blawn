@@ -26,10 +26,11 @@ private:
     llvm::Module &module;
     llvm::IRBuilder<> &ir_builder;
     llvm::LLVMContext &context;
-    std::shared_ptr<NodeCollector<VariableNode>> variable_collector;
-    std::shared_ptr<NodeCollector<FunctionNode>> function_collector;
-    std::shared_ptr<NodeCollector<ArgumentNode>> argument_collector;
-     std::shared_ptr<NodeCollector<ClassNode>> class_collector;
+    NodeCollector<VariableNode> variable_collector;
+    NodeCollector<FunctionNode> function_collector;
+    NodeCollector<ArgumentNode> argument_collector;
+    NodeCollector<ClassNode> class_collector;
+    NodeCollector<IfNode> if_collector;
     std::map<std::string,std::shared_ptr<VariableNode>&> access_namespace(std::vector<std::string>);
 public:
     IRGenerator ir_generator;
@@ -43,6 +44,9 @@ public:
     CallFunctionIRGenerator calling_generator;
     ClassIRGenerator class_generator;
     CallConstructorIRGenerator call_constructor_generator;
+    IfIRGenerator if_generator;
+    AccessIRGenerator access_generator;
+    
     ASTGenerator(llvm::Module &module,
     llvm::IRBuilder<> &ir_builder,
     llvm::LLVMContext &context);
@@ -56,7 +60,11 @@ public:
     std::unique_ptr<FloatNode> create_float(double num);
     void book_function(std::string name);
     std::shared_ptr<FunctionNode> add_function(std::string name,std::vector<std::string> arguments,std::vector<std::shared_ptr<Node>> body,std::shared_ptr<Node> return_value);
-    std::unique_ptr<Node> create_call(std::string name,std::vector<std::shared_ptr<Node>> arguments);
+    std::unique_ptr<Node> create_call(std::string name,std::vector<std::shared_ptr<Node>> passedarguments);
     std::shared_ptr<ClassNode> add_class(std::string,std::vector<std::string> arguments,std::vector<std::shared_ptr<Node>> members_definition,std::vector<std::shared_ptr<Node>> body);
+    std::shared_ptr<Node> create_if(std::shared_ptr<Node>,std::vector<std::shared_ptr<Node>>);
+    std::shared_ptr<Node> add_else(std::vector<std::shared_ptr<Node>>);
+    std::shared_ptr<Node> create_access(std::string left,std::string right);
+    std::shared_ptr<Node> create_access(std::shared_ptr<Node> left,std::string right);
     void generate(std::vector<std::shared_ptr<Node>>);
 };

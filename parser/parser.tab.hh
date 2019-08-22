@@ -62,8 +62,7 @@
     #  endif
     # endif
 
-
-#line 67 "parser.tab.hh" // lalr1.cc:377
+#line 66 "parser.tab.hh" // lalr1.cc:377
 
 # include <cassert>
 # include <cstdlib> // std::abort
@@ -140,7 +139,7 @@
 
 #line 5 "./parser.yy" // lalr1.cc:377
 namespace Blawn {
-#line 144 "parser.tab.hh" // lalr1.cc:377
+#line 143 "parser.tab.hh" // lalr1.cc:377
 
 
 
@@ -318,14 +317,17 @@ namespace Blawn {
       // definition
       // function_definition
       // class_definition
+      // method_definition
       // expression
       // assign_variable
       // monomial
       // call
       // variable
+      // accessing
       char dummy3[sizeof(std::shared_ptr<Node>)];
 
       // FUNCTION_DEFINITION
+      // METHOD_DEFINITION
       // CLASS_DEFINITION
       // C_FUNCTION
       // MEMBER_IDENTIFIER
@@ -335,6 +337,7 @@ namespace Blawn {
 
       // block
       // lines
+      // methods
       // members_definition
       // expressions
       char dummy5[sizeof(std::vector<std::shared_ptr<Node>>)];
@@ -365,30 +368,32 @@ namespace Blawn {
       {
         END = 0,
         FUNCTION_DEFINITION = 258,
-        CLASS_DEFINITION = 259,
-        RETURN = 260,
-        C_FUNCTION = 261,
-        MEMBER_IDENTIFIER = 262,
-        IDENTIFIER = 263,
-        EQUAL = 264,
-        PLUS = 265,
-        MINUS = 266,
-        ASTERISK = 267,
-        SLASH = 268,
-        USE = 269,
-        COLON = 270,
-        SEMICOLON = 271,
-        COMMA = 272,
-        LEFT_PARENTHESIS = 273,
-        RIGHT_PARENTHESIS = 274,
-        IF = 275,
-        ELSE = 276,
-        FOR = 277,
-        WHILE = 278,
-        EOL = 279,
-        INT_LITERAL = 280,
-        FLOAT_LITERAL = 281,
-        STRING_LITERAL = 282
+        METHOD_DEFINITION = 259,
+        CLASS_DEFINITION = 260,
+        RETURN = 261,
+        C_FUNCTION = 262,
+        MEMBER_IDENTIFIER = 263,
+        IDENTIFIER = 264,
+        EQUAL = 265,
+        PLUS = 266,
+        MINUS = 267,
+        ASTERISK = 268,
+        SLASH = 269,
+        USE = 270,
+        DOT = 271,
+        COLON = 272,
+        SEMICOLON = 273,
+        COMMA = 274,
+        LEFT_PARENTHESIS = 275,
+        RIGHT_PARENTHESIS = 276,
+        IF = 277,
+        ELSE = 278,
+        FOR = 279,
+        WHILE = 280,
+        EOL = 281,
+        INT_LITERAL = 282,
+        FLOAT_LITERAL = 283,
+        STRING_LITERAL = 284
       };
     };
 
@@ -515,6 +520,10 @@ namespace Blawn {
 
     static inline
     symbol_type
+    make_METHOD_DEFINITION (const std::string& v, const location_type& l);
+
+    static inline
+    symbol_type
     make_CLASS_DEFINITION (const std::string& v, const location_type& l);
 
     static inline
@@ -556,6 +565,10 @@ namespace Blawn {
     static inline
     symbol_type
     make_USE (const location_type& l);
+
+    static inline
+    symbol_type
+    make_DOT (const location_type& l);
 
     static inline
     symbol_type
@@ -712,7 +725,7 @@ namespace Blawn {
     static const char* const yytname_[];
 
   // YYRLINE[YYN] -- Source line where rule number YYN was defined.
-  static const unsigned char yyrline_[];
+  static const unsigned short int yyrline_[];
     /// Report on the debug stream that the rule \a r is going to be reduced.
     virtual void yy_reduce_print_ (int r);
     /// Print the state stack on the debug stream.
@@ -811,12 +824,12 @@ namespace Blawn {
     enum
     {
       yyeof_ = 0,
-      yylast_ = 96,     ///< Last index in yytable_.
-      yynnts_ = 17,  ///< Number of nonterminal symbols.
-      yyfinal_ = 25, ///< Termination state number.
+      yylast_ = 108,     ///< Last index in yytable_.
+      yynnts_ = 20,  ///< Number of nonterminal symbols.
+      yyfinal_ = 29, ///< Termination state number.
       yyterror_ = 1,
       yyerrcode_ = 256,
-      yyntokens_ = 28  ///< Number of tokens.
+      yyntokens_ = 30  ///< Number of tokens.
     };
 
 
@@ -828,7 +841,7 @@ namespace Blawn {
 
 #line 5 "./parser.yy" // lalr1.cc:377
 } // Blawn
-#line 832 "parser.tab.hh" // lalr1.cc:377
+#line 845 "parser.tab.hh" // lalr1.cc:377
 
 
 

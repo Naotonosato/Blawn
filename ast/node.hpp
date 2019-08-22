@@ -56,6 +56,7 @@ class IntegerNode:public Node
         ):Node(ir_generator){}
 };
 
+
 class FloatNode:public Node
 {
     public:
@@ -63,6 +64,16 @@ class FloatNode:public Node
         FloatIRGenerator& ir_generator
         ):Node(ir_generator){}
 };
+
+
+class StringNode:public Node
+{
+    public:
+    StringNode(
+        StringIRGenerator& ir_generator
+        ):Node(ir_generator){}
+};
+
 
 class VariableNode: public Node
 {
@@ -160,26 +171,6 @@ public:
 };
 
 
-class UnsolvedFunctionNode:public Node
-{
-};
-
-
-class CallUnsolvedFunctionNode:public Node
-{
-    private:
-    NodeCollector<FunctionNode>& function_collector;
-    std::vector<std::shared_ptr<Node>> passed_arguments;
-    public:
-    CallUnsolvedFunctionNode(
-        CallUnsolvedFunctionIRGenerator& ir_generator,
-        NodeCollector<Function>& function_collector,
-        std::vector<std::shared_ptr<Node>> passed_arguments
-        ):Node(ir_generator),function_collector(function_collector),
-        passed_arguments(passed_arguments){}
-};
-
-
 class CallFunctionNode: public Node
 {
     public:
@@ -257,4 +248,43 @@ class CallConstructorNode:public Node
     void set_destructor(llvm::Function* destructor_,llvm::Value* instance){destructor = std::make_pair(destructor_,instance);}
     std::pair<llvm::Function*,llvm::Value*> get_destructor(){return destructor;}
     bool is_calling_constructor() override{return true;}
+};
+
+
+class IfNode: public Node
+{
+    private:
+    std::shared_ptr<Node> conditions;
+    std::vector<std::shared_ptr<Node>> if_body;
+    std::vector<std::shared_ptr<Node>> else_body;
+    public:
+    IfNode(
+        IfIRGenerator& ir_generator,
+        std::shared_ptr<Node> conditions,
+        std::vector<std::shared_ptr<Node>> if_body,
+        std::vector<std::shared_ptr<Node>> else_body
+        )
+    :Node(ir_generator),conditions(conditions),
+    if_body(if_body),else_body(else_body){}
+    std::shared_ptr<Node> get_conditions(){return conditions;}
+    std::vector<std::shared_ptr<Node>> get_if_body(){return if_body;}
+    std::vector<std::shared_ptr<Node>> get_else_body(){return else_body;}
+    void set_else_body(std::vector<std::shared_ptr<Node>> body){else_body = body;}
+};
+
+
+class AccessNode:public Node
+{
+    private:
+    std::shared_ptr<Node> left_node;
+    std::string right_name;
+    public:
+    AccessNode(
+        AccessIRGenerator& ir_generator,
+        std::shared_ptr<Node> left_node,
+        std::string right_name
+        ):Node(ir_generator),left_node(left_node),
+        right_name(right_name){}
+    std::shared_ptr<Node> get_left_node(){return left_node;}
+    std::string get_right_name(){return right_name;}
 };

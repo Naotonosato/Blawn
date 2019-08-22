@@ -1,6 +1,6 @@
 {
 	
-	"C_Cpp.errorSquiggles": "Enabled",	
+	"C_Cpp.errorSquiggles": "EnabledIfIncludesResolve",	
 	"terminal.integrated.shell.windows": "C:\\WINDOWS\\System32\\wsl.exe",
 		"files.associations": {
 			"array": "cpp",

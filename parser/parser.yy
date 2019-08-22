@@ -27,7 +27,6 @@
     #   define YY_NULLPTR 0
     #  endif
     # endif
-
 }
 
 %parse-param { Scanner  &scanner  }
@@ -41,12 +40,19 @@
     #include "driver.hpp"
     #undef yylex
     #define yylex scanner.yylex
+    enum BLAWN_STATE
+    {
+        EXIST_IF = 0,
+        NO_IF = 1
+    };
+    BLAWN_STATE blawn_state = NO_IF;
 }
 
 %define api.value.type variant
 %define parse.assert
 %token END 0 "end of file" 
 %token <std::string> FUNCTION_DEFINITION
+%token <std::string> METHOD_DEFINITION
 %token <std::string> CLASS_DEFINITION
 %token  RETURN
 %token <std::string> C_FUNCTION
@@ -55,7 +61,8 @@
 %right EQUAL
 %left PLUS MINUS
 %left ASTERISK SLASH
-%token   USE
+%token  USE
+        DOT
         COLON
         SEMICOLON
         COMMA
@@ -77,6 +84,8 @@
 %type <std::shared_ptr<Node>> assign_variable
 %type <std::shared_ptr<Node>> function_definition
 %type <std::shared_ptr<Node>> class_definition
+%type <std::vector<std::shared_ptr<Node>>> methods
+%type <std::shared_ptr<Node>> method_definition
 %type <std::vector<std::shared_ptr<Node>>> members_definition
 %type <std::vector<std::string>> definition_arguments
 %type <std::vector<std::shared_ptr<Node>>> expressions
@@ -84,6 +93,7 @@
 %type <std::shared_ptr<Node>> call
 %type <std::shared_ptr<Node>> monomial
 %type <std::shared_ptr<Node>> variable
+%type <std::shared_ptr<Node>> accessing
 
 /*std::vector<Type> members_type;
         std::unique_ptr<Type> type = std::make_shared<Type>("FLOAT",members_type);
@@ -144,9 +154,26 @@ function_definition:
         driver.ast_generator->break_out_of_namespace();
     };
 class_definition:
-    CLASS_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL LEFT_PARENTHESIS EOL members_definition block RIGHT_PARENTHESIS
+    CLASS_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL members_definition methods
     {
-        $$ = std::move(driver.ast_generator->add_class($1,$3,$8,$9));
+        $$ = std::move(driver.ast_generator->add_class($1,$3,$6,$7));
+        driver.ast_generator->break_out_of_namespace();
+    };
+methods:
+    method_definition
+    {
+        $$.push_back($1);
+    }
+    |methods method_definition
+    {
+        $$ = std::move($1);
+        $$.push_back($2);
+    }
+    ;
+method_definition:
+    METHOD_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL lines RETURN expression
+    {
+        $$ = driver.ast_generator->add_function($1,std::move($3),std::move($6),std::move($8));
         driver.ast_generator->break_out_of_namespace();
     };
 members_definition:
@@ -182,10 +209,21 @@ expressions:
         $$.push_back(std::move($3));
     };
 expression:
-    IF expression EOL block
+    IF expression EOL block SEMICOLON
     {
-        std::cout << $4.size() << std::endl;
-        $$ = std::shared_ptr<Node>(new Node(driver.ast_generator->ir_generator));
+        blawn_state = EXIST_IF;
+        $$ = driver.ast_generator->create_if($2,$4);
+    }
+    |ELSE EOL block SEMICOLON
+    {
+        if (blawn_state != EXIST_IF)
+        {
+            std::cerr << "Error: If expression is not exist." << std::endl;
+            exit(1);
+        }
+        std::cout << $3.size() << std::endl;
+        $$ = driver.ast_generator->add_else($3);
+        blawn_state = NO_IF;
     }
     |monomial
     {
@@ -243,6 +281,19 @@ variable:
     IDENTIFIER
     {
         $$ = driver.ast_generator->get_named_value($1);
+    }
+    |accessing
+    {
+        $$ = std::move($1);
+    };
+accessing:
+    IDENTIFIER DOT IDENTIFIER
+    {
+        $$ = driver.ast_generator->create_access($1,$3);
+    }
+    |accessing DOT IDENTIFIER
+    {
+        $$ = driver.ast_generator->create_access($1,$3);
     };
 %%
 
