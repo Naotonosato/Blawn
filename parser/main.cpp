@@ -35,13 +35,10 @@ int main(int argc, char** argv)
 
     auto ast_generator = std::make_unique<ASTGenerator>(*module,*ir_builder,*context);
     Blawn::Driver* driver = new Blawn::Driver(std::move(ast_generator));
-    //std::cout << "start compile.\n";
     driver->parse("../test/test_parsing/test1.blawn");
     auto zero = llvm::ConstantInt::get(*context, llvm::APInt(8,0));
     ir_builder->CreateRet(zero);
-    //std::cout << "done.\n";
     llvm::verifyModule(*module,&llvm::outs());
-    std::cout << std::endl;
     std::error_code error;
     llvm::raw_fd_ostream stream("result.ll",error,llvm::sys::fs::OpenFlags::F_None);
     module->print(stream,nullptr);

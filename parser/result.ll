@@ -1,6 +1,7 @@
 ; ModuleID = 'Blawn'
 source_filename = "Blawn"
 
+%struct.String = type { i8*, i64 }
 %C = type { %T*, i64 }
 %T = type { i64 }
 
@@ -8,7 +9,9 @@ declare i64* @malloc(i64)
 
 declare void @free(i64*)
 
-declare void @putchar(i64)
+declare %struct.String* @string_constructor(i8*, i64)
+
+declare void @add_string(%struct.String*, %struct.String*)
 
 define i8 @main() {
 entry:
@@ -31,11 +34,25 @@ entry:
   %t = alloca i64
   store i64 %12, i64* %t
   %13 = load i64, i64* %t
-  call void @putchar(i64 %13)
+  store i64 100, i64* %t
+  %14 = load i64, i64* %t
+  %15 = load %C*, %C** %o
+  %16 = getelementptr inbounds %C, %C* %15, i32 0, i32 0
+  %17 = load %T*, %T** %16
+  %18 = getelementptr inbounds %T, %T* %17, i32 0, i32 0
+  %19 = load i64, i64* %18
+  %20 = sitofp i64 %19 to double
+  %21 = fdiv double %20, 0.000000e+00
   ret i8 0
 }
 
+declare void @add()
 
+declare void @twice()
+
+declare void @T()
+
+declare void @C()
 
 define i64 @add.5(i64 %l, i64 %r) {
 entry:

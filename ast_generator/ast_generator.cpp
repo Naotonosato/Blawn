@@ -8,7 +8,6 @@
 #include "ast_generator.hpp"
 
 
-
 ASTGenerator::ASTGenerator(
     llvm::Module &module,
     llvm::IRBuilder<> &ir_builder,
@@ -38,9 +37,18 @@ access_generator(context,module,ir_builder)
 
 void ASTGenerator::generate(std::vector<std::shared_ptr<Node>> all)
 {
+    std::vector<std::string> top = {"TOP"};
     for (auto& line:all)
     {
         line->generate();
+    }
+    for (auto& f:function_collector.get_all(top))
+    {
+        f->get_base_function()->eraseFromParent();
+    }
+    for(auto& c:class_collector.get_all(top))
+    {
+        c->get_base_constructor()->eraseFromParent();
     }
 }
 

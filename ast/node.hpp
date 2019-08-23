@@ -109,7 +109,7 @@ class AccessNode:public Node
         std::shared_ptr<Node> left_node,
         std::string right_name
         ):Node(ir_generator),left_node(left_node),
-        right_name(right_name),pointer(nullptr){std::cout << "new acnode\n";}
+        right_name(right_name),pointer(nullptr){}
     std::shared_ptr<Node> get_left_node(){return left_node;}
     std::string get_right_name(){return right_name;}
     void set_pointer(llvm::Value* p){pointer = p;}
@@ -249,6 +249,8 @@ class ClassNode:public Node
     std::vector<std::string> get_self_namespace(){return self_namespace;}
     void set_temporary_constructor(llvm::Function* c){temporary_constructor=c;}
     llvm::Function* get_temporary_constructor(){return temporary_constructor;}
+    void set_base_constructor(llvm::Function* base){base_constructor=base;}
+    llvm::Function* get_base_constructor(){return base_constructor;}
 };
 
 class CallConstructorNode:public Node

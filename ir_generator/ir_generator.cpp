@@ -21,6 +21,7 @@
 #include <iostream>
 #include <set>
 #include "../utils/utils.hpp"
+#include "../builtins/builtins.hpp"
 #include "../blawn_context/blawn_context.hpp"
 
 
@@ -34,6 +35,8 @@ void initialize(llvm::LLVMContext &context,llvm::Module &module,llvm::IRBuilder<
     std::vector<llvm::Type*> free_types(1,ir_builder.getInt64Ty()->getPointerTo());
     auto free_declaration_type = llvm::FunctionType::get(ir_builder.getVoidTy(),free_types,false);
     llvm::Function::Create(free_declaration_type,llvm::Function::ExternalLinkage,"free",&module);
+    //create builtin string type
+    builtins::create_string_type(context,module,ir_builder);
     //create main function
     std::vector<llvm::Type*> main_types;
     auto function_type = llvm::FunctionType::get(llvm::Type::getInt8Ty(context),main_types, false);
@@ -55,6 +58,7 @@ IRGenerator::IRGenerator(
         flag = false;
     }
 }
+
 llvm::Value* IRGenerator::generate(Node& node) 
 {return 0;}
 
@@ -219,6 +223,7 @@ llvm::Value* CallFunctionIRGenerator::generate(Node &node_)
         node.function->name,
         &module
     );
+    node.function->set_base_function(base_function);
     
     auto block = llvm::BasicBlock::Create(context,"entry",base_function);
     ir_builder.SetInsertPoint(block);
@@ -330,7 +335,8 @@ llvm::Value* CallConstructorIRGenerator::generate(Node& node_)
         node.get_class()->name,
         &module
     );
-    
+    node.get_class()->set_base_constructor(base_constructor);
+
     auto block = llvm::BasicBlock::Create(context,"entry",base_constructor);
     ir_builder.SetInsertPoint(block);
     

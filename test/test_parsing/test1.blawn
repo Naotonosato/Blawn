@@ -23,3 +23,5 @@ o = C(0)
 o.member.member = 120
 
 t = o.member.member
+t = 100
+o.member.member
