@@ -68,7 +68,7 @@ std::shared_ptr<Node> ASTGenerator::assign(std::string name,std::shared_ptr<Node
     if (variable_collector.exist(name))
     {
         auto variable = variable_collector.get(name);
-        auto assigment = std::shared_ptr<AssigmentNode>(new AssigmentNode(assigment_generator,variable,right_node));
+        auto assigment = std::shared_ptr<AssigmentNode>(new AssigmentNode(assigment_generator,right_node,variable,nullptr));
         return assigment;
     }
     else
@@ -80,6 +80,13 @@ std::shared_ptr<Node> ASTGenerator::assign(std::string name,std::shared_ptr<Node
         return variable;
     }
 }
+
+std::shared_ptr<Node> ASTGenerator::assign(std::shared_ptr<AccessNode> left,std::shared_ptr<Node> right)
+{
+    auto assigment = std::shared_ptr<AssigmentNode>(new AssigmentNode(assigment_generator,right,nullptr,left));
+    return assigment;
+}
+    
 
 std::shared_ptr<Node> ASTGenerator::get_named_value(std::string name)
 {
@@ -214,7 +221,7 @@ std::shared_ptr<Node> ASTGenerator::add_else(std::vector<std::shared_ptr<Node>> 
     return res;
 }  
 
-std::shared_ptr<Node> ASTGenerator::create_access(std::string left,std::string right)
+std::shared_ptr<AccessNode> ASTGenerator::create_access(std::string left,std::string right)
 {
     auto left_node = get_named_value(left);
     auto accessing = std::shared_ptr<AccessNode>(
@@ -226,7 +233,7 @@ std::shared_ptr<Node> ASTGenerator::create_access(std::string left,std::string r
     return accessing;
 }
 
-std::shared_ptr<Node> ASTGenerator::create_access(std::shared_ptr<Node> left,std::string right)
+std::shared_ptr<AccessNode> ASTGenerator::create_access(std::shared_ptr<Node> left,std::string right)
 {
     auto accessing = std::shared_ptr<AccessNode>(
         new AccessNode(

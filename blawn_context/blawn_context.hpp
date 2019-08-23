@@ -17,7 +17,7 @@ class BlawnContext
     std::map<std::string,std::map<std::string,unsigned int>> element_names;
     public:
     void register_element_name(std::string,std::string name,unsigned int index);
-    unsigned int get_element_index(std::string,std::string name);
+    int get_element_index(std::string,std::string name);
 };
 
 

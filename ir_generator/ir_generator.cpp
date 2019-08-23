@@ -102,9 +102,18 @@ llvm::Value* VariableIRGenerator::generate(Node& node_)
 llvm::Value* AssigmentIRGenerator::generate(Node& node_)
 {
     auto& node = *static_cast<AssigmentNode*>(&node_);
-    auto alloca = node.get_target()->alloca_inst;
-    ir_builder.CreateStore(node.get_right_node()->generate(),alloca);
-    return ir_builder.CreateLoad(alloca);
+    llvm::Value* pointer;
+    if (node.get_target_var() != nullptr)
+    {
+        pointer = node.get_target_var()->alloca_inst;
+    }
+    else
+    {
+        node.get_target_member()->generate();
+        pointer = node.get_target_member()->get_pointer();
+    }
+    ir_builder.CreateStore(node.get_right_node()->generate(),pointer);
+    return ir_builder.CreateLoad(pointer);
 }
 
 llvm::Value* ArgumentIRGenerator::generate(Node& node_)
@@ -466,12 +475,21 @@ llvm::Value* AccessIRGenerator::generate(Node& node_)
         std::string str;
         llvm::raw_string_ostream rso(str);
         left->getType()->print(rso);
-        unsigned int index = get_blawn_context().get_element_index(rso.str(),"@"+node.get_right_name());
-        return ir_builder.CreateLoad(ir_builder.CreateStructGEP(nullptr,left,index));
+        int index = get_blawn_context().get_element_index(rso.str(),"@"+node.get_right_name());
+        auto pointer = ir_builder.CreateStructGEP(nullptr,left,index); 
+        node.set_pointer(pointer);
+        if (index != -1) return ir_builder.CreateLoad(pointer);
+        else 
+        {
+            std::cerr << rso.str() << " type object has no member " << node.get_right_name() << std::endl;
+            exit(1);
+            return 0;
+        }
     }
     else
     {
         std::cerr << "invalid use of '.'!" << std::endl;
+        exit(1);
         return 0;
     }
 }

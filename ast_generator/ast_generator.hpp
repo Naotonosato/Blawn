@@ -54,6 +54,7 @@ public:
     void break_out_of_namespace();
     std::unique_ptr<BinaryExpressionNode> attach_operator(std::shared_ptr<Node> node,std::shared_ptr<Node> other,const std::string operator_type);
     std::shared_ptr<Node> assign(std::string name,std::shared_ptr<Node> node);
+    std::shared_ptr<Node> assign(std::shared_ptr<AccessNode> left,std::shared_ptr<Node> right);
     std::shared_ptr<Node> get_named_value(std::string name);
     void add_argument(std::string);
     std::unique_ptr<IntegerNode> create_integer(int num);
@@ -64,7 +65,7 @@ public:
     std::shared_ptr<ClassNode> add_class(std::string,std::vector<std::string> arguments,std::vector<std::shared_ptr<Node>> members_definition,std::vector<std::shared_ptr<Node>> body);
     std::shared_ptr<Node> create_if(std::shared_ptr<Node>,std::vector<std::shared_ptr<Node>>);
     std::shared_ptr<Node> add_else(std::vector<std::shared_ptr<Node>>);
-    std::shared_ptr<Node> create_access(std::string left,std::string right);
-    std::shared_ptr<Node> create_access(std::shared_ptr<Node> left,std::string right);
+    std::shared_ptr<AccessNode> create_access(std::string left,std::string right);
+    std::shared_ptr<AccessNode> create_access(std::shared_ptr<Node> left,std::string right);
     void generate(std::vector<std::shared_ptr<Node>>);
 };

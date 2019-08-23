@@ -93,7 +93,7 @@
 %type <std::shared_ptr<Node>> call
 %type <std::shared_ptr<Node>> monomial
 %type <std::shared_ptr<Node>> variable
-%type <std::shared_ptr<Node>> accessing
+%type <std::shared_ptr<AccessNode>> accessing
 
 /*std::vector<Type> members_type;
         std::unique_ptr<Type> type = std::make_shared<Type>("FLOAT",members_type);
@@ -253,7 +253,10 @@ assign_variable:
     IDENTIFIER EQUAL expression
     {
         $$ = driver.ast_generator->assign($1,std::move($3));
-        //std::cout << "new variable:" << std::move($1) <<"  type:" << (type->type_name) << "\n";
+    }
+    |accessing EQUAL expression
+    {
+        $$ = driver.ast_generator->assign($1,std::move($3));
     };
 monomial:
     call
@@ -271,6 +274,10 @@ monomial:
     |variable
     {
         $$ = std::move($1);
+    }
+    |accessing
+    {
+        $$ = std::move($1);
     };
 call:
     IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
@@ -281,10 +288,6 @@ variable:
     IDENTIFIER
     {
         $$ = driver.ast_generator->get_named_value($1);
-    }
-    |accessing
-    {
-        $$ = std::move($1);
     };
 accessing:
     IDENTIFIER DOT IDENTIFIER
@@ -294,7 +297,7 @@ accessing:
     |accessing DOT IDENTIFIER
     {
         $$ = driver.ast_generator->create_access($1,$3);
-    };
+    }
 %%
 
 void Blawn::Parser::error( const location_type &l, const std::string &err_message )

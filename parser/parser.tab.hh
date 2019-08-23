@@ -312,6 +312,9 @@ namespace Blawn {
       // INT_LITERAL
       char dummy2[sizeof(long long)];
 
+      // accessing
+      char dummy3[sizeof(std::shared_ptr<AccessNode>)];
+
       // line
       // line_content
       // definition
@@ -323,8 +326,7 @@ namespace Blawn {
       // monomial
       // call
       // variable
-      // accessing
-      char dummy3[sizeof(std::shared_ptr<Node>)];
+      char dummy4[sizeof(std::shared_ptr<Node>)];
 
       // FUNCTION_DEFINITION
       // METHOD_DEFINITION
@@ -333,17 +335,17 @@ namespace Blawn {
       // MEMBER_IDENTIFIER
       // IDENTIFIER
       // STRING_LITERAL
-      char dummy4[sizeof(std::string)];
+      char dummy5[sizeof(std::string)];
 
       // block
       // lines
       // methods
       // members_definition
       // expressions
-      char dummy5[sizeof(std::vector<std::shared_ptr<Node>>)];
+      char dummy6[sizeof(std::vector<std::shared_ptr<Node>>)];
 
       // definition_arguments
-      char dummy6[sizeof(std::vector<std::string>)];
+      char dummy7[sizeof(std::vector<std::string>)];
 };
 
     /// Symbol semantic values.
@@ -434,6 +436,8 @@ namespace Blawn {
   basic_symbol (typename Base::kind_type t, const double v, const location_type& l);
 
   basic_symbol (typename Base::kind_type t, const long long v, const location_type& l);
+
+  basic_symbol (typename Base::kind_type t, const std::shared_ptr<AccessNode> v, const location_type& l);
 
   basic_symbol (typename Base::kind_type t, const std::shared_ptr<Node> v, const location_type& l);
 
@@ -824,7 +828,7 @@ namespace Blawn {
     enum
     {
       yyeof_ = 0,
-      yylast_ = 108,     ///< Last index in yytable_.
+      yylast_ = 107,     ///< Last index in yytable_.
       yynnts_ = 20,  ///< Number of nonterminal symbols.
       yyfinal_ = 29, ///< Termination state number.
       yyterror_ = 1,
@@ -841,7 +845,7 @@ namespace Blawn {
 
 #line 5 "./parser.yy" // lalr1.cc:377
 } // Blawn
-#line 845 "parser.tab.hh" // lalr1.cc:377
+#line 849 "parser.tab.hh" // lalr1.cc:377
 
 
 

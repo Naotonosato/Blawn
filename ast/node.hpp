@@ -96,20 +96,45 @@ class VariableNode: public Node
     void initialize() override;
 };
 
+
+class AccessNode:public Node
+{
+    private:
+    std::shared_ptr<Node> left_node;
+    std::string right_name;
+    llvm::Value* pointer;
+    public:
+    AccessNode(
+        AccessIRGenerator& ir_generator,
+        std::shared_ptr<Node> left_node,
+        std::string right_name
+        ):Node(ir_generator),left_node(left_node),
+        right_name(right_name),pointer(nullptr){std::cout << "new acnode\n";}
+    std::shared_ptr<Node> get_left_node(){return left_node;}
+    std::string get_right_name(){return right_name;}
+    void set_pointer(llvm::Value* p){pointer = p;}
+    llvm::Value* get_pointer(){return pointer;}
+};
+
+
 class AssigmentNode:public Node
 {
     private:
-    std::shared_ptr<VariableNode> target;
     std::shared_ptr<Node> right_node;
+    std::shared_ptr<VariableNode> target_var;
+    std::shared_ptr<AccessNode> target_member;
     public:
     AssigmentNode(
         AssigmentIRGenerator& ir_generator,
-        std::shared_ptr<VariableNode> target,
         std::shared_ptr<Node> right_node,
+        std::shared_ptr<VariableNode> target_var=nullptr,
+        std::shared_ptr<AccessNode> target_member=nullptr,
         std::string name=""
         )
-    :Node(ir_generator,name),target(target),right_node(right_node){}
-    std::shared_ptr<VariableNode> get_target() const;
+    :Node(ir_generator,name),right_node(right_node),
+    target_var(target_var),target_member(target_member){}
+    std::shared_ptr<VariableNode> get_target_var() const;
+    std::shared_ptr<AccessNode> get_target_member() const;
     std::shared_ptr<Node> get_right_node() const;
 };
 
@@ -272,19 +297,3 @@ class IfNode: public Node
     void set_else_body(std::vector<std::shared_ptr<Node>> body){else_body = body;}
 };
 
-
-class AccessNode:public Node
-{
-    private:
-    std::shared_ptr<Node> left_node;
-    std::string right_name;
-    public:
-    AccessNode(
-        AccessIRGenerator& ir_generator,
-        std::shared_ptr<Node> left_node,
-        std::string right_name
-        ):Node(ir_generator),left_node(left_node),
-        right_name(right_name){}
-    std::shared_ptr<Node> get_left_node(){return left_node;}
-    std::string get_right_name(){return right_name;}
-};

@@ -1,40 +1,25 @@
 function add(l,r)
     sum = l + r
     return sum
-function f(arg)
-    res = add(arg * 2,arg)
-    return res
 
-f(1)
-
-class In(ar)
-    @inmem = ar
-    @function inf(aa)
-        0
-        return 0
+function twice(arg)
+    arg_x_2 = add(arg,arg)
+    return arg_x_2
 
 class T(a)
-    @mt = In(0)
-    @function mem(argmem)
+    @member = twice(a)
+    @function whover(argmem)
         res = 0
-        return 0
+        return res
 
 class C(arg)
-    @mem = add(0.1,0)
-    @mem2 = arg / 2
-    @i = T(0)
-    @function method(arg1,arg2)
+    @member = T(arg)
+    @m2 = 0
+    @function useless_method(arg1,arg2)
         res = arg1 * arg2
         return res
 
+o = C(0)
+o.member.member = 120
 
-instance = C(2)
-if 0
-    add(0,0)
-    ;
-else 
-    f(0.01)
-    ;
-f(7)
-i = C(0)
-e = i.i.mt.inmem
+t = o.member.member

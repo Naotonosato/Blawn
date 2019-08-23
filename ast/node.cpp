@@ -47,9 +47,14 @@ llvm::Value* ArgumentNode::get_right_value()
     return right_value;
 }
 
-std::shared_ptr<VariableNode> AssigmentNode::get_target() const
+std::shared_ptr<VariableNode> AssigmentNode::get_target_var() const
 {
-    return target;
+    return target_var;
+}
+
+std::shared_ptr<AccessNode> AssigmentNode::get_target_member() const
+{
+    return target_member;
 }
 
 std::shared_ptr<Node> AssigmentNode::get_right_node() const

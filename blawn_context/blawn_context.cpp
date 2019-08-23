@@ -9,9 +9,14 @@ void BlawnContext::register_element_name(std::string type,std::string name,unsig
     element_names[type][name] = index;
 }
 
-unsigned int BlawnContext::get_element_index(std::string type,std::string name)
+int BlawnContext::get_element_index(std::string type,std::string name)
 {
-    return element_names[type][name];
+    if (element_names.count(type))
+    {
+        if (element_names[type].count(name)) return element_names[type][name];
+        else return -1;
+    }
+    else return -1;
 }
 
 BlawnContext& get_blawn_context()
