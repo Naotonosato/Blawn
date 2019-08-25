@@ -36,6 +36,7 @@ public:
     IRGenerator ir_generator;
     IntegerIRGenerator int_ir_generator;
     FloatIRGenerator float_ir_generator;
+    StringIRGenerator string_generator;
     VariableIRGenerator variable_generator;
     ArgumentIRGenerator argument_generator;
     AssigmentIRGenerator assigment_generator;
@@ -59,6 +60,7 @@ public:
     void add_argument(std::string);
     std::unique_ptr<IntegerNode> create_integer(int num);
     std::unique_ptr<FloatNode> create_float(double num);
+    std::unique_ptr<StringNode> create_string(std::string str);
     void book_function(std::string name);
     std::shared_ptr<FunctionNode> add_function(std::string name,std::vector<std::string> arguments,std::vector<std::shared_ptr<Node>> body,std::shared_ptr<Node> return_value);
     std::unique_ptr<Node> create_call(std::string name,std::vector<std::shared_ptr<Node>> passedarguments);

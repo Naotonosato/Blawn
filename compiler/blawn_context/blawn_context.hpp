@@ -15,9 +15,13 @@ class BlawnContext
 {
     private:
     std::map<std::string,std::map<std::string,unsigned int>> element_names;
+    std::map<std::string,llvm::Function*> builtin_functions;
     public:
     void register_element_name(std::string,std::string name,unsigned int index);
     int get_element_index(std::string,std::string name);
+    void add_builtin_function(std::string name,llvm::Function* function);
+    llvm::Function* get_builtin_function(std::string name);
+    bool exist_builtin_function(std::string name);
 };
 
 

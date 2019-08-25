@@ -10,6 +10,12 @@ typedef struct String
 } String;
 
 
+void print(String* string)
+{
+    printf("%s\n",string->string);
+}
+
+
 String* string_constructor(char* str,long long size)
 {
     String* string = (String*)malloc(sizeof(String));

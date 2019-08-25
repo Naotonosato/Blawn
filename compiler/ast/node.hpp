@@ -202,6 +202,8 @@ class CallFunctionNode: public Node
         std::shared_ptr<FunctionNode> function;
         std::vector<std::shared_ptr<Node>> passed_arguments;
         NodeCollector<ArgumentNode>& argument_collector;
+        bool is_builtin;
+        llvm::Function* builtin_function;
         CallFunctionNode(
             CallFunctionIRGenerator& ir_generator,
             std::shared_ptr<FunctionNode> function,
@@ -212,6 +214,17 @@ class CallFunctionNode: public Node
             std::make_move_iterator(passed_arguments.begin()),
             std::make_move_iterator(passed_arguments.end())
             ),argument_collector(argument_collector){}
+        CallFunctionNode(
+            CallFunctionIRGenerator& ir_generator,
+            std::vector<std::shared_ptr<Node>> passed_arguments,
+            NodeCollector<ArgumentNode>& argument_collector,
+            llvm::Function* builtin_function
+            ):Node(ir_generator),
+            passed_arguments(
+            std::make_move_iterator(passed_arguments.begin()),
+            std::make_move_iterator(passed_arguments.end())
+            ),argument_collector(argument_collector),
+            is_builtin(true),builtin_function(builtin_function){}
 };
 
 

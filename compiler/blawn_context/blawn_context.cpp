@@ -1,4 +1,5 @@
 #include <llvm/IR/Type.h>
+#include <llvm/IR/Function.h>
 #include "blawn_context.hpp"
 
 
@@ -22,4 +23,24 @@ int BlawnContext::get_element_index(std::string type,std::string name)
 BlawnContext& get_blawn_context()
 {
     return context;
+}
+
+void BlawnContext::add_builtin_function(std::string name,llvm::Function* function)
+{
+    builtin_functions[name] = function;
+}
+
+llvm::Function* BlawnContext::get_builtin_function(std::string name)
+{
+    if (builtin_functions.count(name)) return builtin_functions[name];
+    else return nullptr;
+}
+
+bool BlawnContext::exist_builtin_function(std::string name)
+{
+    if (get_builtin_function(name) == nullptr)
+    {
+        return false;
+    }
+    else return true;
 }

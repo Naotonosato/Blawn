@@ -24,8 +24,9 @@ blawn: ../builtins/builtins.o main.o driver.o ../ast/node.o ./parser.o ./lexer.o
 	g++ -g -c ../blawn_context/blawn_context.cpp -o ../blawn_context/blawn_context.o $(LLVM_OPTION)
 ../utils/utils.o: ../utils/utils.cpp
 	g++ -g -c ../utils/utils.cpp -o ../utils/utils.o $(LLVM_OPTION)
-../builtins/builtins.o: ../builtins/builtins.cpp ../builtins/builtins.hpp
+../builtins/builtins.o: ../builtins/builtins.cpp ../builtins/builtins.hpp ../builtins/builtins.c
 	g++ -g -c ../builtins/builtins.cpp -o ../builtins/builtins.o $(LLVM_OPTION)
+	clang -c -S -emit-llvm ../builtins/builtins.c -o ../builtins/builtins.ll
 ../ast_generator/ast_generator.o: ../ast_generator/ast_generator.cpp ../ast_generator/ast_generator.hpp ../ast_generator/node_collector.hpp
 	g++ -g -c ../ast_generator/ast_generator.cpp -o ../ast_generator/ast_generator.o $(LLVM_OPTION)
 ../ast/node.o: ../ast/node.cpp ../ast/node.hpp ../ir_generator/ir_generator.hpp
@@ -36,6 +37,4 @@ clean:
 	-fsanitize=address
 test:
 	./blawn
-	llvm-link ./result.ll ../builtins/builtins.ll -o linked.ll
-	lli linked.ll
-	echo $$?
+	lli result.ll

@@ -12,7 +12,6 @@
     #include <llvm/IR/IRBuilder.h>
     #include "../ast/node.hpp"
     #include "../ast_generator/ast_generator.hpp"
-    //#include "../ast/node.hpp" 
  
     namespace Blawn {
         class Driver;
@@ -61,8 +60,9 @@
 %right EQUAL
 %left PLUS MINUS
 %left ASTERISK SLASH
+%left  <std::string> DOT_IDENTIFIER
+
 %token  USE
-        DOT
         COLON
         SEMICOLON
         COMMA
@@ -90,10 +90,10 @@
 %type <std::vector<std::string>> definition_arguments
 %type <std::vector<std::shared_ptr<Node>>> expressions
 %type <std::shared_ptr<Node>> expression
+%type <std::shared_ptr<AccessNode>> access
 %type <std::shared_ptr<Node>> call
 %type <std::shared_ptr<Node>> monomial
 %type <std::shared_ptr<Node>> variable
-%type <std::shared_ptr<AccessNode>> accessing
 
 /*std::vector<Type> members_type;
         std::unique_ptr<Type> type = std::make_shared<Type>("FLOAT",members_type);
@@ -173,7 +173,9 @@ methods:
 method_definition:
     METHOD_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL lines RETURN expression
     {
-        $$ = driver.ast_generator->add_function($1,std::move($3),std::move($6),std::move($8));
+        auto args = std::move($3);
+        args.insert(args.begin(),"self");
+        $$ = driver.ast_generator->add_function($1,std::move(args),std::move($6),std::move($8));
         driver.ast_generator->break_out_of_namespace();
     };
 members_definition:
@@ -221,7 +223,6 @@ expression:
             std::cerr << "Error: If expression is not exist." << std::endl;
             exit(1);
         }
-        std::cout << $3.size() << std::endl;
         $$ = driver.ast_generator->add_else($3);
         blawn_state = NO_IF;
     }
@@ -248,13 +249,22 @@ expression:
     |expression SLASH expression
     {
         $$ = driver.ast_generator->attach_operator(std::move($1),std::move($3),"/");
+    }
+    |access
+    {
+        $$ = std::move($1);
+    };
+access:
+    expression DOT_IDENTIFIER
+    {
+        $$ = driver.ast_generator->create_access($1,$2);
     };
 assign_variable:
     IDENTIFIER EQUAL expression
     {
         $$ = driver.ast_generator->assign($1,std::move($3));
     }
-    |accessing EQUAL expression
+    |access EQUAL expression
     {
         $$ = driver.ast_generator->assign($1,std::move($3));
     };
@@ -262,6 +272,10 @@ monomial:
     call
     {
         $$ = $1;
+    }
+    |STRING_LITERAL
+    {
+        $$ = driver.ast_generator->create_string($1);
     }
     |FLOAT_LITERAL
     {
@@ -272,10 +286,6 @@ monomial:
         $$ = driver.ast_generator->create_integer($1);
     }
     |variable
-    {
-        $$ = std::move($1);
-    }
-    |accessing
     {
         $$ = std::move($1);
     };
@@ -289,15 +299,6 @@ variable:
     {
         $$ = driver.ast_generator->get_named_value($1);
     };
-accessing:
-    IDENTIFIER DOT IDENTIFIER
-    {
-        $$ = driver.ast_generator->create_access($1,$3);
-    }
-    |accessing DOT IDENTIFIER
-    {
-        $$ = driver.ast_generator->create_access($1,$3);
-    }
 %%
 
 void Blawn::Parser::error( const location_type &l, const std::string &err_message )

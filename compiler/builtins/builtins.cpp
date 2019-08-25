@@ -1,12 +1,24 @@
+#include <memory>
+#include <string>
 #include <llvm/IR/IRBuilder.h>
 #include <llvm/IR/LLVMContext.h>
 #include <llvm/IR/Module.h>
 #include <llvm/IR/DataLayout.h>
 #include <llvm/IR/Type.h>
 #include <llvm/IR/Function.h>
+#include <llvm/IRReader/IRReader.h>
+#include <llvm/Support/SourceMgr.h>
+#include <llvm/Support/raw_ostream.h>
+#include <llvm/Linker/Linker.h>
 #include "builtins.hpp"
 #include "../blawn_context/blawn_context.hpp"
 
+void builtins::load_builtins(llvm::LLVMContext& context,llvm::Module& module,std::string filename)
+{
+    llvm::SMDiagnostic err;
+    auto module_b = llvm::parseIRFile(filename,err,context);
+    llvm::Linker::linkModules(module,std::move(module_b));
+}
 
 void builtins::create_string_type(llvm::LLVMContext& context,llvm::Module& module,llvm::IRBuilder<>& ir_builder)
 {
@@ -37,4 +49,13 @@ void builtins::create_string_type(llvm::LLVMContext& context,llvm::Module& modul
         "add_string",
         &module
         );
+    std::vector<llvm::Type*> print_args(1,string_type->getPointerTo());
+    auto print_type = llvm::FunctionType::get(ir_builder.getVoidTy(),print_args,false);
+    auto print = llvm::Function::Create(
+        print_type,
+        llvm::Function::ExternalLinkage,
+        "print",
+        &module
+    );
+    get_blawn_context().add_builtin_function("print",print);
 }

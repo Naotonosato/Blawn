@@ -6,6 +6,7 @@
 #include "../ast/node.hpp"
 #include "../ir_generator/ir_generator.hpp"
 #include "ast_generator.hpp"
+#include "../blawn_context/blawn_context.hpp"
 
 
 ASTGenerator::ASTGenerator(
@@ -22,6 +23,7 @@ if_collector("TOP"),
 ir_generator(context,module,ir_builder),
 int_ir_generator(context,module,ir_builder),
 float_ir_generator(context,module,ir_builder),
+string_generator(context,module,ir_builder),
 variable_generator(context,module,ir_builder),
 argument_generator(context,module,ir_builder),
 assigment_generator(context,module,ir_builder),
@@ -44,11 +46,11 @@ void ASTGenerator::generate(std::vector<std::shared_ptr<Node>> all)
     }
     for (auto& f:function_collector.get_all(top))
     {
-        f->get_base_function()->eraseFromParent();
+        if (f->get_base_function() != nullptr) f->get_base_function()->eraseFromParent();
     }
     for(auto& c:class_collector.get_all(top))
     {
-        c->get_base_constructor()->eraseFromParent();
+        if (c->get_base_constructor() != nullptr) c->get_base_constructor()->eraseFromParent();
     }
 }
 
@@ -155,6 +157,16 @@ std::shared_ptr<ClassNode> ASTGenerator::add_class(std::string name,std::vector<
 
 std::unique_ptr<Node> ASTGenerator::create_call(std::string name,std::vector<std::shared_ptr<Node>> arguments)
 {
+    if (get_blawn_context().exist_builtin_function(name))
+    {
+        auto b_func = get_blawn_context().get_builtin_function(name);
+        auto calling = std::unique_ptr<CallFunctionNode>(
+            new CallFunctionNode(
+                calling_generator,arguments,argument_collector,b_func
+                )
+            );
+        return std::move(calling);
+    }
     if (function_collector.exist(name))
     {
         auto function = function_collector.get(name);
@@ -196,6 +208,13 @@ std::unique_ptr<FloatNode> ASTGenerator::create_float(double num)
     auto float_ = std::unique_ptr<FloatNode>(new FloatNode(float_ir_generator));
     float_->float_num = num;
     return std::move(float_);
+}
+
+std::unique_ptr<StringNode> ASTGenerator::create_string(std::string str)
+{
+    auto string = std::make_unique<StringNode>(string_generator);
+    string->string = str;
+    return std::move(string);
 }
 
 std::unique_ptr<BinaryExpressionNode> ASTGenerator::attach_operator(std::shared_ptr<Node> left_node,std::shared_ptr<Node> right_node,const std::string operator_kind)

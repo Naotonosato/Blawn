@@ -37,6 +37,8 @@ void initialize(llvm::LLVMContext &context,llvm::Module &module,llvm::IRBuilder<
     llvm::Function::Create(free_declaration_type,llvm::Function::ExternalLinkage,"free",&module);
     //create builtin string type
     builtins::create_string_type(context,module,ir_builder);
+    //load builtins
+    //builtins::load_builtins(context,module);
     //create main function
     std::vector<llvm::Type*> main_types;
     auto function_type = llvm::FunctionType::get(llvm::Type::getInt8Ty(context),main_types, false);
@@ -74,7 +76,13 @@ llvm::Value* FloatIRGenerator::generate(Node& node)
 
 llvm::Value* StringIRGenerator::generate(Node& node)
 {
-    return 0;
+    std::string str = node.string;
+    auto ptr = ir_builder.CreateGlobalStringPtr(str);
+    auto length = llvm::ConstantInt::get(context, llvm::APInt(64,str.size(),true));
+    std::vector<llvm::Value*> args;
+    args.push_back(ptr);
+    args.push_back(length);
+    return ir_builder.CreateCall(module.getFunction("string_constructor"),args);
 }
 
 llvm::Value* VariableIRGenerator::generate(Node& node_) 
@@ -97,8 +105,6 @@ llvm::Value* VariableIRGenerator::generate(Node& node_)
     }
     else
     {
-        //if (node.store_inst == nullptr)
-          //  {node.store_inst = ir_builder.CreateStore(right,node.alloca_inst);}
         return ir_builder.CreateLoad(node.alloca_inst);
     }
 }
@@ -190,6 +196,26 @@ llvm::Function* FunctionIRGenerator::generate(Node& node_)
 llvm::Value* CallFunctionIRGenerator::generate(Node &node_)
 {
     auto& node = *static_cast<CallFunctionNode*>(&node_);
+    if (node.is_builtin)
+    {
+        for (auto &arg: node.passed_arguments)
+        {
+            if (arg->is_argument())
+            {
+                if (static_cast<ArgumentNode*>(arg.get())->get_right_value() == nullptr)
+                {
+                    std::vector<llvm::Value*> empty_arg;
+                    return ir_builder.CreateCall(node.builtin_function,empty_arg);
+                }
+            }
+        }
+        std::vector<llvm::Value*> args;
+        for (auto &arg: node.passed_arguments)
+        {
+            args.push_back(arg->generate());
+        }
+        return ir_builder.CreateCall(node.builtin_function,args);
+    }
     for (auto &arg: node.passed_arguments)
     {
         if (arg->is_argument())
@@ -414,7 +440,7 @@ llvm::Value* CallConstructorIRGenerator::generate(Node& node_)
         destructor = llvm::Function::Create(
             destructor_type,
             llvm::Function::ExternalLinkage,
-            "#destructor_of_" + node.get_class()->name,
+            "destructor_of_" + node.get_class()->name,
             &module
             );
         auto destructor_entry = llvm::BasicBlock::Create(context,"entry",destructor);
@@ -482,9 +508,12 @@ llvm::Value* AccessIRGenerator::generate(Node& node_)
         llvm::raw_string_ostream rso(str);
         left->getType()->print(rso);
         int index = get_blawn_context().get_element_index(rso.str(),"@"+node.get_right_name());
-        auto pointer = ir_builder.CreateStructGEP(nullptr,left,index); 
-        node.set_pointer(pointer);
-        if (index != -1) return ir_builder.CreateLoad(pointer);
+        if (index != -1)
+        {
+            auto pointer = ir_builder.CreateStructGEP(nullptr,left,index); 
+            node.set_pointer(pointer);
+            return ir_builder.CreateLoad(pointer);
+        }
         else 
         {
             std::cerr << rso.str() << " type object has no member " << node.get_right_name() << std::endl;

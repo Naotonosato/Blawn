@@ -46,7 +46,6 @@
     #include <llvm/IR/IRBuilder.h>
     #include "../ast/node.hpp"
     #include "../ast_generator/ast_generator.hpp"
-    //#include "../ast/node.hpp" 
  
     namespace Blawn {
         class Driver;
@@ -62,7 +61,7 @@
     #  endif
     # endif
 
-#line 66 "parser.tab.hh" // lalr1.cc:377
+#line 65 "parser.tab.hh" // lalr1.cc:377
 
 # include <cassert>
 # include <cstdlib> // std::abort
@@ -139,7 +138,7 @@
 
 #line 5 "./parser.yy" // lalr1.cc:377
 namespace Blawn {
-#line 143 "parser.tab.hh" // lalr1.cc:377
+#line 142 "parser.tab.hh" // lalr1.cc:377
 
 
 
@@ -312,7 +311,7 @@ namespace Blawn {
       // INT_LITERAL
       char dummy2[sizeof(long long)];
 
-      // accessing
+      // access
       char dummy3[sizeof(std::shared_ptr<AccessNode>)];
 
       // line
@@ -334,6 +333,7 @@ namespace Blawn {
       // C_FUNCTION
       // MEMBER_IDENTIFIER
       // IDENTIFIER
+      // DOT_IDENTIFIER
       // STRING_LITERAL
       char dummy5[sizeof(std::string)];
 
@@ -381,8 +381,8 @@ namespace Blawn {
         MINUS = 267,
         ASTERISK = 268,
         SLASH = 269,
-        USE = 270,
-        DOT = 271,
+        DOT_IDENTIFIER = 270,
+        USE = 271,
         COLON = 272,
         SEMICOLON = 273,
         COMMA = 274,
@@ -568,11 +568,11 @@ namespace Blawn {
 
     static inline
     symbol_type
-    make_USE (const location_type& l);
+    make_DOT_IDENTIFIER (const std::string& v, const location_type& l);
 
     static inline
     symbol_type
-    make_DOT (const location_type& l);
+    make_USE (const location_type& l);
 
     static inline
     symbol_type
@@ -711,7 +711,7 @@ namespace Blawn {
   // number is the opposite.  If YYTABLE_NINF, syntax error.
   static const unsigned char yytable_[];
 
-  static const signed char yycheck_[];
+  static const unsigned char yycheck_[];
 
   // YYSTOS[STATE-NUM] -- The (internal number of the) accessing
   // symbol of state STATE-NUM.
@@ -828,7 +828,7 @@ namespace Blawn {
     enum
     {
       yyeof_ = 0,
-      yylast_ = 107,     ///< Last index in yytable_.
+      yylast_ = 112,     ///< Last index in yytable_.
       yynnts_ = 20,  ///< Number of nonterminal symbols.
       yyfinal_ = 29, ///< Termination state number.
       yyterror_ = 1,

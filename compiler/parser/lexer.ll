@@ -39,12 +39,13 @@ FUNCTION_DEFINITION     function[ \t]+[a-zA-Z_][0-9a-zA-Z_]*
 METHOD_DEFINITION       @function[ \t]+[a-zA-Z_][0-9a-zA-Z_]*
 CLASS_DEFINITION        class[ \t]+[a-zA-Z_][0-9a-zA-Z_]*
 RETURN                  return
-LEFT_PARENTHESIS        \(
-RIGHT_PARENTHESIS       \)
+LEFT_PARENTHESIS  \(
+RIGHT_PARENTHESIS \)
 
 CALL        .+\(.*\)
 C_FUNCTION  c\.[a-zA-Z_][0-9a-zA-Z_]*
 MEMBER_IDENTIFIER @[a-zA-Z_][0-9a-zA-Z_]*
+DOT_IDENTIFIER \.[a-zA-Z_][0-9a-zA-Z_]*
 IDENTIFIER  [a-zA-Z_][0-9a-zA-Z_]*
 EOL                 \n
 
@@ -52,10 +53,12 @@ EOL                 \n
 %%
 
 ^[ \t]*\r\n {loc->lines();}
-[ \t] {}
+[ \t] {/*BLOCK_START        \(|\n\(|\(\n|\n\(\n*/}
 {COMMENT} {}
 {STRING_LITERAL} {
-    lval->build<std::string>() = yytext;
+    std::string text = yytext;
+    text = text.substr(1,text.size()-2);
+    lval->build<std::string>() = text;
     return Blawn::Parser::token::STRING_LITERAL;
 }
 {INT_LITERAL} {
@@ -69,9 +72,7 @@ EOL                 \n
 {USE} {
     return Blawn::Parser::token::USE;
 }
-{DOT} {
-    return Blawn::Parser::token::DOT;
-}
+
 {EQUAL} {
     return Blawn::Parser::token::EQUAL;
 }
@@ -122,6 +123,7 @@ EOL                 \n
     definition.erase(0,index);
     driver->ast_generator->into_namespace(definition);
     driver->ast_generator->book_function(definition);
+    driver->ast_generator->add_argument("self");
     lval->build<std::string>() = definition;
     
     return Blawn::Parser::token::METHOD_DEFINITION;
@@ -158,6 +160,12 @@ EOL                 \n
 {MEMBER_IDENTIFIER} {
     lval->build<std::string>() = yytext;
     return Blawn::Parser::token::MEMBER_IDENTIFIER;
+}
+{DOT_IDENTIFIER} {
+    std::string text = yytext;
+    text = text.substr(1,text.size()-1);
+    lval->build<std::string>() = text;
+    return Blawn::Parser::token::DOT_IDENTIFIER;
 }
 {IDENTIFIER} {
     lval->build<std::string>() = yytext;

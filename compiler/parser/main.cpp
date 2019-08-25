@@ -8,6 +8,7 @@
 #include <llvm/IR/Verifier.h>
 #include "driver.hpp"
 #include "../ast_generator/ast_generator.hpp"
+#include "../builtins/builtins.hpp"
 
 int main(int argc, char** argv)
 {
@@ -39,8 +40,10 @@ int main(int argc, char** argv)
     auto zero = llvm::ConstantInt::get(*context, llvm::APInt(8,0));
     ir_builder->CreateRet(zero);
     llvm::verifyModule(*module,&llvm::outs());
+    builtins::load_builtins(*context,*module,"../builtins/builtins.ll");
     std::error_code error;
     llvm::raw_fd_ostream stream("result.ll",error,llvm::sys::fs::OpenFlags::F_None);
     module->print(stream,nullptr);
+    system("lli result.ll");
     return 0;
 }
