@@ -84,8 +84,8 @@
 %type <std::shared_ptr<Node>> assign_variable
 %type <std::shared_ptr<Node>> function_definition
 %type <std::shared_ptr<Node>> class_definition
-%type <std::vector<std::shared_ptr<Node>>> methods
-%type <std::shared_ptr<Node>> method_definition
+%type <std::vector<std::shared_ptr<FunctionNode>>> methods
+%type <std::shared_ptr<FunctionNode>> method_definition
 %type <std::vector<std::shared_ptr<Node>>> members_definition
 %type <std::vector<std::string>> definition_arguments
 %type <std::vector<std::shared_ptr<Node>>> expressions
@@ -293,6 +293,10 @@ call:
     IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
     {
         $$ = driver.ast_generator->create_call($1,std::move($3));
+    }
+    |access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+    {
+        $$ = driver.ast_generator->create_call($1,$3);
     };
 variable:
     IDENTIFIER

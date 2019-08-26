@@ -314,18 +314,20 @@ namespace Blawn {
       // access
       char dummy3[sizeof(std::shared_ptr<AccessNode>)];
 
+      // method_definition
+      char dummy4[sizeof(std::shared_ptr<FunctionNode>)];
+
       // line
       // line_content
       // definition
       // function_definition
       // class_definition
-      // method_definition
       // expression
       // assign_variable
       // monomial
       // call
       // variable
-      char dummy4[sizeof(std::shared_ptr<Node>)];
+      char dummy5[sizeof(std::shared_ptr<Node>)];
 
       // FUNCTION_DEFINITION
       // METHOD_DEFINITION
@@ -335,17 +337,19 @@ namespace Blawn {
       // IDENTIFIER
       // DOT_IDENTIFIER
       // STRING_LITERAL
-      char dummy5[sizeof(std::string)];
+      char dummy6[sizeof(std::string)];
+
+      // methods
+      char dummy7[sizeof(std::vector<std::shared_ptr<FunctionNode>>)];
 
       // block
       // lines
-      // methods
       // members_definition
       // expressions
-      char dummy6[sizeof(std::vector<std::shared_ptr<Node>>)];
+      char dummy8[sizeof(std::vector<std::shared_ptr<Node>>)];
 
       // definition_arguments
-      char dummy7[sizeof(std::vector<std::string>)];
+      char dummy9[sizeof(std::vector<std::string>)];
 };
 
     /// Symbol semantic values.
@@ -439,9 +443,13 @@ namespace Blawn {
 
   basic_symbol (typename Base::kind_type t, const std::shared_ptr<AccessNode> v, const location_type& l);
 
+  basic_symbol (typename Base::kind_type t, const std::shared_ptr<FunctionNode> v, const location_type& l);
+
   basic_symbol (typename Base::kind_type t, const std::shared_ptr<Node> v, const location_type& l);
 
   basic_symbol (typename Base::kind_type t, const std::string v, const location_type& l);
+
+  basic_symbol (typename Base::kind_type t, const std::vector<std::shared_ptr<FunctionNode>> v, const location_type& l);
 
   basic_symbol (typename Base::kind_type t, const std::vector<std::shared_ptr<Node>> v, const location_type& l);
 
@@ -828,7 +836,7 @@ namespace Blawn {
     enum
     {
       yyeof_ = 0,
-      yylast_ = 112,     ///< Last index in yytable_.
+      yylast_ = 117,     ///< Last index in yytable_.
       yynnts_ = 20,  ///< Number of nonterminal symbols.
       yyfinal_ = 29, ///< Termination state number.
       yyterror_ = 1,
@@ -845,7 +853,7 @@ namespace Blawn {
 
 #line 5 "./parser.yy" // lalr1.cc:377
 } // Blawn
-#line 849 "parser.tab.hh" // lalr1.cc:377
+#line 857 "parser.tab.hh" // lalr1.cc:377
 
 
 

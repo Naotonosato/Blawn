@@ -3,22 +3,23 @@
 #include <map>
 #include <string>
 #include <memory>
+#include <iostream>
 
 static unsigned int unique_number = 0;
 
 template <typename T>
 class NodeCollector
 {
-private:
-std::map<
-        std::vector<std::string>,
-        std::pair<
-        std::map<std::string,std::shared_ptr<T>>,
-        std::vector<std::string>>
-        > 
-        nodes;
-std::vector<std::string> current_namespace;
-public:
+    private:
+    std::map<
+            std::vector<std::string>,
+            std::pair<
+            std::map<std::string,std::shared_ptr<T>>,
+            std::vector<std::string>>
+            > 
+            nodes;
+    std::vector<std::string> current_namespace;
+    public:
     NodeCollector(std::string top="[TOP]"):current_namespace({top}){}
     
     std::shared_ptr<T> get(std::string name)
@@ -58,9 +59,12 @@ public:
     std::vector<std::shared_ptr<T>> get_all()
     {
         std::vector<std::shared_ptr<T>> res;
-        for (auto& name:nodes[current_namespace].second)
+        for (auto& map_iter:nodes)
         {
-            res.push_back(nodes[current_namespace].first[name]);
+            for (auto& name:map_iter.second.second)
+                {
+                    res.push_back(map_iter.second.first[name]);
+                }
         }
         return res;
     }

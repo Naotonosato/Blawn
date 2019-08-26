@@ -1,16 +1,16 @@
 class T(a)
     @string = "Hello World!!"
+    @num = 0
     @function whover(arg)
-        res = arg - 1
-        res.string
-        return res
+        print("whover_m")
+        return self
 class C(arg)
     @member = T(arg)
     @function twice(num)
         res = num * 2
         return res
-        
-i = T(100)
-s = i
-i.string = "9"
-print(s.string)
+function test(a)
+    r = C(100)
+    return r
+
+i = test(0.1).member.whover(7).whover(9)

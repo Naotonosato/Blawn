@@ -1,7 +1,7 @@
 #include <llvm/IR/Type.h>
 #include <llvm/IR/Function.h>
 #include "blawn_context.hpp"
-
+#include "../ast/node.hpp"
 
 static BlawnContext context;
 
@@ -43,4 +43,14 @@ bool BlawnContext::exist_builtin_function(std::string name)
         return false;
     }
     else return true;
+}
+
+void BlawnContext::add_class(std::string name,std::shared_ptr<ClassNode> class_)
+{
+    classes[name] = class_;
+}
+std::shared_ptr<ClassNode> BlawnContext::get_class(std::string name)
+{
+    if (classes.count(name)) return classes[name];
+    else return nullptr;
 }

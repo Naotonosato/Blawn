@@ -9,6 +9,8 @@
 #include <vector>
 #include <memory>
 #include <iostream>
+#include "../utils/utils.hpp"
+#include "../blawn_context/blawn_context.hpp"
 
 
 llvm::Value* Node::generate()
@@ -35,6 +37,12 @@ bool VariableNode::is_generated()
 void VariableNode::generated()
 {
     _is_generated = true;
+}
+
+llvm::Value* AccessNode::get_left_value()
+{
+    if (left_value == nullptr){left_value=left_node->generate();}
+    return left_value;
 }
 
 void ArgumentNode::set_right_value(llvm::Value* value)

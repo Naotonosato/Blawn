@@ -101,19 +101,36 @@ class AccessNode:public Node
 {
     private:
     std::shared_ptr<Node> left_node;
+    llvm::Value* left_value;
     std::string right_name;
     llvm::Value* pointer;
+
+    llvm::Value* generated;
+    bool _is_generated;
+
+    NodeCollector<FunctionNode>& function_collector;
+    std::shared_ptr<CallFunctionNode> call_node;
+
     public:
     AccessNode(
         AccessIRGenerator& ir_generator,
         std::shared_ptr<Node> left_node,
-        std::string right_name
-        ):Node(ir_generator),left_node(left_node),
-        right_name(right_name),pointer(nullptr){}
+        std::string right_name,
+        NodeCollector<FunctionNode>& function_collector
+        ):Node(ir_generator),left_node(left_node),left_value(nullptr),
+        right_name(right_name),pointer(nullptr),generated(nullptr),
+        function_collector(function_collector){}
+    llvm::Value* get_left_value();
     std::shared_ptr<Node> get_left_node(){return left_node;}
     std::string get_right_name(){return right_name;}
     void set_pointer(llvm::Value* p){pointer = p;}
+    std::string get_left_typename();
     llvm::Value* get_pointer(){return pointer;}
+    void set_call_node(std::shared_ptr<CallFunctionNode> n){call_node=n;}
+    std::shared_ptr<CallFunctionNode> get_call_node(){return call_node;}
+    void set_generated(llvm::Value* c){generated = c;}
+    llvm::Value* get_generated(){return generated;}
+
 };
 
 
@@ -231,7 +248,7 @@ class CallFunctionNode: public Node
 class ClassNode:public Node
 {
     private:
-        std::vector<std::shared_ptr<Node>> body;
+        std::vector<std::shared_ptr<FunctionNode>> methods;
         std::vector<std::shared_ptr<Node>> members_definition;
         llvm::Function* temporary_constructor;
         llvm::Function* base_constructor;
@@ -242,17 +259,17 @@ class ClassNode:public Node
     public:
     ClassNode(
         ClassIRGenerator& ir_generator,
-        std::vector<std::shared_ptr<Node>> body,
+        std::vector<std::shared_ptr<FunctionNode>> methods,
         std::vector<std::shared_ptr<Node>> members_definition,
         std::vector<std::string> arguments_names,
         std::string name=""
         )
-    :Node(ir_generator,name),body(body),
+    :Node(ir_generator,name),methods(methods),
     members_definition(members_definition),
     arguments_names(arguments_names){}
     std::vector<std::string> get_arguments_names(){return arguments_names;}
     std::vector<std::shared_ptr<Node>> get_members_definition(){return members_definition;};
-    std::vector<std::shared_ptr<Node>> get_body(){return body;}
+    std::vector<std::shared_ptr<FunctionNode>> get_methods(){return methods;}
 
     void register_constructor(std::vector<llvm::Type*>,llvm::Function*);
     llvm::Function* get_constructor(std::vector<llvm::Type*>);

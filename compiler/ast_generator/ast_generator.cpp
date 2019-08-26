@@ -44,7 +44,7 @@ void ASTGenerator::generate(std::vector<std::shared_ptr<Node>> all)
     {
         line->generate();
     }
-    for (auto& f:function_collector.get_all(top))
+    for (auto& f:function_collector.get_all())
     {
         if (f->get_base_function() != nullptr) f->get_base_function()->eraseFromParent();
     }
@@ -138,12 +138,12 @@ std::shared_ptr<FunctionNode> ASTGenerator::add_function(std::string name,std::v
     return func;
 }
 
-std::shared_ptr<ClassNode> ASTGenerator::add_class(std::string name,std::vector<std::string> arguments,std::vector<std::shared_ptr<Node>> members_definition,std::vector<std::shared_ptr<Node>> body)
+std::shared_ptr<ClassNode> ASTGenerator::add_class(std::string name,std::vector<std::string> arguments,std::vector<std::shared_ptr<Node>> members_definition,std::vector<std::shared_ptr<FunctionNode>> methods)
 {
     auto class_ = std::shared_ptr<ClassNode>(
         new ClassNode(
         class_generator,
-        body,
+        methods,
         members_definition,
         arguments,
         name)
@@ -196,6 +196,22 @@ std::unique_ptr<Node> ASTGenerator::create_call(std::string name,std::vector<std
         exit(0);
     }
 }
+
+std::shared_ptr<Node> ASTGenerator::create_call(std::shared_ptr<AccessNode> left,std::vector<std::shared_ptr<Node>> arguments)
+{
+    arguments.insert(arguments.begin(),left->get_left_node());
+    auto call_node = std::shared_ptr<CallFunctionNode>
+    (
+        new CallFunctionNode(
+            calling_generator,
+            nullptr,
+            arguments,
+            argument_collector
+        ));
+    left->set_call_node(call_node);
+    return left;
+}
+
 std::unique_ptr<IntegerNode> ASTGenerator::create_integer(int num)
 {
     auto Integer = std::unique_ptr<IntegerNode>(new IntegerNode(int_ir_generator));
@@ -255,7 +271,8 @@ std::shared_ptr<AccessNode> ASTGenerator::create_access(std::string left,std::st
         new AccessNode(
             access_generator,
             left_node,
-            right
+            right,
+            function_collector
         ));
     return accessing;
 }
@@ -266,7 +283,8 @@ std::shared_ptr<AccessNode> ASTGenerator::create_access(std::shared_ptr<Node> le
         new AccessNode(
             access_generator,
             left,
-            right
+            right,
+            function_collector
         ));
     return accessing;
 }

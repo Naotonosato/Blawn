@@ -67,8 +67,9 @@ Grammar
    38         | variable
 
    39 call: IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   40     | access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
 
-   40 variable: IDENTIFIER
+   41 variable: IDENTIFIER
 
 
 Terminals, with rules where they appear
@@ -81,7 +82,7 @@ CLASS_DEFINITION (260) 12
 RETURN (261) 11 15
 C_FUNCTION (262)
 MEMBER_IDENTIFIER (263) 16 17
-IDENTIFIER (264) 18 19 32 39 40
+IDENTIFIER (264) 18 19 32 39 41
 EQUAL (265) 16 17 32 33
 PLUS (266) 26
 MINUS (267) 27
@@ -92,8 +93,8 @@ USE (271)
 COLON (272)
 SEMICOLON (273) 22 23
 COMMA (274) 19 21
-LEFT_PARENTHESIS (275) 11 12 15 39
-RIGHT_PARENTHESIS (276) 11 12 15 39
+LEFT_PARENTHESIS (275) 11 12 15 39 40
+RIGHT_PARENTHESIS (276) 11 12 15 39 40
 IF (277) 22
 ELSE (278) 23
 FOR (279)
@@ -133,20 +134,20 @@ members_definition (41)
 definition_arguments (42)
     on left: 18 19, on right: 11 12 15 19
 expressions (43)
-    on left: 20 21, on right: 21 39
+    on left: 20 21, on right: 21 39 40
 expression (44)
     on left: 22 23 24 25 26 27 28 29 30, on right: 7 11 15 16 17 20
     21 22 26 27 28 29 31 32 33
 access (45)
-    on left: 31, on right: 30 33
+    on left: 31, on right: 30 33 40
 assign_variable (46)
     on left: 32 33, on right: 25
 monomial (47)
     on left: 34 35 36 37 38, on right: 24
 call (48)
-    on left: 39, on right: 34
+    on left: 39 40, on right: 34
 variable (49)
-    on left: 40, on right: 38
+    on left: 41, on right: 38
 
 
 State 0
@@ -182,7 +183,8 @@ State 0
    37         | . INT_LITERAL
    38         | . variable
    39 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-   40 variable: . IDENTIFIER
+   40     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   41 variable: . IDENTIFIER
 
     FUNCTION_DEFINITION  shift, and go to state 1
     CLASS_DEFINITION     shift, and go to state 2
@@ -227,12 +229,12 @@ State 3
 
    32 assign_variable: IDENTIFIER . EQUAL expression
    39 call: IDENTIFIER . LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-   40 variable: IDENTIFIER .  ["end of file", METHOD_DEFINITION, PLUS, MINUS, ASTERISK, SLASH, DOT_IDENTIFIER, COMMA, RIGHT_PARENTHESIS, EOL]
+   41 variable: IDENTIFIER .  ["end of file", METHOD_DEFINITION, PLUS, MINUS, ASTERISK, SLASH, DOT_IDENTIFIER, COMMA, RIGHT_PARENTHESIS, EOL]
 
     EQUAL             shift, and go to state 25
     LEFT_PARENTHESIS  shift, and go to state 26
 
-    $default  reduce using rule 40 (variable)
+    $default  reduce using rule 41 (variable)
 
 
 State 4
@@ -256,7 +258,8 @@ State 4
    37         | . INT_LITERAL
    38         | . variable
    39 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-   40 variable: . IDENTIFIER
+   40     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   41 variable: . IDENTIFIER
 
     IDENTIFIER      shift, and go to state 3
     IF              shift, and go to state 4
@@ -345,7 +348,8 @@ State 11
    37         | . INT_LITERAL
    38         | . variable
    39 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-   40 variable: . IDENTIFIER
+   40     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   41 variable: . IDENTIFIER
 
     FUNCTION_DEFINITION  shift, and go to state 1
     CLASS_DEFINITION     shift, and go to state 2
@@ -430,8 +434,10 @@ State 18
 
    30 expression: access .  ["end of file", METHOD_DEFINITION, PLUS, MINUS, ASTERISK, SLASH, DOT_IDENTIFIER, COMMA, RIGHT_PARENTHESIS, EOL]
    33 assign_variable: access . EQUAL expression
+   40 call: access . LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
 
-    EQUAL  shift, and go to state 38
+    EQUAL             shift, and go to state 38
+    LEFT_PARENTHESIS  shift, and go to state 39
 
     $default  reduce using rule 30 (expression)
 
@@ -470,9 +476,9 @@ State 23
    18 definition_arguments: . IDENTIFIER
    19                     | . definition_arguments COMMA IDENTIFIER
 
-    IDENTIFIER  shift, and go to state 39
+    IDENTIFIER  shift, and go to state 40
 
-    definition_arguments  go to state 40
+    definition_arguments  go to state 41
 
 
 State 24
@@ -481,9 +487,9 @@ State 24
    18 definition_arguments: . IDENTIFIER
    19                     | . definition_arguments COMMA IDENTIFIER
 
-    IDENTIFIER  shift, and go to state 39
+    IDENTIFIER  shift, and go to state 40
 
-    definition_arguments  go to state 41
+    definition_arguments  go to state 42
 
 
 State 25
@@ -507,7 +513,8 @@ State 25
    37         | . INT_LITERAL
    38         | . variable
    39 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-   40 variable: . IDENTIFIER
+   40     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   41 variable: . IDENTIFIER
 
     IDENTIFIER      shift, and go to state 3
     IF              shift, and go to state 4
@@ -516,7 +523,7 @@ State 25
     FLOAT_LITERAL   shift, and go to state 7
     STRING_LITERAL  shift, and go to state 8
 
-    expression       go to state 42
+    expression       go to state 43
     access           go to state 18
     assign_variable  go to state 19
     monomial         go to state 20
@@ -547,7 +554,8 @@ State 26
    38         | . variable
    39 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
    39     | IDENTIFIER LEFT_PARENTHESIS . expressions RIGHT_PARENTHESIS
-   40 variable: . IDENTIFIER
+   40     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   41 variable: . IDENTIFIER
 
     IDENTIFIER      shift, and go to state 3
     IF              shift, and go to state 4
@@ -556,8 +564,8 @@ State 26
     FLOAT_LITERAL   shift, and go to state 7
     STRING_LITERAL  shift, and go to state 8
 
-    expressions      go to state 43
-    expression       go to state 44
+    expressions      go to state 44
+    expression       go to state 45
     access           go to state 18
     assign_variable  go to state 19
     monomial         go to state 20
@@ -579,7 +587,7 @@ State 27
     ASTERISK        shift, and go to state 35
     SLASH           shift, and go to state 36
     DOT_IDENTIFIER  shift, and go to state 37
-    EOL             shift, and go to state 45
+    EOL             shift, and go to state 46
 
 
 State 28
@@ -614,7 +622,8 @@ State 28
    37         | . INT_LITERAL
    38         | . variable
    39 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-   40 variable: . IDENTIFIER
+   40     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   41 variable: . IDENTIFIER
 
     FUNCTION_DEFINITION  shift, and go to state 1
     CLASS_DEFINITION     shift, and go to state 2
@@ -625,7 +634,7 @@ State 28
     FLOAT_LITERAL        shift, and go to state 7
     STRING_LITERAL       shift, and go to state 8
 
-    block                go to state 46
+    block                go to state 47
     lines                go to state 11
     line                 go to state 12
     line_content         go to state 13
@@ -689,7 +698,8 @@ State 33
    37         | . INT_LITERAL
    38         | . variable
    39 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-   40 variable: . IDENTIFIER
+   40     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   41 variable: . IDENTIFIER
 
     IDENTIFIER      shift, and go to state 3
     IF              shift, and go to state 4
@@ -698,7 +708,7 @@ State 33
     FLOAT_LITERAL   shift, and go to state 7
     STRING_LITERAL  shift, and go to state 8
 
-    expression       go to state 47
+    expression       go to state 48
     access           go to state 18
     assign_variable  go to state 19
     monomial         go to state 20
@@ -727,7 +737,8 @@ State 34
    37         | . INT_LITERAL
    38         | . variable
    39 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-   40 variable: . IDENTIFIER
+   40     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   41 variable: . IDENTIFIER
 
     IDENTIFIER      shift, and go to state 3
     IF              shift, and go to state 4
@@ -736,7 +747,7 @@ State 34
     FLOAT_LITERAL   shift, and go to state 7
     STRING_LITERAL  shift, and go to state 8
 
-    expression       go to state 48
+    expression       go to state 49
     access           go to state 18
     assign_variable  go to state 19
     monomial         go to state 20
@@ -765,7 +776,8 @@ State 35
    37         | . INT_LITERAL
    38         | . variable
    39 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-   40 variable: . IDENTIFIER
+   40     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   41 variable: . IDENTIFIER
 
     IDENTIFIER      shift, and go to state 3
     IF              shift, and go to state 4
@@ -774,7 +786,7 @@ State 35
     FLOAT_LITERAL   shift, and go to state 7
     STRING_LITERAL  shift, and go to state 8
 
-    expression       go to state 49
+    expression       go to state 50
     access           go to state 18
     assign_variable  go to state 19
     monomial         go to state 20
@@ -803,7 +815,8 @@ State 36
    37         | . INT_LITERAL
    38         | . variable
    39 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-   40 variable: . IDENTIFIER
+   40     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   41 variable: . IDENTIFIER
 
     IDENTIFIER      shift, and go to state 3
     IF              shift, and go to state 4
@@ -812,7 +825,7 @@ State 36
     FLOAT_LITERAL   shift, and go to state 7
     STRING_LITERAL  shift, and go to state 8
 
-    expression       go to state 50
+    expression       go to state 51
     access           go to state 18
     assign_variable  go to state 19
     monomial         go to state 20
@@ -848,7 +861,8 @@ State 38
    37         | . INT_LITERAL
    38         | . variable
    39 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-   40 variable: . IDENTIFIER
+   40     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   41 variable: . IDENTIFIER
 
     IDENTIFIER      shift, and go to state 3
     IF              shift, and go to state 4
@@ -857,7 +871,7 @@ State 38
     FLOAT_LITERAL   shift, and go to state 7
     STRING_LITERAL  shift, and go to state 8
 
-    expression       go to state 51
+    expression       go to state 52
     access           go to state 18
     assign_variable  go to state 19
     monomial         go to state 20
@@ -867,30 +881,72 @@ State 38
 
 State 39
 
+   20 expressions: . expression
+   21            | . expressions COMMA expression
+   22 expression: . IF expression EOL block SEMICOLON
+   23           | . ELSE EOL block SEMICOLON
+   24           | . monomial
+   25           | . assign_variable
+   26           | . expression PLUS expression
+   27           | . expression MINUS expression
+   28           | . expression ASTERISK expression
+   29           | . expression SLASH expression
+   30           | . access
+   31 access: . expression DOT_IDENTIFIER
+   32 assign_variable: . IDENTIFIER EQUAL expression
+   33                | . access EQUAL expression
+   34 monomial: . call
+   35         | . STRING_LITERAL
+   36         | . FLOAT_LITERAL
+   37         | . INT_LITERAL
+   38         | . variable
+   39 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   40     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   40     | access LEFT_PARENTHESIS . expressions RIGHT_PARENTHESIS
+   41 variable: . IDENTIFIER
+
+    IDENTIFIER      shift, and go to state 3
+    IF              shift, and go to state 4
+    ELSE            shift, and go to state 5
+    INT_LITERAL     shift, and go to state 6
+    FLOAT_LITERAL   shift, and go to state 7
+    STRING_LITERAL  shift, and go to state 8
+
+    expressions      go to state 53
+    expression       go to state 45
+    access           go to state 18
+    assign_variable  go to state 19
+    monomial         go to state 20
+    call             go to state 21
+    variable         go to state 22
+
+
+State 40
+
    18 definition_arguments: IDENTIFIER .
 
     $default  reduce using rule 18 (definition_arguments)
 
 
-State 40
+State 41
 
    11 function_definition: FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments . RIGHT_PARENTHESIS EOL lines RETURN expression
    19 definition_arguments: definition_arguments . COMMA IDENTIFIER
 
-    COMMA              shift, and go to state 52
-    RIGHT_PARENTHESIS  shift, and go to state 53
+    COMMA              shift, and go to state 54
+    RIGHT_PARENTHESIS  shift, and go to state 55
 
 
-State 41
+State 42
 
    12 class_definition: CLASS_DEFINITION LEFT_PARENTHESIS definition_arguments . RIGHT_PARENTHESIS EOL members_definition methods
    19 definition_arguments: definition_arguments . COMMA IDENTIFIER
 
-    COMMA              shift, and go to state 52
-    RIGHT_PARENTHESIS  shift, and go to state 54
+    COMMA              shift, and go to state 54
+    RIGHT_PARENTHESIS  shift, and go to state 56
 
 
-State 42
+State 43
 
    26 expression: expression . PLUS expression
    27           | expression . MINUS expression
@@ -914,16 +970,16 @@ State 42
     Conflict between rule 32 and token DOT_IDENTIFIER resolved as shift (EQUAL < DOT_IDENTIFIER).
 
 
-State 43
+State 44
 
    21 expressions: expressions . COMMA expression
    39 call: IDENTIFIER LEFT_PARENTHESIS expressions . RIGHT_PARENTHESIS
 
-    COMMA              shift, and go to state 55
-    RIGHT_PARENTHESIS  shift, and go to state 56
+    COMMA              shift, and go to state 57
+    RIGHT_PARENTHESIS  shift, and go to state 58
 
 
-State 44
+State 45
 
    20 expressions: expression .  [COMMA, RIGHT_PARENTHESIS]
    26 expression: expression . PLUS expression
@@ -941,7 +997,7 @@ State 44
     $default  reduce using rule 20 (expressions)
 
 
-State 45
+State 46
 
     2 block: . lines
     3 lines: . line
@@ -973,7 +1029,8 @@ State 45
    37         | . INT_LITERAL
    38         | . variable
    39 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-   40 variable: . IDENTIFIER
+   40     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   41 variable: . IDENTIFIER
 
     FUNCTION_DEFINITION  shift, and go to state 1
     CLASS_DEFINITION     shift, and go to state 2
@@ -984,7 +1041,7 @@ State 45
     FLOAT_LITERAL        shift, and go to state 7
     STRING_LITERAL       shift, and go to state 8
 
-    block                go to state 57
+    block                go to state 59
     lines                go to state 11
     line                 go to state 12
     line_content         go to state 13
@@ -999,14 +1056,14 @@ State 45
     variable             go to state 22
 
 
-State 46
+State 47
 
    23 expression: ELSE EOL block . SEMICOLON
 
-    SEMICOLON  shift, and go to state 58
+    SEMICOLON  shift, and go to state 60
 
 
-State 47
+State 48
 
    26 expression: expression . PLUS expression
    26           | expression PLUS expression .  ["end of file", METHOD_DEFINITION, PLUS, MINUS, COMMA, RIGHT_PARENTHESIS, EOL]
@@ -1028,7 +1085,7 @@ State 47
     Conflict between rule 26 and token DOT_IDENTIFIER resolved as shift (PLUS < DOT_IDENTIFIER).
 
 
-State 48
+State 49
 
    26 expression: expression . PLUS expression
    27           | expression . MINUS expression
@@ -1050,7 +1107,7 @@ State 48
     Conflict between rule 27 and token DOT_IDENTIFIER resolved as shift (MINUS < DOT_IDENTIFIER).
 
 
-State 49
+State 50
 
    26 expression: expression . PLUS expression
    27           | expression . MINUS expression
@@ -1070,7 +1127,7 @@ State 49
     Conflict between rule 28 and token DOT_IDENTIFIER resolved as shift (ASTERISK < DOT_IDENTIFIER).
 
 
-State 50
+State 51
 
    26 expression: expression . PLUS expression
    27           | expression . MINUS expression
@@ -1090,7 +1147,7 @@ State 50
     Conflict between rule 29 and token DOT_IDENTIFIER resolved as shift (SLASH < DOT_IDENTIFIER).
 
 
-State 51
+State 52
 
    26 expression: expression . PLUS expression
    27           | expression . MINUS expression
@@ -1114,28 +1171,37 @@ State 51
     Conflict between rule 33 and token DOT_IDENTIFIER resolved as shift (EQUAL < DOT_IDENTIFIER).
 
 
-State 52
-
-   19 definition_arguments: definition_arguments COMMA . IDENTIFIER
-
-    IDENTIFIER  shift, and go to state 59
-
-
 State 53
 
-   11 function_definition: FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS . EOL lines RETURN expression
+   21 expressions: expressions . COMMA expression
+   40 call: access LEFT_PARENTHESIS expressions . RIGHT_PARENTHESIS
 
-    EOL  shift, and go to state 60
+    COMMA              shift, and go to state 57
+    RIGHT_PARENTHESIS  shift, and go to state 61
 
 
 State 54
 
-   12 class_definition: CLASS_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS . EOL members_definition methods
+   19 definition_arguments: definition_arguments COMMA . IDENTIFIER
 
-    EOL  shift, and go to state 61
+    IDENTIFIER  shift, and go to state 62
 
 
 State 55
+
+   11 function_definition: FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS . EOL lines RETURN expression
+
+    EOL  shift, and go to state 63
+
+
+State 56
+
+   12 class_definition: CLASS_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS . EOL members_definition methods
+
+    EOL  shift, and go to state 64
+
+
+State 57
 
    21 expressions: expressions COMMA . expression
    22 expression: . IF expression EOL block SEMICOLON
@@ -1156,7 +1222,8 @@ State 55
    37         | . INT_LITERAL
    38         | . variable
    39 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-   40 variable: . IDENTIFIER
+   40     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   41 variable: . IDENTIFIER
 
     IDENTIFIER      shift, and go to state 3
     IF              shift, and go to state 4
@@ -1165,7 +1232,7 @@ State 55
     FLOAT_LITERAL   shift, and go to state 7
     STRING_LITERAL  shift, and go to state 8
 
-    expression       go to state 62
+    expression       go to state 65
     access           go to state 18
     assign_variable  go to state 19
     monomial         go to state 20
@@ -1173,35 +1240,42 @@ State 55
     variable         go to state 22
 
 
-State 56
+State 58
 
    39 call: IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS .
 
     $default  reduce using rule 39 (call)
 
 
-State 57
+State 59
 
    22 expression: IF expression EOL block . SEMICOLON
 
-    SEMICOLON  shift, and go to state 63
+    SEMICOLON  shift, and go to state 66
 
 
-State 58
+State 60
 
    23 expression: ELSE EOL block SEMICOLON .
 
     $default  reduce using rule 23 (expression)
 
 
-State 59
+State 61
+
+   40 call: access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS .
+
+    $default  reduce using rule 40 (call)
+
+
+State 62
 
    19 definition_arguments: definition_arguments COMMA IDENTIFIER .
 
     $default  reduce using rule 19 (definition_arguments)
 
 
-State 60
+State 63
 
     3 lines: . line
     4      | . lines line
@@ -1232,7 +1306,8 @@ State 60
    37         | . INT_LITERAL
    38         | . variable
    39 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-   40 variable: . IDENTIFIER
+   40     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   41 variable: . IDENTIFIER
 
     FUNCTION_DEFINITION  shift, and go to state 1
     CLASS_DEFINITION     shift, and go to state 2
@@ -1243,7 +1318,7 @@ State 60
     FLOAT_LITERAL        shift, and go to state 7
     STRING_LITERAL       shift, and go to state 8
 
-    lines                go to state 64
+    lines                go to state 67
     line                 go to state 12
     line_content         go to state 13
     definition           go to state 14
@@ -1257,18 +1332,18 @@ State 60
     variable             go to state 22
 
 
-State 61
+State 64
 
    12 class_definition: CLASS_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL . members_definition methods
    16 members_definition: . MEMBER_IDENTIFIER EQUAL expression EOL
    17                   | . members_definition MEMBER_IDENTIFIER EQUAL expression EOL
 
-    MEMBER_IDENTIFIER  shift, and go to state 65
+    MEMBER_IDENTIFIER  shift, and go to state 68
 
-    members_definition  go to state 66
+    members_definition  go to state 69
 
 
-State 62
+State 65
 
    21 expressions: expressions COMMA expression .  [COMMA, RIGHT_PARENTHESIS]
    26 expression: expression . PLUS expression
@@ -1286,14 +1361,14 @@ State 62
     $default  reduce using rule 21 (expressions)
 
 
-State 63
+State 66
 
    22 expression: IF expression EOL block SEMICOLON .
 
     $default  reduce using rule 22 (expression)
 
 
-State 64
+State 67
 
     4 lines: lines . line
     5 line: . line_content EOL
@@ -1323,11 +1398,12 @@ State 64
    37         | . INT_LITERAL
    38         | . variable
    39 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-   40 variable: . IDENTIFIER
+   40     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   41 variable: . IDENTIFIER
 
     FUNCTION_DEFINITION  shift, and go to state 1
     CLASS_DEFINITION     shift, and go to state 2
-    RETURN               shift, and go to state 67
+    RETURN               shift, and go to state 70
     IDENTIFIER           shift, and go to state 3
     IF                   shift, and go to state 4
     ELSE                 shift, and go to state 5
@@ -1348,14 +1424,14 @@ State 64
     variable             go to state 22
 
 
-State 65
+State 68
 
    16 members_definition: MEMBER_IDENTIFIER . EQUAL expression EOL
 
-    EQUAL  shift, and go to state 68
+    EQUAL  shift, and go to state 71
 
 
-State 66
+State 69
 
    12 class_definition: CLASS_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL members_definition . methods
    13 methods: . method_definition
@@ -1363,14 +1439,14 @@ State 66
    15 method_definition: . METHOD_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL lines RETURN expression
    17 members_definition: members_definition . MEMBER_IDENTIFIER EQUAL expression EOL
 
-    METHOD_DEFINITION  shift, and go to state 69
-    MEMBER_IDENTIFIER  shift, and go to state 70
+    METHOD_DEFINITION  shift, and go to state 72
+    MEMBER_IDENTIFIER  shift, and go to state 73
 
-    methods            go to state 71
-    method_definition  go to state 72
+    methods            go to state 74
+    method_definition  go to state 75
 
 
-State 67
+State 70
 
    11 function_definition: FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL lines RETURN . expression
    22 expression: . IF expression EOL block SEMICOLON
@@ -1391,7 +1467,8 @@ State 67
    37         | . INT_LITERAL
    38         | . variable
    39 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-   40 variable: . IDENTIFIER
+   40     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   41 variable: . IDENTIFIER
 
     IDENTIFIER      shift, and go to state 3
     IF              shift, and go to state 4
@@ -1400,7 +1477,7 @@ State 67
     FLOAT_LITERAL   shift, and go to state 7
     STRING_LITERAL  shift, and go to state 8
 
-    expression       go to state 73
+    expression       go to state 76
     access           go to state 18
     assign_variable  go to state 19
     monomial         go to state 20
@@ -1408,7 +1485,7 @@ State 67
     variable         go to state 22
 
 
-State 68
+State 71
 
    16 members_definition: MEMBER_IDENTIFIER EQUAL . expression EOL
    22 expression: . IF expression EOL block SEMICOLON
@@ -1429,7 +1506,8 @@ State 68
    37         | . INT_LITERAL
    38         | . variable
    39 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-   40 variable: . IDENTIFIER
+   40     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   41 variable: . IDENTIFIER
 
     IDENTIFIER      shift, and go to state 3
     IF              shift, and go to state 4
@@ -1438,7 +1516,7 @@ State 68
     FLOAT_LITERAL   shift, and go to state 7
     STRING_LITERAL  shift, and go to state 8
 
-    expression       go to state 74
+    expression       go to state 77
     access           go to state 18
     assign_variable  go to state 19
     monomial         go to state 20
@@ -1446,41 +1524,41 @@ State 68
     variable         go to state 22
 
 
-State 69
+State 72
 
    15 method_definition: METHOD_DEFINITION . LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL lines RETURN expression
 
-    LEFT_PARENTHESIS  shift, and go to state 75
+    LEFT_PARENTHESIS  shift, and go to state 78
 
 
-State 70
+State 73
 
    17 members_definition: members_definition MEMBER_IDENTIFIER . EQUAL expression EOL
 
-    EQUAL  shift, and go to state 76
+    EQUAL  shift, and go to state 79
 
 
-State 71
+State 74
 
    12 class_definition: CLASS_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL members_definition methods .  ["end of file", EOL]
    14 methods: methods . method_definition
    15 method_definition: . METHOD_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL lines RETURN expression
 
-    METHOD_DEFINITION  shift, and go to state 69
+    METHOD_DEFINITION  shift, and go to state 72
 
     $default  reduce using rule 12 (class_definition)
 
-    method_definition  go to state 77
+    method_definition  go to state 80
 
 
-State 72
+State 75
 
    13 methods: method_definition .
 
     $default  reduce using rule 13 (methods)
 
 
-State 73
+State 76
 
    11 function_definition: FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL lines RETURN expression .  ["end of file", EOL]
    26 expression: expression . PLUS expression
@@ -1498,7 +1576,7 @@ State 73
     $default  reduce using rule 11 (function_definition)
 
 
-State 74
+State 77
 
    16 members_definition: MEMBER_IDENTIFIER EQUAL expression . EOL
    26 expression: expression . PLUS expression
@@ -1512,21 +1590,21 @@ State 74
     ASTERISK        shift, and go to state 35
     SLASH           shift, and go to state 36
     DOT_IDENTIFIER  shift, and go to state 37
-    EOL             shift, and go to state 78
+    EOL             shift, and go to state 81
 
 
-State 75
+State 78
 
    15 method_definition: METHOD_DEFINITION LEFT_PARENTHESIS . definition_arguments RIGHT_PARENTHESIS EOL lines RETURN expression
    18 definition_arguments: . IDENTIFIER
    19                     | . definition_arguments COMMA IDENTIFIER
 
-    IDENTIFIER  shift, and go to state 39
+    IDENTIFIER  shift, and go to state 40
 
-    definition_arguments  go to state 79
+    definition_arguments  go to state 82
 
 
-State 76
+State 79
 
    17 members_definition: members_definition MEMBER_IDENTIFIER EQUAL . expression EOL
    22 expression: . IF expression EOL block SEMICOLON
@@ -1547,7 +1625,8 @@ State 76
    37         | . INT_LITERAL
    38         | . variable
    39 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-   40 variable: . IDENTIFIER
+   40     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   41 variable: . IDENTIFIER
 
     IDENTIFIER      shift, and go to state 3
     IF              shift, and go to state 4
@@ -1556,7 +1635,7 @@ State 76
     FLOAT_LITERAL   shift, and go to state 7
     STRING_LITERAL  shift, and go to state 8
 
-    expression       go to state 80
+    expression       go to state 83
     access           go to state 18
     assign_variable  go to state 19
     monomial         go to state 20
@@ -1564,30 +1643,30 @@ State 76
     variable         go to state 22
 
 
-State 77
+State 80
 
    14 methods: methods method_definition .
 
     $default  reduce using rule 14 (methods)
 
 
-State 78
+State 81
 
    16 members_definition: MEMBER_IDENTIFIER EQUAL expression EOL .
 
     $default  reduce using rule 16 (members_definition)
 
 
-State 79
+State 82
 
    15 method_definition: METHOD_DEFINITION LEFT_PARENTHESIS definition_arguments . RIGHT_PARENTHESIS EOL lines RETURN expression
    19 definition_arguments: definition_arguments . COMMA IDENTIFIER
 
-    COMMA              shift, and go to state 52
-    RIGHT_PARENTHESIS  shift, and go to state 81
+    COMMA              shift, and go to state 54
+    RIGHT_PARENTHESIS  shift, and go to state 84
 
 
-State 80
+State 83
 
    17 members_definition: members_definition MEMBER_IDENTIFIER EQUAL expression . EOL
    26 expression: expression . PLUS expression
@@ -1601,24 +1680,24 @@ State 80
     ASTERISK        shift, and go to state 35
     SLASH           shift, and go to state 36
     DOT_IDENTIFIER  shift, and go to state 37
-    EOL             shift, and go to state 82
+    EOL             shift, and go to state 85
 
 
-State 81
+State 84
 
    15 method_definition: METHOD_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS . EOL lines RETURN expression
 
-    EOL  shift, and go to state 83
+    EOL  shift, and go to state 86
 
 
-State 82
+State 85
 
    17 members_definition: members_definition MEMBER_IDENTIFIER EQUAL expression EOL .
 
     $default  reduce using rule 17 (members_definition)
 
 
-State 83
+State 86
 
     3 lines: . line
     4      | . lines line
@@ -1649,7 +1728,8 @@ State 83
    37         | . INT_LITERAL
    38         | . variable
    39 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-   40 variable: . IDENTIFIER
+   40     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   41 variable: . IDENTIFIER
 
     FUNCTION_DEFINITION  shift, and go to state 1
     CLASS_DEFINITION     shift, and go to state 2
@@ -1660,7 +1740,7 @@ State 83
     FLOAT_LITERAL        shift, and go to state 7
     STRING_LITERAL       shift, and go to state 8
 
-    lines                go to state 84
+    lines                go to state 87
     line                 go to state 12
     line_content         go to state 13
     definition           go to state 14
@@ -1674,7 +1754,7 @@ State 83
     variable             go to state 22
 
 
-State 84
+State 87
 
     4 lines: lines . line
     5 line: . line_content EOL
@@ -1704,11 +1784,12 @@ State 84
    37         | . INT_LITERAL
    38         | . variable
    39 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-   40 variable: . IDENTIFIER
+   40     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   41 variable: . IDENTIFIER
 
     FUNCTION_DEFINITION  shift, and go to state 1
     CLASS_DEFINITION     shift, and go to state 2
-    RETURN               shift, and go to state 85
+    RETURN               shift, and go to state 88
     IDENTIFIER           shift, and go to state 3
     IF                   shift, and go to state 4
     ELSE                 shift, and go to state 5
@@ -1729,7 +1810,7 @@ State 84
     variable             go to state 22
 
 
-State 85
+State 88
 
    15 method_definition: METHOD_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL lines RETURN . expression
    22 expression: . IF expression EOL block SEMICOLON
@@ -1750,7 +1831,8 @@ State 85
    37         | . INT_LITERAL
    38         | . variable
    39 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-   40 variable: . IDENTIFIER
+   40     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   41 variable: . IDENTIFIER
 
     IDENTIFIER      shift, and go to state 3
     IF              shift, and go to state 4
@@ -1759,7 +1841,7 @@ State 85
     FLOAT_LITERAL   shift, and go to state 7
     STRING_LITERAL  shift, and go to state 8
 
-    expression       go to state 86
+    expression       go to state 89
     access           go to state 18
     assign_variable  go to state 19
     monomial         go to state 20
@@ -1767,7 +1849,7 @@ State 85
     variable         go to state 22
 
 
-State 86
+State 89
 
    15 method_definition: METHOD_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL lines RETURN expression .  ["end of file", METHOD_DEFINITION, EOL]
    26 expression: expression . PLUS expression

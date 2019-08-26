@@ -63,8 +63,9 @@ public:
     std::unique_ptr<StringNode> create_string(std::string str);
     void book_function(std::string name);
     std::shared_ptr<FunctionNode> add_function(std::string name,std::vector<std::string> arguments,std::vector<std::shared_ptr<Node>> body,std::shared_ptr<Node> return_value);
-    std::unique_ptr<Node> create_call(std::string name,std::vector<std::shared_ptr<Node>> passedarguments);
-    std::shared_ptr<ClassNode> add_class(std::string,std::vector<std::string> arguments,std::vector<std::shared_ptr<Node>> members_definition,std::vector<std::shared_ptr<Node>> body);
+    std::unique_ptr<Node> create_call(std::string name,std::vector<std::shared_ptr<Node>> arguments);
+    std::shared_ptr<Node> create_call(std::shared_ptr<AccessNode>,std::vector<std::shared_ptr<Node>> arguments);
+    std::shared_ptr<ClassNode> add_class(std::string,std::vector<std::string> arguments,std::vector<std::shared_ptr<Node>> members_definition,std::vector<std::shared_ptr<FunctionNode>> body);
     std::shared_ptr<Node> create_if(std::shared_ptr<Node>,std::vector<std::shared_ptr<Node>>);
     std::shared_ptr<Node> add_else(std::vector<std::shared_ptr<Node>>);
     std::shared_ptr<AccessNode> create_access(std::string left,std::string right);

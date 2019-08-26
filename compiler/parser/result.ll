@@ -3,11 +3,12 @@ source_filename = "Blawn"
 target datalayout = "e-m:e-i64:64-f80:128-n8:16:32:64-S128"
 target triple = "x86_64-pc-linux-gnu"
 
-%T = type { %struct.String* }
+%C = type { %T* }
+%T = type { %struct.String*, i64 }
 %struct.String = type { i8*, i64 }
 
 @0 = private unnamed_addr constant [14 x i8] c"Hello World!!\00"
-@1 = private unnamed_addr constant [2 x i8] c"9\00"
+@1 = private unnamed_addr constant [9 x i8] c"whover_m\00"
 @.str = private unnamed_addr constant [4 x i8] c"%s\0A\00", align 1
 
 declare i64* @malloc(i64)
@@ -16,24 +17,14 @@ declare void @free(i64*)
 
 define i8 @main() {
 entry:
-  %0 = call %T* @T.2(i64 100)
+  %0 = call %C* @test.6(double 1.000000e-01)
+  %1 = getelementptr inbounds %C, %C* %0, i32 0, i32 0
+  %2 = load %T*, %T** %1
+  %3 = call %T* @whover.7(%T* %2, i64 7)
+  %4 = call %T* @whover.7(%T* %3, i64 9)
   %i = alloca %T*
-  store %T* %0, %T** %i
-  %1 = load %T*, %T** %i
-  %2 = load %T*, %T** %i
-  %s = alloca %T*
-  store %T* %2, %T** %s
-  %3 = load %T*, %T** %s
-  %4 = load %T*, %T** %i
-  %5 = getelementptr inbounds %T, %T* %4, i32 0, i32 0
-  %6 = load %struct.String*, %struct.String** %5
-  %7 = call %struct.String* @string_constructor(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @1, i32 0, i32 0), i64 1)
-  store %struct.String* %7, %struct.String** %5
-  %8 = load %struct.String*, %struct.String** %5
-  %9 = load %T*, %T** %s
-  %10 = getelementptr inbounds %T, %T* %9, i32 0, i32 0
-  %11 = load %struct.String*, %struct.String** %10
-  call void @print(%struct.String* %11)
+  store %T* %4, %T** %i
+  %5 = load %T*, %T** %i
   ret i8 0
 }
 
@@ -41,17 +32,24 @@ declare void @T()
 
 declare void @C()
 
-define %T* @T.2(i64 %a) {
+declare void @test()
+
+define %T* @T.4(i64 %a) {
 entry:
   %0 = call %struct.String* @string_constructor(i8* getelementptr inbounds ([14 x i8], [14 x i8]* @0, i32 0, i32 0), i64 13)
   %"@string" = alloca %struct.String*
   store %struct.String* %0, %struct.String** %"@string"
   %1 = load %struct.String*, %struct.String** %"@string"
-  %2 = call i64* @malloc(i64 8)
-  %3 = bitcast i64* %2 to %T*
-  %4 = getelementptr inbounds %T, %T* %3, i32 0, i32 0
-  store %struct.String* %1, %struct.String** %4
-  ret %T* %3
+  %"@num" = alloca i64
+  store i64 0, i64* %"@num"
+  %2 = load i64, i64* %"@num"
+  %3 = call i64* @malloc(i64 16)
+  %4 = bitcast i64* %3 to %T*
+  %5 = getelementptr inbounds %T, %T* %4, i32 0, i32 0
+  store %struct.String* %1, %struct.String** %5
+  %6 = getelementptr inbounds %T, %T* %4, i32 0, i32 1
+  store i64 %2, i64* %6
+  ret %T* %4
 }
 
 define void @destructor_of_T(%T*) {
@@ -59,6 +57,43 @@ entry:
   %1 = bitcast %T* %0 to i64*
   call void @free(i64* %1)
   ret void
+}
+
+define %C* @C.5(i64 %arg) {
+entry:
+  %0 = call %T* @T.4(i64 %arg)
+  %"@member" = alloca %T*
+  store %T* %0, %T** %"@member"
+  %1 = load %T*, %T** %"@member"
+  %2 = call i64* @malloc(i64 8)
+  %3 = bitcast i64* %2 to %C*
+  %4 = getelementptr inbounds %C, %C* %3, i32 0, i32 0
+  store %T* %1, %T** %4
+  ret %C* %3
+}
+
+define void @destructor_of_C(%C*) {
+entry:
+  %1 = bitcast %C* %0 to i64*
+  call void @free(i64* %1)
+  ret void
+}
+
+define %C* @test.6(double %a) {
+entry:
+  %0 = call %C* @C.5(i64 100)
+  %r = alloca %C*
+  store %C* %0, %C** %r
+  %1 = load %C*, %C** %r
+  %2 = load %C*, %C** %r
+  ret %C* %2
+}
+
+define %T* @whover.7(%T* %self, i64 %arg) {
+entry:
+  %0 = call %struct.String* @string_constructor(i8* getelementptr inbounds ([9 x i8], [9 x i8]* @1, i32 0, i32 0), i64 8)
+  call void @print(%struct.String* %0)
+  ret %T* %self
 }
 
 ; Function Attrs: noinline nounwind optnone uwtable

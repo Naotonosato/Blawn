@@ -23,6 +23,7 @@
 #include "../utils/utils.hpp"
 #include "../builtins/builtins.hpp"
 #include "../blawn_context/blawn_context.hpp"
+#include "../errors/errors.hpp"
 
 
 void initialize(llvm::LLVMContext &context,llvm::Module &module,llvm::IRBuilder<> &ir_builder)
@@ -391,12 +392,12 @@ llvm::Value* CallConstructorIRGenerator::generate(Node& node_)
 
     auto instance_type/*class*/ = llvm::StructType::create(context,fields,node.get_class()->name);
     auto instance_alloca = utils::malloc_value(instance_type,context,module,ir_builder);
-    std::string str;
-    llvm::raw_string_ostream rso(str);
-    instance_alloca->getType()->print(rso);
+    std::string type_name = instance_type->getStructName();
+    get_blawn_context().add_class(type_name,node.get_class());
+
     for (unsigned int idx=0;idx<=fields.size()-1;idx++)
     {
-        get_blawn_context().register_element_name(rso.str(),names[idx],idx);
+        get_blawn_context().register_element_name(type_name,names[idx],idx);
         ir_builder.CreateStore(
             initial_values[idx],
             ir_builder.CreateStructGEP(instance_type,instance_alloca,idx)
@@ -500,31 +501,57 @@ llvm::Value* IfIRGenerator::generate(Node& node_)
 
 llvm::Value* AccessIRGenerator::generate(Node& node_)
 {
+    BlawnLogger logger;
     auto& node = *static_cast<AccessNode*>(&node_);
-    auto left = node.get_left_node()->generate();
-    if (left->getType()->getPointerElementType()->isStructTy())
+    
+    if (node.get_generated() != nullptr)
     {
-        std::string str;
-        llvm::raw_string_ostream rso(str);
-        left->getType()->print(rso);
-        int index = get_blawn_context().get_element_index(rso.str(),"@"+node.get_right_name());
-        if (index != -1)
+        return node.get_generated();
+    }
+
+    auto left = node.get_left_value();//node.get_left_node()->generate();
+    auto left_type = left->getType();
+    if (!left_type->isPointerTy())
+    {
+        logger.invalid_dot_error();
+        return 0;
+    }
+    if (!left_type->getPointerElementType()->isStructTy())
+    {
+        logger.invalid_dot_error();
+        return 0;
+    }
+    
+    auto struct_type = llvm::dyn_cast<llvm::StructType>(left_type->getPointerElementType());
+    std::string type_name = struct_type->getStructName();
+    int index = get_blawn_context().get_element_index(type_name,"@"+node.get_right_name());
+    if (index != -1)
+    {
+        auto pointer = ir_builder.CreateStructGEP(nullptr,left,index); 
+        node.set_pointer(pointer);
+        auto value = ir_builder.CreateLoad(pointer);
+        node.set_generated(value);
+        return value;
+    }
+    else 
+    {
+        auto class_node = get_blawn_context().get_class(type_name);
+        if (class_node == nullptr)
         {
-            auto pointer = ir_builder.CreateStructGEP(nullptr,left,index); 
-            node.set_pointer(pointer);
-            return ir_builder.CreateLoad(pointer);
-        }
-        else 
-        {
-            std::cerr << rso.str() << " type object has no member " << node.get_right_name() << std::endl;
-            exit(1);
+            logger.has_no_member_error(type_name,node.get_right_name());
             return 0;
         }
-    }
-    else
-    {
-        std::cerr << "invalid use of '.'!" << std::endl;
-        exit(1);
+        for (auto& m:class_node->get_methods())
+        {
+            if (m->name == node.get_right_name())
+            {
+                node.get_call_node()->function = m;
+                auto value = node.get_call_node()->generate();
+                node.set_generated(value);
+                return value;
+            }
+        }
+        logger.has_no_member_error(type_name,node.get_right_name());
         return 0;
     }
 }

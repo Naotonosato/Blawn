@@ -73,7 +73,8 @@
 			"algorithm": "cpp",
 			"iterator": "cpp",
 			"memory_resource": "cpp",
-			"set": "cpp"
+			"set": "cpp",
+			"numeric": "cpp"
 		},
 		"C_Cpp.intelliSenseEngineFallback": "Disabled",
 		"C_Cpp.default.cppStandard": "c++14"

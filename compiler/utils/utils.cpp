@@ -3,9 +3,25 @@
 #include <llvm/IR/Module.h>
 #include <llvm/IR/DataLayout.h>
 #include <llvm/IR/Type.h>
+#include <llvm/Support/raw_ostream.h>
 #include "utils.hpp"
 
 
+std::string utils::to_string(llvm::Type* type)
+{
+    std::string str;
+    llvm::raw_string_ostream rso(str);
+    type->print(rso);
+    return rso.str();
+}
+
+std::string utils::to_string(llvm::Value* value)
+{
+    std::string str;
+    llvm::raw_string_ostream rso(str);
+    value->print(rso);
+    return rso.str();
+}
 
 uint64_t utils::get_sizeof(llvm::Type* type,llvm::Module& module)
 {
