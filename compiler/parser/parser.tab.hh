@@ -323,6 +323,7 @@ namespace Blawn {
       // function_definition
       // class_definition
       // expression
+      // list
       // assign_variable
       // monomial
       // call
@@ -386,20 +387,27 @@ namespace Blawn {
         ASTERISK = 268,
         SLASH = 269,
         DOT_IDENTIFIER = 270,
-        USE = 271,
-        COLON = 272,
-        SEMICOLON = 273,
-        COMMA = 274,
-        LEFT_PARENTHESIS = 275,
-        RIGHT_PARENTHESIS = 276,
-        IF = 277,
-        ELSE = 278,
-        FOR = 279,
-        WHILE = 280,
-        EOL = 281,
-        INT_LITERAL = 282,
-        FLOAT_LITERAL = 283,
-        STRING_LITERAL = 284
+        OP_EQUAL = 271,
+        OP_NOT_EQUAL = 272,
+        OP_AND = 273,
+        OP_OR = 274,
+        USE = 275,
+        COLON = 276,
+        SEMICOLON = 277,
+        COMMA = 278,
+        LEFT_PARENTHESIS = 279,
+        RIGHT_PARENTHESIS = 280,
+        LEFT_BRACKET = 281,
+        RIGHT_BRACKET = 282,
+        IF = 283,
+        ELSE = 284,
+        FOR = 285,
+        IN = 286,
+        WHILE = 287,
+        EOL = 288,
+        INT_LITERAL = 289,
+        FLOAT_LITERAL = 290,
+        STRING_LITERAL = 291
       };
     };
 
@@ -580,6 +588,22 @@ namespace Blawn {
 
     static inline
     symbol_type
+    make_OP_EQUAL (const location_type& l);
+
+    static inline
+    symbol_type
+    make_OP_NOT_EQUAL (const location_type& l);
+
+    static inline
+    symbol_type
+    make_OP_AND (const location_type& l);
+
+    static inline
+    symbol_type
+    make_OP_OR (const location_type& l);
+
+    static inline
+    symbol_type
     make_USE (const location_type& l);
 
     static inline
@@ -604,6 +628,14 @@ namespace Blawn {
 
     static inline
     symbol_type
+    make_LEFT_BRACKET (const location_type& l);
+
+    static inline
+    symbol_type
+    make_RIGHT_BRACKET (const location_type& l);
+
+    static inline
+    symbol_type
     make_IF (const location_type& l);
 
     static inline
@@ -613,6 +645,10 @@ namespace Blawn {
     static inline
     symbol_type
     make_FOR (const location_type& l);
+
+    static inline
+    symbol_type
+    make_IN (const location_type& l);
 
     static inline
     symbol_type
@@ -701,7 +737,7 @@ namespace Blawn {
     // Tables.
   // YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
   // STATE-NUM.
-  static const signed char yypact_[];
+  static const short int yypact_[];
 
   // YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
   // Performed when YYTABLE does not specify something else to do.  Zero
@@ -719,7 +755,7 @@ namespace Blawn {
   // number is the opposite.  If YYTABLE_NINF, syntax error.
   static const unsigned char yytable_[];
 
-  static const unsigned char yycheck_[];
+  static const signed char yycheck_[];
 
   // YYSTOS[STATE-NUM] -- The (internal number of the) accessing
   // symbol of state STATE-NUM.
@@ -836,12 +872,12 @@ namespace Blawn {
     enum
     {
       yyeof_ = 0,
-      yylast_ = 117,     ///< Last index in yytable_.
-      yynnts_ = 20,  ///< Number of nonterminal symbols.
-      yyfinal_ = 29, ///< Termination state number.
+      yylast_ = 237,     ///< Last index in yytable_.
+      yynnts_ = 21,  ///< Number of nonterminal symbols.
+      yyfinal_ = 35, ///< Termination state number.
       yyterror_ = 1,
       yyerrcode_ = 256,
-      yyntokens_ = 30  ///< Number of tokens.
+      yyntokens_ = 37  ///< Number of tokens.
     };
 
 
@@ -853,7 +889,7 @@ namespace Blawn {
 
 #line 5 "./parser.yy" // lalr1.cc:377
 } // Blawn
-#line 857 "parser.tab.hh" // lalr1.cc:377
+#line 893 "parser.tab.hh" // lalr1.cc:377
 
 
 

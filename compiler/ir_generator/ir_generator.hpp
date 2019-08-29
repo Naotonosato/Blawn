@@ -208,3 +208,16 @@ class AccessIRGenerator:public IRGenerator
     :IRGenerator(context,module,ir_builder){}
     llvm::Value* generate(Node &node) override;
 };
+
+
+class ForIRGenerator:public IRGenerator
+{
+    public:
+    ForIRGenerator(
+        llvm::LLVMContext &context,
+        llvm::Module &module,
+        llvm::IRBuilder<> &ir_builder
+        )
+    :IRGenerator(context,module,ir_builder){}
+    llvm::Value* generate(Node &node) override;
+};

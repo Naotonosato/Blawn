@@ -3,7 +3,8 @@ Terminals unused in grammar
    C_FUNCTION
    USE
    COLON
-   FOR
+   SEMICOLON
+   IN
    WHILE
 
 
@@ -20,19 +21,19 @@ Grammar
 
     5 line: line_content EOL
     6     | line_content "end of file"
+    7     | definition
 
-    7 line_content: expression
-    8             | definition
+    8 line_content: expression
 
     9 definition: function_definition
    10           | class_definition
 
-   11 function_definition: FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL lines RETURN expression
+   11 function_definition: FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL lines RETURN expression EOL
 
    12 class_definition: CLASS_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL members_definition methods
 
-   13 methods: method_definition
-   14        | methods method_definition
+   13 methods: method_definition EOL
+   14        | methods method_definition EOL
 
    15 method_definition: METHOD_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL lines RETURN expression
 
@@ -45,31 +46,39 @@ Grammar
    20 expressions: expression
    21            | expressions COMMA expression
 
-   22 expression: IF expression EOL block SEMICOLON
-   23           | ELSE EOL block SEMICOLON
-   24           | monomial
-   25           | assign_variable
-   26           | expression PLUS expression
-   27           | expression MINUS expression
-   28           | expression ASTERISK expression
-   29           | expression SLASH expression
-   30           | access
+   22 expression: IF expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+   23           | ELSE EOL LEFT_PARENTHESIS block RIGHT_PARENTHESIS
+   24           | FOR expression COMMA expression COMMA expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+   25           | monomial
+   26           | assign_variable
+   27           | expression PLUS expression
+   28           | expression MINUS expression
+   29           | expression ASTERISK expression
+   30           | expression SLASH expression
+   31           | expression OP_AND expression
+   32           | expression OP_OR expression
+   33           | expression OP_EQUAL expression
+   34           | expression OP_NOT_EQUAL expression
+   35           | list
+   36           | access
 
-   31 access: expression DOT_IDENTIFIER
+   37 list: LEFT_BRACKET expressions RIGHT_BRACKET
 
-   32 assign_variable: IDENTIFIER EQUAL expression
-   33                | access EQUAL expression
+   38 access: expression DOT_IDENTIFIER
 
-   34 monomial: call
-   35         | STRING_LITERAL
-   36         | FLOAT_LITERAL
-   37         | INT_LITERAL
-   38         | variable
+   39 assign_variable: IDENTIFIER EQUAL expression
+   40                | access EQUAL expression
 
-   39 call: IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-   40     | access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   41 monomial: call
+   42         | STRING_LITERAL
+   43         | FLOAT_LITERAL
+   44         | INT_LITERAL
+   45         | variable
 
-   41 variable: IDENTIFIER
+   46 call: IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   47     | access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+
+   48 variable: IDENTIFIER
 
 
 Terminals, with rules where they appear
@@ -82,72 +91,81 @@ CLASS_DEFINITION (260) 12
 RETURN (261) 11 15
 C_FUNCTION (262)
 MEMBER_IDENTIFIER (263) 16 17
-IDENTIFIER (264) 18 19 32 39 41
-EQUAL (265) 16 17 32 33
-PLUS (266) 26
-MINUS (267) 27
-ASTERISK (268) 28
-SLASH (269) 29
-DOT_IDENTIFIER (270) 31
-USE (271)
-COLON (272)
-SEMICOLON (273) 22 23
-COMMA (274) 19 21
-LEFT_PARENTHESIS (275) 11 12 15 39 40
-RIGHT_PARENTHESIS (276) 11 12 15 39 40
-IF (277) 22
-ELSE (278) 23
-FOR (279)
-WHILE (280)
-EOL (281) 5 11 12 15 16 17 22 23
-INT_LITERAL (282) 37
-FLOAT_LITERAL (283) 36
-STRING_LITERAL (284) 35
+IDENTIFIER (264) 18 19 39 46 48
+EQUAL (265) 16 17 39 40
+PLUS (266) 27
+MINUS (267) 28
+ASTERISK (268) 29
+SLASH (269) 30
+DOT_IDENTIFIER (270) 38
+OP_EQUAL (271) 33
+OP_NOT_EQUAL (272) 34
+OP_AND (273) 31
+OP_OR (274) 32
+USE (275)
+COLON (276)
+SEMICOLON (277)
+COMMA (278) 19 21 24
+LEFT_PARENTHESIS (279) 11 12 15 22 23 24 46 47
+RIGHT_PARENTHESIS (280) 11 12 15 22 23 24 46 47
+LEFT_BRACKET (281) 37
+RIGHT_BRACKET (282) 37
+IF (283) 22
+ELSE (284) 23
+FOR (285) 24
+IN (286)
+WHILE (287)
+EOL (288) 5 11 12 13 14 15 16 17 22 23 24
+INT_LITERAL (289) 44
+FLOAT_LITERAL (290) 43
+STRING_LITERAL (291) 42
 
 
 Nonterminals, with rules where they appear
 
-$accept (30)
+$accept (37)
     on left: 0
-program (31)
+program (38)
     on left: 1, on right: 0
-block (32)
-    on left: 2, on right: 1 22 23
-lines (33)
+block (39)
+    on left: 2, on right: 1 22 23 24
+lines (40)
     on left: 3 4, on right: 2 4 11 15
-line (34)
-    on left: 5 6, on right: 3 4
-line_content (35)
-    on left: 7 8, on right: 5 6
-definition (36)
-    on left: 9 10, on right: 8
-function_definition (37)
+line (41)
+    on left: 5 6 7, on right: 3 4
+line_content (42)
+    on left: 8, on right: 5 6
+definition (43)
+    on left: 9 10, on right: 7
+function_definition (44)
     on left: 11, on right: 9
-class_definition (38)
+class_definition (45)
     on left: 12, on right: 10
-methods (39)
+methods (46)
     on left: 13 14, on right: 12 14
-method_definition (40)
+method_definition (47)
     on left: 15, on right: 13 14
-members_definition (41)
+members_definition (48)
     on left: 16 17, on right: 12 17
-definition_arguments (42)
+definition_arguments (49)
     on left: 18 19, on right: 11 12 15 19
-expressions (43)
-    on left: 20 21, on right: 21 39 40
-expression (44)
-    on left: 22 23 24 25 26 27 28 29 30, on right: 7 11 15 16 17 20
-    21 22 26 27 28 29 31 32 33
-access (45)
-    on left: 31, on right: 30 33 40
-assign_variable (46)
-    on left: 32 33, on right: 25
-monomial (47)
-    on left: 34 35 36 37 38, on right: 24
-call (48)
-    on left: 39 40, on right: 34
-variable (49)
-    on left: 41, on right: 38
+expressions (50)
+    on left: 20 21, on right: 21 37 46 47
+expression (51)
+    on left: 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36, on right:
+    8 11 15 16 17 20 21 22 24 27 28 29 30 31 32 33 34 38 39 40
+list (52)
+    on left: 37, on right: 35
+access (53)
+    on left: 38, on right: 36 40 47
+assign_variable (54)
+    on left: 39 40, on right: 26
+monomial (55)
+    on left: 41 42 43 44 45, on right: 25
+call (56)
+    on left: 46 47, on right: 41
+variable (57)
+    on left: 48, on right: 45
 
 
 State 0
@@ -159,1709 +177,2806 @@ State 0
     4      | . lines line
     5 line: . line_content EOL
     6     | . line_content "end of file"
-    7 line_content: . expression
-    8             | . definition
+    7     | . definition
+    8 line_content: . expression
     9 definition: . function_definition
    10           | . class_definition
-   11 function_definition: . FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL lines RETURN expression
+   11 function_definition: . FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL lines RETURN expression EOL
    12 class_definition: . CLASS_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL members_definition methods
-   22 expression: . IF expression EOL block SEMICOLON
-   23           | . ELSE EOL block SEMICOLON
-   24           | . monomial
-   25           | . assign_variable
-   26           | . expression PLUS expression
-   27           | . expression MINUS expression
-   28           | . expression ASTERISK expression
-   29           | . expression SLASH expression
-   30           | . access
-   31 access: . expression DOT_IDENTIFIER
-   32 assign_variable: . IDENTIFIER EQUAL expression
-   33                | . access EQUAL expression
-   34 monomial: . call
-   35         | . STRING_LITERAL
-   36         | . FLOAT_LITERAL
-   37         | . INT_LITERAL
-   38         | . variable
-   39 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-   40     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-   41 variable: . IDENTIFIER
+   22 expression: . IF expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+   23           | . ELSE EOL LEFT_PARENTHESIS block RIGHT_PARENTHESIS
+   24           | . FOR expression COMMA expression COMMA expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+   25           | . monomial
+   26           | . assign_variable
+   27           | . expression PLUS expression
+   28           | . expression MINUS expression
+   29           | . expression ASTERISK expression
+   30           | . expression SLASH expression
+   31           | . expression OP_AND expression
+   32           | . expression OP_OR expression
+   33           | . expression OP_EQUAL expression
+   34           | . expression OP_NOT_EQUAL expression
+   35           | . list
+   36           | . access
+   37 list: . LEFT_BRACKET expressions RIGHT_BRACKET
+   38 access: . expression DOT_IDENTIFIER
+   39 assign_variable: . IDENTIFIER EQUAL expression
+   40                | . access EQUAL expression
+   41 monomial: . call
+   42         | . STRING_LITERAL
+   43         | . FLOAT_LITERAL
+   44         | . INT_LITERAL
+   45         | . variable
+   46 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   47     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   48 variable: . IDENTIFIER
 
     FUNCTION_DEFINITION  shift, and go to state 1
     CLASS_DEFINITION     shift, and go to state 2
     IDENTIFIER           shift, and go to state 3
-    IF                   shift, and go to state 4
-    ELSE                 shift, and go to state 5
-    INT_LITERAL          shift, and go to state 6
-    FLOAT_LITERAL        shift, and go to state 7
-    STRING_LITERAL       shift, and go to state 8
+    LEFT_BRACKET         shift, and go to state 4
+    IF                   shift, and go to state 5
+    ELSE                 shift, and go to state 6
+    FOR                  shift, and go to state 7
+    INT_LITERAL          shift, and go to state 8
+    FLOAT_LITERAL        shift, and go to state 9
+    STRING_LITERAL       shift, and go to state 10
 
-    program              go to state 9
-    block                go to state 10
-    lines                go to state 11
-    line                 go to state 12
-    line_content         go to state 13
-    definition           go to state 14
-    function_definition  go to state 15
-    class_definition     go to state 16
-    expression           go to state 17
-    access               go to state 18
-    assign_variable      go to state 19
-    monomial             go to state 20
-    call                 go to state 21
-    variable             go to state 22
+    program              go to state 11
+    block                go to state 12
+    lines                go to state 13
+    line                 go to state 14
+    line_content         go to state 15
+    definition           go to state 16
+    function_definition  go to state 17
+    class_definition     go to state 18
+    expression           go to state 19
+    list                 go to state 20
+    access               go to state 21
+    assign_variable      go to state 22
+    monomial             go to state 23
+    call                 go to state 24
+    variable             go to state 25
 
 
 State 1
 
-   11 function_definition: FUNCTION_DEFINITION . LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL lines RETURN expression
+   11 function_definition: FUNCTION_DEFINITION . LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL lines RETURN expression EOL
 
-    LEFT_PARENTHESIS  shift, and go to state 23
+    LEFT_PARENTHESIS  shift, and go to state 26
 
 
 State 2
 
    12 class_definition: CLASS_DEFINITION . LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL members_definition methods
 
-    LEFT_PARENTHESIS  shift, and go to state 24
+    LEFT_PARENTHESIS  shift, and go to state 27
 
 
 State 3
 
-   32 assign_variable: IDENTIFIER . EQUAL expression
-   39 call: IDENTIFIER . LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-   41 variable: IDENTIFIER .  ["end of file", METHOD_DEFINITION, PLUS, MINUS, ASTERISK, SLASH, DOT_IDENTIFIER, COMMA, RIGHT_PARENTHESIS, EOL]
+   39 assign_variable: IDENTIFIER . EQUAL expression
+   46 call: IDENTIFIER . LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   48 variable: IDENTIFIER .  ["end of file", PLUS, MINUS, ASTERISK, SLASH, DOT_IDENTIFIER, OP_EQUAL, OP_NOT_EQUAL, OP_AND, OP_OR, COMMA, RIGHT_PARENTHESIS, RIGHT_BRACKET, EOL]
 
-    EQUAL             shift, and go to state 25
-    LEFT_PARENTHESIS  shift, and go to state 26
+    EQUAL             shift, and go to state 28
+    LEFT_PARENTHESIS  shift, and go to state 29
 
-    $default  reduce using rule 41 (variable)
+    $default  reduce using rule 48 (variable)
 
 
 State 4
 
-   22 expression: . IF expression EOL block SEMICOLON
-   22           | IF . expression EOL block SEMICOLON
-   23           | . ELSE EOL block SEMICOLON
-   24           | . monomial
-   25           | . assign_variable
-   26           | . expression PLUS expression
-   27           | . expression MINUS expression
-   28           | . expression ASTERISK expression
-   29           | . expression SLASH expression
-   30           | . access
-   31 access: . expression DOT_IDENTIFIER
-   32 assign_variable: . IDENTIFIER EQUAL expression
-   33                | . access EQUAL expression
-   34 monomial: . call
-   35         | . STRING_LITERAL
-   36         | . FLOAT_LITERAL
-   37         | . INT_LITERAL
-   38         | . variable
-   39 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-   40     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-   41 variable: . IDENTIFIER
+   20 expressions: . expression
+   21            | . expressions COMMA expression
+   22 expression: . IF expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+   23           | . ELSE EOL LEFT_PARENTHESIS block RIGHT_PARENTHESIS
+   24           | . FOR expression COMMA expression COMMA expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+   25           | . monomial
+   26           | . assign_variable
+   27           | . expression PLUS expression
+   28           | . expression MINUS expression
+   29           | . expression ASTERISK expression
+   30           | . expression SLASH expression
+   31           | . expression OP_AND expression
+   32           | . expression OP_OR expression
+   33           | . expression OP_EQUAL expression
+   34           | . expression OP_NOT_EQUAL expression
+   35           | . list
+   36           | . access
+   37 list: . LEFT_BRACKET expressions RIGHT_BRACKET
+   37     | LEFT_BRACKET . expressions RIGHT_BRACKET
+   38 access: . expression DOT_IDENTIFIER
+   39 assign_variable: . IDENTIFIER EQUAL expression
+   40                | . access EQUAL expression
+   41 monomial: . call
+   42         | . STRING_LITERAL
+   43         | . FLOAT_LITERAL
+   44         | . INT_LITERAL
+   45         | . variable
+   46 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   47     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   48 variable: . IDENTIFIER
 
     IDENTIFIER      shift, and go to state 3
-    IF              shift, and go to state 4
-    ELSE            shift, and go to state 5
-    INT_LITERAL     shift, and go to state 6
-    FLOAT_LITERAL   shift, and go to state 7
-    STRING_LITERAL  shift, and go to state 8
+    LEFT_BRACKET    shift, and go to state 4
+    IF              shift, and go to state 5
+    ELSE            shift, and go to state 6
+    FOR             shift, and go to state 7
+    INT_LITERAL     shift, and go to state 8
+    FLOAT_LITERAL   shift, and go to state 9
+    STRING_LITERAL  shift, and go to state 10
 
-    expression       go to state 27
-    access           go to state 18
-    assign_variable  go to state 19
-    monomial         go to state 20
-    call             go to state 21
-    variable         go to state 22
+    expressions      go to state 30
+    expression       go to state 31
+    list             go to state 20
+    access           go to state 21
+    assign_variable  go to state 22
+    monomial         go to state 23
+    call             go to state 24
+    variable         go to state 25
 
 
 State 5
 
-   23 expression: ELSE . EOL block SEMICOLON
+   22 expression: . IF expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+   22           | IF . expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+   23           | . ELSE EOL LEFT_PARENTHESIS block RIGHT_PARENTHESIS
+   24           | . FOR expression COMMA expression COMMA expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+   25           | . monomial
+   26           | . assign_variable
+   27           | . expression PLUS expression
+   28           | . expression MINUS expression
+   29           | . expression ASTERISK expression
+   30           | . expression SLASH expression
+   31           | . expression OP_AND expression
+   32           | . expression OP_OR expression
+   33           | . expression OP_EQUAL expression
+   34           | . expression OP_NOT_EQUAL expression
+   35           | . list
+   36           | . access
+   37 list: . LEFT_BRACKET expressions RIGHT_BRACKET
+   38 access: . expression DOT_IDENTIFIER
+   39 assign_variable: . IDENTIFIER EQUAL expression
+   40                | . access EQUAL expression
+   41 monomial: . call
+   42         | . STRING_LITERAL
+   43         | . FLOAT_LITERAL
+   44         | . INT_LITERAL
+   45         | . variable
+   46 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   47     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   48 variable: . IDENTIFIER
 
-    EOL  shift, and go to state 28
+    IDENTIFIER      shift, and go to state 3
+    LEFT_BRACKET    shift, and go to state 4
+    IF              shift, and go to state 5
+    ELSE            shift, and go to state 6
+    FOR             shift, and go to state 7
+    INT_LITERAL     shift, and go to state 8
+    FLOAT_LITERAL   shift, and go to state 9
+    STRING_LITERAL  shift, and go to state 10
+
+    expression       go to state 32
+    list             go to state 20
+    access           go to state 21
+    assign_variable  go to state 22
+    monomial         go to state 23
+    call             go to state 24
+    variable         go to state 25
 
 
 State 6
 
-   37 monomial: INT_LITERAL .
+   23 expression: ELSE . EOL LEFT_PARENTHESIS block RIGHT_PARENTHESIS
 
-    $default  reduce using rule 37 (monomial)
+    EOL  shift, and go to state 33
 
 
 State 7
 
-   36 monomial: FLOAT_LITERAL .
+   22 expression: . IF expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+   23           | . ELSE EOL LEFT_PARENTHESIS block RIGHT_PARENTHESIS
+   24           | . FOR expression COMMA expression COMMA expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+   24           | FOR . expression COMMA expression COMMA expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+   25           | . monomial
+   26           | . assign_variable
+   27           | . expression PLUS expression
+   28           | . expression MINUS expression
+   29           | . expression ASTERISK expression
+   30           | . expression SLASH expression
+   31           | . expression OP_AND expression
+   32           | . expression OP_OR expression
+   33           | . expression OP_EQUAL expression
+   34           | . expression OP_NOT_EQUAL expression
+   35           | . list
+   36           | . access
+   37 list: . LEFT_BRACKET expressions RIGHT_BRACKET
+   38 access: . expression DOT_IDENTIFIER
+   39 assign_variable: . IDENTIFIER EQUAL expression
+   40                | . access EQUAL expression
+   41 monomial: . call
+   42         | . STRING_LITERAL
+   43         | . FLOAT_LITERAL
+   44         | . INT_LITERAL
+   45         | . variable
+   46 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   47     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   48 variable: . IDENTIFIER
 
-    $default  reduce using rule 36 (monomial)
+    IDENTIFIER      shift, and go to state 3
+    LEFT_BRACKET    shift, and go to state 4
+    IF              shift, and go to state 5
+    ELSE            shift, and go to state 6
+    FOR             shift, and go to state 7
+    INT_LITERAL     shift, and go to state 8
+    FLOAT_LITERAL   shift, and go to state 9
+    STRING_LITERAL  shift, and go to state 10
+
+    expression       go to state 34
+    list             go to state 20
+    access           go to state 21
+    assign_variable  go to state 22
+    monomial         go to state 23
+    call             go to state 24
+    variable         go to state 25
 
 
 State 8
 
-   35 monomial: STRING_LITERAL .
+   44 monomial: INT_LITERAL .
 
-    $default  reduce using rule 35 (monomial)
+    $default  reduce using rule 44 (monomial)
 
 
 State 9
 
-    0 $accept: program . "end of file"
+   43 monomial: FLOAT_LITERAL .
 
-    "end of file"  shift, and go to state 29
+    $default  reduce using rule 43 (monomial)
 
 
 State 10
+
+   42 monomial: STRING_LITERAL .
+
+    $default  reduce using rule 42 (monomial)
+
+
+State 11
+
+    0 $accept: program . "end of file"
+
+    "end of file"  shift, and go to state 35
+
+
+State 12
 
     1 program: block .
 
     $default  reduce using rule 1 (program)
 
 
-State 11
+State 13
 
-    2 block: lines .  ["end of file", SEMICOLON]
+    2 block: lines .  ["end of file", RIGHT_PARENTHESIS]
     4 lines: lines . line
     5 line: . line_content EOL
     6     | . line_content "end of file"
-    7 line_content: . expression
-    8             | . definition
+    7     | . definition
+    8 line_content: . expression
     9 definition: . function_definition
    10           | . class_definition
-   11 function_definition: . FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL lines RETURN expression
+   11 function_definition: . FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL lines RETURN expression EOL
    12 class_definition: . CLASS_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL members_definition methods
-   22 expression: . IF expression EOL block SEMICOLON
-   23           | . ELSE EOL block SEMICOLON
-   24           | . monomial
-   25           | . assign_variable
-   26           | . expression PLUS expression
-   27           | . expression MINUS expression
-   28           | . expression ASTERISK expression
-   29           | . expression SLASH expression
-   30           | . access
-   31 access: . expression DOT_IDENTIFIER
-   32 assign_variable: . IDENTIFIER EQUAL expression
-   33                | . access EQUAL expression
-   34 monomial: . call
-   35         | . STRING_LITERAL
-   36         | . FLOAT_LITERAL
-   37         | . INT_LITERAL
-   38         | . variable
-   39 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-   40     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-   41 variable: . IDENTIFIER
+   22 expression: . IF expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+   23           | . ELSE EOL LEFT_PARENTHESIS block RIGHT_PARENTHESIS
+   24           | . FOR expression COMMA expression COMMA expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+   25           | . monomial
+   26           | . assign_variable
+   27           | . expression PLUS expression
+   28           | . expression MINUS expression
+   29           | . expression ASTERISK expression
+   30           | . expression SLASH expression
+   31           | . expression OP_AND expression
+   32           | . expression OP_OR expression
+   33           | . expression OP_EQUAL expression
+   34           | . expression OP_NOT_EQUAL expression
+   35           | . list
+   36           | . access
+   37 list: . LEFT_BRACKET expressions RIGHT_BRACKET
+   38 access: . expression DOT_IDENTIFIER
+   39 assign_variable: . IDENTIFIER EQUAL expression
+   40                | . access EQUAL expression
+   41 monomial: . call
+   42         | . STRING_LITERAL
+   43         | . FLOAT_LITERAL
+   44         | . INT_LITERAL
+   45         | . variable
+   46 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   47     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   48 variable: . IDENTIFIER
 
     FUNCTION_DEFINITION  shift, and go to state 1
     CLASS_DEFINITION     shift, and go to state 2
     IDENTIFIER           shift, and go to state 3
-    IF                   shift, and go to state 4
-    ELSE                 shift, and go to state 5
-    INT_LITERAL          shift, and go to state 6
-    FLOAT_LITERAL        shift, and go to state 7
-    STRING_LITERAL       shift, and go to state 8
+    LEFT_BRACKET         shift, and go to state 4
+    IF                   shift, and go to state 5
+    ELSE                 shift, and go to state 6
+    FOR                  shift, and go to state 7
+    INT_LITERAL          shift, and go to state 8
+    FLOAT_LITERAL        shift, and go to state 9
+    STRING_LITERAL       shift, and go to state 10
 
     $default  reduce using rule 2 (block)
 
-    line                 go to state 30
-    line_content         go to state 13
-    definition           go to state 14
-    function_definition  go to state 15
-    class_definition     go to state 16
-    expression           go to state 17
-    access               go to state 18
-    assign_variable      go to state 19
-    monomial             go to state 20
-    call                 go to state 21
-    variable             go to state 22
+    line                 go to state 36
+    line_content         go to state 15
+    definition           go to state 16
+    function_definition  go to state 17
+    class_definition     go to state 18
+    expression           go to state 19
+    list                 go to state 20
+    access               go to state 21
+    assign_variable      go to state 22
+    monomial             go to state 23
+    call                 go to state 24
+    variable             go to state 25
 
 
-State 12
+State 14
 
     3 lines: line .
 
     $default  reduce using rule 3 (lines)
 
 
-State 13
+State 15
 
     5 line: line_content . EOL
     6     | line_content . "end of file"
 
-    "end of file"  shift, and go to state 31
-    EOL            shift, and go to state 32
+    "end of file"  shift, and go to state 37
+    EOL            shift, and go to state 38
 
 
-State 14
+State 16
 
-    8 line_content: definition .
+    7 line: definition .
 
-    $default  reduce using rule 8 (line_content)
+    $default  reduce using rule 7 (line)
 
 
-State 15
+State 17
 
     9 definition: function_definition .
 
     $default  reduce using rule 9 (definition)
 
 
-State 16
+State 18
 
    10 definition: class_definition .
 
     $default  reduce using rule 10 (definition)
 
 
-State 17
-
-    7 line_content: expression .  ["end of file", EOL]
-   26 expression: expression . PLUS expression
-   27           | expression . MINUS expression
-   28           | expression . ASTERISK expression
-   29           | expression . SLASH expression
-   31 access: expression . DOT_IDENTIFIER
-
-    PLUS            shift, and go to state 33
-    MINUS           shift, and go to state 34
-    ASTERISK        shift, and go to state 35
-    SLASH           shift, and go to state 36
-    DOT_IDENTIFIER  shift, and go to state 37
-
-    $default  reduce using rule 7 (line_content)
-
-
-State 18
-
-   30 expression: access .  ["end of file", METHOD_DEFINITION, PLUS, MINUS, ASTERISK, SLASH, DOT_IDENTIFIER, COMMA, RIGHT_PARENTHESIS, EOL]
-   33 assign_variable: access . EQUAL expression
-   40 call: access . LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-
-    EQUAL             shift, and go to state 38
-    LEFT_PARENTHESIS  shift, and go to state 39
-
-    $default  reduce using rule 30 (expression)
-
-
 State 19
 
-   25 expression: assign_variable .
+    8 line_content: expression .  ["end of file", EOL]
+   27 expression: expression . PLUS expression
+   28           | expression . MINUS expression
+   29           | expression . ASTERISK expression
+   30           | expression . SLASH expression
+   31           | expression . OP_AND expression
+   32           | expression . OP_OR expression
+   33           | expression . OP_EQUAL expression
+   34           | expression . OP_NOT_EQUAL expression
+   38 access: expression . DOT_IDENTIFIER
 
-    $default  reduce using rule 25 (expression)
+    PLUS            shift, and go to state 39
+    MINUS           shift, and go to state 40
+    ASTERISK        shift, and go to state 41
+    SLASH           shift, and go to state 42
+    DOT_IDENTIFIER  shift, and go to state 43
+    OP_EQUAL        shift, and go to state 44
+    OP_NOT_EQUAL    shift, and go to state 45
+    OP_AND          shift, and go to state 46
+    OP_OR           shift, and go to state 47
+
+    $default  reduce using rule 8 (line_content)
 
 
 State 20
 
-   24 expression: monomial .
+   35 expression: list .
 
-    $default  reduce using rule 24 (expression)
+    $default  reduce using rule 35 (expression)
 
 
 State 21
 
-   34 monomial: call .
+   36 expression: access .  ["end of file", PLUS, MINUS, ASTERISK, SLASH, DOT_IDENTIFIER, OP_EQUAL, OP_NOT_EQUAL, OP_AND, OP_OR, COMMA, RIGHT_PARENTHESIS, RIGHT_BRACKET, EOL]
+   40 assign_variable: access . EQUAL expression
+   47 call: access . LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
 
-    $default  reduce using rule 34 (monomial)
+    EQUAL             shift, and go to state 48
+    LEFT_PARENTHESIS  shift, and go to state 49
+
+    $default  reduce using rule 36 (expression)
 
 
 State 22
 
-   38 monomial: variable .
+   26 expression: assign_variable .
 
-    $default  reduce using rule 38 (monomial)
+    $default  reduce using rule 26 (expression)
 
 
 State 23
 
-   11 function_definition: FUNCTION_DEFINITION LEFT_PARENTHESIS . definition_arguments RIGHT_PARENTHESIS EOL lines RETURN expression
-   18 definition_arguments: . IDENTIFIER
-   19                     | . definition_arguments COMMA IDENTIFIER
+   25 expression: monomial .
 
-    IDENTIFIER  shift, and go to state 40
-
-    definition_arguments  go to state 41
+    $default  reduce using rule 25 (expression)
 
 
 State 24
+
+   41 monomial: call .
+
+    $default  reduce using rule 41 (monomial)
+
+
+State 25
+
+   45 monomial: variable .
+
+    $default  reduce using rule 45 (monomial)
+
+
+State 26
+
+   11 function_definition: FUNCTION_DEFINITION LEFT_PARENTHESIS . definition_arguments RIGHT_PARENTHESIS EOL lines RETURN expression EOL
+   18 definition_arguments: . IDENTIFIER
+   19                     | . definition_arguments COMMA IDENTIFIER
+
+    IDENTIFIER  shift, and go to state 50
+
+    definition_arguments  go to state 51
+
+
+State 27
 
    12 class_definition: CLASS_DEFINITION LEFT_PARENTHESIS . definition_arguments RIGHT_PARENTHESIS EOL members_definition methods
    18 definition_arguments: . IDENTIFIER
    19                     | . definition_arguments COMMA IDENTIFIER
 
-    IDENTIFIER  shift, and go to state 40
+    IDENTIFIER  shift, and go to state 50
 
-    definition_arguments  go to state 42
-
-
-State 25
-
-   22 expression: . IF expression EOL block SEMICOLON
-   23           | . ELSE EOL block SEMICOLON
-   24           | . monomial
-   25           | . assign_variable
-   26           | . expression PLUS expression
-   27           | . expression MINUS expression
-   28           | . expression ASTERISK expression
-   29           | . expression SLASH expression
-   30           | . access
-   31 access: . expression DOT_IDENTIFIER
-   32 assign_variable: . IDENTIFIER EQUAL expression
-   32                | IDENTIFIER EQUAL . expression
-   33                | . access EQUAL expression
-   34 monomial: . call
-   35         | . STRING_LITERAL
-   36         | . FLOAT_LITERAL
-   37         | . INT_LITERAL
-   38         | . variable
-   39 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-   40     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-   41 variable: . IDENTIFIER
-
-    IDENTIFIER      shift, and go to state 3
-    IF              shift, and go to state 4
-    ELSE            shift, and go to state 5
-    INT_LITERAL     shift, and go to state 6
-    FLOAT_LITERAL   shift, and go to state 7
-    STRING_LITERAL  shift, and go to state 8
-
-    expression       go to state 43
-    access           go to state 18
-    assign_variable  go to state 19
-    monomial         go to state 20
-    call             go to state 21
-    variable         go to state 22
-
-
-State 26
-
-   20 expressions: . expression
-   21            | . expressions COMMA expression
-   22 expression: . IF expression EOL block SEMICOLON
-   23           | . ELSE EOL block SEMICOLON
-   24           | . monomial
-   25           | . assign_variable
-   26           | . expression PLUS expression
-   27           | . expression MINUS expression
-   28           | . expression ASTERISK expression
-   29           | . expression SLASH expression
-   30           | . access
-   31 access: . expression DOT_IDENTIFIER
-   32 assign_variable: . IDENTIFIER EQUAL expression
-   33                | . access EQUAL expression
-   34 monomial: . call
-   35         | . STRING_LITERAL
-   36         | . FLOAT_LITERAL
-   37         | . INT_LITERAL
-   38         | . variable
-   39 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-   39     | IDENTIFIER LEFT_PARENTHESIS . expressions RIGHT_PARENTHESIS
-   40     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-   41 variable: . IDENTIFIER
-
-    IDENTIFIER      shift, and go to state 3
-    IF              shift, and go to state 4
-    ELSE            shift, and go to state 5
-    INT_LITERAL     shift, and go to state 6
-    FLOAT_LITERAL   shift, and go to state 7
-    STRING_LITERAL  shift, and go to state 8
-
-    expressions      go to state 44
-    expression       go to state 45
-    access           go to state 18
-    assign_variable  go to state 19
-    monomial         go to state 20
-    call             go to state 21
-    variable         go to state 22
-
-
-State 27
-
-   22 expression: IF expression . EOL block SEMICOLON
-   26           | expression . PLUS expression
-   27           | expression . MINUS expression
-   28           | expression . ASTERISK expression
-   29           | expression . SLASH expression
-   31 access: expression . DOT_IDENTIFIER
-
-    PLUS            shift, and go to state 33
-    MINUS           shift, and go to state 34
-    ASTERISK        shift, and go to state 35
-    SLASH           shift, and go to state 36
-    DOT_IDENTIFIER  shift, and go to state 37
-    EOL             shift, and go to state 46
+    definition_arguments  go to state 52
 
 
 State 28
 
-    2 block: . lines
-    3 lines: . line
-    4      | . lines line
-    5 line: . line_content EOL
-    6     | . line_content "end of file"
-    7 line_content: . expression
-    8             | . definition
-    9 definition: . function_definition
-   10           | . class_definition
-   11 function_definition: . FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL lines RETURN expression
-   12 class_definition: . CLASS_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL members_definition methods
-   22 expression: . IF expression EOL block SEMICOLON
-   23           | . ELSE EOL block SEMICOLON
-   23           | ELSE EOL . block SEMICOLON
-   24           | . monomial
-   25           | . assign_variable
-   26           | . expression PLUS expression
-   27           | . expression MINUS expression
-   28           | . expression ASTERISK expression
-   29           | . expression SLASH expression
-   30           | . access
-   31 access: . expression DOT_IDENTIFIER
-   32 assign_variable: . IDENTIFIER EQUAL expression
-   33                | . access EQUAL expression
-   34 monomial: . call
-   35         | . STRING_LITERAL
-   36         | . FLOAT_LITERAL
-   37         | . INT_LITERAL
-   38         | . variable
-   39 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-   40     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-   41 variable: . IDENTIFIER
+   22 expression: . IF expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+   23           | . ELSE EOL LEFT_PARENTHESIS block RIGHT_PARENTHESIS
+   24           | . FOR expression COMMA expression COMMA expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+   25           | . monomial
+   26           | . assign_variable
+   27           | . expression PLUS expression
+   28           | . expression MINUS expression
+   29           | . expression ASTERISK expression
+   30           | . expression SLASH expression
+   31           | . expression OP_AND expression
+   32           | . expression OP_OR expression
+   33           | . expression OP_EQUAL expression
+   34           | . expression OP_NOT_EQUAL expression
+   35           | . list
+   36           | . access
+   37 list: . LEFT_BRACKET expressions RIGHT_BRACKET
+   38 access: . expression DOT_IDENTIFIER
+   39 assign_variable: . IDENTIFIER EQUAL expression
+   39                | IDENTIFIER EQUAL . expression
+   40                | . access EQUAL expression
+   41 monomial: . call
+   42         | . STRING_LITERAL
+   43         | . FLOAT_LITERAL
+   44         | . INT_LITERAL
+   45         | . variable
+   46 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   47     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   48 variable: . IDENTIFIER
 
-    FUNCTION_DEFINITION  shift, and go to state 1
-    CLASS_DEFINITION     shift, and go to state 2
-    IDENTIFIER           shift, and go to state 3
-    IF                   shift, and go to state 4
-    ELSE                 shift, and go to state 5
-    INT_LITERAL          shift, and go to state 6
-    FLOAT_LITERAL        shift, and go to state 7
-    STRING_LITERAL       shift, and go to state 8
+    IDENTIFIER      shift, and go to state 3
+    LEFT_BRACKET    shift, and go to state 4
+    IF              shift, and go to state 5
+    ELSE            shift, and go to state 6
+    FOR             shift, and go to state 7
+    INT_LITERAL     shift, and go to state 8
+    FLOAT_LITERAL   shift, and go to state 9
+    STRING_LITERAL  shift, and go to state 10
 
-    block                go to state 47
-    lines                go to state 11
-    line                 go to state 12
-    line_content         go to state 13
-    definition           go to state 14
-    function_definition  go to state 15
-    class_definition     go to state 16
-    expression           go to state 17
-    access               go to state 18
-    assign_variable      go to state 19
-    monomial             go to state 20
-    call                 go to state 21
-    variable             go to state 22
+    expression       go to state 53
+    list             go to state 20
+    access           go to state 21
+    assign_variable  go to state 22
+    monomial         go to state 23
+    call             go to state 24
+    variable         go to state 25
 
 
 State 29
+
+   20 expressions: . expression
+   21            | . expressions COMMA expression
+   22 expression: . IF expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+   23           | . ELSE EOL LEFT_PARENTHESIS block RIGHT_PARENTHESIS
+   24           | . FOR expression COMMA expression COMMA expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+   25           | . monomial
+   26           | . assign_variable
+   27           | . expression PLUS expression
+   28           | . expression MINUS expression
+   29           | . expression ASTERISK expression
+   30           | . expression SLASH expression
+   31           | . expression OP_AND expression
+   32           | . expression OP_OR expression
+   33           | . expression OP_EQUAL expression
+   34           | . expression OP_NOT_EQUAL expression
+   35           | . list
+   36           | . access
+   37 list: . LEFT_BRACKET expressions RIGHT_BRACKET
+   38 access: . expression DOT_IDENTIFIER
+   39 assign_variable: . IDENTIFIER EQUAL expression
+   40                | . access EQUAL expression
+   41 monomial: . call
+   42         | . STRING_LITERAL
+   43         | . FLOAT_LITERAL
+   44         | . INT_LITERAL
+   45         | . variable
+   46 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   46     | IDENTIFIER LEFT_PARENTHESIS . expressions RIGHT_PARENTHESIS
+   47     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   48 variable: . IDENTIFIER
+
+    IDENTIFIER      shift, and go to state 3
+    LEFT_BRACKET    shift, and go to state 4
+    IF              shift, and go to state 5
+    ELSE            shift, and go to state 6
+    FOR             shift, and go to state 7
+    INT_LITERAL     shift, and go to state 8
+    FLOAT_LITERAL   shift, and go to state 9
+    STRING_LITERAL  shift, and go to state 10
+
+    expressions      go to state 54
+    expression       go to state 31
+    list             go to state 20
+    access           go to state 21
+    assign_variable  go to state 22
+    monomial         go to state 23
+    call             go to state 24
+    variable         go to state 25
+
+
+State 30
+
+   21 expressions: expressions . COMMA expression
+   37 list: LEFT_BRACKET expressions . RIGHT_BRACKET
+
+    COMMA          shift, and go to state 55
+    RIGHT_BRACKET  shift, and go to state 56
+
+
+State 31
+
+   20 expressions: expression .  [COMMA, RIGHT_PARENTHESIS, RIGHT_BRACKET]
+   27 expression: expression . PLUS expression
+   28           | expression . MINUS expression
+   29           | expression . ASTERISK expression
+   30           | expression . SLASH expression
+   31           | expression . OP_AND expression
+   32           | expression . OP_OR expression
+   33           | expression . OP_EQUAL expression
+   34           | expression . OP_NOT_EQUAL expression
+   38 access: expression . DOT_IDENTIFIER
+
+    PLUS            shift, and go to state 39
+    MINUS           shift, and go to state 40
+    ASTERISK        shift, and go to state 41
+    SLASH           shift, and go to state 42
+    DOT_IDENTIFIER  shift, and go to state 43
+    OP_EQUAL        shift, and go to state 44
+    OP_NOT_EQUAL    shift, and go to state 45
+    OP_AND          shift, and go to state 46
+    OP_OR           shift, and go to state 47
+
+    $default  reduce using rule 20 (expressions)
+
+
+State 32
+
+   22 expression: IF expression . EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+   27           | expression . PLUS expression
+   28           | expression . MINUS expression
+   29           | expression . ASTERISK expression
+   30           | expression . SLASH expression
+   31           | expression . OP_AND expression
+   32           | expression . OP_OR expression
+   33           | expression . OP_EQUAL expression
+   34           | expression . OP_NOT_EQUAL expression
+   38 access: expression . DOT_IDENTIFIER
+
+    PLUS            shift, and go to state 39
+    MINUS           shift, and go to state 40
+    ASTERISK        shift, and go to state 41
+    SLASH           shift, and go to state 42
+    DOT_IDENTIFIER  shift, and go to state 43
+    OP_EQUAL        shift, and go to state 44
+    OP_NOT_EQUAL    shift, and go to state 45
+    OP_AND          shift, and go to state 46
+    OP_OR           shift, and go to state 47
+    EOL             shift, and go to state 57
+
+
+State 33
+
+   23 expression: ELSE EOL . LEFT_PARENTHESIS block RIGHT_PARENTHESIS
+
+    LEFT_PARENTHESIS  shift, and go to state 58
+
+
+State 34
+
+   24 expression: FOR expression . COMMA expression COMMA expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+   27           | expression . PLUS expression
+   28           | expression . MINUS expression
+   29           | expression . ASTERISK expression
+   30           | expression . SLASH expression
+   31           | expression . OP_AND expression
+   32           | expression . OP_OR expression
+   33           | expression . OP_EQUAL expression
+   34           | expression . OP_NOT_EQUAL expression
+   38 access: expression . DOT_IDENTIFIER
+
+    PLUS            shift, and go to state 39
+    MINUS           shift, and go to state 40
+    ASTERISK        shift, and go to state 41
+    SLASH           shift, and go to state 42
+    DOT_IDENTIFIER  shift, and go to state 43
+    OP_EQUAL        shift, and go to state 44
+    OP_NOT_EQUAL    shift, and go to state 45
+    OP_AND          shift, and go to state 46
+    OP_OR           shift, and go to state 47
+    COMMA           shift, and go to state 59
+
+
+State 35
 
     0 $accept: program "end of file" .
 
     $default  accept
 
 
-State 30
+State 36
 
     4 lines: lines line .
 
     $default  reduce using rule 4 (lines)
 
 
-State 31
+State 37
 
     6 line: line_content "end of file" .
 
     $default  reduce using rule 6 (line)
 
 
-State 32
+State 38
 
     5 line: line_content EOL .
 
     $default  reduce using rule 5 (line)
 
 
-State 33
-
-   22 expression: . IF expression EOL block SEMICOLON
-   23           | . ELSE EOL block SEMICOLON
-   24           | . monomial
-   25           | . assign_variable
-   26           | . expression PLUS expression
-   26           | expression PLUS . expression
-   27           | . expression MINUS expression
-   28           | . expression ASTERISK expression
-   29           | . expression SLASH expression
-   30           | . access
-   31 access: . expression DOT_IDENTIFIER
-   32 assign_variable: . IDENTIFIER EQUAL expression
-   33                | . access EQUAL expression
-   34 monomial: . call
-   35         | . STRING_LITERAL
-   36         | . FLOAT_LITERAL
-   37         | . INT_LITERAL
-   38         | . variable
-   39 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-   40     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-   41 variable: . IDENTIFIER
-
-    IDENTIFIER      shift, and go to state 3
-    IF              shift, and go to state 4
-    ELSE            shift, and go to state 5
-    INT_LITERAL     shift, and go to state 6
-    FLOAT_LITERAL   shift, and go to state 7
-    STRING_LITERAL  shift, and go to state 8
-
-    expression       go to state 48
-    access           go to state 18
-    assign_variable  go to state 19
-    monomial         go to state 20
-    call             go to state 21
-    variable         go to state 22
-
-
-State 34
-
-   22 expression: . IF expression EOL block SEMICOLON
-   23           | . ELSE EOL block SEMICOLON
-   24           | . monomial
-   25           | . assign_variable
-   26           | . expression PLUS expression
-   27           | . expression MINUS expression
-   27           | expression MINUS . expression
-   28           | . expression ASTERISK expression
-   29           | . expression SLASH expression
-   30           | . access
-   31 access: . expression DOT_IDENTIFIER
-   32 assign_variable: . IDENTIFIER EQUAL expression
-   33                | . access EQUAL expression
-   34 monomial: . call
-   35         | . STRING_LITERAL
-   36         | . FLOAT_LITERAL
-   37         | . INT_LITERAL
-   38         | . variable
-   39 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-   40     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-   41 variable: . IDENTIFIER
-
-    IDENTIFIER      shift, and go to state 3
-    IF              shift, and go to state 4
-    ELSE            shift, and go to state 5
-    INT_LITERAL     shift, and go to state 6
-    FLOAT_LITERAL   shift, and go to state 7
-    STRING_LITERAL  shift, and go to state 8
-
-    expression       go to state 49
-    access           go to state 18
-    assign_variable  go to state 19
-    monomial         go to state 20
-    call             go to state 21
-    variable         go to state 22
-
-
-State 35
-
-   22 expression: . IF expression EOL block SEMICOLON
-   23           | . ELSE EOL block SEMICOLON
-   24           | . monomial
-   25           | . assign_variable
-   26           | . expression PLUS expression
-   27           | . expression MINUS expression
-   28           | . expression ASTERISK expression
-   28           | expression ASTERISK . expression
-   29           | . expression SLASH expression
-   30           | . access
-   31 access: . expression DOT_IDENTIFIER
-   32 assign_variable: . IDENTIFIER EQUAL expression
-   33                | . access EQUAL expression
-   34 monomial: . call
-   35         | . STRING_LITERAL
-   36         | . FLOAT_LITERAL
-   37         | . INT_LITERAL
-   38         | . variable
-   39 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-   40     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-   41 variable: . IDENTIFIER
-
-    IDENTIFIER      shift, and go to state 3
-    IF              shift, and go to state 4
-    ELSE            shift, and go to state 5
-    INT_LITERAL     shift, and go to state 6
-    FLOAT_LITERAL   shift, and go to state 7
-    STRING_LITERAL  shift, and go to state 8
-
-    expression       go to state 50
-    access           go to state 18
-    assign_variable  go to state 19
-    monomial         go to state 20
-    call             go to state 21
-    variable         go to state 22
-
-
-State 36
-
-   22 expression: . IF expression EOL block SEMICOLON
-   23           | . ELSE EOL block SEMICOLON
-   24           | . monomial
-   25           | . assign_variable
-   26           | . expression PLUS expression
-   27           | . expression MINUS expression
-   28           | . expression ASTERISK expression
-   29           | . expression SLASH expression
-   29           | expression SLASH . expression
-   30           | . access
-   31 access: . expression DOT_IDENTIFIER
-   32 assign_variable: . IDENTIFIER EQUAL expression
-   33                | . access EQUAL expression
-   34 monomial: . call
-   35         | . STRING_LITERAL
-   36         | . FLOAT_LITERAL
-   37         | . INT_LITERAL
-   38         | . variable
-   39 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-   40     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-   41 variable: . IDENTIFIER
-
-    IDENTIFIER      shift, and go to state 3
-    IF              shift, and go to state 4
-    ELSE            shift, and go to state 5
-    INT_LITERAL     shift, and go to state 6
-    FLOAT_LITERAL   shift, and go to state 7
-    STRING_LITERAL  shift, and go to state 8
-
-    expression       go to state 51
-    access           go to state 18
-    assign_variable  go to state 19
-    monomial         go to state 20
-    call             go to state 21
-    variable         go to state 22
-
-
-State 37
-
-   31 access: expression DOT_IDENTIFIER .
-
-    $default  reduce using rule 31 (access)
-
-
-State 38
-
-   22 expression: . IF expression EOL block SEMICOLON
-   23           | . ELSE EOL block SEMICOLON
-   24           | . monomial
-   25           | . assign_variable
-   26           | . expression PLUS expression
-   27           | . expression MINUS expression
-   28           | . expression ASTERISK expression
-   29           | . expression SLASH expression
-   30           | . access
-   31 access: . expression DOT_IDENTIFIER
-   32 assign_variable: . IDENTIFIER EQUAL expression
-   33                | . access EQUAL expression
-   33                | access EQUAL . expression
-   34 monomial: . call
-   35         | . STRING_LITERAL
-   36         | . FLOAT_LITERAL
-   37         | . INT_LITERAL
-   38         | . variable
-   39 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-   40     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-   41 variable: . IDENTIFIER
-
-    IDENTIFIER      shift, and go to state 3
-    IF              shift, and go to state 4
-    ELSE            shift, and go to state 5
-    INT_LITERAL     shift, and go to state 6
-    FLOAT_LITERAL   shift, and go to state 7
-    STRING_LITERAL  shift, and go to state 8
-
-    expression       go to state 52
-    access           go to state 18
-    assign_variable  go to state 19
-    monomial         go to state 20
-    call             go to state 21
-    variable         go to state 22
-
-
 State 39
 
-   20 expressions: . expression
-   21            | . expressions COMMA expression
-   22 expression: . IF expression EOL block SEMICOLON
-   23           | . ELSE EOL block SEMICOLON
-   24           | . monomial
-   25           | . assign_variable
-   26           | . expression PLUS expression
-   27           | . expression MINUS expression
-   28           | . expression ASTERISK expression
-   29           | . expression SLASH expression
-   30           | . access
-   31 access: . expression DOT_IDENTIFIER
-   32 assign_variable: . IDENTIFIER EQUAL expression
-   33                | . access EQUAL expression
-   34 monomial: . call
-   35         | . STRING_LITERAL
-   36         | . FLOAT_LITERAL
-   37         | . INT_LITERAL
-   38         | . variable
-   39 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-   40     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-   40     | access LEFT_PARENTHESIS . expressions RIGHT_PARENTHESIS
-   41 variable: . IDENTIFIER
+   22 expression: . IF expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+   23           | . ELSE EOL LEFT_PARENTHESIS block RIGHT_PARENTHESIS
+   24           | . FOR expression COMMA expression COMMA expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+   25           | . monomial
+   26           | . assign_variable
+   27           | . expression PLUS expression
+   27           | expression PLUS . expression
+   28           | . expression MINUS expression
+   29           | . expression ASTERISK expression
+   30           | . expression SLASH expression
+   31           | . expression OP_AND expression
+   32           | . expression OP_OR expression
+   33           | . expression OP_EQUAL expression
+   34           | . expression OP_NOT_EQUAL expression
+   35           | . list
+   36           | . access
+   37 list: . LEFT_BRACKET expressions RIGHT_BRACKET
+   38 access: . expression DOT_IDENTIFIER
+   39 assign_variable: . IDENTIFIER EQUAL expression
+   40                | . access EQUAL expression
+   41 monomial: . call
+   42         | . STRING_LITERAL
+   43         | . FLOAT_LITERAL
+   44         | . INT_LITERAL
+   45         | . variable
+   46 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   47     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   48 variable: . IDENTIFIER
 
     IDENTIFIER      shift, and go to state 3
-    IF              shift, and go to state 4
-    ELSE            shift, and go to state 5
-    INT_LITERAL     shift, and go to state 6
-    FLOAT_LITERAL   shift, and go to state 7
-    STRING_LITERAL  shift, and go to state 8
+    LEFT_BRACKET    shift, and go to state 4
+    IF              shift, and go to state 5
+    ELSE            shift, and go to state 6
+    FOR             shift, and go to state 7
+    INT_LITERAL     shift, and go to state 8
+    FLOAT_LITERAL   shift, and go to state 9
+    STRING_LITERAL  shift, and go to state 10
 
-    expressions      go to state 53
-    expression       go to state 45
-    access           go to state 18
-    assign_variable  go to state 19
-    monomial         go to state 20
-    call             go to state 21
-    variable         go to state 22
+    expression       go to state 60
+    list             go to state 20
+    access           go to state 21
+    assign_variable  go to state 22
+    monomial         go to state 23
+    call             go to state 24
+    variable         go to state 25
 
 
 State 40
+
+   22 expression: . IF expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+   23           | . ELSE EOL LEFT_PARENTHESIS block RIGHT_PARENTHESIS
+   24           | . FOR expression COMMA expression COMMA expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+   25           | . monomial
+   26           | . assign_variable
+   27           | . expression PLUS expression
+   28           | . expression MINUS expression
+   28           | expression MINUS . expression
+   29           | . expression ASTERISK expression
+   30           | . expression SLASH expression
+   31           | . expression OP_AND expression
+   32           | . expression OP_OR expression
+   33           | . expression OP_EQUAL expression
+   34           | . expression OP_NOT_EQUAL expression
+   35           | . list
+   36           | . access
+   37 list: . LEFT_BRACKET expressions RIGHT_BRACKET
+   38 access: . expression DOT_IDENTIFIER
+   39 assign_variable: . IDENTIFIER EQUAL expression
+   40                | . access EQUAL expression
+   41 monomial: . call
+   42         | . STRING_LITERAL
+   43         | . FLOAT_LITERAL
+   44         | . INT_LITERAL
+   45         | . variable
+   46 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   47     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   48 variable: . IDENTIFIER
+
+    IDENTIFIER      shift, and go to state 3
+    LEFT_BRACKET    shift, and go to state 4
+    IF              shift, and go to state 5
+    ELSE            shift, and go to state 6
+    FOR             shift, and go to state 7
+    INT_LITERAL     shift, and go to state 8
+    FLOAT_LITERAL   shift, and go to state 9
+    STRING_LITERAL  shift, and go to state 10
+
+    expression       go to state 61
+    list             go to state 20
+    access           go to state 21
+    assign_variable  go to state 22
+    monomial         go to state 23
+    call             go to state 24
+    variable         go to state 25
+
+
+State 41
+
+   22 expression: . IF expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+   23           | . ELSE EOL LEFT_PARENTHESIS block RIGHT_PARENTHESIS
+   24           | . FOR expression COMMA expression COMMA expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+   25           | . monomial
+   26           | . assign_variable
+   27           | . expression PLUS expression
+   28           | . expression MINUS expression
+   29           | . expression ASTERISK expression
+   29           | expression ASTERISK . expression
+   30           | . expression SLASH expression
+   31           | . expression OP_AND expression
+   32           | . expression OP_OR expression
+   33           | . expression OP_EQUAL expression
+   34           | . expression OP_NOT_EQUAL expression
+   35           | . list
+   36           | . access
+   37 list: . LEFT_BRACKET expressions RIGHT_BRACKET
+   38 access: . expression DOT_IDENTIFIER
+   39 assign_variable: . IDENTIFIER EQUAL expression
+   40                | . access EQUAL expression
+   41 monomial: . call
+   42         | . STRING_LITERAL
+   43         | . FLOAT_LITERAL
+   44         | . INT_LITERAL
+   45         | . variable
+   46 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   47     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   48 variable: . IDENTIFIER
+
+    IDENTIFIER      shift, and go to state 3
+    LEFT_BRACKET    shift, and go to state 4
+    IF              shift, and go to state 5
+    ELSE            shift, and go to state 6
+    FOR             shift, and go to state 7
+    INT_LITERAL     shift, and go to state 8
+    FLOAT_LITERAL   shift, and go to state 9
+    STRING_LITERAL  shift, and go to state 10
+
+    expression       go to state 62
+    list             go to state 20
+    access           go to state 21
+    assign_variable  go to state 22
+    monomial         go to state 23
+    call             go to state 24
+    variable         go to state 25
+
+
+State 42
+
+   22 expression: . IF expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+   23           | . ELSE EOL LEFT_PARENTHESIS block RIGHT_PARENTHESIS
+   24           | . FOR expression COMMA expression COMMA expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+   25           | . monomial
+   26           | . assign_variable
+   27           | . expression PLUS expression
+   28           | . expression MINUS expression
+   29           | . expression ASTERISK expression
+   30           | . expression SLASH expression
+   30           | expression SLASH . expression
+   31           | . expression OP_AND expression
+   32           | . expression OP_OR expression
+   33           | . expression OP_EQUAL expression
+   34           | . expression OP_NOT_EQUAL expression
+   35           | . list
+   36           | . access
+   37 list: . LEFT_BRACKET expressions RIGHT_BRACKET
+   38 access: . expression DOT_IDENTIFIER
+   39 assign_variable: . IDENTIFIER EQUAL expression
+   40                | . access EQUAL expression
+   41 monomial: . call
+   42         | . STRING_LITERAL
+   43         | . FLOAT_LITERAL
+   44         | . INT_LITERAL
+   45         | . variable
+   46 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   47     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   48 variable: . IDENTIFIER
+
+    IDENTIFIER      shift, and go to state 3
+    LEFT_BRACKET    shift, and go to state 4
+    IF              shift, and go to state 5
+    ELSE            shift, and go to state 6
+    FOR             shift, and go to state 7
+    INT_LITERAL     shift, and go to state 8
+    FLOAT_LITERAL   shift, and go to state 9
+    STRING_LITERAL  shift, and go to state 10
+
+    expression       go to state 63
+    list             go to state 20
+    access           go to state 21
+    assign_variable  go to state 22
+    monomial         go to state 23
+    call             go to state 24
+    variable         go to state 25
+
+
+State 43
+
+   38 access: expression DOT_IDENTIFIER .
+
+    $default  reduce using rule 38 (access)
+
+
+State 44
+
+   22 expression: . IF expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+   23           | . ELSE EOL LEFT_PARENTHESIS block RIGHT_PARENTHESIS
+   24           | . FOR expression COMMA expression COMMA expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+   25           | . monomial
+   26           | . assign_variable
+   27           | . expression PLUS expression
+   28           | . expression MINUS expression
+   29           | . expression ASTERISK expression
+   30           | . expression SLASH expression
+   31           | . expression OP_AND expression
+   32           | . expression OP_OR expression
+   33           | . expression OP_EQUAL expression
+   33           | expression OP_EQUAL . expression
+   34           | . expression OP_NOT_EQUAL expression
+   35           | . list
+   36           | . access
+   37 list: . LEFT_BRACKET expressions RIGHT_BRACKET
+   38 access: . expression DOT_IDENTIFIER
+   39 assign_variable: . IDENTIFIER EQUAL expression
+   40                | . access EQUAL expression
+   41 monomial: . call
+   42         | . STRING_LITERAL
+   43         | . FLOAT_LITERAL
+   44         | . INT_LITERAL
+   45         | . variable
+   46 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   47     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   48 variable: . IDENTIFIER
+
+    IDENTIFIER      shift, and go to state 3
+    LEFT_BRACKET    shift, and go to state 4
+    IF              shift, and go to state 5
+    ELSE            shift, and go to state 6
+    FOR             shift, and go to state 7
+    INT_LITERAL     shift, and go to state 8
+    FLOAT_LITERAL   shift, and go to state 9
+    STRING_LITERAL  shift, and go to state 10
+
+    expression       go to state 64
+    list             go to state 20
+    access           go to state 21
+    assign_variable  go to state 22
+    monomial         go to state 23
+    call             go to state 24
+    variable         go to state 25
+
+
+State 45
+
+   22 expression: . IF expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+   23           | . ELSE EOL LEFT_PARENTHESIS block RIGHT_PARENTHESIS
+   24           | . FOR expression COMMA expression COMMA expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+   25           | . monomial
+   26           | . assign_variable
+   27           | . expression PLUS expression
+   28           | . expression MINUS expression
+   29           | . expression ASTERISK expression
+   30           | . expression SLASH expression
+   31           | . expression OP_AND expression
+   32           | . expression OP_OR expression
+   33           | . expression OP_EQUAL expression
+   34           | . expression OP_NOT_EQUAL expression
+   34           | expression OP_NOT_EQUAL . expression
+   35           | . list
+   36           | . access
+   37 list: . LEFT_BRACKET expressions RIGHT_BRACKET
+   38 access: . expression DOT_IDENTIFIER
+   39 assign_variable: . IDENTIFIER EQUAL expression
+   40                | . access EQUAL expression
+   41 monomial: . call
+   42         | . STRING_LITERAL
+   43         | . FLOAT_LITERAL
+   44         | . INT_LITERAL
+   45         | . variable
+   46 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   47     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   48 variable: . IDENTIFIER
+
+    IDENTIFIER      shift, and go to state 3
+    LEFT_BRACKET    shift, and go to state 4
+    IF              shift, and go to state 5
+    ELSE            shift, and go to state 6
+    FOR             shift, and go to state 7
+    INT_LITERAL     shift, and go to state 8
+    FLOAT_LITERAL   shift, and go to state 9
+    STRING_LITERAL  shift, and go to state 10
+
+    expression       go to state 65
+    list             go to state 20
+    access           go to state 21
+    assign_variable  go to state 22
+    monomial         go to state 23
+    call             go to state 24
+    variable         go to state 25
+
+
+State 46
+
+   22 expression: . IF expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+   23           | . ELSE EOL LEFT_PARENTHESIS block RIGHT_PARENTHESIS
+   24           | . FOR expression COMMA expression COMMA expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+   25           | . monomial
+   26           | . assign_variable
+   27           | . expression PLUS expression
+   28           | . expression MINUS expression
+   29           | . expression ASTERISK expression
+   30           | . expression SLASH expression
+   31           | . expression OP_AND expression
+   31           | expression OP_AND . expression
+   32           | . expression OP_OR expression
+   33           | . expression OP_EQUAL expression
+   34           | . expression OP_NOT_EQUAL expression
+   35           | . list
+   36           | . access
+   37 list: . LEFT_BRACKET expressions RIGHT_BRACKET
+   38 access: . expression DOT_IDENTIFIER
+   39 assign_variable: . IDENTIFIER EQUAL expression
+   40                | . access EQUAL expression
+   41 monomial: . call
+   42         | . STRING_LITERAL
+   43         | . FLOAT_LITERAL
+   44         | . INT_LITERAL
+   45         | . variable
+   46 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   47     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   48 variable: . IDENTIFIER
+
+    IDENTIFIER      shift, and go to state 3
+    LEFT_BRACKET    shift, and go to state 4
+    IF              shift, and go to state 5
+    ELSE            shift, and go to state 6
+    FOR             shift, and go to state 7
+    INT_LITERAL     shift, and go to state 8
+    FLOAT_LITERAL   shift, and go to state 9
+    STRING_LITERAL  shift, and go to state 10
+
+    expression       go to state 66
+    list             go to state 20
+    access           go to state 21
+    assign_variable  go to state 22
+    monomial         go to state 23
+    call             go to state 24
+    variable         go to state 25
+
+
+State 47
+
+   22 expression: . IF expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+   23           | . ELSE EOL LEFT_PARENTHESIS block RIGHT_PARENTHESIS
+   24           | . FOR expression COMMA expression COMMA expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+   25           | . monomial
+   26           | . assign_variable
+   27           | . expression PLUS expression
+   28           | . expression MINUS expression
+   29           | . expression ASTERISK expression
+   30           | . expression SLASH expression
+   31           | . expression OP_AND expression
+   32           | . expression OP_OR expression
+   32           | expression OP_OR . expression
+   33           | . expression OP_EQUAL expression
+   34           | . expression OP_NOT_EQUAL expression
+   35           | . list
+   36           | . access
+   37 list: . LEFT_BRACKET expressions RIGHT_BRACKET
+   38 access: . expression DOT_IDENTIFIER
+   39 assign_variable: . IDENTIFIER EQUAL expression
+   40                | . access EQUAL expression
+   41 monomial: . call
+   42         | . STRING_LITERAL
+   43         | . FLOAT_LITERAL
+   44         | . INT_LITERAL
+   45         | . variable
+   46 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   47     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   48 variable: . IDENTIFIER
+
+    IDENTIFIER      shift, and go to state 3
+    LEFT_BRACKET    shift, and go to state 4
+    IF              shift, and go to state 5
+    ELSE            shift, and go to state 6
+    FOR             shift, and go to state 7
+    INT_LITERAL     shift, and go to state 8
+    FLOAT_LITERAL   shift, and go to state 9
+    STRING_LITERAL  shift, and go to state 10
+
+    expression       go to state 67
+    list             go to state 20
+    access           go to state 21
+    assign_variable  go to state 22
+    monomial         go to state 23
+    call             go to state 24
+    variable         go to state 25
+
+
+State 48
+
+   22 expression: . IF expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+   23           | . ELSE EOL LEFT_PARENTHESIS block RIGHT_PARENTHESIS
+   24           | . FOR expression COMMA expression COMMA expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+   25           | . monomial
+   26           | . assign_variable
+   27           | . expression PLUS expression
+   28           | . expression MINUS expression
+   29           | . expression ASTERISK expression
+   30           | . expression SLASH expression
+   31           | . expression OP_AND expression
+   32           | . expression OP_OR expression
+   33           | . expression OP_EQUAL expression
+   34           | . expression OP_NOT_EQUAL expression
+   35           | . list
+   36           | . access
+   37 list: . LEFT_BRACKET expressions RIGHT_BRACKET
+   38 access: . expression DOT_IDENTIFIER
+   39 assign_variable: . IDENTIFIER EQUAL expression
+   40                | . access EQUAL expression
+   40                | access EQUAL . expression
+   41 monomial: . call
+   42         | . STRING_LITERAL
+   43         | . FLOAT_LITERAL
+   44         | . INT_LITERAL
+   45         | . variable
+   46 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   47     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   48 variable: . IDENTIFIER
+
+    IDENTIFIER      shift, and go to state 3
+    LEFT_BRACKET    shift, and go to state 4
+    IF              shift, and go to state 5
+    ELSE            shift, and go to state 6
+    FOR             shift, and go to state 7
+    INT_LITERAL     shift, and go to state 8
+    FLOAT_LITERAL   shift, and go to state 9
+    STRING_LITERAL  shift, and go to state 10
+
+    expression       go to state 68
+    list             go to state 20
+    access           go to state 21
+    assign_variable  go to state 22
+    monomial         go to state 23
+    call             go to state 24
+    variable         go to state 25
+
+
+State 49
+
+   20 expressions: . expression
+   21            | . expressions COMMA expression
+   22 expression: . IF expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+   23           | . ELSE EOL LEFT_PARENTHESIS block RIGHT_PARENTHESIS
+   24           | . FOR expression COMMA expression COMMA expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+   25           | . monomial
+   26           | . assign_variable
+   27           | . expression PLUS expression
+   28           | . expression MINUS expression
+   29           | . expression ASTERISK expression
+   30           | . expression SLASH expression
+   31           | . expression OP_AND expression
+   32           | . expression OP_OR expression
+   33           | . expression OP_EQUAL expression
+   34           | . expression OP_NOT_EQUAL expression
+   35           | . list
+   36           | . access
+   37 list: . LEFT_BRACKET expressions RIGHT_BRACKET
+   38 access: . expression DOT_IDENTIFIER
+   39 assign_variable: . IDENTIFIER EQUAL expression
+   40                | . access EQUAL expression
+   41 monomial: . call
+   42         | . STRING_LITERAL
+   43         | . FLOAT_LITERAL
+   44         | . INT_LITERAL
+   45         | . variable
+   46 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   47     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   47     | access LEFT_PARENTHESIS . expressions RIGHT_PARENTHESIS
+   48 variable: . IDENTIFIER
+
+    IDENTIFIER      shift, and go to state 3
+    LEFT_BRACKET    shift, and go to state 4
+    IF              shift, and go to state 5
+    ELSE            shift, and go to state 6
+    FOR             shift, and go to state 7
+    INT_LITERAL     shift, and go to state 8
+    FLOAT_LITERAL   shift, and go to state 9
+    STRING_LITERAL  shift, and go to state 10
+
+    expressions      go to state 69
+    expression       go to state 31
+    list             go to state 20
+    access           go to state 21
+    assign_variable  go to state 22
+    monomial         go to state 23
+    call             go to state 24
+    variable         go to state 25
+
+
+State 50
 
    18 definition_arguments: IDENTIFIER .
 
     $default  reduce using rule 18 (definition_arguments)
 
 
-State 41
+State 51
 
-   11 function_definition: FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments . RIGHT_PARENTHESIS EOL lines RETURN expression
+   11 function_definition: FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments . RIGHT_PARENTHESIS EOL lines RETURN expression EOL
    19 definition_arguments: definition_arguments . COMMA IDENTIFIER
 
-    COMMA              shift, and go to state 54
-    RIGHT_PARENTHESIS  shift, and go to state 55
+    COMMA              shift, and go to state 70
+    RIGHT_PARENTHESIS  shift, and go to state 71
 
 
-State 42
+State 52
 
    12 class_definition: CLASS_DEFINITION LEFT_PARENTHESIS definition_arguments . RIGHT_PARENTHESIS EOL members_definition methods
    19 definition_arguments: definition_arguments . COMMA IDENTIFIER
 
-    COMMA              shift, and go to state 54
-    RIGHT_PARENTHESIS  shift, and go to state 56
+    COMMA              shift, and go to state 70
+    RIGHT_PARENTHESIS  shift, and go to state 72
 
 
-State 43
+State 53
 
-   26 expression: expression . PLUS expression
-   27           | expression . MINUS expression
-   28           | expression . ASTERISK expression
-   29           | expression . SLASH expression
-   31 access: expression . DOT_IDENTIFIER
-   32 assign_variable: IDENTIFIER EQUAL expression .  ["end of file", METHOD_DEFINITION, COMMA, RIGHT_PARENTHESIS, EOL]
+   27 expression: expression . PLUS expression
+   28           | expression . MINUS expression
+   29           | expression . ASTERISK expression
+   30           | expression . SLASH expression
+   31           | expression . OP_AND expression
+   32           | expression . OP_OR expression
+   33           | expression . OP_EQUAL expression
+   34           | expression . OP_NOT_EQUAL expression
+   38 access: expression . DOT_IDENTIFIER
+   39 assign_variable: IDENTIFIER EQUAL expression .  ["end of file", COMMA, RIGHT_PARENTHESIS, RIGHT_BRACKET, EOL]
 
-    PLUS            shift, and go to state 33
-    MINUS           shift, and go to state 34
-    ASTERISK        shift, and go to state 35
-    SLASH           shift, and go to state 36
-    DOT_IDENTIFIER  shift, and go to state 37
+    PLUS            shift, and go to state 39
+    MINUS           shift, and go to state 40
+    ASTERISK        shift, and go to state 41
+    SLASH           shift, and go to state 42
+    DOT_IDENTIFIER  shift, and go to state 43
+    OP_EQUAL        shift, and go to state 44
+    OP_NOT_EQUAL    shift, and go to state 45
+    OP_AND          shift, and go to state 46
+    OP_OR           shift, and go to state 47
 
-    $default  reduce using rule 32 (assign_variable)
+    $default  reduce using rule 39 (assign_variable)
 
-    Conflict between rule 32 and token PLUS resolved as shift (EQUAL < PLUS).
-    Conflict between rule 32 and token MINUS resolved as shift (EQUAL < MINUS).
-    Conflict between rule 32 and token ASTERISK resolved as shift (EQUAL < ASTERISK).
-    Conflict between rule 32 and token SLASH resolved as shift (EQUAL < SLASH).
-    Conflict between rule 32 and token DOT_IDENTIFIER resolved as shift (EQUAL < DOT_IDENTIFIER).
+    Conflict between rule 39 and token PLUS resolved as shift (EQUAL < PLUS).
+    Conflict between rule 39 and token MINUS resolved as shift (EQUAL < MINUS).
+    Conflict between rule 39 and token ASTERISK resolved as shift (EQUAL < ASTERISK).
+    Conflict between rule 39 and token SLASH resolved as shift (EQUAL < SLASH).
+    Conflict between rule 39 and token DOT_IDENTIFIER resolved as shift (EQUAL < DOT_IDENTIFIER).
+    Conflict between rule 39 and token OP_EQUAL resolved as shift (EQUAL < OP_EQUAL).
+    Conflict between rule 39 and token OP_NOT_EQUAL resolved as shift (EQUAL < OP_NOT_EQUAL).
+    Conflict between rule 39 and token OP_AND resolved as shift (EQUAL < OP_AND).
+    Conflict between rule 39 and token OP_OR resolved as shift (EQUAL < OP_OR).
 
 
-State 44
+State 54
 
    21 expressions: expressions . COMMA expression
-   39 call: IDENTIFIER LEFT_PARENTHESIS expressions . RIGHT_PARENTHESIS
+   46 call: IDENTIFIER LEFT_PARENTHESIS expressions . RIGHT_PARENTHESIS
 
-    COMMA              shift, and go to state 57
-    RIGHT_PARENTHESIS  shift, and go to state 58
-
-
-State 45
-
-   20 expressions: expression .  [COMMA, RIGHT_PARENTHESIS]
-   26 expression: expression . PLUS expression
-   27           | expression . MINUS expression
-   28           | expression . ASTERISK expression
-   29           | expression . SLASH expression
-   31 access: expression . DOT_IDENTIFIER
-
-    PLUS            shift, and go to state 33
-    MINUS           shift, and go to state 34
-    ASTERISK        shift, and go to state 35
-    SLASH           shift, and go to state 36
-    DOT_IDENTIFIER  shift, and go to state 37
-
-    $default  reduce using rule 20 (expressions)
+    COMMA              shift, and go to state 55
+    RIGHT_PARENTHESIS  shift, and go to state 73
 
 
-State 46
+State 55
+
+   21 expressions: expressions COMMA . expression
+   22 expression: . IF expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+   23           | . ELSE EOL LEFT_PARENTHESIS block RIGHT_PARENTHESIS
+   24           | . FOR expression COMMA expression COMMA expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+   25           | . monomial
+   26           | . assign_variable
+   27           | . expression PLUS expression
+   28           | . expression MINUS expression
+   29           | . expression ASTERISK expression
+   30           | . expression SLASH expression
+   31           | . expression OP_AND expression
+   32           | . expression OP_OR expression
+   33           | . expression OP_EQUAL expression
+   34           | . expression OP_NOT_EQUAL expression
+   35           | . list
+   36           | . access
+   37 list: . LEFT_BRACKET expressions RIGHT_BRACKET
+   38 access: . expression DOT_IDENTIFIER
+   39 assign_variable: . IDENTIFIER EQUAL expression
+   40                | . access EQUAL expression
+   41 monomial: . call
+   42         | . STRING_LITERAL
+   43         | . FLOAT_LITERAL
+   44         | . INT_LITERAL
+   45         | . variable
+   46 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   47     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   48 variable: . IDENTIFIER
+
+    IDENTIFIER      shift, and go to state 3
+    LEFT_BRACKET    shift, and go to state 4
+    IF              shift, and go to state 5
+    ELSE            shift, and go to state 6
+    FOR             shift, and go to state 7
+    INT_LITERAL     shift, and go to state 8
+    FLOAT_LITERAL   shift, and go to state 9
+    STRING_LITERAL  shift, and go to state 10
+
+    expression       go to state 74
+    list             go to state 20
+    access           go to state 21
+    assign_variable  go to state 22
+    monomial         go to state 23
+    call             go to state 24
+    variable         go to state 25
+
+
+State 56
+
+   37 list: LEFT_BRACKET expressions RIGHT_BRACKET .
+
+    $default  reduce using rule 37 (list)
+
+
+State 57
+
+   22 expression: IF expression EOL . LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+
+    LEFT_PARENTHESIS  shift, and go to state 75
+
+
+State 58
 
     2 block: . lines
     3 lines: . line
     4      | . lines line
     5 line: . line_content EOL
     6     | . line_content "end of file"
-    7 line_content: . expression
-    8             | . definition
+    7     | . definition
+    8 line_content: . expression
     9 definition: . function_definition
    10           | . class_definition
-   11 function_definition: . FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL lines RETURN expression
+   11 function_definition: . FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL lines RETURN expression EOL
    12 class_definition: . CLASS_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL members_definition methods
-   22 expression: . IF expression EOL block SEMICOLON
-   22           | IF expression EOL . block SEMICOLON
-   23           | . ELSE EOL block SEMICOLON
-   24           | . monomial
-   25           | . assign_variable
-   26           | . expression PLUS expression
-   27           | . expression MINUS expression
-   28           | . expression ASTERISK expression
-   29           | . expression SLASH expression
-   30           | . access
-   31 access: . expression DOT_IDENTIFIER
-   32 assign_variable: . IDENTIFIER EQUAL expression
-   33                | . access EQUAL expression
-   34 monomial: . call
-   35         | . STRING_LITERAL
-   36         | . FLOAT_LITERAL
-   37         | . INT_LITERAL
-   38         | . variable
-   39 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-   40     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-   41 variable: . IDENTIFIER
+   22 expression: . IF expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+   23           | . ELSE EOL LEFT_PARENTHESIS block RIGHT_PARENTHESIS
+   23           | ELSE EOL LEFT_PARENTHESIS . block RIGHT_PARENTHESIS
+   24           | . FOR expression COMMA expression COMMA expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+   25           | . monomial
+   26           | . assign_variable
+   27           | . expression PLUS expression
+   28           | . expression MINUS expression
+   29           | . expression ASTERISK expression
+   30           | . expression SLASH expression
+   31           | . expression OP_AND expression
+   32           | . expression OP_OR expression
+   33           | . expression OP_EQUAL expression
+   34           | . expression OP_NOT_EQUAL expression
+   35           | . list
+   36           | . access
+   37 list: . LEFT_BRACKET expressions RIGHT_BRACKET
+   38 access: . expression DOT_IDENTIFIER
+   39 assign_variable: . IDENTIFIER EQUAL expression
+   40                | . access EQUAL expression
+   41 monomial: . call
+   42         | . STRING_LITERAL
+   43         | . FLOAT_LITERAL
+   44         | . INT_LITERAL
+   45         | . variable
+   46 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   47     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   48 variable: . IDENTIFIER
 
     FUNCTION_DEFINITION  shift, and go to state 1
     CLASS_DEFINITION     shift, and go to state 2
     IDENTIFIER           shift, and go to state 3
-    IF                   shift, and go to state 4
-    ELSE                 shift, and go to state 5
-    INT_LITERAL          shift, and go to state 6
-    FLOAT_LITERAL        shift, and go to state 7
-    STRING_LITERAL       shift, and go to state 8
+    LEFT_BRACKET         shift, and go to state 4
+    IF                   shift, and go to state 5
+    ELSE                 shift, and go to state 6
+    FOR                  shift, and go to state 7
+    INT_LITERAL          shift, and go to state 8
+    FLOAT_LITERAL        shift, and go to state 9
+    STRING_LITERAL       shift, and go to state 10
 
-    block                go to state 59
-    lines                go to state 11
-    line                 go to state 12
-    line_content         go to state 13
-    definition           go to state 14
-    function_definition  go to state 15
-    class_definition     go to state 16
-    expression           go to state 17
-    access               go to state 18
-    assign_variable      go to state 19
-    monomial             go to state 20
-    call                 go to state 21
-    variable             go to state 22
-
-
-State 47
-
-   23 expression: ELSE EOL block . SEMICOLON
-
-    SEMICOLON  shift, and go to state 60
+    block                go to state 76
+    lines                go to state 13
+    line                 go to state 14
+    line_content         go to state 15
+    definition           go to state 16
+    function_definition  go to state 17
+    class_definition     go to state 18
+    expression           go to state 19
+    list                 go to state 20
+    access               go to state 21
+    assign_variable      go to state 22
+    monomial             go to state 23
+    call                 go to state 24
+    variable             go to state 25
 
 
-State 48
+State 59
 
-   26 expression: expression . PLUS expression
-   26           | expression PLUS expression .  ["end of file", METHOD_DEFINITION, PLUS, MINUS, COMMA, RIGHT_PARENTHESIS, EOL]
-   27           | expression . MINUS expression
-   28           | expression . ASTERISK expression
-   29           | expression . SLASH expression
-   31 access: expression . DOT_IDENTIFIER
+   22 expression: . IF expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+   23           | . ELSE EOL LEFT_PARENTHESIS block RIGHT_PARENTHESIS
+   24           | . FOR expression COMMA expression COMMA expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+   24           | FOR expression COMMA . expression COMMA expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+   25           | . monomial
+   26           | . assign_variable
+   27           | . expression PLUS expression
+   28           | . expression MINUS expression
+   29           | . expression ASTERISK expression
+   30           | . expression SLASH expression
+   31           | . expression OP_AND expression
+   32           | . expression OP_OR expression
+   33           | . expression OP_EQUAL expression
+   34           | . expression OP_NOT_EQUAL expression
+   35           | . list
+   36           | . access
+   37 list: . LEFT_BRACKET expressions RIGHT_BRACKET
+   38 access: . expression DOT_IDENTIFIER
+   39 assign_variable: . IDENTIFIER EQUAL expression
+   40                | . access EQUAL expression
+   41 monomial: . call
+   42         | . STRING_LITERAL
+   43         | . FLOAT_LITERAL
+   44         | . INT_LITERAL
+   45         | . variable
+   46 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   47     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   48 variable: . IDENTIFIER
 
-    ASTERISK        shift, and go to state 35
-    SLASH           shift, and go to state 36
-    DOT_IDENTIFIER  shift, and go to state 37
+    IDENTIFIER      shift, and go to state 3
+    LEFT_BRACKET    shift, and go to state 4
+    IF              shift, and go to state 5
+    ELSE            shift, and go to state 6
+    FOR             shift, and go to state 7
+    INT_LITERAL     shift, and go to state 8
+    FLOAT_LITERAL   shift, and go to state 9
+    STRING_LITERAL  shift, and go to state 10
 
-    $default  reduce using rule 26 (expression)
+    expression       go to state 77
+    list             go to state 20
+    access           go to state 21
+    assign_variable  go to state 22
+    monomial         go to state 23
+    call             go to state 24
+    variable         go to state 25
 
-    Conflict between rule 26 and token PLUS resolved as reduce (%left PLUS).
-    Conflict between rule 26 and token MINUS resolved as reduce (%left MINUS).
-    Conflict between rule 26 and token ASTERISK resolved as shift (PLUS < ASTERISK).
-    Conflict between rule 26 and token SLASH resolved as shift (PLUS < SLASH).
-    Conflict between rule 26 and token DOT_IDENTIFIER resolved as shift (PLUS < DOT_IDENTIFIER).
 
+State 60
 
-State 49
+   27 expression: expression . PLUS expression
+   27           | expression PLUS expression .  ["end of file", PLUS, MINUS, COMMA, RIGHT_PARENTHESIS, RIGHT_BRACKET, EOL]
+   28           | expression . MINUS expression
+   29           | expression . ASTERISK expression
+   30           | expression . SLASH expression
+   31           | expression . OP_AND expression
+   32           | expression . OP_OR expression
+   33           | expression . OP_EQUAL expression
+   34           | expression . OP_NOT_EQUAL expression
+   38 access: expression . DOT_IDENTIFIER
 
-   26 expression: expression . PLUS expression
-   27           | expression . MINUS expression
-   27           | expression MINUS expression .  ["end of file", METHOD_DEFINITION, PLUS, MINUS, COMMA, RIGHT_PARENTHESIS, EOL]
-   28           | expression . ASTERISK expression
-   29           | expression . SLASH expression
-   31 access: expression . DOT_IDENTIFIER
-
-    ASTERISK        shift, and go to state 35
-    SLASH           shift, and go to state 36
-    DOT_IDENTIFIER  shift, and go to state 37
+    ASTERISK        shift, and go to state 41
+    SLASH           shift, and go to state 42
+    DOT_IDENTIFIER  shift, and go to state 43
+    OP_EQUAL        shift, and go to state 44
+    OP_NOT_EQUAL    shift, and go to state 45
+    OP_AND          shift, and go to state 46
+    OP_OR           shift, and go to state 47
 
     $default  reduce using rule 27 (expression)
 
     Conflict between rule 27 and token PLUS resolved as reduce (%left PLUS).
     Conflict between rule 27 and token MINUS resolved as reduce (%left MINUS).
-    Conflict between rule 27 and token ASTERISK resolved as shift (MINUS < ASTERISK).
-    Conflict between rule 27 and token SLASH resolved as shift (MINUS < SLASH).
-    Conflict between rule 27 and token DOT_IDENTIFIER resolved as shift (MINUS < DOT_IDENTIFIER).
-
-
-State 50
-
-   26 expression: expression . PLUS expression
-   27           | expression . MINUS expression
-   28           | expression . ASTERISK expression
-   28           | expression ASTERISK expression .  ["end of file", METHOD_DEFINITION, PLUS, MINUS, ASTERISK, SLASH, COMMA, RIGHT_PARENTHESIS, EOL]
-   29           | expression . SLASH expression
-   31 access: expression . DOT_IDENTIFIER
-
-    DOT_IDENTIFIER  shift, and go to state 37
-
-    $default  reduce using rule 28 (expression)
-
-    Conflict between rule 28 and token PLUS resolved as reduce (PLUS < ASTERISK).
-    Conflict between rule 28 and token MINUS resolved as reduce (MINUS < ASTERISK).
-    Conflict between rule 28 and token ASTERISK resolved as reduce (%left ASTERISK).
-    Conflict between rule 28 and token SLASH resolved as reduce (%left SLASH).
-    Conflict between rule 28 and token DOT_IDENTIFIER resolved as shift (ASTERISK < DOT_IDENTIFIER).
-
-
-State 51
-
-   26 expression: expression . PLUS expression
-   27           | expression . MINUS expression
-   28           | expression . ASTERISK expression
-   29           | expression . SLASH expression
-   29           | expression SLASH expression .  ["end of file", METHOD_DEFINITION, PLUS, MINUS, ASTERISK, SLASH, COMMA, RIGHT_PARENTHESIS, EOL]
-   31 access: expression . DOT_IDENTIFIER
-
-    DOT_IDENTIFIER  shift, and go to state 37
-
-    $default  reduce using rule 29 (expression)
-
-    Conflict between rule 29 and token PLUS resolved as reduce (PLUS < SLASH).
-    Conflict between rule 29 and token MINUS resolved as reduce (MINUS < SLASH).
-    Conflict between rule 29 and token ASTERISK resolved as reduce (%left ASTERISK).
-    Conflict between rule 29 and token SLASH resolved as reduce (%left SLASH).
-    Conflict between rule 29 and token DOT_IDENTIFIER resolved as shift (SLASH < DOT_IDENTIFIER).
-
-
-State 52
-
-   26 expression: expression . PLUS expression
-   27           | expression . MINUS expression
-   28           | expression . ASTERISK expression
-   29           | expression . SLASH expression
-   31 access: expression . DOT_IDENTIFIER
-   33 assign_variable: access EQUAL expression .  ["end of file", METHOD_DEFINITION, COMMA, RIGHT_PARENTHESIS, EOL]
-
-    PLUS            shift, and go to state 33
-    MINUS           shift, and go to state 34
-    ASTERISK        shift, and go to state 35
-    SLASH           shift, and go to state 36
-    DOT_IDENTIFIER  shift, and go to state 37
-
-    $default  reduce using rule 33 (assign_variable)
-
-    Conflict between rule 33 and token PLUS resolved as shift (EQUAL < PLUS).
-    Conflict between rule 33 and token MINUS resolved as shift (EQUAL < MINUS).
-    Conflict between rule 33 and token ASTERISK resolved as shift (EQUAL < ASTERISK).
-    Conflict between rule 33 and token SLASH resolved as shift (EQUAL < SLASH).
-    Conflict between rule 33 and token DOT_IDENTIFIER resolved as shift (EQUAL < DOT_IDENTIFIER).
-
-
-State 53
-
-   21 expressions: expressions . COMMA expression
-   40 call: access LEFT_PARENTHESIS expressions . RIGHT_PARENTHESIS
-
-    COMMA              shift, and go to state 57
-    RIGHT_PARENTHESIS  shift, and go to state 61
-
-
-State 54
-
-   19 definition_arguments: definition_arguments COMMA . IDENTIFIER
-
-    IDENTIFIER  shift, and go to state 62
-
-
-State 55
-
-   11 function_definition: FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS . EOL lines RETURN expression
-
-    EOL  shift, and go to state 63
-
-
-State 56
-
-   12 class_definition: CLASS_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS . EOL members_definition methods
-
-    EOL  shift, and go to state 64
-
-
-State 57
-
-   21 expressions: expressions COMMA . expression
-   22 expression: . IF expression EOL block SEMICOLON
-   23           | . ELSE EOL block SEMICOLON
-   24           | . monomial
-   25           | . assign_variable
-   26           | . expression PLUS expression
-   27           | . expression MINUS expression
-   28           | . expression ASTERISK expression
-   29           | . expression SLASH expression
-   30           | . access
-   31 access: . expression DOT_IDENTIFIER
-   32 assign_variable: . IDENTIFIER EQUAL expression
-   33                | . access EQUAL expression
-   34 monomial: . call
-   35         | . STRING_LITERAL
-   36         | . FLOAT_LITERAL
-   37         | . INT_LITERAL
-   38         | . variable
-   39 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-   40     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-   41 variable: . IDENTIFIER
-
-    IDENTIFIER      shift, and go to state 3
-    IF              shift, and go to state 4
-    ELSE            shift, and go to state 5
-    INT_LITERAL     shift, and go to state 6
-    FLOAT_LITERAL   shift, and go to state 7
-    STRING_LITERAL  shift, and go to state 8
-
-    expression       go to state 65
-    access           go to state 18
-    assign_variable  go to state 19
-    monomial         go to state 20
-    call             go to state 21
-    variable         go to state 22
-
-
-State 58
-
-   39 call: IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS .
-
-    $default  reduce using rule 39 (call)
-
-
-State 59
-
-   22 expression: IF expression EOL block . SEMICOLON
-
-    SEMICOLON  shift, and go to state 66
-
-
-State 60
-
-   23 expression: ELSE EOL block SEMICOLON .
-
-    $default  reduce using rule 23 (expression)
+    Conflict between rule 27 and token ASTERISK resolved as shift (PLUS < ASTERISK).
+    Conflict between rule 27 and token SLASH resolved as shift (PLUS < SLASH).
+    Conflict between rule 27 and token DOT_IDENTIFIER resolved as shift (PLUS < DOT_IDENTIFIER).
+    Conflict between rule 27 and token OP_EQUAL resolved as shift (PLUS < OP_EQUAL).
+    Conflict between rule 27 and token OP_NOT_EQUAL resolved as shift (PLUS < OP_NOT_EQUAL).
+    Conflict between rule 27 and token OP_AND resolved as shift (PLUS < OP_AND).
+    Conflict between rule 27 and token OP_OR resolved as shift (PLUS < OP_OR).
 
 
 State 61
 
-   40 call: access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS .
+   27 expression: expression . PLUS expression
+   28           | expression . MINUS expression
+   28           | expression MINUS expression .  ["end of file", PLUS, MINUS, COMMA, RIGHT_PARENTHESIS, RIGHT_BRACKET, EOL]
+   29           | expression . ASTERISK expression
+   30           | expression . SLASH expression
+   31           | expression . OP_AND expression
+   32           | expression . OP_OR expression
+   33           | expression . OP_EQUAL expression
+   34           | expression . OP_NOT_EQUAL expression
+   38 access: expression . DOT_IDENTIFIER
 
-    $default  reduce using rule 40 (call)
+    ASTERISK        shift, and go to state 41
+    SLASH           shift, and go to state 42
+    DOT_IDENTIFIER  shift, and go to state 43
+    OP_EQUAL        shift, and go to state 44
+    OP_NOT_EQUAL    shift, and go to state 45
+    OP_AND          shift, and go to state 46
+    OP_OR           shift, and go to state 47
+
+    $default  reduce using rule 28 (expression)
+
+    Conflict between rule 28 and token PLUS resolved as reduce (%left PLUS).
+    Conflict between rule 28 and token MINUS resolved as reduce (%left MINUS).
+    Conflict between rule 28 and token ASTERISK resolved as shift (MINUS < ASTERISK).
+    Conflict between rule 28 and token SLASH resolved as shift (MINUS < SLASH).
+    Conflict between rule 28 and token DOT_IDENTIFIER resolved as shift (MINUS < DOT_IDENTIFIER).
+    Conflict between rule 28 and token OP_EQUAL resolved as shift (MINUS < OP_EQUAL).
+    Conflict between rule 28 and token OP_NOT_EQUAL resolved as shift (MINUS < OP_NOT_EQUAL).
+    Conflict between rule 28 and token OP_AND resolved as shift (MINUS < OP_AND).
+    Conflict between rule 28 and token OP_OR resolved as shift (MINUS < OP_OR).
 
 
 State 62
+
+   27 expression: expression . PLUS expression
+   28           | expression . MINUS expression
+   29           | expression . ASTERISK expression
+   29           | expression ASTERISK expression .  ["end of file", PLUS, MINUS, ASTERISK, SLASH, COMMA, RIGHT_PARENTHESIS, RIGHT_BRACKET, EOL]
+   30           | expression . SLASH expression
+   31           | expression . OP_AND expression
+   32           | expression . OP_OR expression
+   33           | expression . OP_EQUAL expression
+   34           | expression . OP_NOT_EQUAL expression
+   38 access: expression . DOT_IDENTIFIER
+
+    DOT_IDENTIFIER  shift, and go to state 43
+    OP_EQUAL        shift, and go to state 44
+    OP_NOT_EQUAL    shift, and go to state 45
+    OP_AND          shift, and go to state 46
+    OP_OR           shift, and go to state 47
+
+    $default  reduce using rule 29 (expression)
+
+    Conflict between rule 29 and token PLUS resolved as reduce (PLUS < ASTERISK).
+    Conflict between rule 29 and token MINUS resolved as reduce (MINUS < ASTERISK).
+    Conflict between rule 29 and token ASTERISK resolved as reduce (%left ASTERISK).
+    Conflict between rule 29 and token SLASH resolved as reduce (%left SLASH).
+    Conflict between rule 29 and token DOT_IDENTIFIER resolved as shift (ASTERISK < DOT_IDENTIFIER).
+    Conflict between rule 29 and token OP_EQUAL resolved as shift (ASTERISK < OP_EQUAL).
+    Conflict between rule 29 and token OP_NOT_EQUAL resolved as shift (ASTERISK < OP_NOT_EQUAL).
+    Conflict between rule 29 and token OP_AND resolved as shift (ASTERISK < OP_AND).
+    Conflict between rule 29 and token OP_OR resolved as shift (ASTERISK < OP_OR).
+
+
+State 63
+
+   27 expression: expression . PLUS expression
+   28           | expression . MINUS expression
+   29           | expression . ASTERISK expression
+   30           | expression . SLASH expression
+   30           | expression SLASH expression .  ["end of file", PLUS, MINUS, ASTERISK, SLASH, COMMA, RIGHT_PARENTHESIS, RIGHT_BRACKET, EOL]
+   31           | expression . OP_AND expression
+   32           | expression . OP_OR expression
+   33           | expression . OP_EQUAL expression
+   34           | expression . OP_NOT_EQUAL expression
+   38 access: expression . DOT_IDENTIFIER
+
+    DOT_IDENTIFIER  shift, and go to state 43
+    OP_EQUAL        shift, and go to state 44
+    OP_NOT_EQUAL    shift, and go to state 45
+    OP_AND          shift, and go to state 46
+    OP_OR           shift, and go to state 47
+
+    $default  reduce using rule 30 (expression)
+
+    Conflict between rule 30 and token PLUS resolved as reduce (PLUS < SLASH).
+    Conflict between rule 30 and token MINUS resolved as reduce (MINUS < SLASH).
+    Conflict between rule 30 and token ASTERISK resolved as reduce (%left ASTERISK).
+    Conflict between rule 30 and token SLASH resolved as reduce (%left SLASH).
+    Conflict between rule 30 and token DOT_IDENTIFIER resolved as shift (SLASH < DOT_IDENTIFIER).
+    Conflict between rule 30 and token OP_EQUAL resolved as shift (SLASH < OP_EQUAL).
+    Conflict between rule 30 and token OP_NOT_EQUAL resolved as shift (SLASH < OP_NOT_EQUAL).
+    Conflict between rule 30 and token OP_AND resolved as shift (SLASH < OP_AND).
+    Conflict between rule 30 and token OP_OR resolved as shift (SLASH < OP_OR).
+
+
+State 64
+
+   27 expression: expression . PLUS expression
+   28           | expression . MINUS expression
+   29           | expression . ASTERISK expression
+   30           | expression . SLASH expression
+   31           | expression . OP_AND expression
+   32           | expression . OP_OR expression
+   33           | expression . OP_EQUAL expression
+   33           | expression OP_EQUAL expression .  ["end of file", PLUS, MINUS, ASTERISK, SLASH, DOT_IDENTIFIER, OP_EQUAL, OP_NOT_EQUAL, COMMA, RIGHT_PARENTHESIS, RIGHT_BRACKET, EOL]
+   34           | expression . OP_NOT_EQUAL expression
+   38 access: expression . DOT_IDENTIFIER
+
+    OP_AND  shift, and go to state 46
+    OP_OR   shift, and go to state 47
+
+    $default  reduce using rule 33 (expression)
+
+    Conflict between rule 33 and token PLUS resolved as reduce (PLUS < OP_EQUAL).
+    Conflict between rule 33 and token MINUS resolved as reduce (MINUS < OP_EQUAL).
+    Conflict between rule 33 and token ASTERISK resolved as reduce (ASTERISK < OP_EQUAL).
+    Conflict between rule 33 and token SLASH resolved as reduce (SLASH < OP_EQUAL).
+    Conflict between rule 33 and token DOT_IDENTIFIER resolved as reduce (DOT_IDENTIFIER < OP_EQUAL).
+    Conflict between rule 33 and token OP_EQUAL resolved as reduce (%left OP_EQUAL).
+    Conflict between rule 33 and token OP_NOT_EQUAL resolved as reduce (%left OP_NOT_EQUAL).
+    Conflict between rule 33 and token OP_AND resolved as shift (OP_EQUAL < OP_AND).
+    Conflict between rule 33 and token OP_OR resolved as shift (OP_EQUAL < OP_OR).
+
+
+State 65
+
+   27 expression: expression . PLUS expression
+   28           | expression . MINUS expression
+   29           | expression . ASTERISK expression
+   30           | expression . SLASH expression
+   31           | expression . OP_AND expression
+   32           | expression . OP_OR expression
+   33           | expression . OP_EQUAL expression
+   34           | expression . OP_NOT_EQUAL expression
+   34           | expression OP_NOT_EQUAL expression .  ["end of file", PLUS, MINUS, ASTERISK, SLASH, DOT_IDENTIFIER, OP_EQUAL, OP_NOT_EQUAL, COMMA, RIGHT_PARENTHESIS, RIGHT_BRACKET, EOL]
+   38 access: expression . DOT_IDENTIFIER
+
+    OP_AND  shift, and go to state 46
+    OP_OR   shift, and go to state 47
+
+    $default  reduce using rule 34 (expression)
+
+    Conflict between rule 34 and token PLUS resolved as reduce (PLUS < OP_NOT_EQUAL).
+    Conflict between rule 34 and token MINUS resolved as reduce (MINUS < OP_NOT_EQUAL).
+    Conflict between rule 34 and token ASTERISK resolved as reduce (ASTERISK < OP_NOT_EQUAL).
+    Conflict between rule 34 and token SLASH resolved as reduce (SLASH < OP_NOT_EQUAL).
+    Conflict between rule 34 and token DOT_IDENTIFIER resolved as reduce (DOT_IDENTIFIER < OP_NOT_EQUAL).
+    Conflict between rule 34 and token OP_EQUAL resolved as reduce (%left OP_EQUAL).
+    Conflict between rule 34 and token OP_NOT_EQUAL resolved as reduce (%left OP_NOT_EQUAL).
+    Conflict between rule 34 and token OP_AND resolved as shift (OP_NOT_EQUAL < OP_AND).
+    Conflict between rule 34 and token OP_OR resolved as shift (OP_NOT_EQUAL < OP_OR).
+
+
+State 66
+
+   27 expression: expression . PLUS expression
+   28           | expression . MINUS expression
+   29           | expression . ASTERISK expression
+   30           | expression . SLASH expression
+   31           | expression . OP_AND expression
+   31           | expression OP_AND expression .  ["end of file", PLUS, MINUS, ASTERISK, SLASH, DOT_IDENTIFIER, OP_EQUAL, OP_NOT_EQUAL, OP_AND, OP_OR, COMMA, RIGHT_PARENTHESIS, RIGHT_BRACKET, EOL]
+   32           | expression . OP_OR expression
+   33           | expression . OP_EQUAL expression
+   34           | expression . OP_NOT_EQUAL expression
+   38 access: expression . DOT_IDENTIFIER
+
+    $default  reduce using rule 31 (expression)
+
+    Conflict between rule 31 and token PLUS resolved as reduce (PLUS < OP_AND).
+    Conflict between rule 31 and token MINUS resolved as reduce (MINUS < OP_AND).
+    Conflict between rule 31 and token ASTERISK resolved as reduce (ASTERISK < OP_AND).
+    Conflict between rule 31 and token SLASH resolved as reduce (SLASH < OP_AND).
+    Conflict between rule 31 and token DOT_IDENTIFIER resolved as reduce (DOT_IDENTIFIER < OP_AND).
+    Conflict between rule 31 and token OP_EQUAL resolved as reduce (OP_EQUAL < OP_AND).
+    Conflict between rule 31 and token OP_NOT_EQUAL resolved as reduce (OP_NOT_EQUAL < OP_AND).
+    Conflict between rule 31 and token OP_AND resolved as reduce (%left OP_AND).
+    Conflict between rule 31 and token OP_OR resolved as reduce (%left OP_OR).
+
+
+State 67
+
+   27 expression: expression . PLUS expression
+   28           | expression . MINUS expression
+   29           | expression . ASTERISK expression
+   30           | expression . SLASH expression
+   31           | expression . OP_AND expression
+   32           | expression . OP_OR expression
+   32           | expression OP_OR expression .  ["end of file", PLUS, MINUS, ASTERISK, SLASH, DOT_IDENTIFIER, OP_EQUAL, OP_NOT_EQUAL, OP_AND, OP_OR, COMMA, RIGHT_PARENTHESIS, RIGHT_BRACKET, EOL]
+   33           | expression . OP_EQUAL expression
+   34           | expression . OP_NOT_EQUAL expression
+   38 access: expression . DOT_IDENTIFIER
+
+    $default  reduce using rule 32 (expression)
+
+    Conflict between rule 32 and token PLUS resolved as reduce (PLUS < OP_OR).
+    Conflict between rule 32 and token MINUS resolved as reduce (MINUS < OP_OR).
+    Conflict between rule 32 and token ASTERISK resolved as reduce (ASTERISK < OP_OR).
+    Conflict between rule 32 and token SLASH resolved as reduce (SLASH < OP_OR).
+    Conflict between rule 32 and token DOT_IDENTIFIER resolved as reduce (DOT_IDENTIFIER < OP_OR).
+    Conflict between rule 32 and token OP_EQUAL resolved as reduce (OP_EQUAL < OP_OR).
+    Conflict between rule 32 and token OP_NOT_EQUAL resolved as reduce (OP_NOT_EQUAL < OP_OR).
+    Conflict between rule 32 and token OP_AND resolved as reduce (%left OP_AND).
+    Conflict between rule 32 and token OP_OR resolved as reduce (%left OP_OR).
+
+
+State 68
+
+   27 expression: expression . PLUS expression
+   28           | expression . MINUS expression
+   29           | expression . ASTERISK expression
+   30           | expression . SLASH expression
+   31           | expression . OP_AND expression
+   32           | expression . OP_OR expression
+   33           | expression . OP_EQUAL expression
+   34           | expression . OP_NOT_EQUAL expression
+   38 access: expression . DOT_IDENTIFIER
+   40 assign_variable: access EQUAL expression .  ["end of file", COMMA, RIGHT_PARENTHESIS, RIGHT_BRACKET, EOL]
+
+    PLUS            shift, and go to state 39
+    MINUS           shift, and go to state 40
+    ASTERISK        shift, and go to state 41
+    SLASH           shift, and go to state 42
+    DOT_IDENTIFIER  shift, and go to state 43
+    OP_EQUAL        shift, and go to state 44
+    OP_NOT_EQUAL    shift, and go to state 45
+    OP_AND          shift, and go to state 46
+    OP_OR           shift, and go to state 47
+
+    $default  reduce using rule 40 (assign_variable)
+
+    Conflict between rule 40 and token PLUS resolved as shift (EQUAL < PLUS).
+    Conflict between rule 40 and token MINUS resolved as shift (EQUAL < MINUS).
+    Conflict between rule 40 and token ASTERISK resolved as shift (EQUAL < ASTERISK).
+    Conflict between rule 40 and token SLASH resolved as shift (EQUAL < SLASH).
+    Conflict between rule 40 and token DOT_IDENTIFIER resolved as shift (EQUAL < DOT_IDENTIFIER).
+    Conflict between rule 40 and token OP_EQUAL resolved as shift (EQUAL < OP_EQUAL).
+    Conflict between rule 40 and token OP_NOT_EQUAL resolved as shift (EQUAL < OP_NOT_EQUAL).
+    Conflict between rule 40 and token OP_AND resolved as shift (EQUAL < OP_AND).
+    Conflict between rule 40 and token OP_OR resolved as shift (EQUAL < OP_OR).
+
+
+State 69
+
+   21 expressions: expressions . COMMA expression
+   47 call: access LEFT_PARENTHESIS expressions . RIGHT_PARENTHESIS
+
+    COMMA              shift, and go to state 55
+    RIGHT_PARENTHESIS  shift, and go to state 78
+
+
+State 70
+
+   19 definition_arguments: definition_arguments COMMA . IDENTIFIER
+
+    IDENTIFIER  shift, and go to state 79
+
+
+State 71
+
+   11 function_definition: FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS . EOL lines RETURN expression EOL
+
+    EOL  shift, and go to state 80
+
+
+State 72
+
+   12 class_definition: CLASS_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS . EOL members_definition methods
+
+    EOL  shift, and go to state 81
+
+
+State 73
+
+   46 call: IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS .
+
+    $default  reduce using rule 46 (call)
+
+
+State 74
+
+   21 expressions: expressions COMMA expression .  [COMMA, RIGHT_PARENTHESIS, RIGHT_BRACKET]
+   27 expression: expression . PLUS expression
+   28           | expression . MINUS expression
+   29           | expression . ASTERISK expression
+   30           | expression . SLASH expression
+   31           | expression . OP_AND expression
+   32           | expression . OP_OR expression
+   33           | expression . OP_EQUAL expression
+   34           | expression . OP_NOT_EQUAL expression
+   38 access: expression . DOT_IDENTIFIER
+
+    PLUS            shift, and go to state 39
+    MINUS           shift, and go to state 40
+    ASTERISK        shift, and go to state 41
+    SLASH           shift, and go to state 42
+    DOT_IDENTIFIER  shift, and go to state 43
+    OP_EQUAL        shift, and go to state 44
+    OP_NOT_EQUAL    shift, and go to state 45
+    OP_AND          shift, and go to state 46
+    OP_OR           shift, and go to state 47
+
+    $default  reduce using rule 21 (expressions)
+
+
+State 75
+
+   22 expression: IF expression EOL LEFT_PARENTHESIS . EOL block RIGHT_PARENTHESIS
+
+    EOL  shift, and go to state 82
+
+
+State 76
+
+   23 expression: ELSE EOL LEFT_PARENTHESIS block . RIGHT_PARENTHESIS
+
+    RIGHT_PARENTHESIS  shift, and go to state 83
+
+
+State 77
+
+   24 expression: FOR expression COMMA expression . COMMA expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+   27           | expression . PLUS expression
+   28           | expression . MINUS expression
+   29           | expression . ASTERISK expression
+   30           | expression . SLASH expression
+   31           | expression . OP_AND expression
+   32           | expression . OP_OR expression
+   33           | expression . OP_EQUAL expression
+   34           | expression . OP_NOT_EQUAL expression
+   38 access: expression . DOT_IDENTIFIER
+
+    PLUS            shift, and go to state 39
+    MINUS           shift, and go to state 40
+    ASTERISK        shift, and go to state 41
+    SLASH           shift, and go to state 42
+    DOT_IDENTIFIER  shift, and go to state 43
+    OP_EQUAL        shift, and go to state 44
+    OP_NOT_EQUAL    shift, and go to state 45
+    OP_AND          shift, and go to state 46
+    OP_OR           shift, and go to state 47
+    COMMA           shift, and go to state 84
+
+
+State 78
+
+   47 call: access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS .
+
+    $default  reduce using rule 47 (call)
+
+
+State 79
 
    19 definition_arguments: definition_arguments COMMA IDENTIFIER .
 
     $default  reduce using rule 19 (definition_arguments)
 
 
-State 63
+State 80
 
     3 lines: . line
     4      | . lines line
     5 line: . line_content EOL
     6     | . line_content "end of file"
-    7 line_content: . expression
-    8             | . definition
+    7     | . definition
+    8 line_content: . expression
     9 definition: . function_definition
    10           | . class_definition
-   11 function_definition: . FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL lines RETURN expression
-   11                    | FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL . lines RETURN expression
+   11 function_definition: . FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL lines RETURN expression EOL
+   11                    | FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL . lines RETURN expression EOL
    12 class_definition: . CLASS_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL members_definition methods
-   22 expression: . IF expression EOL block SEMICOLON
-   23           | . ELSE EOL block SEMICOLON
-   24           | . monomial
-   25           | . assign_variable
-   26           | . expression PLUS expression
-   27           | . expression MINUS expression
-   28           | . expression ASTERISK expression
-   29           | . expression SLASH expression
-   30           | . access
-   31 access: . expression DOT_IDENTIFIER
-   32 assign_variable: . IDENTIFIER EQUAL expression
-   33                | . access EQUAL expression
-   34 monomial: . call
-   35         | . STRING_LITERAL
-   36         | . FLOAT_LITERAL
-   37         | . INT_LITERAL
-   38         | . variable
-   39 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-   40     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-   41 variable: . IDENTIFIER
+   22 expression: . IF expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+   23           | . ELSE EOL LEFT_PARENTHESIS block RIGHT_PARENTHESIS
+   24           | . FOR expression COMMA expression COMMA expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+   25           | . monomial
+   26           | . assign_variable
+   27           | . expression PLUS expression
+   28           | . expression MINUS expression
+   29           | . expression ASTERISK expression
+   30           | . expression SLASH expression
+   31           | . expression OP_AND expression
+   32           | . expression OP_OR expression
+   33           | . expression OP_EQUAL expression
+   34           | . expression OP_NOT_EQUAL expression
+   35           | . list
+   36           | . access
+   37 list: . LEFT_BRACKET expressions RIGHT_BRACKET
+   38 access: . expression DOT_IDENTIFIER
+   39 assign_variable: . IDENTIFIER EQUAL expression
+   40                | . access EQUAL expression
+   41 monomial: . call
+   42         | . STRING_LITERAL
+   43         | . FLOAT_LITERAL
+   44         | . INT_LITERAL
+   45         | . variable
+   46 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   47     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   48 variable: . IDENTIFIER
 
     FUNCTION_DEFINITION  shift, and go to state 1
     CLASS_DEFINITION     shift, and go to state 2
     IDENTIFIER           shift, and go to state 3
-    IF                   shift, and go to state 4
-    ELSE                 shift, and go to state 5
-    INT_LITERAL          shift, and go to state 6
-    FLOAT_LITERAL        shift, and go to state 7
-    STRING_LITERAL       shift, and go to state 8
+    LEFT_BRACKET         shift, and go to state 4
+    IF                   shift, and go to state 5
+    ELSE                 shift, and go to state 6
+    FOR                  shift, and go to state 7
+    INT_LITERAL          shift, and go to state 8
+    FLOAT_LITERAL        shift, and go to state 9
+    STRING_LITERAL       shift, and go to state 10
 
-    lines                go to state 67
-    line                 go to state 12
-    line_content         go to state 13
-    definition           go to state 14
-    function_definition  go to state 15
-    class_definition     go to state 16
-    expression           go to state 17
-    access               go to state 18
-    assign_variable      go to state 19
-    monomial             go to state 20
-    call                 go to state 21
-    variable             go to state 22
+    lines                go to state 85
+    line                 go to state 14
+    line_content         go to state 15
+    definition           go to state 16
+    function_definition  go to state 17
+    class_definition     go to state 18
+    expression           go to state 19
+    list                 go to state 20
+    access               go to state 21
+    assign_variable      go to state 22
+    monomial             go to state 23
+    call                 go to state 24
+    variable             go to state 25
 
 
-State 64
+State 81
 
    12 class_definition: CLASS_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL . members_definition methods
    16 members_definition: . MEMBER_IDENTIFIER EQUAL expression EOL
    17                   | . members_definition MEMBER_IDENTIFIER EQUAL expression EOL
 
-    MEMBER_IDENTIFIER  shift, and go to state 68
+    MEMBER_IDENTIFIER  shift, and go to state 86
 
-    members_definition  go to state 69
-
-
-State 65
-
-   21 expressions: expressions COMMA expression .  [COMMA, RIGHT_PARENTHESIS]
-   26 expression: expression . PLUS expression
-   27           | expression . MINUS expression
-   28           | expression . ASTERISK expression
-   29           | expression . SLASH expression
-   31 access: expression . DOT_IDENTIFIER
-
-    PLUS            shift, and go to state 33
-    MINUS           shift, and go to state 34
-    ASTERISK        shift, and go to state 35
-    SLASH           shift, and go to state 36
-    DOT_IDENTIFIER  shift, and go to state 37
-
-    $default  reduce using rule 21 (expressions)
+    members_definition  go to state 87
 
 
-State 66
+State 82
 
-   22 expression: IF expression EOL block SEMICOLON .
+    2 block: . lines
+    3 lines: . line
+    4      | . lines line
+    5 line: . line_content EOL
+    6     | . line_content "end of file"
+    7     | . definition
+    8 line_content: . expression
+    9 definition: . function_definition
+   10           | . class_definition
+   11 function_definition: . FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL lines RETURN expression EOL
+   12 class_definition: . CLASS_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL members_definition methods
+   22 expression: . IF expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+   22           | IF expression EOL LEFT_PARENTHESIS EOL . block RIGHT_PARENTHESIS
+   23           | . ELSE EOL LEFT_PARENTHESIS block RIGHT_PARENTHESIS
+   24           | . FOR expression COMMA expression COMMA expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+   25           | . monomial
+   26           | . assign_variable
+   27           | . expression PLUS expression
+   28           | . expression MINUS expression
+   29           | . expression ASTERISK expression
+   30           | . expression SLASH expression
+   31           | . expression OP_AND expression
+   32           | . expression OP_OR expression
+   33           | . expression OP_EQUAL expression
+   34           | . expression OP_NOT_EQUAL expression
+   35           | . list
+   36           | . access
+   37 list: . LEFT_BRACKET expressions RIGHT_BRACKET
+   38 access: . expression DOT_IDENTIFIER
+   39 assign_variable: . IDENTIFIER EQUAL expression
+   40                | . access EQUAL expression
+   41 monomial: . call
+   42         | . STRING_LITERAL
+   43         | . FLOAT_LITERAL
+   44         | . INT_LITERAL
+   45         | . variable
+   46 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   47     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   48 variable: . IDENTIFIER
 
-    $default  reduce using rule 22 (expression)
+    FUNCTION_DEFINITION  shift, and go to state 1
+    CLASS_DEFINITION     shift, and go to state 2
+    IDENTIFIER           shift, and go to state 3
+    LEFT_BRACKET         shift, and go to state 4
+    IF                   shift, and go to state 5
+    ELSE                 shift, and go to state 6
+    FOR                  shift, and go to state 7
+    INT_LITERAL          shift, and go to state 8
+    FLOAT_LITERAL        shift, and go to state 9
+    STRING_LITERAL       shift, and go to state 10
+
+    block                go to state 88
+    lines                go to state 13
+    line                 go to state 14
+    line_content         go to state 15
+    definition           go to state 16
+    function_definition  go to state 17
+    class_definition     go to state 18
+    expression           go to state 19
+    list                 go to state 20
+    access               go to state 21
+    assign_variable      go to state 22
+    monomial             go to state 23
+    call                 go to state 24
+    variable             go to state 25
 
 
-State 67
+State 83
+
+   23 expression: ELSE EOL LEFT_PARENTHESIS block RIGHT_PARENTHESIS .
+
+    $default  reduce using rule 23 (expression)
+
+
+State 84
+
+   22 expression: . IF expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+   23           | . ELSE EOL LEFT_PARENTHESIS block RIGHT_PARENTHESIS
+   24           | . FOR expression COMMA expression COMMA expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+   24           | FOR expression COMMA expression COMMA . expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+   25           | . monomial
+   26           | . assign_variable
+   27           | . expression PLUS expression
+   28           | . expression MINUS expression
+   29           | . expression ASTERISK expression
+   30           | . expression SLASH expression
+   31           | . expression OP_AND expression
+   32           | . expression OP_OR expression
+   33           | . expression OP_EQUAL expression
+   34           | . expression OP_NOT_EQUAL expression
+   35           | . list
+   36           | . access
+   37 list: . LEFT_BRACKET expressions RIGHT_BRACKET
+   38 access: . expression DOT_IDENTIFIER
+   39 assign_variable: . IDENTIFIER EQUAL expression
+   40                | . access EQUAL expression
+   41 monomial: . call
+   42         | . STRING_LITERAL
+   43         | . FLOAT_LITERAL
+   44         | . INT_LITERAL
+   45         | . variable
+   46 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   47     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   48 variable: . IDENTIFIER
+
+    IDENTIFIER      shift, and go to state 3
+    LEFT_BRACKET    shift, and go to state 4
+    IF              shift, and go to state 5
+    ELSE            shift, and go to state 6
+    FOR             shift, and go to state 7
+    INT_LITERAL     shift, and go to state 8
+    FLOAT_LITERAL   shift, and go to state 9
+    STRING_LITERAL  shift, and go to state 10
+
+    expression       go to state 89
+    list             go to state 20
+    access           go to state 21
+    assign_variable  go to state 22
+    monomial         go to state 23
+    call             go to state 24
+    variable         go to state 25
+
+
+State 85
 
     4 lines: lines . line
     5 line: . line_content EOL
     6     | . line_content "end of file"
-    7 line_content: . expression
-    8             | . definition
+    7     | . definition
+    8 line_content: . expression
     9 definition: . function_definition
    10           | . class_definition
-   11 function_definition: . FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL lines RETURN expression
-   11                    | FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL lines . RETURN expression
+   11 function_definition: . FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL lines RETURN expression EOL
+   11                    | FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL lines . RETURN expression EOL
    12 class_definition: . CLASS_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL members_definition methods
-   22 expression: . IF expression EOL block SEMICOLON
-   23           | . ELSE EOL block SEMICOLON
-   24           | . monomial
-   25           | . assign_variable
-   26           | . expression PLUS expression
-   27           | . expression MINUS expression
-   28           | . expression ASTERISK expression
-   29           | . expression SLASH expression
-   30           | . access
-   31 access: . expression DOT_IDENTIFIER
-   32 assign_variable: . IDENTIFIER EQUAL expression
-   33                | . access EQUAL expression
-   34 monomial: . call
-   35         | . STRING_LITERAL
-   36         | . FLOAT_LITERAL
-   37         | . INT_LITERAL
-   38         | . variable
-   39 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-   40     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-   41 variable: . IDENTIFIER
+   22 expression: . IF expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+   23           | . ELSE EOL LEFT_PARENTHESIS block RIGHT_PARENTHESIS
+   24           | . FOR expression COMMA expression COMMA expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+   25           | . monomial
+   26           | . assign_variable
+   27           | . expression PLUS expression
+   28           | . expression MINUS expression
+   29           | . expression ASTERISK expression
+   30           | . expression SLASH expression
+   31           | . expression OP_AND expression
+   32           | . expression OP_OR expression
+   33           | . expression OP_EQUAL expression
+   34           | . expression OP_NOT_EQUAL expression
+   35           | . list
+   36           | . access
+   37 list: . LEFT_BRACKET expressions RIGHT_BRACKET
+   38 access: . expression DOT_IDENTIFIER
+   39 assign_variable: . IDENTIFIER EQUAL expression
+   40                | . access EQUAL expression
+   41 monomial: . call
+   42         | . STRING_LITERAL
+   43         | . FLOAT_LITERAL
+   44         | . INT_LITERAL
+   45         | . variable
+   46 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   47     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   48 variable: . IDENTIFIER
 
     FUNCTION_DEFINITION  shift, and go to state 1
     CLASS_DEFINITION     shift, and go to state 2
-    RETURN               shift, and go to state 70
+    RETURN               shift, and go to state 90
     IDENTIFIER           shift, and go to state 3
-    IF                   shift, and go to state 4
-    ELSE                 shift, and go to state 5
-    INT_LITERAL          shift, and go to state 6
-    FLOAT_LITERAL        shift, and go to state 7
-    STRING_LITERAL       shift, and go to state 8
+    LEFT_BRACKET         shift, and go to state 4
+    IF                   shift, and go to state 5
+    ELSE                 shift, and go to state 6
+    FOR                  shift, and go to state 7
+    INT_LITERAL          shift, and go to state 8
+    FLOAT_LITERAL        shift, and go to state 9
+    STRING_LITERAL       shift, and go to state 10
 
-    line                 go to state 30
-    line_content         go to state 13
-    definition           go to state 14
-    function_definition  go to state 15
-    class_definition     go to state 16
-    expression           go to state 17
-    access               go to state 18
-    assign_variable      go to state 19
-    monomial             go to state 20
-    call                 go to state 21
-    variable             go to state 22
+    line                 go to state 36
+    line_content         go to state 15
+    definition           go to state 16
+    function_definition  go to state 17
+    class_definition     go to state 18
+    expression           go to state 19
+    list                 go to state 20
+    access               go to state 21
+    assign_variable      go to state 22
+    monomial             go to state 23
+    call                 go to state 24
+    variable             go to state 25
 
 
-State 68
+State 86
 
    16 members_definition: MEMBER_IDENTIFIER . EQUAL expression EOL
 
-    EQUAL  shift, and go to state 71
+    EQUAL  shift, and go to state 91
 
 
-State 69
+State 87
 
    12 class_definition: CLASS_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL members_definition . methods
-   13 methods: . method_definition
-   14        | . methods method_definition
+   13 methods: . method_definition EOL
+   14        | . methods method_definition EOL
    15 method_definition: . METHOD_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL lines RETURN expression
    17 members_definition: members_definition . MEMBER_IDENTIFIER EQUAL expression EOL
 
-    METHOD_DEFINITION  shift, and go to state 72
-    MEMBER_IDENTIFIER  shift, and go to state 73
+    METHOD_DEFINITION  shift, and go to state 92
+    MEMBER_IDENTIFIER  shift, and go to state 93
 
-    methods            go to state 74
-    method_definition  go to state 75
+    methods            go to state 94
+    method_definition  go to state 95
 
 
-State 70
+State 88
 
-   11 function_definition: FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL lines RETURN . expression
-   22 expression: . IF expression EOL block SEMICOLON
-   23           | . ELSE EOL block SEMICOLON
-   24           | . monomial
-   25           | . assign_variable
-   26           | . expression PLUS expression
-   27           | . expression MINUS expression
-   28           | . expression ASTERISK expression
-   29           | . expression SLASH expression
-   30           | . access
-   31 access: . expression DOT_IDENTIFIER
-   32 assign_variable: . IDENTIFIER EQUAL expression
-   33                | . access EQUAL expression
-   34 monomial: . call
-   35         | . STRING_LITERAL
-   36         | . FLOAT_LITERAL
-   37         | . INT_LITERAL
-   38         | . variable
-   39 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-   40     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-   41 variable: . IDENTIFIER
+   22 expression: IF expression EOL LEFT_PARENTHESIS EOL block . RIGHT_PARENTHESIS
+
+    RIGHT_PARENTHESIS  shift, and go to state 96
+
+
+State 89
+
+   24 expression: FOR expression COMMA expression COMMA expression . EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+   27           | expression . PLUS expression
+   28           | expression . MINUS expression
+   29           | expression . ASTERISK expression
+   30           | expression . SLASH expression
+   31           | expression . OP_AND expression
+   32           | expression . OP_OR expression
+   33           | expression . OP_EQUAL expression
+   34           | expression . OP_NOT_EQUAL expression
+   38 access: expression . DOT_IDENTIFIER
+
+    PLUS            shift, and go to state 39
+    MINUS           shift, and go to state 40
+    ASTERISK        shift, and go to state 41
+    SLASH           shift, and go to state 42
+    DOT_IDENTIFIER  shift, and go to state 43
+    OP_EQUAL        shift, and go to state 44
+    OP_NOT_EQUAL    shift, and go to state 45
+    OP_AND          shift, and go to state 46
+    OP_OR           shift, and go to state 47
+    EOL             shift, and go to state 97
+
+
+State 90
+
+   11 function_definition: FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL lines RETURN . expression EOL
+   22 expression: . IF expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+   23           | . ELSE EOL LEFT_PARENTHESIS block RIGHT_PARENTHESIS
+   24           | . FOR expression COMMA expression COMMA expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+   25           | . monomial
+   26           | . assign_variable
+   27           | . expression PLUS expression
+   28           | . expression MINUS expression
+   29           | . expression ASTERISK expression
+   30           | . expression SLASH expression
+   31           | . expression OP_AND expression
+   32           | . expression OP_OR expression
+   33           | . expression OP_EQUAL expression
+   34           | . expression OP_NOT_EQUAL expression
+   35           | . list
+   36           | . access
+   37 list: . LEFT_BRACKET expressions RIGHT_BRACKET
+   38 access: . expression DOT_IDENTIFIER
+   39 assign_variable: . IDENTIFIER EQUAL expression
+   40                | . access EQUAL expression
+   41 monomial: . call
+   42         | . STRING_LITERAL
+   43         | . FLOAT_LITERAL
+   44         | . INT_LITERAL
+   45         | . variable
+   46 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   47     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   48 variable: . IDENTIFIER
 
     IDENTIFIER      shift, and go to state 3
-    IF              shift, and go to state 4
-    ELSE            shift, and go to state 5
-    INT_LITERAL     shift, and go to state 6
-    FLOAT_LITERAL   shift, and go to state 7
-    STRING_LITERAL  shift, and go to state 8
+    LEFT_BRACKET    shift, and go to state 4
+    IF              shift, and go to state 5
+    ELSE            shift, and go to state 6
+    FOR             shift, and go to state 7
+    INT_LITERAL     shift, and go to state 8
+    FLOAT_LITERAL   shift, and go to state 9
+    STRING_LITERAL  shift, and go to state 10
 
-    expression       go to state 76
-    access           go to state 18
-    assign_variable  go to state 19
-    monomial         go to state 20
-    call             go to state 21
-    variable         go to state 22
+    expression       go to state 98
+    list             go to state 20
+    access           go to state 21
+    assign_variable  go to state 22
+    monomial         go to state 23
+    call             go to state 24
+    variable         go to state 25
 
 
-State 71
+State 91
 
    16 members_definition: MEMBER_IDENTIFIER EQUAL . expression EOL
-   22 expression: . IF expression EOL block SEMICOLON
-   23           | . ELSE EOL block SEMICOLON
-   24           | . monomial
-   25           | . assign_variable
-   26           | . expression PLUS expression
-   27           | . expression MINUS expression
-   28           | . expression ASTERISK expression
-   29           | . expression SLASH expression
-   30           | . access
-   31 access: . expression DOT_IDENTIFIER
-   32 assign_variable: . IDENTIFIER EQUAL expression
-   33                | . access EQUAL expression
-   34 monomial: . call
-   35         | . STRING_LITERAL
-   36         | . FLOAT_LITERAL
-   37         | . INT_LITERAL
-   38         | . variable
-   39 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-   40     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-   41 variable: . IDENTIFIER
+   22 expression: . IF expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+   23           | . ELSE EOL LEFT_PARENTHESIS block RIGHT_PARENTHESIS
+   24           | . FOR expression COMMA expression COMMA expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+   25           | . monomial
+   26           | . assign_variable
+   27           | . expression PLUS expression
+   28           | . expression MINUS expression
+   29           | . expression ASTERISK expression
+   30           | . expression SLASH expression
+   31           | . expression OP_AND expression
+   32           | . expression OP_OR expression
+   33           | . expression OP_EQUAL expression
+   34           | . expression OP_NOT_EQUAL expression
+   35           | . list
+   36           | . access
+   37 list: . LEFT_BRACKET expressions RIGHT_BRACKET
+   38 access: . expression DOT_IDENTIFIER
+   39 assign_variable: . IDENTIFIER EQUAL expression
+   40                | . access EQUAL expression
+   41 monomial: . call
+   42         | . STRING_LITERAL
+   43         | . FLOAT_LITERAL
+   44         | . INT_LITERAL
+   45         | . variable
+   46 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   47     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   48 variable: . IDENTIFIER
 
     IDENTIFIER      shift, and go to state 3
-    IF              shift, and go to state 4
-    ELSE            shift, and go to state 5
-    INT_LITERAL     shift, and go to state 6
-    FLOAT_LITERAL   shift, and go to state 7
-    STRING_LITERAL  shift, and go to state 8
+    LEFT_BRACKET    shift, and go to state 4
+    IF              shift, and go to state 5
+    ELSE            shift, and go to state 6
+    FOR             shift, and go to state 7
+    INT_LITERAL     shift, and go to state 8
+    FLOAT_LITERAL   shift, and go to state 9
+    STRING_LITERAL  shift, and go to state 10
 
-    expression       go to state 77
-    access           go to state 18
-    assign_variable  go to state 19
-    monomial         go to state 20
-    call             go to state 21
-    variable         go to state 22
+    expression       go to state 99
+    list             go to state 20
+    access           go to state 21
+    assign_variable  go to state 22
+    monomial         go to state 23
+    call             go to state 24
+    variable         go to state 25
 
 
-State 72
+State 92
 
    15 method_definition: METHOD_DEFINITION . LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL lines RETURN expression
 
-    LEFT_PARENTHESIS  shift, and go to state 78
+    LEFT_PARENTHESIS  shift, and go to state 100
 
 
-State 73
+State 93
 
    17 members_definition: members_definition MEMBER_IDENTIFIER . EQUAL expression EOL
 
-    EQUAL  shift, and go to state 79
+    EQUAL  shift, and go to state 101
 
 
-State 74
+State 94
 
-   12 class_definition: CLASS_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL members_definition methods .  ["end of file", EOL]
-   14 methods: methods . method_definition
+   12 class_definition: CLASS_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL members_definition methods .  ["end of file", FUNCTION_DEFINITION, CLASS_DEFINITION, RETURN, IDENTIFIER, RIGHT_PARENTHESIS, LEFT_BRACKET, IF, ELSE, FOR, INT_LITERAL, FLOAT_LITERAL, STRING_LITERAL]
+   14 methods: methods . method_definition EOL
    15 method_definition: . METHOD_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL lines RETURN expression
 
-    METHOD_DEFINITION  shift, and go to state 72
+    METHOD_DEFINITION  shift, and go to state 92
 
     $default  reduce using rule 12 (class_definition)
 
-    method_definition  go to state 80
+    method_definition  go to state 102
 
 
-State 75
+State 95
 
-   13 methods: method_definition .
+   13 methods: method_definition . EOL
 
-    $default  reduce using rule 13 (methods)
-
-
-State 76
-
-   11 function_definition: FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL lines RETURN expression .  ["end of file", EOL]
-   26 expression: expression . PLUS expression
-   27           | expression . MINUS expression
-   28           | expression . ASTERISK expression
-   29           | expression . SLASH expression
-   31 access: expression . DOT_IDENTIFIER
-
-    PLUS            shift, and go to state 33
-    MINUS           shift, and go to state 34
-    ASTERISK        shift, and go to state 35
-    SLASH           shift, and go to state 36
-    DOT_IDENTIFIER  shift, and go to state 37
-
-    $default  reduce using rule 11 (function_definition)
+    EOL  shift, and go to state 103
 
 
-State 77
+State 96
+
+   22 expression: IF expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS .
+
+    $default  reduce using rule 22 (expression)
+
+
+State 97
+
+   24 expression: FOR expression COMMA expression COMMA expression EOL . LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+
+    LEFT_PARENTHESIS  shift, and go to state 104
+
+
+State 98
+
+   11 function_definition: FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL lines RETURN expression . EOL
+   27 expression: expression . PLUS expression
+   28           | expression . MINUS expression
+   29           | expression . ASTERISK expression
+   30           | expression . SLASH expression
+   31           | expression . OP_AND expression
+   32           | expression . OP_OR expression
+   33           | expression . OP_EQUAL expression
+   34           | expression . OP_NOT_EQUAL expression
+   38 access: expression . DOT_IDENTIFIER
+
+    PLUS            shift, and go to state 39
+    MINUS           shift, and go to state 40
+    ASTERISK        shift, and go to state 41
+    SLASH           shift, and go to state 42
+    DOT_IDENTIFIER  shift, and go to state 43
+    OP_EQUAL        shift, and go to state 44
+    OP_NOT_EQUAL    shift, and go to state 45
+    OP_AND          shift, and go to state 46
+    OP_OR           shift, and go to state 47
+    EOL             shift, and go to state 105
+
+
+State 99
 
    16 members_definition: MEMBER_IDENTIFIER EQUAL expression . EOL
-   26 expression: expression . PLUS expression
-   27           | expression . MINUS expression
-   28           | expression . ASTERISK expression
-   29           | expression . SLASH expression
-   31 access: expression . DOT_IDENTIFIER
+   27 expression: expression . PLUS expression
+   28           | expression . MINUS expression
+   29           | expression . ASTERISK expression
+   30           | expression . SLASH expression
+   31           | expression . OP_AND expression
+   32           | expression . OP_OR expression
+   33           | expression . OP_EQUAL expression
+   34           | expression . OP_NOT_EQUAL expression
+   38 access: expression . DOT_IDENTIFIER
 
-    PLUS            shift, and go to state 33
-    MINUS           shift, and go to state 34
-    ASTERISK        shift, and go to state 35
-    SLASH           shift, and go to state 36
-    DOT_IDENTIFIER  shift, and go to state 37
-    EOL             shift, and go to state 81
+    PLUS            shift, and go to state 39
+    MINUS           shift, and go to state 40
+    ASTERISK        shift, and go to state 41
+    SLASH           shift, and go to state 42
+    DOT_IDENTIFIER  shift, and go to state 43
+    OP_EQUAL        shift, and go to state 44
+    OP_NOT_EQUAL    shift, and go to state 45
+    OP_AND          shift, and go to state 46
+    OP_OR           shift, and go to state 47
+    EOL             shift, and go to state 106
 
 
-State 78
+State 100
 
    15 method_definition: METHOD_DEFINITION LEFT_PARENTHESIS . definition_arguments RIGHT_PARENTHESIS EOL lines RETURN expression
    18 definition_arguments: . IDENTIFIER
    19                     | . definition_arguments COMMA IDENTIFIER
 
-    IDENTIFIER  shift, and go to state 40
+    IDENTIFIER  shift, and go to state 50
 
-    definition_arguments  go to state 82
+    definition_arguments  go to state 107
 
 
-State 79
+State 101
 
    17 members_definition: members_definition MEMBER_IDENTIFIER EQUAL . expression EOL
-   22 expression: . IF expression EOL block SEMICOLON
-   23           | . ELSE EOL block SEMICOLON
-   24           | . monomial
-   25           | . assign_variable
-   26           | . expression PLUS expression
-   27           | . expression MINUS expression
-   28           | . expression ASTERISK expression
-   29           | . expression SLASH expression
-   30           | . access
-   31 access: . expression DOT_IDENTIFIER
-   32 assign_variable: . IDENTIFIER EQUAL expression
-   33                | . access EQUAL expression
-   34 monomial: . call
-   35         | . STRING_LITERAL
-   36         | . FLOAT_LITERAL
-   37         | . INT_LITERAL
-   38         | . variable
-   39 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-   40     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-   41 variable: . IDENTIFIER
+   22 expression: . IF expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+   23           | . ELSE EOL LEFT_PARENTHESIS block RIGHT_PARENTHESIS
+   24           | . FOR expression COMMA expression COMMA expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+   25           | . monomial
+   26           | . assign_variable
+   27           | . expression PLUS expression
+   28           | . expression MINUS expression
+   29           | . expression ASTERISK expression
+   30           | . expression SLASH expression
+   31           | . expression OP_AND expression
+   32           | . expression OP_OR expression
+   33           | . expression OP_EQUAL expression
+   34           | . expression OP_NOT_EQUAL expression
+   35           | . list
+   36           | . access
+   37 list: . LEFT_BRACKET expressions RIGHT_BRACKET
+   38 access: . expression DOT_IDENTIFIER
+   39 assign_variable: . IDENTIFIER EQUAL expression
+   40                | . access EQUAL expression
+   41 monomial: . call
+   42         | . STRING_LITERAL
+   43         | . FLOAT_LITERAL
+   44         | . INT_LITERAL
+   45         | . variable
+   46 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   47     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   48 variable: . IDENTIFIER
 
     IDENTIFIER      shift, and go to state 3
-    IF              shift, and go to state 4
-    ELSE            shift, and go to state 5
-    INT_LITERAL     shift, and go to state 6
-    FLOAT_LITERAL   shift, and go to state 7
-    STRING_LITERAL  shift, and go to state 8
+    LEFT_BRACKET    shift, and go to state 4
+    IF              shift, and go to state 5
+    ELSE            shift, and go to state 6
+    FOR             shift, and go to state 7
+    INT_LITERAL     shift, and go to state 8
+    FLOAT_LITERAL   shift, and go to state 9
+    STRING_LITERAL  shift, and go to state 10
 
-    expression       go to state 83
-    access           go to state 18
-    assign_variable  go to state 19
-    monomial         go to state 20
-    call             go to state 21
-    variable         go to state 22
-
-
-State 80
-
-   14 methods: methods method_definition .
-
-    $default  reduce using rule 14 (methods)
+    expression       go to state 108
+    list             go to state 20
+    access           go to state 21
+    assign_variable  go to state 22
+    monomial         go to state 23
+    call             go to state 24
+    variable         go to state 25
 
 
-State 81
+State 102
+
+   14 methods: methods method_definition . EOL
+
+    EOL  shift, and go to state 109
+
+
+State 103
+
+   13 methods: method_definition EOL .
+
+    $default  reduce using rule 13 (methods)
+
+
+State 104
+
+   24 expression: FOR expression COMMA expression COMMA expression EOL LEFT_PARENTHESIS . EOL block RIGHT_PARENTHESIS
+
+    EOL  shift, and go to state 110
+
+
+State 105
+
+   11 function_definition: FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL lines RETURN expression EOL .
+
+    $default  reduce using rule 11 (function_definition)
+
+
+State 106
 
    16 members_definition: MEMBER_IDENTIFIER EQUAL expression EOL .
 
     $default  reduce using rule 16 (members_definition)
 
 
-State 82
+State 107
 
    15 method_definition: METHOD_DEFINITION LEFT_PARENTHESIS definition_arguments . RIGHT_PARENTHESIS EOL lines RETURN expression
    19 definition_arguments: definition_arguments . COMMA IDENTIFIER
 
-    COMMA              shift, and go to state 54
-    RIGHT_PARENTHESIS  shift, and go to state 84
+    COMMA              shift, and go to state 70
+    RIGHT_PARENTHESIS  shift, and go to state 111
 
 
-State 83
+State 108
 
    17 members_definition: members_definition MEMBER_IDENTIFIER EQUAL expression . EOL
-   26 expression: expression . PLUS expression
-   27           | expression . MINUS expression
-   28           | expression . ASTERISK expression
-   29           | expression . SLASH expression
-   31 access: expression . DOT_IDENTIFIER
+   27 expression: expression . PLUS expression
+   28           | expression . MINUS expression
+   29           | expression . ASTERISK expression
+   30           | expression . SLASH expression
+   31           | expression . OP_AND expression
+   32           | expression . OP_OR expression
+   33           | expression . OP_EQUAL expression
+   34           | expression . OP_NOT_EQUAL expression
+   38 access: expression . DOT_IDENTIFIER
 
-    PLUS            shift, and go to state 33
-    MINUS           shift, and go to state 34
-    ASTERISK        shift, and go to state 35
-    SLASH           shift, and go to state 36
-    DOT_IDENTIFIER  shift, and go to state 37
-    EOL             shift, and go to state 85
+    PLUS            shift, and go to state 39
+    MINUS           shift, and go to state 40
+    ASTERISK        shift, and go to state 41
+    SLASH           shift, and go to state 42
+    DOT_IDENTIFIER  shift, and go to state 43
+    OP_EQUAL        shift, and go to state 44
+    OP_NOT_EQUAL    shift, and go to state 45
+    OP_AND          shift, and go to state 46
+    OP_OR           shift, and go to state 47
+    EOL             shift, and go to state 112
 
 
-State 84
+State 109
+
+   14 methods: methods method_definition EOL .
+
+    $default  reduce using rule 14 (methods)
+
+
+State 110
+
+    2 block: . lines
+    3 lines: . line
+    4      | . lines line
+    5 line: . line_content EOL
+    6     | . line_content "end of file"
+    7     | . definition
+    8 line_content: . expression
+    9 definition: . function_definition
+   10           | . class_definition
+   11 function_definition: . FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL lines RETURN expression EOL
+   12 class_definition: . CLASS_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL members_definition methods
+   22 expression: . IF expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+   23           | . ELSE EOL LEFT_PARENTHESIS block RIGHT_PARENTHESIS
+   24           | . FOR expression COMMA expression COMMA expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+   24           | FOR expression COMMA expression COMMA expression EOL LEFT_PARENTHESIS EOL . block RIGHT_PARENTHESIS
+   25           | . monomial
+   26           | . assign_variable
+   27           | . expression PLUS expression
+   28           | . expression MINUS expression
+   29           | . expression ASTERISK expression
+   30           | . expression SLASH expression
+   31           | . expression OP_AND expression
+   32           | . expression OP_OR expression
+   33           | . expression OP_EQUAL expression
+   34           | . expression OP_NOT_EQUAL expression
+   35           | . list
+   36           | . access
+   37 list: . LEFT_BRACKET expressions RIGHT_BRACKET
+   38 access: . expression DOT_IDENTIFIER
+   39 assign_variable: . IDENTIFIER EQUAL expression
+   40                | . access EQUAL expression
+   41 monomial: . call
+   42         | . STRING_LITERAL
+   43         | . FLOAT_LITERAL
+   44         | . INT_LITERAL
+   45         | . variable
+   46 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   47     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   48 variable: . IDENTIFIER
+
+    FUNCTION_DEFINITION  shift, and go to state 1
+    CLASS_DEFINITION     shift, and go to state 2
+    IDENTIFIER           shift, and go to state 3
+    LEFT_BRACKET         shift, and go to state 4
+    IF                   shift, and go to state 5
+    ELSE                 shift, and go to state 6
+    FOR                  shift, and go to state 7
+    INT_LITERAL          shift, and go to state 8
+    FLOAT_LITERAL        shift, and go to state 9
+    STRING_LITERAL       shift, and go to state 10
+
+    block                go to state 113
+    lines                go to state 13
+    line                 go to state 14
+    line_content         go to state 15
+    definition           go to state 16
+    function_definition  go to state 17
+    class_definition     go to state 18
+    expression           go to state 19
+    list                 go to state 20
+    access               go to state 21
+    assign_variable      go to state 22
+    monomial             go to state 23
+    call                 go to state 24
+    variable             go to state 25
+
+
+State 111
 
    15 method_definition: METHOD_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS . EOL lines RETURN expression
 
-    EOL  shift, and go to state 86
+    EOL  shift, and go to state 114
 
 
-State 85
+State 112
 
    17 members_definition: members_definition MEMBER_IDENTIFIER EQUAL expression EOL .
 
     $default  reduce using rule 17 (members_definition)
 
 
-State 86
+State 113
+
+   24 expression: FOR expression COMMA expression COMMA expression EOL LEFT_PARENTHESIS EOL block . RIGHT_PARENTHESIS
+
+    RIGHT_PARENTHESIS  shift, and go to state 115
+
+
+State 114
 
     3 lines: . line
     4      | . lines line
     5 line: . line_content EOL
     6     | . line_content "end of file"
-    7 line_content: . expression
-    8             | . definition
+    7     | . definition
+    8 line_content: . expression
     9 definition: . function_definition
    10           | . class_definition
-   11 function_definition: . FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL lines RETURN expression
+   11 function_definition: . FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL lines RETURN expression EOL
    12 class_definition: . CLASS_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL members_definition methods
    15 method_definition: METHOD_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL . lines RETURN expression
-   22 expression: . IF expression EOL block SEMICOLON
-   23           | . ELSE EOL block SEMICOLON
-   24           | . monomial
-   25           | . assign_variable
-   26           | . expression PLUS expression
-   27           | . expression MINUS expression
-   28           | . expression ASTERISK expression
-   29           | . expression SLASH expression
-   30           | . access
-   31 access: . expression DOT_IDENTIFIER
-   32 assign_variable: . IDENTIFIER EQUAL expression
-   33                | . access EQUAL expression
-   34 monomial: . call
-   35         | . STRING_LITERAL
-   36         | . FLOAT_LITERAL
-   37         | . INT_LITERAL
-   38         | . variable
-   39 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-   40     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-   41 variable: . IDENTIFIER
+   22 expression: . IF expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+   23           | . ELSE EOL LEFT_PARENTHESIS block RIGHT_PARENTHESIS
+   24           | . FOR expression COMMA expression COMMA expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+   25           | . monomial
+   26           | . assign_variable
+   27           | . expression PLUS expression
+   28           | . expression MINUS expression
+   29           | . expression ASTERISK expression
+   30           | . expression SLASH expression
+   31           | . expression OP_AND expression
+   32           | . expression OP_OR expression
+   33           | . expression OP_EQUAL expression
+   34           | . expression OP_NOT_EQUAL expression
+   35           | . list
+   36           | . access
+   37 list: . LEFT_BRACKET expressions RIGHT_BRACKET
+   38 access: . expression DOT_IDENTIFIER
+   39 assign_variable: . IDENTIFIER EQUAL expression
+   40                | . access EQUAL expression
+   41 monomial: . call
+   42         | . STRING_LITERAL
+   43         | . FLOAT_LITERAL
+   44         | . INT_LITERAL
+   45         | . variable
+   46 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   47     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   48 variable: . IDENTIFIER
 
     FUNCTION_DEFINITION  shift, and go to state 1
     CLASS_DEFINITION     shift, and go to state 2
     IDENTIFIER           shift, and go to state 3
-    IF                   shift, and go to state 4
-    ELSE                 shift, and go to state 5
-    INT_LITERAL          shift, and go to state 6
-    FLOAT_LITERAL        shift, and go to state 7
-    STRING_LITERAL       shift, and go to state 8
+    LEFT_BRACKET         shift, and go to state 4
+    IF                   shift, and go to state 5
+    ELSE                 shift, and go to state 6
+    FOR                  shift, and go to state 7
+    INT_LITERAL          shift, and go to state 8
+    FLOAT_LITERAL        shift, and go to state 9
+    STRING_LITERAL       shift, and go to state 10
 
-    lines                go to state 87
-    line                 go to state 12
-    line_content         go to state 13
-    definition           go to state 14
-    function_definition  go to state 15
-    class_definition     go to state 16
-    expression           go to state 17
-    access               go to state 18
-    assign_variable      go to state 19
-    monomial             go to state 20
-    call                 go to state 21
-    variable             go to state 22
+    lines                go to state 116
+    line                 go to state 14
+    line_content         go to state 15
+    definition           go to state 16
+    function_definition  go to state 17
+    class_definition     go to state 18
+    expression           go to state 19
+    list                 go to state 20
+    access               go to state 21
+    assign_variable      go to state 22
+    monomial             go to state 23
+    call                 go to state 24
+    variable             go to state 25
 
 
-State 87
+State 115
+
+   24 expression: FOR expression COMMA expression COMMA expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS .
+
+    $default  reduce using rule 24 (expression)
+
+
+State 116
 
     4 lines: lines . line
     5 line: . line_content EOL
     6     | . line_content "end of file"
-    7 line_content: . expression
-    8             | . definition
+    7     | . definition
+    8 line_content: . expression
     9 definition: . function_definition
    10           | . class_definition
-   11 function_definition: . FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL lines RETURN expression
+   11 function_definition: . FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL lines RETURN expression EOL
    12 class_definition: . CLASS_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL members_definition methods
    15 method_definition: METHOD_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL lines . RETURN expression
-   22 expression: . IF expression EOL block SEMICOLON
-   23           | . ELSE EOL block SEMICOLON
-   24           | . monomial
-   25           | . assign_variable
-   26           | . expression PLUS expression
-   27           | . expression MINUS expression
-   28           | . expression ASTERISK expression
-   29           | . expression SLASH expression
-   30           | . access
-   31 access: . expression DOT_IDENTIFIER
-   32 assign_variable: . IDENTIFIER EQUAL expression
-   33                | . access EQUAL expression
-   34 monomial: . call
-   35         | . STRING_LITERAL
-   36         | . FLOAT_LITERAL
-   37         | . INT_LITERAL
-   38         | . variable
-   39 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-   40     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-   41 variable: . IDENTIFIER
+   22 expression: . IF expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+   23           | . ELSE EOL LEFT_PARENTHESIS block RIGHT_PARENTHESIS
+   24           | . FOR expression COMMA expression COMMA expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+   25           | . monomial
+   26           | . assign_variable
+   27           | . expression PLUS expression
+   28           | . expression MINUS expression
+   29           | . expression ASTERISK expression
+   30           | . expression SLASH expression
+   31           | . expression OP_AND expression
+   32           | . expression OP_OR expression
+   33           | . expression OP_EQUAL expression
+   34           | . expression OP_NOT_EQUAL expression
+   35           | . list
+   36           | . access
+   37 list: . LEFT_BRACKET expressions RIGHT_BRACKET
+   38 access: . expression DOT_IDENTIFIER
+   39 assign_variable: . IDENTIFIER EQUAL expression
+   40                | . access EQUAL expression
+   41 monomial: . call
+   42         | . STRING_LITERAL
+   43         | . FLOAT_LITERAL
+   44         | . INT_LITERAL
+   45         | . variable
+   46 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   47     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   48 variable: . IDENTIFIER
 
     FUNCTION_DEFINITION  shift, and go to state 1
     CLASS_DEFINITION     shift, and go to state 2
-    RETURN               shift, and go to state 88
+    RETURN               shift, and go to state 117
     IDENTIFIER           shift, and go to state 3
-    IF                   shift, and go to state 4
-    ELSE                 shift, and go to state 5
-    INT_LITERAL          shift, and go to state 6
-    FLOAT_LITERAL        shift, and go to state 7
-    STRING_LITERAL       shift, and go to state 8
+    LEFT_BRACKET         shift, and go to state 4
+    IF                   shift, and go to state 5
+    ELSE                 shift, and go to state 6
+    FOR                  shift, and go to state 7
+    INT_LITERAL          shift, and go to state 8
+    FLOAT_LITERAL        shift, and go to state 9
+    STRING_LITERAL       shift, and go to state 10
 
-    line                 go to state 30
-    line_content         go to state 13
-    definition           go to state 14
-    function_definition  go to state 15
-    class_definition     go to state 16
-    expression           go to state 17
-    access               go to state 18
-    assign_variable      go to state 19
-    monomial             go to state 20
-    call                 go to state 21
-    variable             go to state 22
+    line                 go to state 36
+    line_content         go to state 15
+    definition           go to state 16
+    function_definition  go to state 17
+    class_definition     go to state 18
+    expression           go to state 19
+    list                 go to state 20
+    access               go to state 21
+    assign_variable      go to state 22
+    monomial             go to state 23
+    call                 go to state 24
+    variable             go to state 25
 
 
-State 88
+State 117
 
    15 method_definition: METHOD_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL lines RETURN . expression
-   22 expression: . IF expression EOL block SEMICOLON
-   23           | . ELSE EOL block SEMICOLON
-   24           | . monomial
-   25           | . assign_variable
-   26           | . expression PLUS expression
-   27           | . expression MINUS expression
-   28           | . expression ASTERISK expression
-   29           | . expression SLASH expression
-   30           | . access
-   31 access: . expression DOT_IDENTIFIER
-   32 assign_variable: . IDENTIFIER EQUAL expression
-   33                | . access EQUAL expression
-   34 monomial: . call
-   35         | . STRING_LITERAL
-   36         | . FLOAT_LITERAL
-   37         | . INT_LITERAL
-   38         | . variable
-   39 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-   40     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-   41 variable: . IDENTIFIER
+   22 expression: . IF expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+   23           | . ELSE EOL LEFT_PARENTHESIS block RIGHT_PARENTHESIS
+   24           | . FOR expression COMMA expression COMMA expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+   25           | . monomial
+   26           | . assign_variable
+   27           | . expression PLUS expression
+   28           | . expression MINUS expression
+   29           | . expression ASTERISK expression
+   30           | . expression SLASH expression
+   31           | . expression OP_AND expression
+   32           | . expression OP_OR expression
+   33           | . expression OP_EQUAL expression
+   34           | . expression OP_NOT_EQUAL expression
+   35           | . list
+   36           | . access
+   37 list: . LEFT_BRACKET expressions RIGHT_BRACKET
+   38 access: . expression DOT_IDENTIFIER
+   39 assign_variable: . IDENTIFIER EQUAL expression
+   40                | . access EQUAL expression
+   41 monomial: . call
+   42         | . STRING_LITERAL
+   43         | . FLOAT_LITERAL
+   44         | . INT_LITERAL
+   45         | . variable
+   46 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   47     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
+   48 variable: . IDENTIFIER
 
     IDENTIFIER      shift, and go to state 3
-    IF              shift, and go to state 4
-    ELSE            shift, and go to state 5
-    INT_LITERAL     shift, and go to state 6
-    FLOAT_LITERAL   shift, and go to state 7
-    STRING_LITERAL  shift, and go to state 8
+    LEFT_BRACKET    shift, and go to state 4
+    IF              shift, and go to state 5
+    ELSE            shift, and go to state 6
+    FOR             shift, and go to state 7
+    INT_LITERAL     shift, and go to state 8
+    FLOAT_LITERAL   shift, and go to state 9
+    STRING_LITERAL  shift, and go to state 10
 
-    expression       go to state 89
-    access           go to state 18
-    assign_variable  go to state 19
-    monomial         go to state 20
-    call             go to state 21
-    variable         go to state 22
+    expression       go to state 118
+    list             go to state 20
+    access           go to state 21
+    assign_variable  go to state 22
+    monomial         go to state 23
+    call             go to state 24
+    variable         go to state 25
 
 
-State 89
+State 118
 
-   15 method_definition: METHOD_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL lines RETURN expression .  ["end of file", METHOD_DEFINITION, EOL]
-   26 expression: expression . PLUS expression
-   27           | expression . MINUS expression
-   28           | expression . ASTERISK expression
-   29           | expression . SLASH expression
-   31 access: expression . DOT_IDENTIFIER
+   15 method_definition: METHOD_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL lines RETURN expression .  [EOL]
+   27 expression: expression . PLUS expression
+   28           | expression . MINUS expression
+   29           | expression . ASTERISK expression
+   30           | expression . SLASH expression
+   31           | expression . OP_AND expression
+   32           | expression . OP_OR expression
+   33           | expression . OP_EQUAL expression
+   34           | expression . OP_NOT_EQUAL expression
+   38 access: expression . DOT_IDENTIFIER
 
-    PLUS            shift, and go to state 33
-    MINUS           shift, and go to state 34
-    ASTERISK        shift, and go to state 35
-    SLASH           shift, and go to state 36
-    DOT_IDENTIFIER  shift, and go to state 37
+    PLUS            shift, and go to state 39
+    MINUS           shift, and go to state 40
+    ASTERISK        shift, and go to state 41
+    SLASH           shift, and go to state 42
+    DOT_IDENTIFIER  shift, and go to state 43
+    OP_EQUAL        shift, and go to state 44
+    OP_NOT_EQUAL    shift, and go to state 45
+    OP_AND          shift, and go to state 46
+    OP_OR           shift, and go to state 47
 
     $default  reduce using rule 15 (method_definition)

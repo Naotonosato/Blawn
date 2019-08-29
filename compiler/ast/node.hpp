@@ -184,7 +184,7 @@ class FunctionNode: public Node
 {
 private:
     llvm::Function* temporary_function;
-    llvm::Function* base_function;
+    std::vector<llvm::Function*> base_functions;
     std::map<std::vector<llvm::Type*>,llvm::Function*> functions;
     std::vector<std::string> self_namespace;
 public:
@@ -197,7 +197,7 @@ public:
         std::vector<std::shared_ptr<Node>> body,
         std::shared_ptr<Node> return_value
         )
-    :Node(ir_generator,name),base_function(nullptr),arguments_names(arguments_names),
+    :Node(ir_generator,name),arguments_names(arguments_names),
     body(std::make_move_iterator(body.begin()),std::make_move_iterator(body.end())),
     return_value(std::move(return_value)){}
     bool is_function() override{return true;};
@@ -207,7 +207,7 @@ public:
     void set_temporary_function(llvm::Function*);
     llvm::Function* get_temporary_function();
     void set_base_function(llvm::Function*);
-    llvm::Function* get_base_function();
+    std::vector<llvm::Function*> get_base_functions();
     llvm::Function* get_function(std::vector<llvm::Type*>);
     std::vector<llvm::Function*> get_functions();
 };
@@ -251,7 +251,7 @@ class ClassNode:public Node
         std::vector<std::shared_ptr<FunctionNode>> methods;
         std::vector<std::shared_ptr<Node>> members_definition;
         llvm::Function* temporary_constructor;
-        llvm::Function* base_constructor;
+        std::vector<llvm::Function*> base_constructors;
         std::map<std::vector<llvm::Type*>,llvm::Function*> constructors;
         std::map<std::vector<llvm::Type*>,llvm::Function*> destructors;
         std::vector<std::string> self_namespace;
@@ -279,8 +279,8 @@ class ClassNode:public Node
     std::vector<std::string> get_self_namespace(){return self_namespace;}
     void set_temporary_constructor(llvm::Function* c){temporary_constructor=c;}
     llvm::Function* get_temporary_constructor(){return temporary_constructor;}
-    void set_base_constructor(llvm::Function* base){base_constructor=base;}
-    llvm::Function* get_base_constructor(){return base_constructor;}
+    void set_base_constructor(llvm::Function* base){base_constructors.push_back(base);}
+    std::vector<llvm::Function*> get_base_constructors(){return base_constructors;}
 };
 
 class CallConstructorNode:public Node
@@ -329,3 +329,37 @@ class IfNode: public Node
     void set_else_body(std::vector<std::shared_ptr<Node>> body){else_body = body;}
 };
 
+class ForNode: public Node
+{
+    private:
+    std::shared_ptr<Node> left_expression;
+    std::shared_ptr<Node> center_expression;
+    std::shared_ptr<Node> right_expression;
+    std::vector<std::shared_ptr<Node>> body;
+    public:
+    ForNode(
+        ForIRGenerator& ir_generator,
+        std::shared_ptr<Node> left_expression,
+        std::shared_ptr<Node> center_expression,
+        std::shared_ptr<Node> right_expression,
+        std::vector<std::shared_ptr<Node>> body
+        )
+    :Node(ir_generator),left_expression(right_expression),
+    center_expression(center_expression),
+    right_expression(right_expression),body(body){}
+    std::shared_ptr<Node> get_left_expression(){return left_expression;}
+    std::shared_ptr<Node> get_center_expression(){return center_expression;}
+    std::shared_ptr<Node> get_right_expression(){return right_expression;}
+    std::vector<std::shared_ptr<Node>>& get_body(){return body;}
+};
+
+class ListNode:public Node
+{
+    private:
+    std::vector<std::shared_ptr<Node>> elements;
+    public:
+    ListNode(
+        ForIRGenerator& ir_generator,
+        std::vector<std::shared_ptr<Node>> elements
+        ):Node(ir_generator){}
+};

@@ -27,6 +27,11 @@ String* string_constructor(char* str,long long size)
 
 void add_string(String* string,String* to_add)
 {
-    strcat(string->string,to_add->string);
+    char* new_str;
+    new_str = malloc(string->size + to_add->size);
+    new_str[0] = '\0';
+    strcat(new_str,string->string);
+    strcat(new_str,to_add->string);
     string->size += to_add->size;
+    string->string = new_str;
 }

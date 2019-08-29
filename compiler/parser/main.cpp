@@ -39,11 +39,11 @@ int main(int argc, char** argv)
     driver->parse("../test/test_parsing/test1.blawn");
     auto zero = llvm::ConstantInt::get(*context, llvm::APInt(8,0));
     ir_builder->CreateRet(zero);
-    llvm::verifyModule(*module,&llvm::outs());
     builtins::load_builtins(*context,*module,"../builtins/builtins.ll");
     std::error_code error;
     llvm::raw_fd_ostream stream("result.ll",error,llvm::sys::fs::OpenFlags::F_None);
     module->print(stream,nullptr);
+    llvm::verifyModule(*module,&llvm::outs());
     system("lli result.ll");
     return 0;
 }

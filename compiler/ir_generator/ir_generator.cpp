@@ -116,6 +116,7 @@ llvm::Value* AssigmentIRGenerator::generate(Node& node_)
     llvm::Value* pointer;
     if (node.get_target_var() != nullptr)
     {
+        node.get_target_var()->generate();
         pointer = node.get_target_var()->alloca_inst;
     }
     else
@@ -123,7 +124,21 @@ llvm::Value* AssigmentIRGenerator::generate(Node& node_)
         node.get_target_member()->generate();
         pointer = node.get_target_member()->get_pointer();
     }
-    ir_builder.CreateStore(node.get_right_node()->generate(),pointer);
+    auto right_value = node.get_right_node()->generate();
+    auto to_store = right_value;
+    if (pointer->getType()->getPointerElementType()->isIntegerTy() && right_value->getType()->isDoubleTy())
+    {
+        to_store = ir_builder.CreateFPToSI(right_value,ir_builder.getInt64Ty());
+    }
+    if (pointer->getType()->getPointerElementType() != to_store->getType())
+    {
+        BlawnLogger logger;
+        logger.different_type_error(
+            utils::to_string(pointer->getType()->getPointerElementType()),
+            utils::to_string(to_store->getType())
+            );
+    }
+    ir_builder.CreateStore(to_store,pointer);
     return ir_builder.CreateLoad(pointer);
 }
 
@@ -143,6 +158,11 @@ llvm::Value* BinaryExpressionIRGenerator::generate(Node& node_)
     bool both_int = (left->getType()->isIntegerTy() && right->getType()->isIntegerTy());
     auto f_cast = llvm::CastInst::SIToFP;
         
+    std::set<llvm::Value*> false_values;
+    false_values.insert(llvm::ConstantInt::get(context,llvm::APInt(64,0,true)));
+    false_values.insert(llvm::ConstantFP::get(context, llvm::APFloat(double(0.0))));
+    false_values.insert(ir_builder.getInt1(false));
+
     if (operator_kind == "+")
     {
         if(both_int) return ir_builder.CreateAdd(left,right);
@@ -173,6 +193,28 @@ llvm::Value* BinaryExpressionIRGenerator::generate(Node& node_)
             ir_builder.CreateCast(f_cast,left,ir_builder.getDoubleTy()),
             ir_builder.CreateCast(f_cast,right,ir_builder.getDoubleTy())
         );
+    }
+    if (operator_kind == "==")
+    {
+        if (left->getType() != right->getType()) return ir_builder.getInt1(false);
+        else return ir_builder.CreateICmpEQ(left,right);
+    }
+    if (operator_kind == "!=")
+    {
+        if (left->getType() != right->getType()) return ir_builder.getInt1(true);
+        else return ir_builder.CreateICmpNE(left,right);
+    }
+    if (operator_kind == "and")
+    {
+        if ( (false_values.find(left) == false_values.end()) && (false_values.find(right) == false_values.end()) )
+        {return ir_builder.getInt1(true);}
+        else return ir_builder.getInt1(false);
+    }
+    if (operator_kind == "or")
+    {
+        if ( (false_values.find(left) == false_values.end()) || (false_values.find(right) == false_values.end()) )
+        {return ir_builder.getInt1(true);}
+        else return ir_builder.getInt1(false);
     }
     return 0;
 }
@@ -464,13 +506,14 @@ llvm::Value* IfIRGenerator::generate(Node& node_)
     false_values.insert(llvm::ConstantFP::get(context, llvm::APFloat(double(0.0))));
     false_values.insert(ir_builder.getInt1(false));
 
-    auto cond = node.get_conditions()->generate();
+    auto cond_value = node.get_conditions()->generate();
+    /*
     llvm::Value* cond_value = ir_builder.getInt1(false);
     if (false_values.find(cond) == false_values.end())// condition is true.
     {
         cond_value = ir_builder.getInt1(true);
     }
-
+    */
     auto parent = ir_builder.GetInsertBlock()->getParent();
     auto then_block = llvm::BasicBlock::Create(context,"then of if expr",parent);
     auto else_block = llvm::BasicBlock::Create(context,"else of if_expr");
@@ -499,17 +542,48 @@ llvm::Value* IfIRGenerator::generate(Node& node_)
     return 0;
 }
 
+llvm::Value* ForIRGenerator::generate(Node& node_)
+{
+    BlawnLogger logger;
+    auto& node = *static_cast<ForNode*>(&node_);
+    auto to_insert = ir_builder.GetInsertBlock()->getParent();
+    auto body_block = llvm::BasicBlock::Create(context,"for",to_insert);
+    auto merge_block = llvm::BasicBlock::Create(context,"merge of for");
+    
+    auto left = node.get_left_expression()->generate();
+    ir_builder.CreateBr(body_block);
+    ir_builder.SetInsertPoint(body_block);
+    for (auto& line:node.get_body())
+    {
+        line->initialize();
+        line->generate();
+    }
+    auto cond = node.get_center_expression()->generate();
+    auto proc = node.get_right_expression()->generate();
+    body_block = ir_builder.GetInsertBlock();
+    to_insert->getBasicBlockList().push_back(merge_block);
+    ir_builder.CreateCondBr(cond,merge_block,body_block);
+    ir_builder.SetInsertPoint(merge_block);
+
+    return 0;
+}
+
 llvm::Value* AccessIRGenerator::generate(Node& node_)
 {
     BlawnLogger logger;
     auto& node = *static_cast<AccessNode*>(&node_);
     
+    /*
     if (node.get_generated() != nullptr)
     {
+        std::cout << "------" << node.get_right_name() << ": " << std::flush;
+        node.get_generated()->print(llvm::outs());
+        std::cout << "--end--" << std::endl;
         return node.get_generated();
-    }
+    }*/
+    
 
-    auto left = node.get_left_value();//node.get_left_node()->generate();
+    auto left = node.get_left_node()->generate();//node.get_left_value();//node.get_left_node()->generate();
     auto left_type = left->getType();
     if (!left_type->isPointerTy())
     {
@@ -545,6 +619,12 @@ llvm::Value* AccessIRGenerator::generate(Node& node_)
         {
             if (m->name == node.get_right_name())
             {
+                
+                if (node.get_generated() != nullptr)
+                {
+                    return node.get_generated();
+                }
+    
                 node.get_call_node()->function = m;
                 auto value = node.get_call_node()->generate();
                 node.set_generated(value);
@@ -555,3 +635,47 @@ llvm::Value* AccessIRGenerator::generate(Node& node_)
         return 0;
     }
 }
+
+/*
+llvm::Value* access(llvm::Value* left,llvm::StructType* struct_type,std::string right_name,llvm::IRBuilder<> ir_builder)
+{
+    BlawnLogger logger;
+    std::string type_name = struct_type->getStructName();
+    int index = get_blawn_context().get_element_index(type_name,"@"+right_name);
+    if (index != -1)
+    {
+        auto pointer = ir_builder.CreateStructGEP(nullptr,left,index); 
+        node.set_pointer(pointer);
+        auto value = ir_builder.CreateLoad(pointer);
+        node.set_generated(value);
+        return value;
+    }
+    else 
+    {
+        auto class_node = get_blawn_context().get_class(type_name);
+        if (class_node == nullptr)
+        {
+            logger.has_no_member_error(type_name,node.get_right_name());
+            return 0;
+        }
+        for (auto& m:class_node->get_methods())
+        {
+            if (m->name == node.get_right_name())
+            {
+                
+                if (node.get_generated() != nullptr)
+                {
+                    return node.get_generated();
+                }
+    
+                node.get_call_node()->function = m;
+                auto value = node.get_call_node()->generate();
+                node.set_generated(value);
+                return value;
+            }
+        }
+        logger.has_no_member_error(type_name,node.get_right_name());
+        return 0;
+    }
+}
+*/

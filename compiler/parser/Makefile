@@ -1,4 +1,4 @@
-LLVM_OPTION := `llvm-config --cxxflags --system-libs --ldflags --libs core` -fexceptions -O0 -std=c++14
+LLVM_OPTION := `llvm-config --cxxflags --system-libs --ldflags --libs core` -fexceptions -O0 -std=c++14 
 
 all: blawn
 blawn: ../builtins/builtins.o ../errors/errors.o main.o driver.o ../ast/node.o ./parser.o ./lexer.o ../ast_generator/ast_generator.o ../ast/node.o ../ir_generator/ir_generator.o ../utils/utils.o ../blawn_context/blawn_context.o

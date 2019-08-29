@@ -3,6 +3,12 @@
 #include "errors.hpp"
 
 
+void BlawnLogger::different_type_error(std::string first,std::string second)
+{
+    std::cerr << "Error: types are not same. " << first << " and " << second << std::endl;
+    exit(1);
+}
+
 void BlawnLogger::invalid_dot_error()
 {
     std::cerr << "Error: invalid use of '.'" << std::endl;

@@ -87,12 +87,12 @@ llvm::Function* FunctionNode::get_temporary_function()
 
 void FunctionNode::set_base_function(llvm::Function* base)
 {
-    base_function = base;
+    base_functions.push_back(base);
 }
 
-llvm::Function* FunctionNode::get_base_function()
+std::vector<llvm::Function*> FunctionNode::get_base_functions()
 {
-    return base_function;
+    return base_functions;
 }
 
 llvm::Function* FunctionNode::get_function(std::vector<llvm::Type*> types)

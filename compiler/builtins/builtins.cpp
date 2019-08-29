@@ -43,12 +43,13 @@ void builtins::create_string_type(llvm::LLVMContext& context,llvm::Module& modul
     add_method_args.push_back(string_type->getPointerTo());
     add_method_args.push_back(string_type->getPointerTo());
     auto add_method_type = llvm::FunctionType::get(ir_builder.getVoidTy(),add_method_args,false);
-    llvm::Function::Create(
+    auto add_method = llvm::Function::Create(
         add_method_type,
         llvm::Function::ExternalLinkage,
         "add_string",
         &module
-        );
+        ); 
+    get_blawn_context().add_builtin_function("add",add_method);
     std::vector<llvm::Type*> print_args(1,string_type->getPointerTo());
     auto print_type = llvm::FunctionType::get(ir_builder.getVoidTy(),print_args,false);
     auto print = llvm::Function::Create(

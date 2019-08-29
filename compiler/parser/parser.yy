@@ -62,15 +62,21 @@
 %left ASTERISK SLASH
 %left  <std::string> DOT_IDENTIFIER
 
+%left OP_EQUAL OP_NOT_EQUAL
+%left OP_AND OP_OR
+
 %token  USE
         COLON
         SEMICOLON
         COMMA
         LEFT_PARENTHESIS
         RIGHT_PARENTHESIS
+        LEFT_BRACKET
+        RIGHT_BRACKET
         IF
         ELSE
         FOR
+        IN
         WHILE
         EOL
 %token <long long> INT_LITERAL
@@ -90,6 +96,7 @@
 %type <std::vector<std::string>> definition_arguments
 %type <std::vector<std::shared_ptr<Node>>> expressions
 %type <std::shared_ptr<Node>> expression
+%type <std::shared_ptr<Node>> list
 %type <std::shared_ptr<AccessNode>> access
 %type <std::shared_ptr<Node>> call
 %type <std::shared_ptr<Node>> monomial
@@ -128,13 +135,13 @@ line:
     |line_content END
     {
         $$ = std::move($1);
+    }
+    |definition
+    {
+        $$ = $1;
     };
 line_content:
     expression
-    {
-        $$ = std::move($1);
-    }
-    |definition
     {
         $$ = std::move($1);
     };
@@ -148,7 +155,7 @@ definition:
         $$ = std::move($1);
     };
 function_definition:
-    FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL lines RETURN expression
+    FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL lines RETURN expression EOL
     {
         $$ = driver.ast_generator->add_function($1,std::move($3),std::move($6),std::move($8));
         driver.ast_generator->break_out_of_namespace();
@@ -160,16 +167,15 @@ class_definition:
         driver.ast_generator->break_out_of_namespace();
     };
 methods:
-    method_definition
+    method_definition EOL
     {
         $$.push_back($1);
     }
-    |methods method_definition
+    |methods method_definition EOL
     {
         $$ = std::move($1);
         $$.push_back($2);
-    }
-    ;
+    };
 method_definition:
     METHOD_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL lines RETURN expression
     {
@@ -211,20 +217,25 @@ expressions:
         $$.push_back(std::move($3));
     };
 expression:
-    IF expression EOL block SEMICOLON
+    IF expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
     {
         blawn_state = EXIST_IF;
-        $$ = driver.ast_generator->create_if($2,$4);
+        $$ = driver.ast_generator->create_if($2,$6);
     }
-    |ELSE EOL block SEMICOLON
+    |ELSE EOL LEFT_PARENTHESIS block RIGHT_PARENTHESIS
     {
         if (blawn_state != EXIST_IF)
         {
             std::cerr << "Error: If expression is not exist." << std::endl;
             exit(1);
         }
-        $$ = driver.ast_generator->add_else($3);
+        $$ = driver.ast_generator->add_else($4);
         blawn_state = NO_IF;
+    }
+    |FOR expression COMMA expression COMMA expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+    {
+        $$ = driver.ast_generator->create_for($2,$4,$6,$10);
+        driver.ast_generator->break_out_of_namespace();
     }
     |monomial
     {
@@ -250,9 +261,34 @@ expression:
     {
         $$ = driver.ast_generator->attach_operator(std::move($1),std::move($3),"/");
     }
+    |expression OP_AND expression
+    {
+        $$ = driver.ast_generator->attach_operator(std::move($1),std::move($3),"and");
+    }
+    |expression OP_OR expression
+    {
+        $$ = driver.ast_generator->attach_operator(std::move($1),std::move($3),"or");
+    }
+    |expression OP_EQUAL expression
+    {
+        $$ = driver.ast_generator->attach_operator(std::move($1),std::move($3),"==");
+    }
+    |expression OP_NOT_EQUAL expression
+    {
+        $$ = driver.ast_generator->attach_operator(std::move($1),std::move($3),"!=");
+    }
+    |list
+    {
+        $$ = std::move($1);
+    }
     |access
     {
         $$ = std::move($1);
+    };
+list:
+    LEFT_BRACKET expressions RIGHT_BRACKET
+    {
+
     };
 access:
     expression DOT_IDENTIFIER

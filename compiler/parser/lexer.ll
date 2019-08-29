@@ -27,6 +27,10 @@ PLUS        \+
 MINUS       -
 ASTERISK    \*
 SLASH       \/
+OP_EQUAL    ==
+OP_NOT_EQUAL !=
+OP_AND      and
+OP_OR       or
 COLON       \:
 SEMICOLON   ;
 COMMA       ,
@@ -34,6 +38,7 @@ COMMA       ,
 IF          if
 ELSE        else
 FOR         for
+IN          in
 WHILE       while
 FUNCTION_DEFINITION     function[ \t]+[a-zA-Z_][0-9a-zA-Z_]*
 METHOD_DEFINITION       @function[ \t]+[a-zA-Z_][0-9a-zA-Z_]*
@@ -41,6 +46,8 @@ CLASS_DEFINITION        class[ \t]+[a-zA-Z_][0-9a-zA-Z_]*
 RETURN                  return
 LEFT_PARENTHESIS  \(
 RIGHT_PARENTHESIS \)
+LEFT_BRACKET    \[
+RIGHT_BRACKET   \]
 
 CALL        .+\(.*\)
 C_FUNCTION  c\.[a-zA-Z_][0-9a-zA-Z_]*
@@ -52,7 +59,7 @@ EOL                 \n
 
 %%
 
-^[ \t]*\r\n {loc->lines();}
+^[ \t]*\n {loc->lines();/*(^[ \t]*\r\n)|(^[ \t]*\n)*/}
 [ \t] {/*BLOCK_START        \(|\n\(|\(\n|\n\(\n*/}
 {COMMENT} {}
 {STRING_LITERAL} {
@@ -72,7 +79,18 @@ EOL                 \n
 {USE} {
     return Blawn::Parser::token::USE;
 }
-
+{OP_EQUAL} {
+    return Blawn::Parser::token::OP_EQUAL;
+}
+{OP_NOT_EQUAL} {
+    return Blawn::Parser::token::OP_NOT_EQUAL;
+}
+{OP_AND} {
+    return Blawn::Parser::token::OP_AND;
+}
+{OP_OR} {
+    return Blawn::Parser::token::OP_OR;
+}
 {EQUAL} {
     return Blawn::Parser::token::EQUAL;
 }
@@ -103,6 +121,12 @@ EOL                 \n
 {RIGHT_PARENTHESIS} {
     return Blawn::Parser::token::RIGHT_PARENTHESIS;
 }
+{LEFT_BRACKET} {
+    return Blawn::Parser::token::LEFT_BRACKET;
+}
+{RIGHT_BRACKET} {
+    return Blawn::Parser::token::RIGHT_BRACKET;
+}
 {IF} {
     return Blawn::Parser::token::IF;
 }
@@ -110,7 +134,11 @@ EOL                 \n
     return Blawn::Parser::token::ELSE;
 }
 {FOR} {
+    driver->ast_generator->into_namespace("");
     return Blawn::Parser::token::FOR;
+}
+{IN} {
+    return Blawn::Parser::token::IN;
 }
 {WHILE} {
     return Blawn::Parser::token::WHILE;

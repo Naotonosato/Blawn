@@ -33,6 +33,7 @@ calling_generator(context,module,ir_builder),
 class_generator(context,module,ir_builder),
 call_constructor_generator(context,module,ir_builder),
 if_generator(context,module,ir_builder),
+for_generator(context,module,ir_builder),
 access_generator(context,module,ir_builder)
 {
 }
@@ -46,11 +47,13 @@ void ASTGenerator::generate(std::vector<std::shared_ptr<Node>> all)
     }
     for (auto& f:function_collector.get_all())
     {
-        if (f->get_base_function() != nullptr) f->get_base_function()->eraseFromParent();
+        for (auto &fv:f->get_base_functions()) 
+        {fv->eraseFromParent();}
     }
-    for(auto& c:class_collector.get_all(top))
+    for(auto& c:class_collector.get_all())
     {
-        if (c->get_base_constructor() != nullptr) c->get_base_constructor()->eraseFromParent();
+        for (auto& cv:c->get_base_constructors()) 
+        {cv->eraseFromParent();}
     }
 }
 
@@ -150,6 +153,7 @@ std::shared_ptr<ClassNode> ASTGenerator::add_class(std::string name,std::vector<
         );
     std::vector<std::string> previous_namespace = class_collector.get_namespace();
     previous_namespace.pop_back();
+    previous_namespace.pop_back();
     class_->set_self_namespace(class_collector.get_namespace());
     class_collector.set(name,class_,previous_namespace);
     return class_;
@@ -193,6 +197,8 @@ std::unique_ptr<Node> ASTGenerator::create_call(std::string name,std::vector<std
     else
     {
         std::cout << "Error: function or class '" << name << "' is not defined." << std::endl;
+        int* bug(nullptr);
+        std::cout << *bug;
         exit(0);
     }
 }
@@ -255,6 +261,19 @@ std::shared_ptr<Node> ASTGenerator::create_if(std::shared_ptr<Node> conditions,s
     if_collector.set(if_collector.get_unique_name(),if_node);
     return if_node;
 }
+std::shared_ptr<Node> ASTGenerator::create_for(std::shared_ptr<Node> left,std::shared_ptr<Node> center,std::shared_ptr<Node> right,std::vector<std::shared_ptr<Node>> body)
+{
+    auto for_node = std::shared_ptr<ForNode>(
+        new ForNode(
+            for_generator,
+            left,
+            center,
+            right,
+            body
+        ));
+    return for_node;
+}
+    
 
 std::shared_ptr<Node> ASTGenerator::add_else(std::vector<std::shared_ptr<Node>> body)
 {

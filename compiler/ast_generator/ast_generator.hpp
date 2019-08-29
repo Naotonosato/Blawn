@@ -46,6 +46,7 @@ public:
     ClassIRGenerator class_generator;
     CallConstructorIRGenerator call_constructor_generator;
     IfIRGenerator if_generator;
+    ForIRGenerator for_generator;
     AccessIRGenerator access_generator;
     
     ASTGenerator(llvm::Module &module,
@@ -67,6 +68,7 @@ public:
     std::shared_ptr<Node> create_call(std::shared_ptr<AccessNode>,std::vector<std::shared_ptr<Node>> arguments);
     std::shared_ptr<ClassNode> add_class(std::string,std::vector<std::string> arguments,std::vector<std::shared_ptr<Node>> members_definition,std::vector<std::shared_ptr<FunctionNode>> body);
     std::shared_ptr<Node> create_if(std::shared_ptr<Node>,std::vector<std::shared_ptr<Node>>);
+    std::shared_ptr<Node> create_for(std::shared_ptr<Node>,std::shared_ptr<Node>,std::shared_ptr<Node>,std::vector<std::shared_ptr<Node>> body);
     std::shared_ptr<Node> add_else(std::vector<std::shared_ptr<Node>>);
     std::shared_ptr<AccessNode> create_access(std::string left,std::string right);
     std::shared_ptr<AccessNode> create_access(std::shared_ptr<Node> left,std::string right);

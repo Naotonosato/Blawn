@@ -1,16 +1,66 @@
-class T(a)
-    @string = "Hello World!!"
-    @num = 0
-    @function whover(arg)
-        print("whover_m")
-        return self
-class C(arg)
-    @member = T(arg)
-    @function twice(num)
-        res = num * 2
-        return res
-function test(a)
-    r = C(100)
-    return r
+function digit_to_string(num)
+    res = ""
+    if num == 0
+    (
+        res = "0"
+    )
+    if num == 1
+    (
+        res = "1"
+    )
+    if num == 2
+    (
+        res = "2"
+    )
+    if num == 3
+    (
+        res = "3"
+    )
+    if num == 4
+    (
+        res = "4"
+    )
+    if num == 5
+    (
+        res = "5"
+    )
+    if num == 6
+    (
+        res = "6"
+    )
+    if num == 7
+    (
+        res = "7"
+    )
+    if num == 8
+    (
+        res = "8"
+    )
+    if num == 9
+    (
+        res = "9"
+    )
+    return res 
 
-i = test(0.1).member.whover(7).whover(9)
+function to_string(num)
+    keta = num / 10
+    res = ""
+    for i = 0,i == k,i = i+1
+    (
+        print(digit_to_string(i))
+    )
+    return res
+
+class Person(name)
+    @name = name
+    @function speak(word)
+        print(self.name)
+        print(word)
+        return 0
+
+
+s = "a"
+s2 = "a"
+add(s,s2)
+print(digit_to_string(s.size))
+print(s)
