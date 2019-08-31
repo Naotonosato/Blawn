@@ -297,15 +297,18 @@ llvm::Value* CallFunctionIRGenerator::generate(Node &node_)
     auto block = llvm::BasicBlock::Create(context,"entry",base_function);
     ir_builder.SetInsertPoint(block);
     
-    int count = 0;
-    for (auto &tmp_func_arg:base_function->args())
+    if (node.function->arguments_names.size())
     {
-        std::string name = node.function->arguments_names[count];
-        tmp_func_arg.setName(name);
-        auto local = node.function->get_self_namespace();
-        auto empty_node = node.argument_collector.get(name,local);
-        empty_node->set_right_value(&tmp_func_arg);
-        count += 1;
+        int count = 0;
+        for (auto &tmp_func_arg:base_function->args())
+        {
+            std::string name = node.function->arguments_names[count];
+            tmp_func_arg.setName(name);
+            auto local = node.function->get_self_namespace();
+            auto empty_node = node.argument_collector.get(name,local);
+            empty_node->set_right_value(&tmp_func_arg);
+            count += 1;
+        }
     }
     //auto destruction_block = llvm::BasicBlock::Create(context,"destruction");
     //auto merge = llvm::BasicBlock::Create(context,"merge");
@@ -314,11 +317,22 @@ llvm::Value* CallFunctionIRGenerator::generate(Node &node_)
         line->initialize();
         line->generate();
     }
-    auto return_value = node.function->return_value->generate();
-    ir_builder.CreateRet(return_value);
+    llvm::Value* return_value;
+    llvm::Type* return_type;
+    if (node.function->return_value != nullptr)
+    {   
+        return_value = node.function->return_value->generate();
+        ir_builder.CreateRet(return_value);
+        return_type = return_value->getType();
+    }
+    else
+    {
+        ir_builder.CreateRetVoid();
+        return_type = ir_builder.getVoidTy();
+    }
     
     auto new_function_type = llvm::FunctionType::get(
-        return_value->getType(),
+        return_type,
         types,
         false
         );
@@ -609,12 +623,32 @@ llvm::Value* AccessIRGenerator::generate(Node& node_)
     }
     else 
     {
+        auto bm = get_blawn_context().get_builtin_method(type_name,node.get_right_name());
+        if (bm != nullptr)
+        {
+            auto call_node = node.get_call_node();
+            CallFunctionIRGenerator gen(context,module,ir_builder);
+            auto method_call = CallFunctionNode(
+                gen,
+                call_node->passed_arguments,
+                call_node->argument_collector,
+                bm);
+            if (node.get_generated() != nullptr)
+                {
+                    return node.get_generated();
+                }
+            auto value = method_call.generate();
+            node.set_generated(value);
+            return value;
+        }
+
         auto class_node = get_blawn_context().get_class(type_name);
         if (class_node == nullptr)
         {
             logger.has_no_member_error(type_name,node.get_right_name());
             return 0;
         }
+
         for (auto& m:class_node->get_methods())
         {
             if (m->name == node.get_right_name())

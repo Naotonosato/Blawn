@@ -45,6 +45,20 @@ bool BlawnContext::exist_builtin_function(std::string name)
     else return true;
 }
 
+void BlawnContext::add_builtin_class(std::string type_name,std::map<std::string,llvm::Function*> methods)
+{
+    class_with_methods[type_name] = methods;
+}
+
+llvm::Function* BlawnContext::get_builtin_method(std::string type_name,std::string name)
+{
+    if (class_with_methods.count(type_name))
+    {
+        return class_with_methods[type_name][name];
+    }
+    else {return nullptr;}
+}
+
 void BlawnContext::add_class(std::string name,std::shared_ptr<ClassNode> class_)
 {
     classes[name] = class_;

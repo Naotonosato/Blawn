@@ -39,17 +39,19 @@ void builtins::create_string_type(llvm::LLVMContext& context,llvm::Module& modul
         "string_constructor",
         &module
     );    
-    std::vector<llvm::Type*> add_method_args;
-    add_method_args.push_back(string_type->getPointerTo());
-    add_method_args.push_back(string_type->getPointerTo());
-    auto add_method_type = llvm::FunctionType::get(ir_builder.getVoidTy(),add_method_args,false);
-    auto add_method = llvm::Function::Create(
-        add_method_type,
+    std::vector<llvm::Type*> append_method_args;
+    append_method_args.push_back(string_type->getPointerTo());
+    append_method_args.push_back(string_type->getPointerTo());
+    auto append_method_type = llvm::FunctionType::get(ir_builder.getVoidTy(),append_method_args,false);
+    auto append_method = llvm::Function::Create(
+        append_method_type,
         llvm::Function::ExternalLinkage,
-        "add_string",
+        "append_string",
         &module
         ); 
-    get_blawn_context().add_builtin_function("add",add_method);
+    std::map<std::string,llvm::Function*> methods;
+    methods["append"] = append_method;
+    get_blawn_context().add_builtin_class(type_name,methods);
     std::vector<llvm::Type*> print_args(1,string_type->getPointerTo());
     auto print_type = llvm::FunctionType::get(ir_builder.getVoidTy(),print_args,false);
     auto print = llvm::Function::Create(

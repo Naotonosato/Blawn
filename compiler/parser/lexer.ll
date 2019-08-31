@@ -162,7 +162,6 @@ EOL                 \n
     std::reverse_copy(definition.begin(),definition.end(),std::back_inserter(reversed));
     int index = definition.size() - reversed.find(" ");
     definition.erase(0,index);
-    driver->ast_generator->into_namespace(definition);
     driver->ast_generator->book_function(definition);
     lval->build<std::string>() = definition;
     
@@ -174,7 +173,6 @@ EOL                 \n
     std::reverse_copy(definition.begin(),definition.end(),std::back_inserter(reversed));
     int index = definition.size() - reversed.find(" ");
     definition.erase(0,index);
-    driver->ast_generator->into_namespace(definition);
     lval->build<std::string>() = definition;
     return Blawn::Parser::token::CLASS_DEFINITION;
 }

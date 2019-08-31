@@ -30,7 +30,7 @@ private:
     NodeCollector<FunctionNode> function_collector;
     NodeCollector<ArgumentNode> argument_collector;
     NodeCollector<ClassNode> class_collector;
-    NodeCollector<IfNode> if_collector;
+    std::shared_ptr<IfNode> previous_if_node;
     std::map<std::string,std::shared_ptr<VariableNode>&> access_namespace(std::vector<std::string>);
 public:
     IRGenerator ir_generator;
@@ -53,6 +53,7 @@ public:
     llvm::IRBuilder<> &ir_builder,
     llvm::LLVMContext &context);
     void into_namespace(std::string name);
+    void into_namespace();
     void break_out_of_namespace();
     std::unique_ptr<BinaryExpressionNode> attach_operator(std::shared_ptr<Node> node,std::shared_ptr<Node> other,const std::string operator_type);
     std::shared_ptr<Node> assign(std::string name,std::shared_ptr<Node> node);

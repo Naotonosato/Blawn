@@ -5,7 +5,7 @@
 #include <memory>
 #include <iostream>
 
-static unsigned int unique_number = 0;
+static unsigned int unique_number_ = 0;
 
 template <typename T>
 class NodeCollector
@@ -19,9 +19,16 @@ class NodeCollector
             > 
             nodes;
     std::vector<std::string> current_namespace;
+    std::vector<std::string> _top;
     public:
-    NodeCollector(std::string top="[TOP]"):current_namespace({top}){}
+    NodeCollector(std::string top="[TOP]"):current_namespace({top}),
+    _top({top}){}
     
+    std::vector<std::string> top()
+    {
+        return _top;
+    }
+
     std::shared_ptr<T> get(std::string name)
     {
         std::vector<std::string> upper_namespace;
@@ -129,8 +136,8 @@ class NodeCollector
     }
     std::string get_unique_name()
     {
-        unsigned int n = unique_number;
-        unique_number += 1;
+        unsigned int n = unique_number_;
+        unique_number_ += 1;
         std::string unique_name = "#" + std::to_string(n);
         return unique_name;
     }

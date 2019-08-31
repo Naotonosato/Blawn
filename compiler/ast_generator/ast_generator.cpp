@@ -8,6 +8,14 @@
 #include "ast_generator.hpp"
 #include "../blawn_context/blawn_context.hpp"
 
+static unsigned int unique_number = 0;
+std::string get_unique_name()
+{
+    unsigned int n = unique_number;
+    unique_number += 1;
+    std::string unique_name = "#" + std::to_string(n);
+    return unique_name;
+}
 
 ASTGenerator::ASTGenerator(
     llvm::Module &module,
@@ -19,7 +27,6 @@ variable_collector("TOP"),
 function_collector("TOP"),
 argument_collector("TOP"),
 class_collector("TOP"),
-if_collector("TOP"),
 ir_generator(context,module,ir_builder),
 int_ir_generator(context,module,ir_builder),
 float_ir_generator(context,module,ir_builder),
@@ -64,7 +71,12 @@ void ASTGenerator::into_namespace(std::string name)
     function_collector.into_namespace(name);
     argument_collector.into_namespace(name);
     class_collector.into_namespace(name);
-    if_collector.into_namespace(name);
+}
+
+void ASTGenerator::into_namespace()
+{
+    std::string name = get_unique_name();
+    into_namespace(name);
 }
 
 void ASTGenerator::break_out_of_namespace()
@@ -73,7 +85,6 @@ void ASTGenerator::break_out_of_namespace()
     function_collector.break_out_of_namespace();
     argument_collector.break_out_of_namespace();
     class_collector.break_out_of_namespace();
-    if_collector.break_out_of_namespace();
 }
 
 std::shared_ptr<Node> ASTGenerator::assign(std::string name,std::shared_ptr<Node> right_node)
@@ -153,7 +164,7 @@ std::shared_ptr<ClassNode> ASTGenerator::add_class(std::string name,std::vector<
         );
     std::vector<std::string> previous_namespace = class_collector.get_namespace();
     previous_namespace.pop_back();
-    previous_namespace.pop_back();
+    //previous_namespace.pop_back();
     class_->set_self_namespace(class_collector.get_namespace());
     class_collector.set(name,class_,previous_namespace);
     return class_;
@@ -197,8 +208,6 @@ std::unique_ptr<Node> ASTGenerator::create_call(std::string name,std::vector<std
     else
     {
         std::cout << "Error: function or class '" << name << "' is not defined." << std::endl;
-        int* bug(nullptr);
-        std::cout << *bug;
         exit(0);
     }
 }
@@ -258,7 +267,7 @@ std::shared_ptr<Node> ASTGenerator::create_if(std::shared_ptr<Node> conditions,s
             body,
             empty
         ));
-    if_collector.set(if_collector.get_unique_name(),if_node);
+    previous_if_node = if_node;
     return if_node;
 }
 std::shared_ptr<Node> ASTGenerator::create_for(std::shared_ptr<Node> left,std::shared_ptr<Node> center,std::shared_ptr<Node> right,std::vector<std::shared_ptr<Node>> body)
@@ -277,8 +286,7 @@ std::shared_ptr<Node> ASTGenerator::create_for(std::shared_ptr<Node> left,std::s
 
 std::shared_ptr<Node> ASTGenerator::add_else(std::vector<std::shared_ptr<Node>> body)
 {
-    auto if_node = if_collector.get_previous();
-    if_node->set_else_body(body);
+    previous_if_node->set_else_body(body);
     auto res = std::make_shared<Node>(ir_generator);
     return res;
 }  

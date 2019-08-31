@@ -11,6 +11,7 @@
 #include "llvm/IR/Verifier.h"
 #include <llvm/IR/Instructions.h>
 #include <llvm/Transforms/Utils/Cloning.h>
+#include <llvm/Support/DynamicLibrary.h>
 #include <algorithm>
 #include <cctype>
 #include <cstdio>
@@ -22,6 +23,7 @@
 #include <iostream>
 /* g++ -g -O3 kaleidoscope.cpp `llvm-config --cxxflags --ldflags --system-libs --libs core` -o toy*/
 using namespace llvm;
+typedef double (*fabsptr) (double);
 
 //===----------------------------------------------------------------------===//
 // Lexer
@@ -66,6 +68,7 @@ int main() {
   Builder.CreateCall(func_);
 
   func->replaceAllUsesWith(func_);
+
 
   std::cout << std::endl;
   TheModule->print(errs(), nullptr);

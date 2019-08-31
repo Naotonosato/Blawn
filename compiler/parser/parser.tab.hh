@@ -322,6 +322,7 @@ namespace Blawn {
       // definition
       // function_definition
       // class_definition
+      // return_value
       // expression
       // list
       // assign_variable
@@ -338,6 +339,8 @@ namespace Blawn {
       // IDENTIFIER
       // DOT_IDENTIFIER
       // STRING_LITERAL
+      // function_start
+      // class_start
       char dummy6[sizeof(std::string)];
 
       // methods
@@ -349,6 +352,7 @@ namespace Blawn {
       // expressions
       char dummy8[sizeof(std::vector<std::shared_ptr<Node>>)];
 
+      // arguments
       // definition_arguments
       char dummy9[sizeof(std::vector<std::string>)];
 };
@@ -872,9 +876,9 @@ namespace Blawn {
     enum
     {
       yyeof_ = 0,
-      yylast_ = 237,     ///< Last index in yytable_.
-      yynnts_ = 21,  ///< Number of nonterminal symbols.
-      yyfinal_ = 35, ///< Termination state number.
+      yylast_ = 254,     ///< Last index in yytable_.
+      yynnts_ = 27,  ///< Number of nonterminal symbols.
+      yyfinal_ = 36, ///< Termination state number.
       yyterror_ = 1,
       yyerrcode_ = 256,
       yyntokens_ = 37  ///< Number of tokens.
@@ -889,7 +893,7 @@ namespace Blawn {
 
 #line 5 "./parser.yy" // lalr1.cc:377
 } // Blawn
-#line 893 "parser.tab.hh" // lalr1.cc:377
+#line 897 "parser.tab.hh" // lalr1.cc:377
 
 
 

@@ -89,11 +89,15 @@
 %type <std::shared_ptr<Node>> definition
 %type <std::shared_ptr<Node>> assign_variable
 %type <std::shared_ptr<Node>> function_definition
+%type <std::string> function_start
 %type <std::shared_ptr<Node>> class_definition
+%type <std::string> class_start
 %type <std::vector<std::shared_ptr<FunctionNode>>> methods
 %type <std::shared_ptr<FunctionNode>> method_definition
 %type <std::vector<std::shared_ptr<Node>>> members_definition
+%type <std::vector<std::string>> arguments
 %type <std::vector<std::string>> definition_arguments
+%type <std::shared_ptr<Node>> return_value
 %type <std::vector<std::shared_ptr<Node>>> expressions
 %type <std::shared_ptr<Node>> expression
 %type <std::shared_ptr<Node>> list
@@ -155,16 +159,38 @@ definition:
         $$ = std::move($1);
     };
 function_definition:
-    FUNCTION_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL lines RETURN expression EOL
+    function_start arguments EOL lines return_value EOL
     {
-        $$ = driver.ast_generator->add_function($1,std::move($3),std::move($6),std::move($8));
+        $$ = driver.ast_generator->add_function($1,std::move($2),std::move($4),std::move($5));
         driver.ast_generator->break_out_of_namespace();
     };
-class_definition:
-    CLASS_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL members_definition methods
+function_start:
+    FUNCTION_DEFINITION
     {
-        $$ = std::move(driver.ast_generator->add_class($1,$3,$6,$7));
+        $$ = $1;
+        driver.ast_generator->into_namespace($1);
+    };
+class_definition:
+    class_start arguments EOL members_definition methods
+    {
+        $$ = std::move(driver.ast_generator->add_class($1,$2,$4,$5));
         driver.ast_generator->break_out_of_namespace();
+    }
+    |class_start arguments EOL members_definition
+    {
+        $$ = std::move(driver.ast_generator->add_class($1,$2,$4,{}));
+        driver.ast_generator->break_out_of_namespace();
+    }
+    |class_start arguments EOL methods
+    {
+        $$ = std::move(driver.ast_generator->add_class($1,$2,{},$4));
+        driver.ast_generator->break_out_of_namespace();
+    };
+class_start:
+    CLASS_DEFINITION
+    {
+        $$ = $1;
+        driver.ast_generator->into_namespace($1);
     };
 methods:
     method_definition EOL
@@ -177,11 +203,11 @@ methods:
         $$.push_back($2);
     };
 method_definition:
-    METHOD_DEFINITION LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS EOL lines RETURN expression
+    METHOD_DEFINITION arguments EOL lines return_value
     {
-        auto args = std::move($3);
+        auto args = std::move($2);
         args.insert(args.begin(),"self");
-        $$ = driver.ast_generator->add_function($1,std::move(args),std::move($6),std::move($8));
+        $$ = driver.ast_generator->add_function($1,std::move(args),std::move($4),std::move($5));
         driver.ast_generator->break_out_of_namespace();
     };
 members_definition:
@@ -193,6 +219,24 @@ members_definition:
     {
         $$ = std::move($1);
         $$.push_back(driver.ast_generator->assign($2,std::move($4)));
+    };
+return_value:
+    RETURN expression
+    {
+        $$ = $2;
+    }
+    |RETURN
+    {
+        $$ = nullptr;
+    };
+arguments:
+    LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS
+    {
+        $$ = std::move($2);
+    }
+    |LEFT_PARENTHESIS RIGHT_PARENTHESIS
+    {
+        $$ = {};
     };
 definition_arguments:
     IDENTIFIER
@@ -216,21 +260,33 @@ expressions:
         $$ = std::move($1);
         $$.push_back(std::move($3));
     };
+if_start:
+    IF
+    {
+        driver.ast_generator->into_namespace();
+    };
+else_start:
+    ELSE
+    {
+        driver.ast_generator->into_namespace();
+    };
 expression:
-    IF expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+    if_start expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
     {
         blawn_state = EXIST_IF;
         $$ = driver.ast_generator->create_if($2,$6);
+        driver.ast_generator->break_out_of_namespace();
     }
-    |ELSE EOL LEFT_PARENTHESIS block RIGHT_PARENTHESIS
+    |else_start EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
     {
         if (blawn_state != EXIST_IF)
         {
             std::cerr << "Error: If expression is not exist." << std::endl;
             exit(1);
         }
-        $$ = driver.ast_generator->add_else($4);
+        $$ = driver.ast_generator->add_else($5);
         blawn_state = NO_IF;
+        driver.ast_generator->break_out_of_namespace();
     }
     |FOR expression COMMA expression COMMA expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
     {
@@ -289,6 +345,10 @@ list:
     LEFT_BRACKET expressions RIGHT_BRACKET
     {
 
+    }
+    |LEFT_BRACKET RIGHT_BRACKET
+    {
+
     };
 access:
     expression DOT_IDENTIFIER
@@ -330,9 +390,17 @@ call:
     {
         $$ = driver.ast_generator->create_call($1,std::move($3));
     }
+    |IDENTIFIER LEFT_PARENTHESIS RIGHT_PARENTHESIS
+    {
+        $$ = driver.ast_generator->create_call($1,{});
+    }
     |access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
     {
         $$ = driver.ast_generator->create_call($1,$3);
+    }
+    |access LEFT_PARENTHESIS RIGHT_PARENTHESIS
+    {
+        $$ = driver.ast_generator->create_call($1,{});
     };
 variable:
     IDENTIFIER
