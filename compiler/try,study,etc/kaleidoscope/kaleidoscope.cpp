@@ -69,9 +69,16 @@ int main() {
 
   func->replaceAllUsesWith(func_);
 
+  std::vector<llvm::Type*> fields;
+  fields.push_back(Builder.getInt8Ty());
+  auto instance_type/*class*/ = llvm::StructType::create(TheContext,fields,"one");
+  auto another/*class*/ = llvm::StructType::create(TheContext,fields,"one");
+
+  std::cout << "same? " << (instance_type==another) << std::endl;
+  std::cout << "same? " << (Builder.getInt16Ty()==Builder.getInt16Ty()) << std::endl;
 
   std::cout << std::endl;
-  TheModule->print(errs(), nullptr);
+  //TheModule->print(errs(), nullptr);
   return 0;
 }
 /*g++ -g -O0 kaleidoscope.cpp `llvm-config --cxxflags --ldflags --system-libs --libs core` -o toy

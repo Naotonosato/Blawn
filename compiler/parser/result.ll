@@ -3,15 +3,17 @@ source_filename = "Blawn"
 target datalayout = "e-m:e-i64:64-f80:128-n8:16:32:64-S128"
 target triple = "x86_64-pc-linux-gnu"
 
-%V = type { i64 }
+%V = type { i64, double, double }
 %struct.String = type { i8*, i64 }
 %List = type { i64, i64, i64, i8* }
 
-@0 = private unnamed_addr constant [10 x i8] c"same size\00"
-@1 = private unnamed_addr constant [7 x i8] c"resize\00"
+@0 = private unnamed_addr constant [1 x i8] zeroinitializer
+@1 = private unnamed_addr constant [4 x i8] c"aaa\00"
 @.str = private unnamed_addr constant [73 x i8] c"\1B[31mCRITICAL ERROR:\1B[39m failed to realloc at appending element to list\00", align 1
 @.str.1 = private unnamed_addr constant [31 x i8] c"Error: list index out of range\00", align 1
 @.str.2 = private unnamed_addr constant [4 x i8] c"%s\0A\00", align 1
+@.str.3 = private unnamed_addr constant [5 x i8] c"%lld\00", align 1
+@.str.4 = private unnamed_addr constant [4 x i8] c"%lf\00", align 1
 
 declare i64* @malloc(i64)
 
@@ -28,66 +30,66 @@ entry:
   store %V* %2, %V** %v2
   %3 = load %V*, %V** %v2
   %4 = load %V*, %V** %v1
-  %5 = load %V*, %V** %v2
-  br i1 true, label %"then of if expr", label %"else of if_expr"
-
-"then of if expr":                                ; preds = %entry
-  %6 = call %struct.String* @string_constructor(i8* getelementptr inbounds ([10 x i8], [10 x i8]* @0, i32 0, i32 0), i64 9)
-  call void @print(%struct.String* %6)
-  br label %"merge of if_expr"
-
-"else of if_expr":                                ; preds = %entry
-  br label %"merge of if_expr"
-
-"merge of if_expr":                               ; preds = %"else of if_expr", %"then of if expr"
-  %7 = load %V*, %V** %v1
-  %8 = call %List* @List.4(%V* %7)
+  %5 = call %struct.String* @int_to_str(i64 1)
+  call void @print(%struct.String* %5)
+  %6 = load %V*, %V** %v2
+  %7 = call %struct.String* @int_to_str(i64 1)
+  call void @print(%struct.String* %7)
+  %8 = call %struct.String* @string_constructor(i8* getelementptr inbounds ([1 x i8], [1 x i8]* @0, i32 0, i32 0), i64 0)
+  %9 = call %struct.String* @int_to_str(i64 2)
+  call void @print(%struct.String* %9)
+  %10 = call %struct.String* @float_to_str(double 1.232400e-02)
+  call void @print(%struct.String* %10)
+  %11 = load %V*, %V** %v1
+  %12 = call %List* @List.4(%V* %11)
   %list = alloca %List*
-  store %List* %8, %List** %list
-  %9 = load %List*, %List** %list
-  %10 = load %List*, %List** %list
-  %11 = load %List*, %List** %list
-  %12 = load %V*, %V** %v2
-  call void @append.6(%List* %11, %V* %12)
+  store %List* %12, %List** %list
   %13 = load %List*, %List** %list
   %14 = load %List*, %List** %list
-  %15 = load %V*, %V** %v2
-  call void @append.6(%List* %14, %V* %15)
+  %15 = load %List*, %List** %list
+  %16 = load %V*, %V** %v2
+  call void @append.6(%List* %15, %V* %16)
+  %17 = load %List*, %List** %list
+  %18 = load %List*, %List** %list
+  %19 = load %V*, %V** %v2
+  call void @append.6(%List* %18, %V* %19)
   %i = alloca i64
   store i64 0, i64* %i
-  %16 = load i64, i64* %i
-  %17 = load i64, i64* %i
-  %18 = add i64 %17, 1
-  store i64 %18, i64* %i
-  %19 = load i64, i64* %i
+  %20 = load i64, i64* %i
+  %21 = load i64, i64* %i
+  %22 = add i64 %21, 1
+  store i64 %22, i64* %i
+  %23 = load i64, i64* %i
   br label %for
 
-for:                                              ; preds = %for, %"merge of if_expr"
-  %20 = load %List*, %List** %list
-  %21 = load %List*, %List** %list
-  %22 = load %V*, %V** %v1
-  call void @append.6(%List* %21, %V* %22)
-  %23 = load %List*, %List** %list
+for:                                              ; preds = %for, %entry
   %24 = load %List*, %List** %list
-  %25 = load %V*, %V** %v2
-  call void @append.6(%List* %24, %V* %25)
-  %26 = load i64, i64* %i
-  %27 = icmp slt i64 %26, 1000000
-  %28 = icmp eq i1 false, %27
-  %29 = load i64, i64* %i
-  %30 = load i64, i64* %i
-  %31 = add i64 %30, 1
-  store i64 %31, i64* %i
-  %32 = load i64, i64* %i
-  br i1 %28, label %"merge of for", label %for
+  %25 = load %List*, %List** %list
+  %26 = load %V*, %V** %v1
+  call void @append.6(%List* %25, %V* %26)
+  %27 = load %List*, %List** %list
+  %28 = load %List*, %List** %list
+  %29 = load %V*, %V** %v2
+  call void @append.6(%List* %28, %V* %29)
+  %30 = load %List*, %List** %list
+  %31 = load %List*, %List** %list
+  %32 = call %struct.String* @string_constructor(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @1, i32 0, i32 0), i64 3)
+  call void @append.8(%List* %31, %struct.String* %32)
+  %33 = load i64, i64* %i
+  %34 = icmp slt i64 %33, 1000000
+  %35 = icmp eq i1 false, %34
+  %36 = load i64, i64* %i
+  %37 = load i64, i64* %i
+  %38 = add i64 %37, 1
+  store i64 %38, i64* %i
+  %39 = load i64, i64* %i
+  br i1 %35, label %"merge of for", label %for
 
 "merge of for":                                   ; preds = %for
   ret i8 0
 }
 
 declare void @List()
-
-declare void @C()
 
 declare void @Person()
 
@@ -98,11 +100,21 @@ entry:
   %"@n" = alloca i64
   store i64 0, i64* %"@n"
   %0 = load i64, i64* %"@n"
-  %1 = call i64* @malloc(i64 8)
-  %2 = bitcast i64* %1 to %V*
-  %3 = getelementptr inbounds %V, %V* %2, i32 0, i32 0
-  store i64 %0, i64* %3
-  ret %V* %2
+  %"@nn" = alloca double
+  store double 0.000000e+00, double* %"@nn"
+  %1 = load double, double* %"@nn"
+  %"@nnn" = alloca double
+  store double 0.000000e+00, double* %"@nnn"
+  %2 = load double, double* %"@nnn"
+  %3 = call i64* @malloc(i64 24)
+  %4 = bitcast i64* %3 to %V*
+  %5 = getelementptr inbounds %V, %V* %4, i32 0, i32 0
+  store i64 %0, i64* %5
+  %6 = getelementptr inbounds %V, %V* %4, i32 0, i32 1
+  store double %1, double* %6
+  %7 = getelementptr inbounds %V, %V* %4, i32 0, i32 2
+  store double %2, double* %7
+  ret %V* %4
 }
 
 define void @destructor_of_V(%V*) {
@@ -148,26 +160,24 @@ entry:
 
 define void @resize.5(%List* %self) {
 entry:
-  %0 = call %struct.String* @string_constructor(i8* getelementptr inbounds ([7 x i8], [7 x i8]* @1, i32 0, i32 0), i64 6)
-  call void @print(%struct.String* %0)
-  %1 = getelementptr inbounds %List, %List* %self, i32 0, i32 1
-  %2 = load i64, i64* %1
-  %3 = getelementptr inbounds %List, %List* %self, i32 0, i32 1
-  %4 = load i64, i64* %3
-  %5 = mul i64 %4, 2
-  store i64 %5, i64* %1
-  %6 = load i64, i64* %1
-  %7 = getelementptr inbounds %List, %List* %self, i32 0, i32 3
-  %8 = load i8*, i8** %7
-  %9 = getelementptr inbounds %List, %List* %self, i32 0, i32 3
-  %10 = load i8*, i8** %9
-  %11 = getelementptr inbounds %List, %List* %self, i32 0, i32 2
-  %12 = load i64, i64* %11
-  %13 = getelementptr inbounds %List, %List* %self, i32 0, i32 1
-  %14 = load i64, i64* %13
-  %15 = call i8* @blawn_realloc(i8* %10, i64 %12, i64 %14)
-  store i8* %15, i8** %7
-  %16 = load i8*, i8** %7
+  %0 = getelementptr inbounds %List, %List* %self, i32 0, i32 1
+  %1 = load i64, i64* %0
+  %2 = getelementptr inbounds %List, %List* %self, i32 0, i32 1
+  %3 = load i64, i64* %2
+  %4 = mul i64 %3, 2
+  store i64 %4, i64* %0
+  %5 = load i64, i64* %0
+  %6 = getelementptr inbounds %List, %List* %self, i32 0, i32 3
+  %7 = load i8*, i8** %6
+  %8 = getelementptr inbounds %List, %List* %self, i32 0, i32 3
+  %9 = load i8*, i8** %8
+  %10 = getelementptr inbounds %List, %List* %self, i32 0, i32 2
+  %11 = load i64, i64* %10
+  %12 = getelementptr inbounds %List, %List* %self, i32 0, i32 1
+  %13 = load i64, i64* %12
+  %14 = call i8* @blawn_realloc(i8* %9, i64 %11, i64 %13)
+  store i8* %14, i8** %6
+  %15 = load i8*, i8** %6
   ret void
 }
 
@@ -196,6 +206,41 @@ entry:
   %10 = getelementptr inbounds %List, %List* %self, i32 0, i32 2
   %11 = load i64, i64* %10
   %12 = bitcast %V* %new_element to i8*
+  call void @blawn_memcpy(i8* %7, i64 %9, i64 %11, i8* %12)
+  %13 = getelementptr inbounds %List, %List* %self, i32 0, i32 0
+  %14 = load i64, i64* %13
+  %15 = getelementptr inbounds %List, %List* %self, i32 0, i32 0
+  %16 = load i64, i64* %15
+  %17 = add i64 %16, 1
+  store i64 %17, i64* %13
+  %18 = load i64, i64* %13
+  ret void
+}
+
+define void @append.8(%List* %self, %struct.String* %new_element) {
+entry:
+  %0 = getelementptr inbounds %List, %List* %self, i32 0, i32 0
+  %1 = load i64, i64* %0
+  %2 = add i64 %1, 1
+  %3 = getelementptr inbounds %List, %List* %self, i32 0, i32 1
+  %4 = load i64, i64* %3
+  %5 = icmp sge i64 %2, %4
+  br i1 %5, label %"then of if expr", label %"else of if_expr"
+
+"then of if expr":                                ; preds = %entry
+  br label %"merge of if_expr"
+
+"else of if_expr":                                ; preds = %entry
+  br label %"merge of if_expr"
+
+"merge of if_expr":                               ; preds = %"else of if_expr", %"then of if expr"
+  %6 = getelementptr inbounds %List, %List* %self, i32 0, i32 3
+  %7 = load i8*, i8** %6
+  %8 = getelementptr inbounds %List, %List* %self, i32 0, i32 0
+  %9 = load i64, i64* %8
+  %10 = getelementptr inbounds %List, %List* %self, i32 0, i32 2
+  %11 = load i64, i64* %10
+  %12 = bitcast %struct.String* %new_element to i8*
   call void @blawn_memcpy(i8* %7, i64 %9, i64 %11, i8* %12)
   %13 = getelementptr inbounds %List, %List* %self, i32 0, i32 0
   %14 = load i64, i64* %13
@@ -456,12 +501,103 @@ define void @append_string(%struct.String*, %struct.String*) #0 {
 declare i8* @strcat(i8*, i8*) #1
 
 ; Function Attrs: noinline nounwind optnone uwtable
-define i32 @main_() #0 {
-  %1 = alloca i32, align 4
-  %2 = alloca i8*, align 8
-  store i8* null, i8** %2, align 8
-  %3 = load i32, i32* %1, align 4
-  ret i32 %3
+define %struct.String* @int_to_str(i64) #0 {
+  %2 = alloca i64, align 8
+  %3 = alloca i64, align 8
+  %4 = alloca i64, align 8
+  %5 = alloca i8*, align 8
+  store i64 %0, i64* %2, align 8
+  %6 = load i64, i64* %2, align 8
+  store i64 %6, i64* %3, align 8
+  %7 = load i64, i64* %2, align 8
+  %8 = icmp sge i64 %7, 0
+  br i1 %8, label %9, label %19
+
+; <label>:9:                                      ; preds = %1
+  store i64 0, i64* %4, align 8
+  br label %10
+
+; <label>:10:                                     ; preds = %13, %9
+  %11 = load i64, i64* %2, align 8
+  %12 = icmp ne i64 %11, 0
+  br i1 %12, label %13, label %18
+
+; <label>:13:                                     ; preds = %10
+  %14 = load i64, i64* %2, align 8
+  %15 = sdiv i64 %14, 10
+  store i64 %15, i64* %2, align 8
+  %16 = load i64, i64* %4, align 8
+  %17 = add nsw i64 %16, 1
+  store i64 %17, i64* %4, align 8
+  br label %10
+
+; <label>:18:                                     ; preds = %10
+  br label %31
+
+; <label>:19:                                     ; preds = %1
+  store i64 1, i64* %4, align 8
+  %20 = load i64, i64* %2, align 8
+  %21 = sub nsw i64 0, %20
+  store i64 %21, i64* %2, align 8
+  br label %22
+
+; <label>:22:                                     ; preds = %25, %19
+  %23 = load i64, i64* %2, align 8
+  %24 = icmp ne i64 %23, 0
+  br i1 %24, label %25, label %30
+
+; <label>:25:                                     ; preds = %22
+  %26 = load i64, i64* %2, align 8
+  %27 = sdiv i64 %26, 10
+  store i64 %27, i64* %2, align 8
+  %28 = load i64, i64* %4, align 8
+  %29 = add nsw i64 %28, 1
+  store i64 %29, i64* %4, align 8
+  br label %22
+
+; <label>:30:                                     ; preds = %22
+  br label %31
+
+; <label>:31:                                     ; preds = %30, %18
+  %32 = load i64, i64* %4, align 8
+  %33 = call noalias i8* bitcast (i64* (i64)* @malloc to i8* (i64)*)(i64 %32) #5
+  store i8* %33, i8** %5, align 8
+  %34 = load i8*, i8** %5, align 8
+  %35 = load i64, i64* %4, align 8
+  %36 = add nsw i64 %35, 1
+  %37 = load i64, i64* %3, align 8
+  %38 = call i32 (i8*, i64, i8*, ...) @snprintf(i8* %34, i64 %36, i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.3, i32 0, i32 0), i64 %37) #5
+  %39 = load i8*, i8** %5, align 8
+  %40 = load i64, i64* %4, align 8
+  %41 = call %struct.String* @string_constructor(i8* %39, i64 %40)
+  ret %struct.String* %41
+}
+
+; Function Attrs: nounwind
+declare i32 @snprintf(i8*, i64, i8*, ...) #1
+
+; Function Attrs: noinline nounwind optnone uwtable
+define %struct.String* @float_to_str(double) #0 {
+  %2 = alloca double, align 8
+  %3 = alloca i32, align 4
+  %4 = alloca i8*, align 8
+  store double %0, double* %2, align 8
+  store i32 16, i32* %3, align 4
+  %5 = load i32, i32* %3, align 4
+  %6 = sext i32 %5 to i64
+  %7 = call noalias i8* bitcast (i64* (i64)* @malloc to i8* (i64)*)(i64 %6) #5
+  store i8* %7, i8** %4, align 8
+  %8 = load i8*, i8** %4, align 8
+  %9 = load i32, i32* %3, align 4
+  %10 = add nsw i32 %9, 1
+  %11 = sext i32 %10 to i64
+  %12 = load double, double* %2, align 8
+  %13 = call i32 (i8*, i64, i8*, ...) @snprintf(i8* %8, i64 %11, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.4, i32 0, i32 0), double %12) #5
+  %14 = load i8*, i8** %4, align 8
+  %15 = load i32, i32* %3, align 4
+  %16 = sext i32 %15 to i64
+  %17 = call %struct.String* @string_constructor(i8* %14, i64 %16)
+  ret %struct.String* %17
 }
 
 attributes #0 = { noinline nounwind optnone uwtable "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-jump-tables"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+fxsr,+mmx,+sse,+sse2,+x87" "unsafe-fp-math"="false" "use-soft-float"="false" }

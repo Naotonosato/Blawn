@@ -3,6 +3,7 @@
 #include "blawn_context.hpp"
 #include "../ast/node.hpp"
 
+static int unique_id = 0;
 static BlawnContext context;
 
 void BlawnContext::register_element_name(std::string type,std::string name,unsigned int index)
@@ -63,8 +64,19 @@ void BlawnContext::add_class(std::string name,std::shared_ptr<ClassNode> class_)
 {
     classes[name] = class_;
 }
+
 std::shared_ptr<ClassNode> BlawnContext::get_class(std::string name)
 {
     if (classes.count(name)) return classes[name];
     else return nullptr;
+}
+
+int BlawnContext::get_typeid(llvm::Type* type)
+{
+    if (!typeids.count(type))
+    {
+        unique_id += 1;
+        typeids[type] = unique_id;
+    }
+    return typeids[type];
 }

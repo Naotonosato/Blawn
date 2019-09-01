@@ -60,6 +60,18 @@ class SizeofNode:public Node
     std::shared_ptr<Node> get_value(){return value;}
 };
 
+class TypeIdNode:public Node
+{
+    private:
+    std::shared_ptr<Node> value;
+    public:
+    TypeIdNode(
+        TypeIdGenerator& ir_generator,
+        std::shared_ptr<Node> value
+        ):Node(ir_generator),value(value){}
+    std::shared_ptr<Node> get_value(){return value;}
+};
+
 class IntegerNode:public Node
 {
     public:

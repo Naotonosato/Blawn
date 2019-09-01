@@ -21,6 +21,7 @@ class BlawnContext
     std::map<std::string,llvm::Function*> builtin_functions;
     std::map<std::string,std::shared_ptr<ClassNode>> classes;
     std::map<std::string,std::map<std::string,llvm::Function*>> class_with_methods;
+    std::map<llvm::Type*,int> typeids;
     public:
     void register_element_name(std::string,std::string name,unsigned int index);
     int get_element_index(std::string,std::string name);
@@ -31,6 +32,7 @@ class BlawnContext
     bool exist_builtin_function(std::string name);
     void add_class(std::string,std::shared_ptr<ClassNode>);
     std::shared_ptr<ClassNode> get_class(std::string);
+    int get_typeid(llvm::Type*);
 };
 
 

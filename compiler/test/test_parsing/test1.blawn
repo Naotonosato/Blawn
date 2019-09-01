@@ -4,7 +4,6 @@ class List(element)
     @element_size = sizeof(element)
     @array = {}
     @function resize()
-        print("resize")
         self.allocated_size = self.allocated_size * 2
         self.array = blawn_realloc(self.array,self.element_size,self.allocated_size)
         return
@@ -18,12 +17,9 @@ class List(element)
         self.size = self.size + 1
         return
 
-class C()
-    @s = "C instance"
 
 class Person(name)
     @name = name
-    @i = C()
     @function hello(s)
         text = "Hello! I'm "
         text.append(self.name)
@@ -41,13 +37,15 @@ class Person(name)
 
 class V()
     @n = 0
+    @nn = 0.0
+    @nnn = 0.0
 
 v1 = V()
 v2 = V()
-if sizeof(v1) == sizeof(v2)
-(
-    print("same size")
-)
+print(int_to_str(typeid(v1)))
+print(int_to_str(typeid(v2)))
+print(int_to_str(typeid("")))
+print(float_to_str(0.012324))
 list = List(v1)
 list.append(v2)
 list.append(v2)
@@ -55,4 +53,5 @@ for i = 0 ,i < 1000000 ,i = i+1
 (
     list.append(v1)
     list.append(v2)
+    list.append("aaa")
 )

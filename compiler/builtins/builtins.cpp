@@ -101,4 +101,32 @@ void builtins::create_string_type(llvm::LLVMContext& context,llvm::Module& modul
         &module
     );
     get_blawn_context().add_builtin_function("print",print);
+
+    std::vector<llvm::Type*> int_to_str_args(1,ir_builder.getInt64Ty());
+    auto int_to_str_type = llvm::FunctionType::get(
+        string_type->getPointerTo(),
+        int_to_str_args,
+        false
+        );
+    auto int_to_str = llvm::Function::Create(
+        int_to_str_type,
+        llvm::Function::ExternalLinkage,
+        "int_to_str",
+        &module
+    );
+    get_blawn_context().add_builtin_function("int_to_str",int_to_str);
+
+    std::vector<llvm::Type*> float_to_str_args(1,ir_builder.getDoubleTy());
+    auto float_to_str_type = llvm::FunctionType::get(
+        string_type->getPointerTo(),
+        float_to_str_args,
+        false
+        );
+    auto float_to_str = llvm::Function::Create(
+        float_to_str_type,
+        llvm::Function::ExternalLinkage,
+        "float_to_str",
+        &module
+    );
+    get_blawn_context().add_builtin_function("float_to_str",float_to_str);
 }

@@ -56,6 +56,12 @@ llvm::Value* SizeofGenerator::generate(Node& node_)
     return ir_builder.getInt64(utils::get_sizeof(type,module));
 }
 
+llvm::Value* TypeIdGenerator::generate(Node& node_)
+{
+    auto& node = *static_cast<TypeIdNode*>(&node_);
+    auto type = node.get_value()->generate()->getType();
+    return ir_builder.getInt64(get_blawn_context().get_typeid(type));
+}
 
 IRGenerator::IRGenerator(
         llvm::LLVMContext &context,

@@ -35,6 +35,7 @@ private:
 public:
     IRGenerator ir_generator;
     SizeofGenerator sizeof_generator;
+    TypeIdGenerator typeid_generator;
     IntegerIRGenerator int_ir_generator;
     FloatIRGenerator float_ir_generator;
     StringIRGenerator string_generator;

@@ -104,6 +104,43 @@ void append_string(String* string,String* to_add)
     string->string = new_str;
 }
 
+
+String* int_to_str(i64 n)
+{
+    i64 n_copy = n;
+    i64 size;
+    if (n >= 0)
+    {
+        size = 0;
+        while(n)
+        {
+            n /= 10;
+            size++;
+        }
+    }
+    else
+    {
+        size = 1;
+        n = -n;
+        while(n)
+        {
+            n /= 10;
+            size++;
+        }
+    }
+    char* str = (char*)malloc(size);
+    snprintf(str,size+1,"%lld",n_copy);
+    return string_constructor(str,size);
+}
+
+String* float_to_str(double n)
+{
+    int digit = 16;
+    char* str = (char*)malloc(digit);
+    snprintf(str,digit+1,"%lf",n);
+    return string_constructor(str,digit);
+}
+/*
 int main_()
 {   
     void* a = NULL;
@@ -133,4 +170,4 @@ int main_()
     putchar( *((char*)get_element(sl,11))  );
     return 0;
     */
-}
+//}*/
