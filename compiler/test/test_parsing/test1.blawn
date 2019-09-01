@@ -1,4 +1,44 @@
 !TODO: chack num of args,multi definition,async/await,list,dict,C-Interface
+class List(element)
+    @size = 0
+    @allocated_size = 1
+    @element_size = sizeof(element)
+    @array = {element}
+    @function resize()
+        self.allocated_size = self.allocated_size * 2
+        blawn_realloc(self.array,self.element_size,self.allocated_size)
+        return
+    @function append(new_element)
+        if self.size + 1 >= self.allocated_size
+        (
+            self.resize()
+        )
+        blawn_memcopy(self.array + self.size * self.element_size,new_element,self.element_size)
+        self.size = self.size + 1
+        return
+    @function get(index)
+        res = self.array[self.size-1]
+        if 0 <= index and index < self.size
+        (
+            res = self.array[index]
+        )
+        else
+        (
+            print("Error: list index out of range")
+        )
+        return res
+    @function set(new_element,index)
+        if 0 <= index and index < self.size
+        (
+            self.array[index] = new_element
+        )
+        else
+        (
+            print("Error: list index out of range")
+        )
+
+
+
 
 class Person(name)
     @name = name
@@ -12,8 +52,10 @@ class Person(name)
         return
 
 p = Person("John")
-p.hello()
-p.set_name("Johhhn")
-p.hello()
-p.name = "I'm renamed."
-p.hello()
+!p.hello()
+!p.set_name("Johhhn")
+!p.hello()
+!p.name = "I'm renamed."
+!p.hello()
+l = {""}
+l[0]

@@ -71,6 +71,8 @@
         COMMA
         LEFT_PARENTHESIS
         RIGHT_PARENTHESIS
+        LEFT_CURLY_BRACE
+        RIGHT_CURLY_BRACE
         LEFT_BRACKET
         RIGHT_BRACKET
         IF
@@ -101,6 +103,7 @@
 %type <std::vector<std::shared_ptr<Node>>> expressions
 %type <std::shared_ptr<Node>> expression
 %type <std::shared_ptr<Node>> list
+%type <std::shared_ptr<Node>> index
 %type <std::shared_ptr<AccessNode>> access
 %type <std::shared_ptr<Node>> call
 %type <std::shared_ptr<Node>> monomial
@@ -342,14 +345,11 @@ expression:
         $$ = std::move($1);
     };
 list:
-    LEFT_BRACKET expressions RIGHT_BRACKET
+    LEFT_CURLY_BRACE expressions RIGHT_CURLY_BRACE
     {
-
-    }
-    |LEFT_BRACKET RIGHT_BRACKET
-    {
-
+        $$ = driver.ast_generator->create_list(std::move($2));
     };
+
 access:
     expression DOT_IDENTIFIER
     {

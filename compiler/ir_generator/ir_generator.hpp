@@ -40,6 +40,18 @@ public:
 };
 
 
+class SizeofGenerator:public IRGenerator
+{
+    public:
+    SizeofGenerator(
+        llvm::LLVMContext &context,
+        llvm::Module &module,
+        llvm::IRBuilder<> &ir_builder
+        )
+    :IRGenerator(context,module,ir_builder){}
+    llvm::Value* generate(Node &node) override;
+};
+
 class IntegerIRGenerator: public IRGenerator
 {
 public:
@@ -214,6 +226,18 @@ class ForIRGenerator:public IRGenerator
 {
     public:
     ForIRGenerator(
+        llvm::LLVMContext &context,
+        llvm::Module &module,
+        llvm::IRBuilder<> &ir_builder
+        )
+    :IRGenerator(context,module,ir_builder){}
+    llvm::Value* generate(Node &node) override;
+};
+
+class ListIRGenerator:public IRGenerator
+{
+    public:
+    ListIRGenerator(
         llvm::LLVMContext &context,
         llvm::Module &module,
         llvm::IRBuilder<> &ir_builder

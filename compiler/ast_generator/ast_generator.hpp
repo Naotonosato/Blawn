@@ -34,6 +34,7 @@ private:
     std::map<std::string,std::shared_ptr<VariableNode>&> access_namespace(std::vector<std::string>);
 public:
     IRGenerator ir_generator;
+    SizeofGenerator sizeof_generator;
     IntegerIRGenerator int_ir_generator;
     FloatIRGenerator float_ir_generator;
     StringIRGenerator string_generator;
@@ -48,6 +49,7 @@ public:
     IfIRGenerator if_generator;
     ForIRGenerator for_generator;
     AccessIRGenerator access_generator;
+    ListIRGenerator list_generator;
     
     ASTGenerator(llvm::Module &module,
     llvm::IRBuilder<> &ir_builder,
@@ -73,5 +75,6 @@ public:
     std::shared_ptr<Node> add_else(std::vector<std::shared_ptr<Node>>);
     std::shared_ptr<AccessNode> create_access(std::string left,std::string right);
     std::shared_ptr<AccessNode> create_access(std::shared_ptr<Node> left,std::string right);
+    std::shared_ptr<ListNode> create_list(std::vector<std::shared_ptr<Node>> elements);
     void generate(std::vector<std::shared_ptr<Node>>);
 };

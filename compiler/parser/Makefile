@@ -3,7 +3,7 @@ LLVM_OPTION := `llvm-config --cxxflags --system-libs --ldflags --libs core` -fex
 all: blawn
 blawn: ../builtins/builtins.o ../errors/errors.o main.o driver.o ../ast/node.o ./parser.o ./lexer.o ../ast_generator/ast_generator.o ../ast/node.o ../ir_generator/ir_generator.o ../utils/utils.o ../blawn_context/blawn_context.o
 	g++ -g -o blawn main.o driver.o ./parser.o ./lexer.o ../ast_generator/ast_generator.o \
-	../ast/node.o ../ir_generator/ir_generator.o ../utils/utils.o ../errors/errors.o ../builtins/builtins.o ../blawn_context/blawn_context.o -ll $(LLVM_OPTION)
+	../ast/node.o ../builtins/builtins.o ../ir_generator/ir_generator.o ../utils/utils.o ../errors/errors.o ../blawn_context/blawn_context.o -ll $(LLVM_OPTION)
 
 ./driver.o: ./driver.cpp ../ir_generator/ir_generator.hpp
 	g++ -g -c -o driver.o driver.cpp $(LLVM_OPTION) 

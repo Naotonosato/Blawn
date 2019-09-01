@@ -401,17 +401,19 @@ namespace Blawn {
         COMMA = 278,
         LEFT_PARENTHESIS = 279,
         RIGHT_PARENTHESIS = 280,
-        LEFT_BRACKET = 281,
-        RIGHT_BRACKET = 282,
-        IF = 283,
-        ELSE = 284,
-        FOR = 285,
-        IN = 286,
-        WHILE = 287,
-        EOL = 288,
-        INT_LITERAL = 289,
-        FLOAT_LITERAL = 290,
-        STRING_LITERAL = 291
+        LEFT_CURLY_BRACE = 281,
+        RIGHT_CURLY_BRACE = 282,
+        LEFT_BRACKET = 283,
+        RIGHT_BRACKET = 284,
+        IF = 285,
+        ELSE = 286,
+        FOR = 287,
+        IN = 288,
+        WHILE = 289,
+        EOL = 290,
+        INT_LITERAL = 291,
+        FLOAT_LITERAL = 292,
+        STRING_LITERAL = 293
       };
     };
 
@@ -629,6 +631,14 @@ namespace Blawn {
     static inline
     symbol_type
     make_RIGHT_PARENTHESIS (const location_type& l);
+
+    static inline
+    symbol_type
+    make_LEFT_CURLY_BRACE (const location_type& l);
+
+    static inline
+    symbol_type
+    make_RIGHT_CURLY_BRACE (const location_type& l);
 
     static inline
     symbol_type
@@ -876,12 +886,12 @@ namespace Blawn {
     enum
     {
       yyeof_ = 0,
-      yylast_ = 254,     ///< Last index in yytable_.
+      yylast_ = 248,     ///< Last index in yytable_.
       yynnts_ = 27,  ///< Number of nonterminal symbols.
-      yyfinal_ = 36, ///< Termination state number.
+      yyfinal_ = 35, ///< Termination state number.
       yyterror_ = 1,
       yyerrcode_ = 256,
-      yyntokens_ = 37  ///< Number of tokens.
+      yyntokens_ = 39  ///< Number of tokens.
     };
 
 
@@ -893,7 +903,7 @@ namespace Blawn {
 
 #line 5 "./parser.yy" // lalr1.cc:377
 } // Blawn
-#line 897 "parser.tab.hh" // lalr1.cc:377
+#line 907 "parser.tab.hh" // lalr1.cc:377
 
 
 

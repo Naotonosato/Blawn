@@ -48,6 +48,8 @@ LEFT_PARENTHESIS  \(
 RIGHT_PARENTHESIS \)
 LEFT_BRACKET    \[
 RIGHT_BRACKET   \]
+LEFT_CURLY_BRACE \{
+RIGHT_CURLY_BRACE \}
 
 CALL        .+\(.*\)
 C_FUNCTION  c\.[a-zA-Z_][0-9a-zA-Z_]*
@@ -126,6 +128,12 @@ EOL                 \n
 }
 {RIGHT_BRACKET} {
     return Blawn::Parser::token::RIGHT_BRACKET;
+}
+{LEFT_CURLY_BRACE} {
+    return Blawn::Parser::token::LEFT_CURLY_BRACE;
+}
+{RIGHT_CURLY_BRACE} {
+    return Blawn::Parser::token::RIGHT_CURLY_BRACE;
 }
 {IF} {
     return Blawn::Parser::token::IF;

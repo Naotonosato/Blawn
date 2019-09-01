@@ -7,6 +7,7 @@
 #include "../ir_generator/ir_generator.hpp"
 #include "ast_generator.hpp"
 #include "../blawn_context/blawn_context.hpp"
+#include "../utils/utils.hpp"
 
 static unsigned int unique_number = 0;
 std::string get_unique_name()
@@ -28,6 +29,7 @@ function_collector("TOP"),
 argument_collector("TOP"),
 class_collector("TOP"),
 ir_generator(context,module,ir_builder),
+sizeof_generator(context,module,ir_builder),
 int_ir_generator(context,module,ir_builder),
 float_ir_generator(context,module,ir_builder),
 string_generator(context,module,ir_builder),
@@ -41,7 +43,8 @@ class_generator(context,module,ir_builder),
 call_constructor_generator(context,module,ir_builder),
 if_generator(context,module,ir_builder),
 for_generator(context,module,ir_builder),
-access_generator(context,module,ir_builder)
+access_generator(context,module,ir_builder),
+list_generator(context,module,ir_builder)
 {
 }
 
@@ -172,6 +175,11 @@ std::shared_ptr<ClassNode> ASTGenerator::add_class(std::string name,std::vector<
 
 std::unique_ptr<Node> ASTGenerator::create_call(std::string name,std::vector<std::shared_ptr<Node>> arguments)
 {
+    if (name == "sizeof")
+    {
+        auto sizeof_node = std::unique_ptr<SizeofNode>(new SizeofNode(sizeof_generator));
+        return std::move(sizeof_node);
+    }
     if (get_blawn_context().exist_builtin_function(name))
     {
         auto b_func = get_blawn_context().get_builtin_function(name);
@@ -314,4 +322,14 @@ std::shared_ptr<AccessNode> ASTGenerator::create_access(std::shared_ptr<Node> le
             function_collector
         ));
     return accessing;
+}
+
+std::shared_ptr<ListNode> ASTGenerator::create_list(std::vector<std::shared_ptr<Node>> elements)
+{
+    auto list_node = std::shared_ptr<ListNode>(
+        new ListNode(
+            list_generator,
+            elements
+        ));
+    return list_node;
 }

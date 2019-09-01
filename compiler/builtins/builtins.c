@@ -1,7 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <stdbool.h>
 
 #define i64 long long
  
@@ -39,26 +38,45 @@ void resize_list(List* self)
     void* ptr = realloc(self->elements, self->element_size*self->allocated_size);
     if ( ptr == NULL )
     {
-        puts("CRITICAL ERROR: failed to realloc at appending element to self");
+        puts("\x1b[31mCRITICAL ERROR:\x1b[39m failed to realloc at appending element to list");
         exit(1);
     }
     self->elements = ptr;
 }
 
-i64 append_to_list(List *self, void *element)
+void blawn_realloc(void* array,i64 element_size,i64 allocated_size)
+{
+    void* ptr = realloc(array, element_size * allocated_size);
+    if ( ptr == NULL )
+    {
+        puts("\x1b[31mCRITICAL ERROR:\x1b[39m failed to realloc at appending element to list");
+        exit(1);
+    }
+    array = ptr;
+}
+
+void append_to_list(List *self, void *element_)
 {
     if(self->size + 1>= self->allocated_size)
     {
         resize_list(self);
     }
-	
+	void* element = element_;
 	memcpy(
         self->elements + (self->size * self->element_size), 
-        element, 
+        &element, 
         self->element_size
         );
     self->size+=1;
-	return true;
+}
+
+void blawn_memcpy(void* array,i64 size,i64 element_size,void *element)
+{
+	memcpy(
+        array + (size * element_size), 
+        &element, 
+        element_size
+        );
 }
 
 void* get_element(List* self,i64 index)
@@ -112,12 +130,31 @@ void append_string(String* string,String* to_add)
     string->string = new_str;
 }
 
-int main()
-{
+int main_()
+{   
     String* s = string_constructor("aaaa",4);
+    String* ns = string_constructor("bbbb",4);
     List* l = list_constructor(sizeof(s));
+    for (int i=0;i < 10000000; i++)
+    {
+        append_to_list(l,s);
+    }
     append_to_list(l,s);
-    append_to_list(l,s);
-    printf("%s\n",((String*)get_element(l,1))->string);
-    printf("%s\n",(*((String*)get_element(l,1))).string);
+    
+    set_element(l,ns,10000000);
+    
+    printf("%s\n",(*(String**)get_element(l,10000000))->string);
+    printf("%s\n",((*(String**)get_element(l,1)))->string);
+
+    char cs = 'A';
+    char cns = 'X';
+    List* sl = list_constructor(sizeof(cs));
+    for (int i=0;i < 10000000; i++)
+    {
+        append_to_list(sl,cs);
+    }
+    set_element(sl,cns,11);
+    
+    putchar( *((char*)get_element(sl,11))  );
+    return 0;
 }

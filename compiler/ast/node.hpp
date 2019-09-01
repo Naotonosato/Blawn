@@ -48,6 +48,14 @@ public:
     virtual void initialize(){}
 };
 
+class SizeofNode:public Node
+{
+    public:
+    SizeofNode(
+        SizeofGenerator& ir_generator
+        ):Node(ir_generator){}
+};
+
 class IntegerNode:public Node
 {
     public:
@@ -359,7 +367,8 @@ class ListNode:public Node
     std::vector<std::shared_ptr<Node>> elements;
     public:
     ListNode(
-        ForIRGenerator& ir_generator,
+        ListIRGenerator& ir_generator,
         std::vector<std::shared_ptr<Node>> elements
-        ):Node(ir_generator){}
+        ):Node(ir_generator),elements(elements){}
+    std::vector<std::shared_ptr<Node>> get_elements(){return elements;}
 };

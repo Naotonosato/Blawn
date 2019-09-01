@@ -38,6 +38,8 @@ void initialize(llvm::LLVMContext &context,llvm::Module &module,llvm::IRBuilder<
     llvm::Function::Create(free_declaration_type,llvm::Function::ExternalLinkage,"free",&module);
     //create builtin string type
     builtins::create_string_type(context,module,ir_builder);
+    //create builtin list type
+    builtins::create_list_type(context,module,ir_builder);
     //load builtins
     //builtins::load_builtins(context,module);
     //create main function
@@ -47,6 +49,13 @@ void initialize(llvm::LLVMContext &context,llvm::Module &module,llvm::IRBuilder<
     auto block = llvm::BasicBlock::Create(context,"entry",function);
     ir_builder.SetInsertPoint(block);
 }
+
+llvm::Value* SizeofGenerator::generate(Node& node)
+{
+    auto type = node.generate()->getType();
+    return ir_builder.getInt64(utils::get_sizeof(type,module));
+}
+
 
 IRGenerator::IRGenerator(
         llvm::LLVMContext &context,
@@ -558,13 +567,12 @@ llvm::Value* IfIRGenerator::generate(Node& node_)
 
 llvm::Value* ForIRGenerator::generate(Node& node_)
 {
-    BlawnLogger logger;
     auto& node = *static_cast<ForNode*>(&node_);
     auto to_insert = ir_builder.GetInsertBlock()->getParent();
     auto body_block = llvm::BasicBlock::Create(context,"for",to_insert);
     auto merge_block = llvm::BasicBlock::Create(context,"merge of for");
     
-    auto left = node.get_left_expression()->generate();
+    node.get_left_expression()->generate();//left
     ir_builder.CreateBr(body_block);
     ir_builder.SetInsertPoint(body_block);
     for (auto& line:node.get_body())
@@ -573,7 +581,7 @@ llvm::Value* ForIRGenerator::generate(Node& node_)
         line->generate();
     }
     auto cond = node.get_center_expression()->generate();
-    auto proc = node.get_right_expression()->generate();
+    node.get_right_expression()->generate();//proc
     body_block = ir_builder.GetInsertBlock();
     to_insert->getBasicBlockList().push_back(merge_block);
     ir_builder.CreateCondBr(cond,merge_block,body_block);
@@ -669,6 +677,43 @@ llvm::Value* AccessIRGenerator::generate(Node& node_)
         return 0;
     }
 }
+
+llvm::Value* ListIRGenerator::generate(Node& node_)
+{
+    auto& node = *static_cast<ListNode*>(&node_);
+    std::vector<llvm::Value*> elements;
+    llvm::Type* previous_element_type;
+    
+    for (auto&n:node.get_elements())
+    {
+        auto v = n->generate();
+        if (previous_element_type != v->getType())
+        {
+            //err proc;
+        }
+        previous_element_type = v->getType();
+        elements.push_back(v);
+    }
+    auto element_size = ir_builder.getInt64(utils::get_sizeof(elements[0]->getType(),module));
+    std::vector<llvm::Value*> args(1,element_size);
+    auto list = ir_builder.CreateCall(module.getFunction("list_constructor"),args);
+
+    for (auto& e:elements)
+    {
+        auto append = get_blawn_context().get_builtin_method
+        (
+            "struct.List",
+            "append"
+        );
+        auto casted = ir_builder.CreateBitCast(e,ir_builder.getInt8PtrTy());
+        std::vector<llvm::Value*> args;
+        args.push_back(list);
+        args.push_back(casted);
+        ir_builder.CreateCall(append,args);
+    }
+    return list;
+}
+
 
 /*
 llvm::Value* access(llvm::Value* left,llvm::StructType* struct_type,std::string right_name,llvm::IRBuilder<> ir_builder)
