@@ -50,10 +50,14 @@ public:
 
 class SizeofNode:public Node
 {
+    private:
+    std::shared_ptr<Node> value;
     public:
     SizeofNode(
-        SizeofGenerator& ir_generator
-        ):Node(ir_generator){}
+        SizeofGenerator& ir_generator,
+        std::shared_ptr<Node> value
+        ):Node(ir_generator),value(value){}
+    std::shared_ptr<Node> get_value(){return value;}
 };
 
 class IntegerNode:public Node
@@ -365,10 +369,16 @@ class ListNode:public Node
 {
     private:
     std::vector<std::shared_ptr<Node>> elements;
+    bool _is_null;
     public:
     ListNode(
         ListIRGenerator& ir_generator,
         std::vector<std::shared_ptr<Node>> elements
         ):Node(ir_generator),elements(elements){}
+    ListNode(
+        ListIRGenerator& ir_generator,
+        bool is_null
+        ):Node(ir_generator),_is_null(is_null){}
     std::vector<std::shared_ptr<Node>> get_elements(){return elements;}
+    bool is_null(){return _is_null;}
 };

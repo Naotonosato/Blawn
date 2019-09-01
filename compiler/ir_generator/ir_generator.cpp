@@ -38,9 +38,8 @@ void initialize(llvm::LLVMContext &context,llvm::Module &module,llvm::IRBuilder<
     llvm::Function::Create(free_declaration_type,llvm::Function::ExternalLinkage,"free",&module);
     //create builtin string type
     builtins::create_string_type(context,module,ir_builder);
-    //create builtin list type
-    builtins::create_list_type(context,module,ir_builder);
     //load builtins
+    builtins::load_builtin_functions(module,ir_builder);
     //builtins::load_builtins(context,module);
     //create main function
     std::vector<llvm::Type*> main_types;
@@ -50,9 +49,10 @@ void initialize(llvm::LLVMContext &context,llvm::Module &module,llvm::IRBuilder<
     ir_builder.SetInsertPoint(block);
 }
 
-llvm::Value* SizeofGenerator::generate(Node& node)
+llvm::Value* SizeofGenerator::generate(Node& node_)
 {
-    auto type = node.generate()->getType();
+    auto& node = *static_cast<SizeofNode*>(&node_);
+    auto type = node.get_value()->generate()->getType();
     return ir_builder.getInt64(utils::get_sizeof(type,module));
 }
 
@@ -139,8 +139,15 @@ llvm::Value* AssigmentIRGenerator::generate(Node& node_)
     {
         to_store = ir_builder.CreateFPToSI(right_value,ir_builder.getInt64Ty());
     }
+    if (right_value->getType() == ir_builder.getInt8PtrTy())
+    {
+        //auto to_store_ = ir_builder.CreateLoad(to_store);
+        to_store = ir_builder.CreateBitCast(right_value,pointer->getType()->getPointerElementType());     
+    }
     if (pointer->getType()->getPointerElementType() != to_store->getType())
     {
+        right_value->print(llvm::outs());
+        std::cout << std::endl;
         BlawnLogger logger;
         logger.different_type_error(
             utils::to_string(pointer->getType()->getPointerElementType()),
@@ -213,6 +220,26 @@ llvm::Value* BinaryExpressionIRGenerator::generate(Node& node_)
         if (left->getType() != right->getType()) return ir_builder.getInt1(true);
         else return ir_builder.CreateICmpNE(left,right);
     }
+    if (operator_kind == ">=")
+    {
+        if (both_int){return ir_builder.CreateICmpSGE(left,right);}
+        else {return ir_builder.CreateFCmpOGE(left,right);}
+    }
+    if (operator_kind == "<=")
+    {
+        if (both_int){return ir_builder.CreateICmpSLE(left,right);}
+        else {return ir_builder.CreateFCmpOLE(left,right);}
+    }
+    if (operator_kind == ">")
+    {
+        if (both_int){return ir_builder.CreateICmpSGT(left,right);}
+        else {return ir_builder.CreateFCmpOGT(left,right);}
+    }
+    if (operator_kind == "<")
+    {
+        if (both_int){return ir_builder.CreateICmpSLT(left,right);}
+        else {return ir_builder.CreateFCmpOLT(left,right);}
+    }
     if (operator_kind == "and")
     {
         if ( (false_values.find(left) == false_values.end()) && (false_values.find(right) == false_values.end()) )
@@ -262,9 +289,18 @@ llvm::Value* CallFunctionIRGenerator::generate(Node &node_)
             }
         }
         std::vector<llvm::Value*> args;
-        for (auto &arg: node.passed_arguments)
+        int count = 0;
+        for (auto &b_arg:node.builtin_function->args())
         {
-            args.push_back(arg->generate());
+            auto& arg = node.passed_arguments[count];
+            auto value = arg->generate();
+            if  (b_arg.getType() == ir_builder.getInt8PtrTy())
+            {
+                auto casted = ir_builder.CreateBitCast(value,ir_builder.getInt8PtrTy());
+                args.push_back(casted);
+            }
+            else {args.push_back(value);}
+            count += 1;
         }
         return ir_builder.CreateCall(node.builtin_function,args);
     }
@@ -581,10 +617,11 @@ llvm::Value* ForIRGenerator::generate(Node& node_)
         line->generate();
     }
     auto cond = node.get_center_expression()->generate();
+    auto is_break = ir_builder.CreateICmpEQ(ir_builder.getInt1(false),cond);
     node.get_right_expression()->generate();//proc
     body_block = ir_builder.GetInsertBlock();
     to_insert->getBasicBlockList().push_back(merge_block);
-    ir_builder.CreateCondBr(cond,merge_block,body_block);
+    ir_builder.CreateCondBr(is_break,merge_block,body_block);
     ir_builder.SetInsertPoint(merge_block);
 
     return 0;
@@ -607,6 +644,7 @@ llvm::Value* AccessIRGenerator::generate(Node& node_)
 
     auto left = node.get_left_node()->generate();//node.get_left_value();//node.get_left_node()->generate();
     auto left_type = left->getType();
+    
     if (!left_type->isPointerTy())
     {
         logger.invalid_dot_error();
@@ -627,6 +665,14 @@ llvm::Value* AccessIRGenerator::generate(Node& node_)
         node.set_pointer(pointer);
         auto value = ir_builder.CreateLoad(pointer);
         node.set_generated(value);
+        /*if (value->getType()->isPointerTy())
+        {
+            node.set_pointer(value);
+            value =  ir_builder.CreateLoad(value);
+            node.set_generated(value);
+        }*/
+        
+        //std::cout<<type_name<<"::"<<node.get_right_name()<<std::flush;value->print(llvm::outs());std::cout<<std::endl;
         return value;
     }
     else 
@@ -681,6 +727,10 @@ llvm::Value* AccessIRGenerator::generate(Node& node_)
 llvm::Value* ListIRGenerator::generate(Node& node_)
 {
     auto& node = *static_cast<ListNode*>(&node_);
+    if (node.is_null())
+    {
+        return llvm::ConstantPointerNull::get(ir_builder.getInt8PtrTy());
+    }
     std::vector<llvm::Value*> elements;
     llvm::Type* previous_element_type;
     
@@ -694,24 +744,12 @@ llvm::Value* ListIRGenerator::generate(Node& node_)
         previous_element_type = v->getType();
         elements.push_back(v);
     }
-    auto element_size = ir_builder.getInt64(utils::get_sizeof(elements[0]->getType(),module));
-    std::vector<llvm::Value*> args(1,element_size);
-    auto list = ir_builder.CreateCall(module.getFunction("list_constructor"),args);
 
-    for (auto& e:elements)
-    {
-        auto append = get_blawn_context().get_builtin_method
-        (
-            "struct.List",
-            "append"
-        );
-        auto casted = ir_builder.CreateBitCast(e,ir_builder.getInt8PtrTy());
-        std::vector<llvm::Value*> args;
-        args.push_back(list);
-        args.push_back(casted);
-        ir_builder.CreateCall(append,args);
-    }
-    return list;
+    auto array_type = llvm::ArrayType::get(previous_element_type,0);
+    auto array = ir_builder.CreateAlloca(array_type);
+    auto first_element_ptr = ir_builder.CreateBitCast(array,previous_element_type->getPointerTo());
+    
+    return first_element_ptr;
 }
 
 

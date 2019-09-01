@@ -57,13 +57,14 @@
 %token <std::string> C_FUNCTION
 %token <std::string> MEMBER_IDENTIFIER
 %token <std::string> IDENTIFIER
+
+%left OP_EQUAL OP_NOT_EQUAL OP_MORE_EQUAL OP_LESS_EQUAL OP_MORE OP_LESS
+%left OP_AND OP_OR
+
 %right EQUAL
 %left PLUS MINUS
 %left ASTERISK SLASH
 %left  <std::string> DOT_IDENTIFIER
-
-%left OP_EQUAL OP_NOT_EQUAL
-%left OP_AND OP_OR
 
 %token  USE
         COLON
@@ -103,7 +104,7 @@
 %type <std::vector<std::shared_ptr<Node>>> expressions
 %type <std::shared_ptr<Node>> expression
 %type <std::shared_ptr<Node>> list
-%type <std::shared_ptr<Node>> index
+
 %type <std::shared_ptr<AccessNode>> access
 %type <std::shared_ptr<Node>> call
 %type <std::shared_ptr<Node>> monomial
@@ -328,6 +329,22 @@ expression:
     {
         $$ = driver.ast_generator->attach_operator(std::move($1),std::move($3),"or");
     }
+    |expression OP_MORE_EQUAL expression
+    {
+        $$ = driver.ast_generator->attach_operator(std::move($1),std::move($3),">=");
+    }
+    |expression OP_LESS_EQUAL expression
+    {
+        $$ = driver.ast_generator->attach_operator(std::move($1),std::move($3),"<=");
+    }
+    |expression OP_MORE expression
+    {
+        $$ = driver.ast_generator->attach_operator(std::move($1),std::move($3),">");
+    }
+    |expression OP_LESS expression
+    {
+        $$ = driver.ast_generator->attach_operator(std::move($1),std::move($3),"<");
+    }
     |expression OP_EQUAL expression
     {
         $$ = driver.ast_generator->attach_operator(std::move($1),std::move($3),"==");
@@ -348,6 +365,10 @@ list:
     LEFT_CURLY_BRACE expressions RIGHT_CURLY_BRACE
     {
         $$ = driver.ast_generator->create_list(std::move($2));
+    }
+    |LEFT_CURLY_BRACE RIGHT_CURLY_BRACE
+    {
+        $$ = driver.ast_generator->create_list();
     };
 
 access:

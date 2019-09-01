@@ -175,9 +175,9 @@ std::shared_ptr<ClassNode> ASTGenerator::add_class(std::string name,std::vector<
 
 std::unique_ptr<Node> ASTGenerator::create_call(std::string name,std::vector<std::shared_ptr<Node>> arguments)
 {
-    if (name == "sizeof")
+    if (name == "sizeof" && arguments.size() == 1)
     {
-        auto sizeof_node = std::unique_ptr<SizeofNode>(new SizeofNode(sizeof_generator));
+        auto sizeof_node = std::unique_ptr<SizeofNode>(new SizeofNode(sizeof_generator,arguments[0]));
         return std::move(sizeof_node);
     }
     if (get_blawn_context().exist_builtin_function(name))
@@ -330,6 +330,15 @@ std::shared_ptr<ListNode> ASTGenerator::create_list(std::vector<std::shared_ptr<
         new ListNode(
             list_generator,
             elements
+        ));
+    return list_node;
+}
+std::shared_ptr<ListNode> ASTGenerator::create_list()
+{
+    auto list_node = std::shared_ptr<ListNode>(
+        new ListNode(
+            list_generator,
+            true
         ));
     return list_node;
 }

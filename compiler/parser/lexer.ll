@@ -29,6 +29,10 @@ ASTERISK    \*
 SLASH       \/
 OP_EQUAL    ==
 OP_NOT_EQUAL !=
+OP_MORE_EQUAL >=
+OP_LESS_EQUAL <=
+OP_MORE     >
+OP_LESS     <
 OP_AND      and
 OP_OR       or
 COLON       \:
@@ -81,18 +85,6 @@ EOL                 \n
 {USE} {
     return Blawn::Parser::token::USE;
 }
-{OP_EQUAL} {
-    return Blawn::Parser::token::OP_EQUAL;
-}
-{OP_NOT_EQUAL} {
-    return Blawn::Parser::token::OP_NOT_EQUAL;
-}
-{OP_AND} {
-    return Blawn::Parser::token::OP_AND;
-}
-{OP_OR} {
-    return Blawn::Parser::token::OP_OR;
-}
 {EQUAL} {
     return Blawn::Parser::token::EQUAL;
 }
@@ -108,6 +100,31 @@ EOL                 \n
 {SLASH} {
     return Blawn::Parser::token::SLASH;
 }
+{OP_EQUAL} {
+    return Blawn::Parser::token::OP_EQUAL;
+}
+{OP_NOT_EQUAL} {
+    return Blawn::Parser::token::OP_NOT_EQUAL;
+}
+{OP_MORE_EQUAL} {
+    return Blawn::Parser::token::OP_MORE_EQUAL;
+}
+{OP_LESS_EQUAL} {
+    return Blawn::Parser::token::OP_LESS_EQUAL;
+}
+{OP_MORE} {
+    return Blawn::Parser::token::OP_MORE;
+}
+{OP_LESS} {
+    return Blawn::Parser::token::OP_LESS;
+}
+{OP_AND} {
+    return Blawn::Parser::token::OP_AND;
+}
+{OP_OR} {
+    return Blawn::Parser::token::OP_OR;
+}
+
 {COLON} {
     return Blawn::Parser::token::COLON;
 }

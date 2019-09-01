@@ -385,35 +385,39 @@ namespace Blawn {
         C_FUNCTION = 262,
         MEMBER_IDENTIFIER = 263,
         IDENTIFIER = 264,
-        EQUAL = 265,
-        PLUS = 266,
-        MINUS = 267,
-        ASTERISK = 268,
-        SLASH = 269,
-        DOT_IDENTIFIER = 270,
-        OP_EQUAL = 271,
-        OP_NOT_EQUAL = 272,
-        OP_AND = 273,
-        OP_OR = 274,
-        USE = 275,
-        COLON = 276,
-        SEMICOLON = 277,
-        COMMA = 278,
-        LEFT_PARENTHESIS = 279,
-        RIGHT_PARENTHESIS = 280,
-        LEFT_CURLY_BRACE = 281,
-        RIGHT_CURLY_BRACE = 282,
-        LEFT_BRACKET = 283,
-        RIGHT_BRACKET = 284,
-        IF = 285,
-        ELSE = 286,
-        FOR = 287,
-        IN = 288,
-        WHILE = 289,
-        EOL = 290,
-        INT_LITERAL = 291,
-        FLOAT_LITERAL = 292,
-        STRING_LITERAL = 293
+        OP_EQUAL = 265,
+        OP_NOT_EQUAL = 266,
+        OP_MORE_EQUAL = 267,
+        OP_LESS_EQUAL = 268,
+        OP_MORE = 269,
+        OP_LESS = 270,
+        OP_AND = 271,
+        OP_OR = 272,
+        EQUAL = 273,
+        PLUS = 274,
+        MINUS = 275,
+        ASTERISK = 276,
+        SLASH = 277,
+        DOT_IDENTIFIER = 278,
+        USE = 279,
+        COLON = 280,
+        SEMICOLON = 281,
+        COMMA = 282,
+        LEFT_PARENTHESIS = 283,
+        RIGHT_PARENTHESIS = 284,
+        LEFT_CURLY_BRACE = 285,
+        RIGHT_CURLY_BRACE = 286,
+        LEFT_BRACKET = 287,
+        RIGHT_BRACKET = 288,
+        IF = 289,
+        ELSE = 290,
+        FOR = 291,
+        IN = 292,
+        WHILE = 293,
+        EOL = 294,
+        INT_LITERAL = 295,
+        FLOAT_LITERAL = 296,
+        STRING_LITERAL = 297
       };
     };
 
@@ -570,6 +574,38 @@ namespace Blawn {
 
     static inline
     symbol_type
+    make_OP_EQUAL (const location_type& l);
+
+    static inline
+    symbol_type
+    make_OP_NOT_EQUAL (const location_type& l);
+
+    static inline
+    symbol_type
+    make_OP_MORE_EQUAL (const location_type& l);
+
+    static inline
+    symbol_type
+    make_OP_LESS_EQUAL (const location_type& l);
+
+    static inline
+    symbol_type
+    make_OP_MORE (const location_type& l);
+
+    static inline
+    symbol_type
+    make_OP_LESS (const location_type& l);
+
+    static inline
+    symbol_type
+    make_OP_AND (const location_type& l);
+
+    static inline
+    symbol_type
+    make_OP_OR (const location_type& l);
+
+    static inline
+    symbol_type
     make_EQUAL (const location_type& l);
 
     static inline
@@ -591,22 +627,6 @@ namespace Blawn {
     static inline
     symbol_type
     make_DOT_IDENTIFIER (const std::string& v, const location_type& l);
-
-    static inline
-    symbol_type
-    make_OP_EQUAL (const location_type& l);
-
-    static inline
-    symbol_type
-    make_OP_NOT_EQUAL (const location_type& l);
-
-    static inline
-    symbol_type
-    make_OP_AND (const location_type& l);
-
-    static inline
-    symbol_type
-    make_OP_OR (const location_type& l);
 
     static inline
     symbol_type
@@ -769,7 +789,7 @@ namespace Blawn {
   // number is the opposite.  If YYTABLE_NINF, syntax error.
   static const unsigned char yytable_[];
 
-  static const signed char yycheck_[];
+  static const short int yycheck_[];
 
   // YYSTOS[STATE-NUM] -- The (internal number of the) accessing
   // symbol of state STATE-NUM.
@@ -886,12 +906,12 @@ namespace Blawn {
     enum
     {
       yyeof_ = 0,
-      yylast_ = 248,     ///< Last index in yytable_.
+      yylast_ = 293,     ///< Last index in yytable_.
       yynnts_ = 27,  ///< Number of nonterminal symbols.
-      yyfinal_ = 35, ///< Termination state number.
+      yyfinal_ = 36, ///< Termination state number.
       yyterror_ = 1,
       yyerrcode_ = 256,
-      yyntokens_ = 39  ///< Number of tokens.
+      yyntokens_ = 43  ///< Number of tokens.
     };
 
 
@@ -903,7 +923,7 @@ namespace Blawn {
 
 #line 5 "./parser.yy" // lalr1.cc:377
 } // Blawn
-#line 907 "parser.tab.hh" // lalr1.cc:377
+#line 927 "parser.tab.hh" // lalr1.cc:377
 
 
 

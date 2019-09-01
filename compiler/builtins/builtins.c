@@ -32,19 +32,7 @@ List* list_constructor(i64 element_size)
     return self;
 }
 
-void resize_list(List* self)
-{
-    self->allocated_size*=2;
-    void* ptr = realloc(self->elements, self->element_size*self->allocated_size);
-    if ( ptr == NULL )
-    {
-        puts("\x1b[31mCRITICAL ERROR:\x1b[39m failed to realloc at appending element to list");
-        exit(1);
-    }
-    self->elements = ptr;
-}
-
-void blawn_realloc(void* array,i64 element_size,i64 allocated_size)
+void* blawn_realloc(void* array,i64 element_size,i64 allocated_size)
 {
     void* ptr = realloc(array, element_size * allocated_size);
     if ( ptr == NULL )
@@ -52,23 +40,9 @@ void blawn_realloc(void* array,i64 element_size,i64 allocated_size)
         puts("\x1b[31mCRITICAL ERROR:\x1b[39m failed to realloc at appending element to list");
         exit(1);
     }
-    array = ptr;
+    return ptr;
 }
 
-void append_to_list(List *self, void *element_)
-{
-    if(self->size + 1>= self->allocated_size)
-    {
-        resize_list(self);
-    }
-	void* element = element_;
-	memcpy(
-        self->elements + (self->size * self->element_size), 
-        &element, 
-        self->element_size
-        );
-    self->size+=1;
-}
 
 void blawn_memcpy(void* array,i64 size,i64 element_size,void *element)
 {
@@ -132,7 +106,8 @@ void append_string(String* string,String* to_add)
 
 int main_()
 {   
-    String* s = string_constructor("aaaa",4);
+    void* a = NULL;
+    /*String* s = string_constructor("aaaa",4);
     String* ns = string_constructor("bbbb",4);
     List* l = list_constructor(sizeof(s));
     for (int i=0;i < 10000000; i++)
@@ -157,4 +132,5 @@ int main_()
     
     putchar( *((char*)get_element(sl,11))  );
     return 0;
+    */
 }
