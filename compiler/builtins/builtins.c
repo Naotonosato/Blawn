@@ -70,8 +70,7 @@ void blawn_set_element(void* array,i64 size,i64 element_size,void* element,i64 i
 {
     if (0 <= index && index < size)
     {
-        * ((char**)((char*)array + element_size*index)) = (char*)element;
-        * //* ((char**)array + element_size*index) = (char*)element;//* ((char*)array + element_size*index) = element;
+        * ((char**)((char*)array + element_size*index)) = (char*)element;//* ((char**)array + element_size*index) = (char*)element;//* ((char*)array + element_size*index) = element;
     }
     else
     {
