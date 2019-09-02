@@ -62,6 +62,8 @@ public:
     std::unique_ptr<BinaryExpressionNode> attach_operator(std::shared_ptr<Node> node,std::shared_ptr<Node> other,const std::string operator_type);
     std::shared_ptr<Node> assign(std::string name,std::shared_ptr<Node> node);
     std::shared_ptr<Node> assign(std::shared_ptr<AccessNode> left,std::shared_ptr<Node> right);
+    std::shared_ptr<Node> assign_typeid(std::string name,std::shared_ptr<Node> type_id);
+    std::shared_ptr<Node> get_typeid(std::string name);
     std::shared_ptr<Node> get_named_value(std::string name);
     void add_argument(std::string);
     std::unique_ptr<IntegerNode> create_integer(int num);

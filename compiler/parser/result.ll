@@ -5,15 +5,13 @@ target triple = "x86_64-pc-linux-gnu"
 
 %struct.String = type { i8*, i64 }
 %Person = type { %struct.String* }
-%Type = type { i64, i64 }
-%List = type { i64, i64, i64, i64, i8* }
+%List = type { i64, i64, %Person*, i64, i64, i8* }
 %struct.List = type { i64, i64, i64, i8* }
 
 @0 = private unnamed_addr constant [5 x i8] c"John\00"
-@1 = private unnamed_addr constant [6 x i8] c"old: \00"
-@2 = private unnamed_addr constant [5 x i8] c"new:\00"
-@3 = private unnamed_addr constant [44 x i8] c"Error: append invalid type element to list.\00"
-@4 = private unnamed_addr constant [4 x i8] c"err\00"
+@1 = private unnamed_addr constant [4 x i8] c"Tom\00"
+@2 = private unnamed_addr constant [44 x i8] c"Error: append invalid type element to list.\00"
+@3 = private unnamed_addr constant [4 x i8] c"err\00"
 @.str = private unnamed_addr constant [73 x i8] c"\1B[31mCRITICAL ERROR:\1B[39m failed to realloc at appending element to list\00", align 1
 @.str.1 = private unnamed_addr constant [31 x i8] c"Error: list index out of range\00", align 1
 @.str.2 = private unnamed_addr constant [4 x i8] c"%s\0A\00", align 1
@@ -31,53 +29,59 @@ entry:
   %p = alloca %Person*
   store %Person* %1, %Person** %p
   %2 = load %Person*, %Person** %p
-  %3 = load %Person*, %Person** %p
-  %4 = call %Type* @Type.4(%Person* %3)
-  %5 = call %List* @List.6(%Type* %4)
+  %3 = call %struct.String* @string_constructor(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @1, i32 0, i32 0), i64 3)
+  %4 = call %Person* @Person.2(%struct.String* %3)
+  %p2 = alloca %Person*
+  store %Person* %4, %Person** %p2
+  %5 = load %Person*, %Person** %p2
+  %6 = load %Person*, %Person** %p
+  %7 = call %List* @List.4(%Person* %6)
   %list = alloca %List*
-  store %List* %5, %List** %list
-  %6 = load %List*, %List** %list
+  store %List* %7, %List** %list
+  %8 = load %List*, %List** %list
   %i = alloca i64
   store i64 0, i64* %i
-  %7 = load i64, i64* %i
-  %8 = load i64, i64* %i
-  %9 = add i64 %8, 1
-  store i64 %9, i64* %i
+  %9 = load i64, i64* %i
   %10 = load i64, i64* %i
+  %11 = add i64 %10, 1
+  store i64 %11, i64* %i
+  %12 = load i64, i64* %i
   br label %for
 
 for:                                              ; preds = %for, %entry
-  %11 = load %List*, %List** %list
-  %12 = load %List*, %List** %list
-  %13 = load %Person*, %Person** %p
-  call void @append.8(%List* %12, %Person* %13)
-  %14 = load i64, i64* %i
-  %15 = icmp slt i64 %14, 100
-  %16 = icmp eq i1 false, %15
-  %17 = load i64, i64* %i
-  %18 = load i64, i64* %i
-  %19 = add i64 %18, 1
-  store i64 %19, i64* %i
+  %13 = load %List*, %List** %list
+  %14 = load %List*, %List** %list
+  %15 = load %Person*, %Person** %p
+  call void @append.6(%List* %14, %Person* %15)
+  %16 = load i64, i64* %i
+  %17 = icmp slt i64 %16, 100
+  %18 = icmp eq i1 false, %17
+  %19 = load i64, i64* %i
   %20 = load i64, i64* %i
-  br i1 %16, label %"merge of for", label %for
+  %21 = add i64 %20, 1
+  store i64 %21, i64* %i
+  %22 = load i64, i64* %i
+  br i1 %18, label %"merge of for", label %for
 
 "merge of for":                                   ; preds = %for
-  %21 = load %Person*, %Person** %p
-  %22 = load %List*, %List** %list
   %23 = load %List*, %List** %list
-  %24 = call i8* @get.9(%List* %23, i64 0)
-  %25 = bitcast i8* %24 to %Person*
-  %d = alloca %Person*
-  store %Person* %25, %Person** %d
-  %26 = load %Person*, %Person** %d
-  %27 = load %Person*, %Person** %d
-  %28 = getelementptr inbounds %Person, %Person* %27, i32 0, i32 0
-  %29 = load %struct.String*, %struct.String** %28
-  call void @print(%struct.String* %29)
+  %24 = load %List*, %List** %list
+  %25 = load %Person*, %Person** %p2
+  call void @set.7(%List* %24, %Person* %25, i64 20)
+  %26 = load %List*, %List** %list
+  %27 = load %List*, %List** %list
+  %28 = call %Person* @get.8(%List* %27, i64 20)
+  %29 = getelementptr inbounds %Person, %Person* %28, i32 0, i32 0
+  %30 = load %struct.String*, %struct.String** %29
+  %d = alloca %struct.String*
+  store %struct.String* %30, %struct.String** %d
+  %31 = load %struct.String*, %struct.String** %d
+  %32 = load %struct.String*, %struct.String** %d
+  call void @print(%struct.String* %32)
   ret i8 0
 }
 
-declare void @Type()
+declare void @type()
 
 declare void @List()
 
@@ -104,31 +108,7 @@ entry:
   ret void
 }
 
-define %Type* @Type.4(%Person* %value) {
-entry:
-  %"@size" = alloca i64
-  store i64 8, i64* %"@size"
-  %0 = load i64, i64* %"@size"
-  %"@id" = alloca i64
-  store i64 1, i64* %"@id"
-  %1 = load i64, i64* %"@id"
-  %2 = call i64* @malloc(i64 16)
-  %3 = bitcast i64* %2 to %Type*
-  %4 = getelementptr inbounds %Type, %Type* %3, i32 0, i32 0
-  store i64 %0, i64* %4
-  %5 = getelementptr inbounds %Type, %Type* %3, i32 0, i32 1
-  store i64 %1, i64* %5
-  ret %Type* %3
-}
-
-define void @destructor_of_Type(%Type*) {
-entry:
-  %1 = bitcast %Type* %0 to i64*
-  call void @free(i64* %1)
-  ret void
-}
-
-define %List* @List.6(%Type* %element_type) {
+define %List* @List.4(%Person* %element) {
 entry:
   %"@size" = alloca i64
   store i64 0, i64* %"@size"
@@ -136,32 +116,33 @@ entry:
   %"@allocated_size" = alloca i64
   store i64 1, i64* %"@allocated_size"
   %1 = load i64, i64* %"@allocated_size"
-  %2 = getelementptr inbounds %Type, %Type* %element_type, i32 0, i32 0
-  %3 = load i64, i64* %2
+  %"@_element" = alloca %Person*
+  store %Person* %element, %Person** %"@_element"
+  %2 = load %Person*, %Person** %"@_element"
   %"@element_size" = alloca i64
-  store i64 %3, i64* %"@element_size"
-  %4 = load i64, i64* %"@element_size"
-  %5 = getelementptr inbounds %Type, %Type* %element_type, i32 0, i32 1
-  %6 = load i64, i64* %5
+  store i64 8, i64* %"@element_size"
+  %3 = load i64, i64* %"@element_size"
   %"@element_typeid" = alloca i64
-  store i64 %6, i64* %"@element_typeid"
-  %7 = load i64, i64* %"@element_typeid"
+  store i64 1, i64* %"@element_typeid"
+  %4 = load i64, i64* %"@element_typeid"
   %"@array" = alloca i8*
   store i8* null, i8** %"@array"
-  %8 = load i8*, i8** %"@array"
-  %9 = call i64* @malloc(i64 40)
-  %10 = bitcast i64* %9 to %List*
-  %11 = getelementptr inbounds %List, %List* %10, i32 0, i32 0
-  store i64 %0, i64* %11
-  %12 = getelementptr inbounds %List, %List* %10, i32 0, i32 1
-  store i64 %1, i64* %12
-  %13 = getelementptr inbounds %List, %List* %10, i32 0, i32 2
-  store i64 %4, i64* %13
-  %14 = getelementptr inbounds %List, %List* %10, i32 0, i32 3
-  store i64 %7, i64* %14
-  %15 = getelementptr inbounds %List, %List* %10, i32 0, i32 4
-  store i8* %8, i8** %15
-  ret %List* %10
+  %5 = load i8*, i8** %"@array"
+  %6 = call i64* @malloc(i64 48)
+  %7 = bitcast i64* %6 to %List*
+  %8 = getelementptr inbounds %List, %List* %7, i32 0, i32 0
+  store i64 %0, i64* %8
+  %9 = getelementptr inbounds %List, %List* %7, i32 0, i32 1
+  store i64 %1, i64* %9
+  %10 = getelementptr inbounds %List, %List* %7, i32 0, i32 2
+  store %Person* %2, %Person** %10
+  %11 = getelementptr inbounds %List, %List* %7, i32 0, i32 3
+  store i64 %3, i64* %11
+  %12 = getelementptr inbounds %List, %List* %7, i32 0, i32 4
+  store i64 %4, i64* %12
+  %13 = getelementptr inbounds %List, %List* %7, i32 0, i32 5
+  store i8* %5, i8** %13
+  ret %List* %7
 }
 
 define void @destructor_of_List(%List*) {
@@ -171,7 +152,7 @@ entry:
   ret void
 }
 
-define void @resize.7(%List* %self) {
+define void @resize.5(%List* %self) {
 entry:
   %0 = getelementptr inbounds %List, %List* %self, i32 0, i32 1
   %1 = load i64, i64* %0
@@ -180,11 +161,11 @@ entry:
   %4 = mul i64 %3, 2
   store i64 %4, i64* %0
   %5 = load i64, i64* %0
-  %6 = getelementptr inbounds %List, %List* %self, i32 0, i32 4
+  %6 = getelementptr inbounds %List, %List* %self, i32 0, i32 5
   %7 = load i8*, i8** %6
-  %8 = getelementptr inbounds %List, %List* %self, i32 0, i32 4
+  %8 = getelementptr inbounds %List, %List* %self, i32 0, i32 5
   %9 = load i8*, i8** %8
-  %10 = getelementptr inbounds %List, %List* %self, i32 0, i32 2
+  %10 = getelementptr inbounds %List, %List* %self, i32 0, i32 3
   %11 = load i64, i64* %10
   %12 = getelementptr inbounds %List, %List* %self, i32 0, i32 1
   %13 = load i64, i64* %12
@@ -194,87 +175,15 @@ entry:
   ret void
 }
 
-define void @append.8(%List* %self, %Person* %new_element) {
+define void @append.6(%List* %self, %Person* %new_element) {
 entry:
-  %0 = getelementptr inbounds %List, %List* %self, i32 0, i32 3
+  %0 = getelementptr inbounds %List, %List* %self, i32 0, i32 4
   %1 = load i64, i64* %0
   %2 = icmp ne i64 1, %1
   br i1 %2, label %"then of if expr", label %"else of if_expr"
 
 "then of if expr":                                ; preds = %entry
-  %3 = call %struct.String* @string_constructor(i8* getelementptr inbounds ([6 x i8], [6 x i8]* @1, i32 0, i32 0), i64 5)
-  %old = alloca %struct.String*
-  store %struct.String* %3, %struct.String** %old
-  %4 = load %struct.String*, %struct.String** %old
-  %5 = load %struct.String*, %struct.String** %old
-  %6 = load %struct.String*, %struct.String** %old
-  %7 = getelementptr inbounds %List, %List* %self, i32 0, i32 3
-  %8 = load i64, i64* %7
-  %9 = call %struct.String* @int_to_str(i64 %8)
-  call void @append_string(%struct.String* %6, %struct.String* %9)
-  %10 = load %struct.String*, %struct.String** %old
-  call void @print(%struct.String* %10)
-  %11 = call %struct.String* @string_constructor(i8* getelementptr inbounds ([5 x i8], [5 x i8]* @2, i32 0, i32 0), i64 4)
-  %new = alloca %struct.String*
-  store %struct.String* %11, %struct.String** %new
-  %12 = load %struct.String*, %struct.String** %new
-  %13 = load %struct.String*, %struct.String** %new
-  %14 = load %struct.String*, %struct.String** %new
-  %15 = call %struct.String* @int_to_str(i64 1)
-  call void @append_string(%struct.String* %14, %struct.String* %15)
-  %16 = load %struct.String*, %struct.String** %new
-  call void @print(%struct.String* %16)
-  %17 = call %struct.String* @string_constructor(i8* getelementptr inbounds ([44 x i8], [44 x i8]* @3, i32 0, i32 0), i64 43)
-  call void @print(%struct.String* %17)
-  br label %"merge of if_expr"
-
-"else of if_expr":                                ; preds = %entry
-  br label %"merge of if_expr"
-
-"merge of if_expr":                               ; preds = %"else of if_expr", %"then of if expr"
-  %18 = getelementptr inbounds %List, %List* %self, i32 0, i32 0
-  %19 = load i64, i64* %18
-  %20 = add i64 %19, 1
-  %21 = getelementptr inbounds %List, %List* %self, i32 0, i32 1
-  %22 = load i64, i64* %21
-  %23 = icmp sge i64 %20, %22
-  br i1 %23, label %"then of if expr1", label %"else of if_expr2"
-
-"then of if expr1":                               ; preds = %"merge of if_expr"
-  call void @resize.7(%List* %self)
-  br label %"merge of if_expr3"
-
-"else of if_expr2":                               ; preds = %"merge of if_expr"
-  br label %"merge of if_expr3"
-
-"merge of if_expr3":                              ; preds = %"else of if_expr2", %"then of if expr1"
-  %24 = getelementptr inbounds %List, %List* %self, i32 0, i32 4
-  %25 = load i8*, i8** %24
-  %26 = getelementptr inbounds %List, %List* %self, i32 0, i32 0
-  %27 = load i64, i64* %26
-  %28 = getelementptr inbounds %List, %List* %self, i32 0, i32 2
-  %29 = load i64, i64* %28
-  %30 = bitcast %Person* %new_element to i8*
-  call void @blawn_memcpy(i8* %25, i64 %27, i64 %29, i8* %30)
-  %31 = getelementptr inbounds %List, %List* %self, i32 0, i32 0
-  %32 = load i64, i64* %31
-  %33 = getelementptr inbounds %List, %List* %self, i32 0, i32 0
-  %34 = load i64, i64* %33
-  %35 = add i64 %34, 1
-  store i64 %35, i64* %31
-  %36 = load i64, i64* %31
-  ret void
-}
-
-define i8* @get.9(%List* %self, i64 %index) {
-entry:
-  %0 = getelementptr inbounds %List, %List* %self, i32 0, i32 0
-  %1 = load i64, i64* %0
-  %2 = icmp eq i64 %1, 0
-  br i1 %2, label %"then of if expr", label %"else of if_expr"
-
-"then of if expr":                                ; preds = %entry
-  %3 = call %struct.String* @string_constructor(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @4, i32 0, i32 0), i64 3)
+  %3 = call %struct.String* @string_constructor(i8* getelementptr inbounds ([44 x i8], [44 x i8]* @2, i32 0, i32 0), i64 43)
   call void @print(%struct.String* %3)
   br label %"merge of if_expr"
 
@@ -282,18 +191,89 @@ entry:
   br label %"merge of if_expr"
 
 "merge of if_expr":                               ; preds = %"else of if_expr", %"then of if expr"
-  %4 = getelementptr inbounds %List, %List* %self, i32 0, i32 4
+  %4 = getelementptr inbounds %List, %List* %self, i32 0, i32 0
+  %5 = load i64, i64* %4
+  %6 = add i64 %5, 1
+  %7 = getelementptr inbounds %List, %List* %self, i32 0, i32 1
+  %8 = load i64, i64* %7
+  %9 = icmp sge i64 %6, %8
+  br i1 %9, label %"then of if expr1", label %"else of if_expr2"
+
+"then of if expr1":                               ; preds = %"merge of if_expr"
+  call void @resize.5(%List* %self)
+  br label %"merge of if_expr3"
+
+"else of if_expr2":                               ; preds = %"merge of if_expr"
+  br label %"merge of if_expr3"
+
+"merge of if_expr3":                              ; preds = %"else of if_expr2", %"then of if expr1"
+  %10 = getelementptr inbounds %List, %List* %self, i32 0, i32 5
+  %11 = load i8*, i8** %10
+  %12 = getelementptr inbounds %List, %List* %self, i32 0, i32 0
+  %13 = load i64, i64* %12
+  %14 = getelementptr inbounds %List, %List* %self, i32 0, i32 3
+  %15 = load i64, i64* %14
+  %16 = bitcast %Person* %new_element to i8*
+  call void @blawn_memcpy(i8* %11, i64 %13, i64 %15, i8* %16)
+  %17 = getelementptr inbounds %List, %List* %self, i32 0, i32 0
+  %18 = load i64, i64* %17
+  %19 = getelementptr inbounds %List, %List* %self, i32 0, i32 0
+  %20 = load i64, i64* %19
+  %21 = add i64 %20, 1
+  store i64 %21, i64* %17
+  %22 = load i64, i64* %17
+  ret void
+}
+
+define void @set.7(%List* %self, %Person* %value, i64 %index) {
+entry:
+  %0 = getelementptr inbounds %List, %List* %self, i32 0, i32 5
+  %1 = load i8*, i8** %0
+  %2 = getelementptr inbounds %List, %List* %self, i32 0, i32 0
+  %3 = load i64, i64* %2
+  %4 = getelementptr inbounds %List, %List* %self, i32 0, i32 3
+  %5 = load i64, i64* %4
+  %6 = bitcast %Person* %value to i8*
+  %7 = call i8* bitcast (void (i8*, i64, i64, i8*, i64)* @blawn_set_element to i8* (i8*, i64, i64, i8*, i64)*)(i8* %1, i64 %3, i64 %5, i8* %6, i64 %index)
+  ret void
+}
+
+define %Person* @get.8(%List* %self, i64 %index) {
+entry:
+  %0 = getelementptr inbounds %List, %List* %self, i32 0, i32 0
+  %1 = load i64, i64* %0
+  %2 = icmp eq i64 %1, 0
+  br i1 %2, label %"then of if expr", label %"else of if_expr"
+
+"then of if expr":                                ; preds = %entry
+  %3 = call %struct.String* @string_constructor(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @3, i32 0, i32 0), i64 3)
+  call void @print(%struct.String* %3)
+  br label %"merge of if_expr"
+
+"else of if_expr":                                ; preds = %entry
+  br label %"merge of if_expr"
+
+"merge of if_expr":                               ; preds = %"else of if_expr", %"then of if expr"
+  %4 = getelementptr inbounds %List, %List* %self, i32 0, i32 5
   %5 = load i8*, i8** %4
   %6 = getelementptr inbounds %List, %List* %self, i32 0, i32 0
   %7 = load i64, i64* %6
-  %8 = getelementptr inbounds %List, %List* %self, i32 0, i32 2
+  %8 = getelementptr inbounds %List, %List* %self, i32 0, i32 3
   %9 = load i64, i64* %8
   %10 = call i8* @blawn_index(i8* %5, i64 %7, i64 %9, i64 %index)
   %data = alloca i8*
   store i8* %10, i8** %data
   %11 = load i8*, i8** %data
-  %12 = load i8*, i8** %data
-  ret i8* %12
+  %12 = getelementptr inbounds %List, %List* %self, i32 0, i32 2
+  %13 = load %Person*, %Person** %12
+  %14 = load i8*, i8** %data
+  %15 = bitcast i8* %14 to %Person**
+  %16 = load %Person*, %Person** %15
+  %res = alloca %Person*
+  store %Person* %16, %Person** %res
+  %17 = load %Person*, %Person** %res
+  %18 = load %Person*, %Person** %res
+  ret %Person* %18
 }
 
 ; Function Attrs: noinline nounwind optnone uwtable
@@ -440,13 +420,13 @@ define void @blawn_set_element(i8*, i64, i64, i8*, i64) #0 {
 
 ; <label>:17:                                     ; preds = %13
   %18 = load i8*, i8** %9, align 8
-  %19 = ptrtoint i8* %18 to i8
-  %20 = load i8*, i8** %6, align 8
-  %21 = load i64, i64* %8, align 8
-  %22 = load i64, i64* %10, align 8
-  %23 = mul nsw i64 %21, %22
-  %24 = getelementptr inbounds i8, i8* %20, i64 %23
-  store i8 %19, i8* %24, align 1
+  %19 = load i8*, i8** %6, align 8
+  %20 = load i64, i64* %8, align 8
+  %21 = load i64, i64* %10, align 8
+  %22 = mul nsw i64 %20, %21
+  %23 = getelementptr inbounds i8, i8* %19, i64 %22
+  %24 = bitcast i8* %23 to i8**
+  store i8* %18, i8** %24, align 8
   br label %27
 
 ; <label>:25:                                     ; preds = %13, %5

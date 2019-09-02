@@ -39,7 +39,7 @@ void builtins::load_builtin_functions(llvm::Module& module,llvm::IRBuilder<>& ir
         "blawn_memcpy",
         &module
     );
-    get_blawn_context().add_builtin_function("blawn_memcpy",blawn_memcpy);
+    get_blawn_context().add_builtin_function("__blawn_memcpy__",blawn_memcpy);
 
     /*void* array,i64 element_size,i64 allocated_size*/
     std::vector<llvm::Type*> blawn_realloc_args;
@@ -57,7 +57,7 @@ void builtins::load_builtin_functions(llvm::Module& module,llvm::IRBuilder<>& ir
         "blawn_realloc",
         &module
     );
-    get_blawn_context().add_builtin_function("blawn_realloc",blawn_realloc);
+    get_blawn_context().add_builtin_function("__blawn_realloc__",blawn_realloc);
     //void* blawn_index(void* array,i64 size,i64 element_size,i64 index)
     std::vector<llvm::Type*> blawn_index_args;
     blawn_index_args.push_back(ir_builder.getInt8PtrTy());
@@ -75,12 +75,13 @@ void builtins::load_builtin_functions(llvm::Module& module,llvm::IRBuilder<>& ir
         "blawn_index",
         &module
     );
-    get_blawn_context().add_builtin_function("blawn_index",blawn_index);
+    get_blawn_context().add_builtin_function("__blawn_index__",blawn_index);
     //void blawn_set_element(void* array,i64 size,i64 element_size,void* element,i64 index)
     std::vector<llvm::Type*> blawn_set_element_args;
     blawn_set_element_args.push_back(ir_builder.getInt8PtrTy());
     blawn_set_element_args.push_back(ir_builder.getInt64Ty());
     blawn_set_element_args.push_back(ir_builder.getInt64Ty());
+    blawn_set_element_args.push_back(ir_builder.getInt8PtrTy());
     blawn_set_element_args.push_back(ir_builder.getInt64Ty());
     auto blawn_set_element_type = llvm::FunctionType::get(
         ir_builder.getInt8PtrTy(),
@@ -93,7 +94,7 @@ void builtins::load_builtin_functions(llvm::Module& module,llvm::IRBuilder<>& ir
         "blawn_set_element",
         &module
     );
-    get_blawn_context().add_builtin_function("blawn_set_element",blawn_set_element);
+    get_blawn_context().add_builtin_function("__blawn_set_element__",blawn_set_element);
 }
 
 void builtins::create_string_type(llvm::LLVMContext& context,llvm::Module& module,llvm::IRBuilder<>& ir_builder)

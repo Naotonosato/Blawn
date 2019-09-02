@@ -70,7 +70,8 @@ void blawn_set_element(void* array,i64 size,i64 element_size,void* element,i64 i
 {
     if (0 <= index && index < size)
     {
-        * ((char*)array + element_size*index) = element;
+        * ((char**)((char*)array + element_size*index)) = (char*)element;
+        * //* ((char**)array + element_size*index) = (char*)element;//* ((char*)array + element_size*index) = element;
     }
     else
     {
@@ -141,9 +142,9 @@ String* float_to_str(double n)
     return string_constructor(str,digit);
 }
 /*
-int main_()
+int main()
 {   
-    void* a = NULL;
+    void* a = NULL;*/
     /*String* s = string_constructor("aaaa",4);
     String* ns = string_constructor("bbbb",4);
     List* l = list_constructor(sizeof(s));
@@ -170,4 +171,4 @@ int main_()
     putchar( *((char*)get_element(sl,11))  );
     return 0;
     */
-//}*/
+//}

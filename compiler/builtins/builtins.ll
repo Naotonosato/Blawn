@@ -159,13 +159,13 @@ define void @blawn_set_element(i8*, i64, i64, i8*, i64) #0 {
 
 ; <label>:17:                                     ; preds = %13
   %18 = load i8*, i8** %9, align 8
-  %19 = ptrtoint i8* %18 to i8
-  %20 = load i8*, i8** %6, align 8
-  %21 = load i64, i64* %8, align 8
-  %22 = load i64, i64* %10, align 8
-  %23 = mul nsw i64 %21, %22
-  %24 = getelementptr inbounds i8, i8* %20, i64 %23
-  store i8 %19, i8* %24, align 1
+  %19 = load i8*, i8** %6, align 8
+  %20 = load i64, i64* %8, align 8
+  %21 = load i64, i64* %10, align 8
+  %22 = mul nsw i64 %20, %21
+  %23 = getelementptr inbounds i8, i8* %19, i64 %22
+  %24 = bitcast i8* %23 to i8**
+  store i8* %18, i8** %24, align 8
   br label %27
 
 ; <label>:25:                                     ; preds = %13, %5

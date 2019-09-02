@@ -115,7 +115,6 @@ std::shared_ptr<Node> ASTGenerator::assign(std::shared_ptr<AccessNode> left,std:
     auto assigment = std::shared_ptr<AssigmentNode>(new AssigmentNode(assigment_generator,right,nullptr,left));
     return assigment;
 }
-    
 
 std::shared_ptr<Node> ASTGenerator::get_named_value(std::string name)
 {
@@ -187,7 +186,7 @@ std::unique_ptr<Node> ASTGenerator::create_call(std::string name,std::vector<std
         auto typeid_node = std::unique_ptr<TypeIdNode>(new TypeIdNode(typeid_generator,arguments[0]));
         return std::move(typeid_node);
     }
-    if (name == "cast" && arguments.size() == 2)
+    if (name == "__blawn_cast__" && arguments.size() == 2)
     {
         auto cast_node = std::unique_ptr<CastNode>(new CastNode(cast_generator,arguments[0],arguments[1]));
         return std::move(cast_node);

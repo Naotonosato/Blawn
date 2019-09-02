@@ -71,9 +71,8 @@ llvm::Value* CastIRGenerator::generate(Node& node_)
     BlawnLogger logger;
     if (node.get_idnode()->is_typeid())
     {
-        auto& typeid_node = *static_cast<TypeIdNode*>(node.get_idnode().get());
-        typeid_node.generate();
-        auto id = typeid_node.get_id();
+        node.get_idnode()->generate();
+        auto id = node.get_idnode()->get_id();
         auto id_assigned_type = get_blawn_context().get_type_with_id(id);
         auto value = node.get_value()->generate();
         if (id_assigned_type == nullptr)
@@ -83,6 +82,11 @@ llvm::Value* CastIRGenerator::generate(Node& node_)
         }
         if (value->getType()->isPointerTy())
         {
+            if (value->getType() == ir_builder.getInt8PtrTy())
+            {
+                auto p = ir_builder.CreateBitCast(value,id_assigned_type->getPointerTo());
+                return ir_builder.CreateLoad(p);
+            }
             return ir_builder.CreateBitCast(value,id_assigned_type);
         }
         logger.invalid_cast_error(

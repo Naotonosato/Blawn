@@ -41,10 +41,12 @@ public:
     std::string name;
     Node(IRGenerator& ir_generator,std::string name="",bool is_argument=false)
     :_is_argument(is_argument),ir_generator(ir_generator),name(name){}
+    virtual llvm::ConstantInt* get_id(){return nullptr;}
     virtual bool is_argument(){return false;}
     virtual bool is_typeid(){return false;}
     virtual bool is_function(){return false;}
     virtual bool is_calling_constructor(){return false;}
+    virtual std::shared_ptr<Node> get_typeid_value(){return nullptr;}
     virtual llvm::Value* generate();
     virtual void initialize(){}
 };
@@ -75,6 +77,7 @@ class TypeIdNode:public Node
     void set_id(llvm::ConstantInt* id){id_ = id;}
     llvm::ConstantInt* get_id(){return id_;}
     bool is_typeid() override{return true;}
+    std::shared_ptr<Node> get_typeid_value() override{return value;}
 };
 
 
