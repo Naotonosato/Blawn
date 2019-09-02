@@ -53,11 +53,11 @@ void blawn_memcpy(void* array,i64 size,i64 element_size,void *element)
         );
 }
 
-void* get_element(List* self,i64 index)
+void* blawn_index(void* array,i64 size,i64 element_size,i64 index)
 {
-    if (0 <= index && index < self->size)
+    if (0 <= index && index < size)
     {
-        return (char*)self->elements + self->element_size*index;
+        return (char*)array + element_size*index;
     }
     else
     {
@@ -66,11 +66,11 @@ void* get_element(List* self,i64 index)
     }
 }
 
-void set_element(List* self,void* element,i64 index)
+void blawn_set_element(void* array,i64 size,i64 element_size,void* element,i64 index)
 {
-    if (0 <= index && index < self->size)
+    if (0 <= index && index < size)
     {
-        * ((char*)self->elements + self->element_size*index) = element;
+        * ((char*)array + element_size*index) = element;
     }
     else
     {

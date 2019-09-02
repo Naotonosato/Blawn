@@ -16,25 +16,26 @@
 %option nounput
 %option c++
 
-COMMENT             !.*\n
+COMMENT             \/\/.*\n
 STRING_LITERAL      \".*\"
 INT_LITERAL         [0-9]+
 FLOAT_LITERAL       [0-9]+\.[0-9]*
 USE                 use
-DOT         \.
-EQUAL       =
-PLUS        \+
-MINUS       -
-ASTERISK    \*
-SLASH       \/
+
 OP_EQUAL    ==
-OP_NOT_EQUAL !=
+OP_NOT_EQUAL \!=
 OP_MORE_EQUAL >=
 OP_LESS_EQUAL <=
 OP_MORE     >
 OP_LESS     <
 OP_AND      and
 OP_OR       or
+EQUAL       =
+PLUS        \+
+MINUS       -
+ASTERISK    \*
+SLASH       \/
+DOT_IDENTIFIER \.[a-zA-Z_][0-9a-zA-Z_]*
 COLON       \:
 SEMICOLON   ;
 COMMA       ,
@@ -58,7 +59,6 @@ RIGHT_CURLY_BRACE \}
 CALL        .+\(.*\)
 C_FUNCTION  c\.[a-zA-Z_][0-9a-zA-Z_]*
 MEMBER_IDENTIFIER @[a-zA-Z_][0-9a-zA-Z_]*
-DOT_IDENTIFIER \.[a-zA-Z_][0-9a-zA-Z_]*
 IDENTIFIER  [a-zA-Z_][0-9a-zA-Z_]*
 EOL                 \n
 
@@ -85,8 +85,17 @@ EOL                 \n
 {USE} {
     return Blawn::Parser::token::USE;
 }
-{EQUAL} {
-    return Blawn::Parser::token::EQUAL;
+{DOT_IDENTIFIER} {
+    std::string text = yytext;
+    text = text.substr(1,text.size()-1);
+    lval->build<std::string>() = text;
+    return Blawn::Parser::token::DOT_IDENTIFIER;
+}
+{ASTERISK} {
+    return Blawn::Parser::token::ASTERISK;
+}
+{SLASH} {
+    return Blawn::Parser::token::SLASH;
 }
 {PLUS} {
     return Blawn::Parser::token::PLUS;
@@ -94,11 +103,8 @@ EOL                 \n
 {MINUS} {
     return Blawn::Parser::token::MINUS;
 }
-{ASTERISK} {
-    return Blawn::Parser::token::ASTERISK;
-}
-{SLASH} {
-    return Blawn::Parser::token::SLASH;
+{EQUAL} {
+    return Blawn::Parser::token::EQUAL;
 }
 {OP_EQUAL} {
     return Blawn::Parser::token::OP_EQUAL;
@@ -124,7 +130,6 @@ EOL                 \n
 {OP_OR} {
     return Blawn::Parser::token::OP_OR;
 }
-
 {COLON} {
     return Blawn::Parser::token::COLON;
 }
@@ -211,12 +216,6 @@ EOL                 \n
 {MEMBER_IDENTIFIER} {
     lval->build<std::string>() = yytext;
     return Blawn::Parser::token::MEMBER_IDENTIFIER;
-}
-{DOT_IDENTIFIER} {
-    std::string text = yytext;
-    text = text.substr(1,text.size()-1);
-    lval->build<std::string>() = text;
-    return Blawn::Parser::token::DOT_IDENTIFIER;
 }
 {IDENTIFIER} {
     lval->build<std::string>() = yytext;

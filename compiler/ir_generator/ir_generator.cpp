@@ -60,7 +60,42 @@ llvm::Value* TypeIdGenerator::generate(Node& node_)
 {
     auto& node = *static_cast<TypeIdNode*>(&node_);
     auto type = node.get_value()->generate()->getType();
-    return ir_builder.getInt64(get_blawn_context().get_typeid(type));
+    auto id = get_blawn_context().get_typeid(context,type);
+    node.set_id(id);
+    return id;
+}
+
+llvm::Value* CastIRGenerator::generate(Node& node_)
+{
+    auto& node = *static_cast<CastNode*>(&node_);
+    BlawnLogger logger;
+    if (node.get_idnode()->is_typeid())
+    {
+        auto& typeid_node = *static_cast<TypeIdNode*>(node.get_idnode().get());
+        typeid_node.generate();
+        auto id = typeid_node.get_id();
+        auto id_assigned_type = get_blawn_context().get_type_with_id(id);
+        auto value = node.get_value()->generate();
+        if (id_assigned_type == nullptr)
+        {
+            logger.invalid_cast_error("?",utils::to_string(value->getType()));
+            return 0;
+        }
+        if (value->getType()->isPointerTy())
+        {
+            return ir_builder.CreateBitCast(value,id_assigned_type);
+        }
+        logger.invalid_cast_error(
+            utils::to_string(value->getType()),
+            utils::to_string(value->getType())
+            );
+        return 0;
+    }
+    else
+    {
+        logger.invalid_cast_error("<?>","<?>");
+        return 0;
+    }
 }
 
 IRGenerator::IRGenerator(
@@ -258,6 +293,8 @@ llvm::Value* BinaryExpressionIRGenerator::generate(Node& node_)
         {return ir_builder.getInt1(true);}
         else return ir_builder.getInt1(false);
     }
+    std::cout << "Error: invalid operator " << operator_kind << std::endl;
+    exit(1);
     return 0;
 }
 
@@ -572,6 +609,15 @@ llvm::Value* IfIRGenerator::generate(Node& node_)
     false_values.insert(ir_builder.getInt1(false));
 
     auto cond_value = node.get_conditions()->generate();
+    if (cond_value->getType() != ir_builder.getInt1Ty())
+    {
+        if (cond_value->getType()->isIntegerTy())
+        cond_value = ir_builder.CreateICmpNE(cond_value,ir_builder.getInt64(0));
+        if (cond_value->getType()->isFloatTy()) 
+        cond_value = ir_builder.CreateICmpNE(cond_value,llvm::ConstantFP::get(context, llvm::APFloat((0.0))));
+        if (!cond_value->getType()->isIntegerTy() && !cond_value->getType()->isFloatTy())
+        cond_value = ir_builder.getInt1(true);
+    }
     /*
     llvm::Value* cond_value = ir_builder.getInt1(false);
     if (false_values.find(cond) == false_values.end())// condition is true.
@@ -650,15 +696,14 @@ llvm::Value* AccessIRGenerator::generate(Node& node_)
 
     auto left = node.get_left_node()->generate();//node.get_left_value();//node.get_left_node()->generate();
     auto left_type = left->getType();
-    
     if (!left_type->isPointerTy())
     {
-        logger.invalid_dot_error();
+        logger.has_no_member_error(utils::to_string(left_type),node.get_right_name());
         return 0;
     }
     if (!left_type->getPointerElementType()->isStructTy())
     {
-        logger.invalid_dot_error();
+        logger.has_no_member_error(utils::to_string(left_type),node.get_right_name());
         return 0;
     }
     

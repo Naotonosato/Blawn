@@ -24,3 +24,9 @@ void BlawnLogger::unknown_identifier_error(std::string kind,std::string identifi
     std::cerr << "Error: unknown " << kind << " " << identifier << std::endl;
     exit(1);
 }
+
+void BlawnLogger::invalid_cast_error(std::string type,std::string to)
+{
+    std::cerr << "Error: invalid cast " << type << " to " << to << std::endl;
+    exit(1);
+}

@@ -58,13 +58,12 @@
 %token <std::string> MEMBER_IDENTIFIER
 %token <std::string> IDENTIFIER
 
-%left OP_EQUAL OP_NOT_EQUAL OP_MORE_EQUAL OP_LESS_EQUAL OP_MORE OP_LESS
-%left OP_AND OP_OR
-
 %right EQUAL
+%left OP_AND OP_OR
+%left OP_EQUAL OP_NOT_EQUAL OP_MORE_EQUAL OP_LESS_EQUAL OP_MORE OP_LESS
 %left PLUS MINUS
 %left ASTERISK SLASH
-%left  <std::string> DOT_IDENTIFIER
+%left <std::string> DOT_IDENTIFIER
 
 %token  USE
         COLON
@@ -297,10 +296,6 @@ expression:
         $$ = driver.ast_generator->create_for($2,$4,$6,$10);
         driver.ast_generator->break_out_of_namespace();
     }
-    |monomial
-    {
-        $$ = std::move($1);
-    }
     |assign_variable
     {
         $$ = $1;
@@ -345,13 +340,17 @@ expression:
     {
         $$ = driver.ast_generator->attach_operator(std::move($1),std::move($3),"<");
     }
+    |expression OP_NOT_EQUAL expression
+    {
+        $$ = driver.ast_generator->attach_operator(std::move($1),std::move($3),"!=");
+    }
     |expression OP_EQUAL expression
     {
         $$ = driver.ast_generator->attach_operator(std::move($1),std::move($3),"==");
     }
-    |expression OP_NOT_EQUAL expression
+    |monomial
     {
-        $$ = driver.ast_generator->attach_operator(std::move($1),std::move($3),"!=");
+        $$ = std::move($1);
     }
     |list
     {

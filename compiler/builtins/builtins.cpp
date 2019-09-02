@@ -58,6 +58,42 @@ void builtins::load_builtin_functions(llvm::Module& module,llvm::IRBuilder<>& ir
         &module
     );
     get_blawn_context().add_builtin_function("blawn_realloc",blawn_realloc);
+    //void* blawn_index(void* array,i64 size,i64 element_size,i64 index)
+    std::vector<llvm::Type*> blawn_index_args;
+    blawn_index_args.push_back(ir_builder.getInt8PtrTy());
+    blawn_index_args.push_back(ir_builder.getInt64Ty());
+    blawn_index_args.push_back(ir_builder.getInt64Ty());
+    blawn_index_args.push_back(ir_builder.getInt64Ty());
+    auto blawn_index_type = llvm::FunctionType::get(
+        ir_builder.getInt8PtrTy(),
+        blawn_index_args,
+        false
+    );
+    auto blawn_index = llvm::Function::Create(
+        blawn_index_type,
+        llvm::Function::ExternalLinkage,
+        "blawn_index",
+        &module
+    );
+    get_blawn_context().add_builtin_function("blawn_index",blawn_index);
+    //void blawn_set_element(void* array,i64 size,i64 element_size,void* element,i64 index)
+    std::vector<llvm::Type*> blawn_set_element_args;
+    blawn_set_element_args.push_back(ir_builder.getInt8PtrTy());
+    blawn_set_element_args.push_back(ir_builder.getInt64Ty());
+    blawn_set_element_args.push_back(ir_builder.getInt64Ty());
+    blawn_set_element_args.push_back(ir_builder.getInt64Ty());
+    auto blawn_set_element_type = llvm::FunctionType::get(
+        ir_builder.getInt8PtrTy(),
+        blawn_set_element_args,
+        false
+    );
+    auto blawn_set_element = llvm::Function::Create(
+        blawn_set_element_type,
+        llvm::Function::ExternalLinkage,
+        "blawn_set_element",
+        &module
+    );
+    get_blawn_context().add_builtin_function("blawn_set_element",blawn_set_element);
 }
 
 void builtins::create_string_type(llvm::LLVMContext& context,llvm::Module& module,llvm::IRBuilder<>& ir_builder)

@@ -385,15 +385,15 @@ namespace Blawn {
         C_FUNCTION = 262,
         MEMBER_IDENTIFIER = 263,
         IDENTIFIER = 264,
-        OP_EQUAL = 265,
-        OP_NOT_EQUAL = 266,
-        OP_MORE_EQUAL = 267,
-        OP_LESS_EQUAL = 268,
-        OP_MORE = 269,
-        OP_LESS = 270,
-        OP_AND = 271,
-        OP_OR = 272,
-        EQUAL = 273,
+        EQUAL = 265,
+        OP_AND = 266,
+        OP_OR = 267,
+        OP_EQUAL = 268,
+        OP_NOT_EQUAL = 269,
+        OP_MORE_EQUAL = 270,
+        OP_LESS_EQUAL = 271,
+        OP_MORE = 272,
+        OP_LESS = 273,
         PLUS = 274,
         MINUS = 275,
         ASTERISK = 276,
@@ -574,6 +574,18 @@ namespace Blawn {
 
     static inline
     symbol_type
+    make_EQUAL (const location_type& l);
+
+    static inline
+    symbol_type
+    make_OP_AND (const location_type& l);
+
+    static inline
+    symbol_type
+    make_OP_OR (const location_type& l);
+
+    static inline
+    symbol_type
     make_OP_EQUAL (const location_type& l);
 
     static inline
@@ -595,18 +607,6 @@ namespace Blawn {
     static inline
     symbol_type
     make_OP_LESS (const location_type& l);
-
-    static inline
-    symbol_type
-    make_OP_AND (const location_type& l);
-
-    static inline
-    symbol_type
-    make_OP_OR (const location_type& l);
-
-    static inline
-    symbol_type
-    make_EQUAL (const location_type& l);
 
     static inline
     symbol_type
@@ -906,7 +906,7 @@ namespace Blawn {
     enum
     {
       yyeof_ = 0,
-      yylast_ = 293,     ///< Last index in yytable_.
+      yylast_ = 304,     ///< Last index in yytable_.
       yynnts_ = 27,  ///< Number of nonterminal symbols.
       yyfinal_ = 36, ///< Termination state number.
       yyterror_ = 1,

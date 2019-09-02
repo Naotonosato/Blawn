@@ -1,21 +1,46 @@
-class List(element)
+class Type(value)
+    @size = sizeof(value)
+    @id = typeid(value)
+
+
+class List(element_type)
     @size = 0
     @allocated_size = 1
-    @element_size = sizeof(element)
+    @element_size = element_type.size
+    @%element_typeid = element_type.id
     @array = {}
     @function resize()
         self.allocated_size = self.allocated_size * 2
         self.array = blawn_realloc(self.array,self.element_size,self.allocated_size)
         return
     @function append(new_element)
-        
+        if typeid(new_element) != self.element_typeid
+        (
+            old = "old: "
+            old.append(int_to_str(self.element_typeid))
+            print(old)
+            new = "new:"
+            new.append(int_to_str(typeid(new_element)))
+            print(new)
+            print("Error: append invalid type element to list.")
+        )
         if self.size + 1 >= self.allocated_size
         (   
             self.resize()
         )
-        blawn_memcpy(self.array , self.size , self.element_size,new_element)
+        blawn_memcpy(self.array,self.size,self.element_size,new_element)
         self.size = self.size + 1
         return
+    @function get(index)
+        if self.size == 0
+        (
+            print("err")
+        )
+        data = blawn_index(self.array,self.size,self.element_size,index)
+        
+        return data
+
+
 
 
 class Person(name)
@@ -36,22 +61,16 @@ class Person(name)
 
 
 class V()
-    @n = 0
+    @n = 10
     @nn = 0.0
     @nnn = 0.0
 
-v1 = V()
-v2 = V()
-print(int_to_str(typeid(v1)))
-print(int_to_str(typeid(v2)))
-print(int_to_str(typeid("")))
-print(float_to_str(0.012324))
-list = List(v1)
-list.append(v2)
-list.append(v2)
-for i = 0 ,i < 1000000 ,i = i+1
+p = Person("John")
+list = List(Type(p))
+
+for i = 0 ,i < 100 ,i = i+1
 (
-    list.append(v1)
-    list.append(v2)
-    list.append("aaa")
+    list.append(p)
 )
+d = cast(typeid(p),list.get(0))
+print(d.name)

@@ -42,6 +42,7 @@ public:
     Node(IRGenerator& ir_generator,std::string name="",bool is_argument=false)
     :_is_argument(is_argument),ir_generator(ir_generator),name(name){}
     virtual bool is_argument(){return false;}
+    virtual bool is_typeid(){return false;}
     virtual bool is_function(){return false;}
     virtual bool is_calling_constructor(){return false;}
     virtual llvm::Value* generate();
@@ -64,13 +65,34 @@ class TypeIdNode:public Node
 {
     private:
     std::shared_ptr<Node> value;
+    llvm::ConstantInt* id_;
     public:
     TypeIdNode(
         TypeIdGenerator& ir_generator,
         std::shared_ptr<Node> value
-        ):Node(ir_generator),value(value){}
+        ):Node(ir_generator),value(value),id_(nullptr){}
+    std::shared_ptr<Node> get_value(){return value;}
+    void set_id(llvm::ConstantInt* id){id_ = id;}
+    llvm::ConstantInt* get_id(){return id_;}
+    bool is_typeid() override{return true;}
+};
+
+
+class CastNode:public Node
+{
+    private:
+    std::shared_ptr<Node> id;
+    std::shared_ptr<Node> value;
+    public:
+    CastNode(
+        CastIRGenerator& ir_generator,
+        std::shared_ptr<Node> id,
+        std::shared_ptr<Node> value
+        ):Node(ir_generator),id(id),value(value){}
+    std::shared_ptr<Node> get_idnode(){return id;}
     std::shared_ptr<Node> get_value(){return value;}
 };
+
 
 class IntegerNode:public Node
 {

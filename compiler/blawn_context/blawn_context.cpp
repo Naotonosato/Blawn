@@ -71,12 +71,20 @@ std::shared_ptr<ClassNode> BlawnContext::get_class(std::string name)
     else return nullptr;
 }
 
-int BlawnContext::get_typeid(llvm::Type* type)
+llvm::ConstantInt* BlawnContext::get_typeid(llvm::LLVMContext& context_,llvm::Type* type)
 {
     if (!typeids.count(type))
     {
         unique_id += 1;
-        typeids[type] = unique_id;
+        auto id = llvm::ConstantInt::get(context_, llvm::APInt(64,unique_id,true));
+        typeids[type] = id;
+        id_assigned_types[id] = type;
     }
     return typeids[type];
+}
+
+llvm::Type* BlawnContext::get_type_with_id(llvm::ConstantInt* id)
+{
+    if (id_assigned_types.count(id)) return id_assigned_types[id];
+    else return nullptr;
 }

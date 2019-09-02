@@ -31,6 +31,7 @@ class_collector("TOP"),
 ir_generator(context,module,ir_builder),
 sizeof_generator(context,module,ir_builder),
 typeid_generator(context,module,ir_builder),
+cast_generator(context,module,ir_builder),
 int_ir_generator(context,module,ir_builder),
 float_ir_generator(context,module,ir_builder),
 string_generator(context,module,ir_builder),
@@ -185,6 +186,11 @@ std::unique_ptr<Node> ASTGenerator::create_call(std::string name,std::vector<std
     {
         auto typeid_node = std::unique_ptr<TypeIdNode>(new TypeIdNode(typeid_generator,arguments[0]));
         return std::move(typeid_node);
+    }
+    if (name == "cast" && arguments.size() == 2)
+    {
+        auto cast_node = std::unique_ptr<CastNode>(new CastNode(cast_generator,arguments[0],arguments[1]));
+        return std::move(cast_node);
     }
     if (get_blawn_context().exist_builtin_function(name))
     {

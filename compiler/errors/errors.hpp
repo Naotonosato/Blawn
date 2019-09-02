@@ -22,4 +22,5 @@ class BlawnLogger
     void invalid_dot_error();
     void has_no_member_error(std::string type,std::string name);
     void unknown_identifier_error(std::string kind,std::string identifier);
+    void invalid_cast_error(std::string type,std::string to);
 };

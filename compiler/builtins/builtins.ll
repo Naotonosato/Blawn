@@ -102,82 +102,78 @@ define void @blawn_memcpy(i8*, i64, i64, i8*) #0 {
 declare void @llvm.memcpy.p0i8.p0i8.i64(i8* nocapture writeonly, i8* nocapture readonly, i64, i32, i1) #4
 
 ; Function Attrs: noinline nounwind optnone uwtable
-define i8* @get_element(%struct.List*, i64) #0 {
-  %3 = alloca %struct.List*, align 8
-  %4 = alloca i64, align 8
-  store %struct.List* %0, %struct.List** %3, align 8
-  store i64 %1, i64* %4, align 8
-  %5 = load i64, i64* %4, align 8
-  %6 = icmp sle i64 0, %5
-  br i1 %6, label %7, label %23
+define i8* @blawn_index(i8*, i64, i64, i64) #0 {
+  %5 = alloca i8*, align 8
+  %6 = alloca i64, align 8
+  %7 = alloca i64, align 8
+  %8 = alloca i64, align 8
+  store i8* %0, i8** %5, align 8
+  store i64 %1, i64* %6, align 8
+  store i64 %2, i64* %7, align 8
+  store i64 %3, i64* %8, align 8
+  %9 = load i64, i64* %8, align 8
+  %10 = icmp sle i64 0, %9
+  br i1 %10, label %11, label %21
 
-; <label>:7:                                      ; preds = %2
-  %8 = load i64, i64* %4, align 8
-  %9 = load %struct.List*, %struct.List** %3, align 8
-  %10 = getelementptr inbounds %struct.List, %struct.List* %9, i32 0, i32 0
-  %11 = load i64, i64* %10, align 8
-  %12 = icmp slt i64 %8, %11
-  br i1 %12, label %13, label %23
+; <label>:11:                                     ; preds = %4
+  %12 = load i64, i64* %8, align 8
+  %13 = load i64, i64* %6, align 8
+  %14 = icmp slt i64 %12, %13
+  br i1 %14, label %15, label %21
 
-; <label>:13:                                     ; preds = %7
-  %14 = load %struct.List*, %struct.List** %3, align 8
-  %15 = getelementptr inbounds %struct.List, %struct.List* %14, i32 0, i32 3
-  %16 = load i8*, i8** %15, align 8
-  %17 = load %struct.List*, %struct.List** %3, align 8
-  %18 = getelementptr inbounds %struct.List, %struct.List* %17, i32 0, i32 2
-  %19 = load i64, i64* %18, align 8
-  %20 = load i64, i64* %4, align 8
-  %21 = mul nsw i64 %19, %20
-  %22 = getelementptr inbounds i8, i8* %16, i64 %21
-  ret i8* %22
+; <label>:15:                                     ; preds = %11
+  %16 = load i8*, i8** %5, align 8
+  %17 = load i64, i64* %7, align 8
+  %18 = load i64, i64* %8, align 8
+  %19 = mul nsw i64 %17, %18
+  %20 = getelementptr inbounds i8, i8* %16, i64 %19
+  ret i8* %20
 
-; <label>:23:                                     ; preds = %7, %2
-  %24 = call i32 @puts(i8* getelementptr inbounds ([31 x i8], [31 x i8]* @.str.1, i32 0, i32 0))
+; <label>:21:                                     ; preds = %11, %4
+  %22 = call i32 @puts(i8* getelementptr inbounds ([31 x i8], [31 x i8]* @.str.1, i32 0, i32 0))
   call void @exit(i32 1) #6
   unreachable
 }
 
 ; Function Attrs: noinline nounwind optnone uwtable
-define void @set_element(%struct.List*, i8*, i64) #0 {
-  %4 = alloca %struct.List*, align 8
-  %5 = alloca i8*, align 8
-  %6 = alloca i64, align 8
-  store %struct.List* %0, %struct.List** %4, align 8
-  store i8* %1, i8** %5, align 8
-  store i64 %2, i64* %6, align 8
-  %7 = load i64, i64* %6, align 8
-  %8 = icmp sle i64 0, %7
-  br i1 %8, label %9, label %27
+define void @blawn_set_element(i8*, i64, i64, i8*, i64) #0 {
+  %6 = alloca i8*, align 8
+  %7 = alloca i64, align 8
+  %8 = alloca i64, align 8
+  %9 = alloca i8*, align 8
+  %10 = alloca i64, align 8
+  store i8* %0, i8** %6, align 8
+  store i64 %1, i64* %7, align 8
+  store i64 %2, i64* %8, align 8
+  store i8* %3, i8** %9, align 8
+  store i64 %4, i64* %10, align 8
+  %11 = load i64, i64* %10, align 8
+  %12 = icmp sle i64 0, %11
+  br i1 %12, label %13, label %25
 
-; <label>:9:                                      ; preds = %3
-  %10 = load i64, i64* %6, align 8
-  %11 = load %struct.List*, %struct.List** %4, align 8
-  %12 = getelementptr inbounds %struct.List, %struct.List* %11, i32 0, i32 0
-  %13 = load i64, i64* %12, align 8
-  %14 = icmp slt i64 %10, %13
-  br i1 %14, label %15, label %27
+; <label>:13:                                     ; preds = %5
+  %14 = load i64, i64* %10, align 8
+  %15 = load i64, i64* %7, align 8
+  %16 = icmp slt i64 %14, %15
+  br i1 %16, label %17, label %25
 
-; <label>:15:                                     ; preds = %9
-  %16 = load i8*, i8** %5, align 8
-  %17 = ptrtoint i8* %16 to i8
-  %18 = load %struct.List*, %struct.List** %4, align 8
-  %19 = getelementptr inbounds %struct.List, %struct.List* %18, i32 0, i32 3
-  %20 = load i8*, i8** %19, align 8
-  %21 = load %struct.List*, %struct.List** %4, align 8
-  %22 = getelementptr inbounds %struct.List, %struct.List* %21, i32 0, i32 2
-  %23 = load i64, i64* %22, align 8
-  %24 = load i64, i64* %6, align 8
-  %25 = mul nsw i64 %23, %24
-  %26 = getelementptr inbounds i8, i8* %20, i64 %25
-  store i8 %17, i8* %26, align 1
-  br label %29
+; <label>:17:                                     ; preds = %13
+  %18 = load i8*, i8** %9, align 8
+  %19 = ptrtoint i8* %18 to i8
+  %20 = load i8*, i8** %6, align 8
+  %21 = load i64, i64* %8, align 8
+  %22 = load i64, i64* %10, align 8
+  %23 = mul nsw i64 %21, %22
+  %24 = getelementptr inbounds i8, i8* %20, i64 %23
+  store i8 %19, i8* %24, align 1
+  br label %27
 
-; <label>:27:                                     ; preds = %9, %3
-  %28 = call i32 @puts(i8* getelementptr inbounds ([31 x i8], [31 x i8]* @.str.1, i32 0, i32 0))
+; <label>:25:                                     ; preds = %13, %5
+  %26 = call i32 @puts(i8* getelementptr inbounds ([31 x i8], [31 x i8]* @.str.1, i32 0, i32 0))
   call void @exit(i32 1) #6
   unreachable
 
-; <label>:29:                                     ; preds = %15
+; <label>:27:                                     ; preds = %17
   ret void
 }
 

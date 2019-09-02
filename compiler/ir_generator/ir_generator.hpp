@@ -64,6 +64,18 @@ class TypeIdGenerator:public IRGenerator
     llvm::Value* generate(Node &node) override;
 };
 
+class CastIRGenerator:public IRGenerator
+{
+    public:
+    CastIRGenerator(
+        llvm::LLVMContext &context,
+        llvm::Module &module,
+        llvm::IRBuilder<> &ir_builder
+        )
+    :IRGenerator(context,module,ir_builder){}
+    llvm::Value* generate(Node &node) override;
+};
+
 class IntegerIRGenerator: public IRGenerator
 {
 public:
