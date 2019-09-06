@@ -11,49 +11,82 @@ main:                                   # @main
 	.cfi_offset %rbp, -16
 	movq	%rsp, %rbp
 	.cfi_def_cfa_register %rbp
+	pushq	%r14
+	pushq	%rbx
 	subq	$32, %rsp
+	.cfi_offset %rbx, -32
+	.cfi_offset %r14, -24
 	movl	$.L__unnamed_1, %edi
 	movl	$4, %esi
 	callq	string_constructor
 	movq	%rax, %rdi
 	callq	Person.2
-	movq	%rax, -24(%rbp)
+	movq	%rax, -32(%rbp)
 	movl	$.L__unnamed_2, %edi
 	movl	$4, %esi
 	callq	string_constructor
 	movq	%rax, %rdi
 	callq	Person.2
-	movq	%rax, -32(%rbp)
-	movq	-24(%rbp), %rdi
+	movq	%rax, -48(%rbp)
+	movq	-32(%rbp), %rdi
 	callq	List.4
-	movq	%rax, -8(%rbp)
-	movq	$1, -16(%rbp)
+	movq	%rax, -24(%rbp)
+	movq	$1, -40(%rbp)
 	.p2align	4, 0x90
 .LBB0_1:                                # %for
                                         # =>This Inner Loop Header: Depth=1
-	movq	-8(%rbp), %rdi
-	movq	-24(%rbp), %rsi
+	movq	-24(%rbp), %rdi
+	movq	-32(%rbp), %rsi
 	callq	append.6
-	movq	-16(%rbp), %rax
+	movq	-40(%rbp), %rax
 	cmpq	$100, %rax
 	leaq	1(%rax), %rax
-	movq	%rax, -16(%rbp)
+	movq	%rax, -40(%rbp)
 	jl	.LBB0_1
 # %bb.2:                                # %"merge of for"
-	movq	-8(%rbp), %rdi
-	movq	-32(%rbp), %rsi
+	movq	-24(%rbp), %rdi
+	movq	-48(%rbp), %rsi
 	movl	$20, %edx
 	callq	set.7
-	movq	-8(%rbp), %rdi
+	movq	-24(%rbp), %rdi
 	movl	$20, %esi
 	callq	get.8
 	movq	(%rax), %rdi
 	movq	%rsp, %rax
-	leaq	-16(%rax), %rsp
+	leaq	-16(%rax), %r14
+	movq	%r14, %rsp
 	movq	%rdi, -16(%rax)
 	callq	print
+	movq	%rsp, %rax
+	leaq	-16(%rax), %rbx
+	movq	%rbx, %rsp
+	movq	$1, -16(%rax)
+	.p2align	4, 0x90
+.LBB0_3:                                # %for1
+                                        # =>This Inner Loop Header: Depth=1
+	movq	-24(%rbp), %rdi
+	movq	-32(%rbp), %rsi
+	callq	append.6
+	movq	(%rbx), %rax
+	cmpq	$100, %rax
+	leaq	1(%rax), %rax
+	movq	%rax, (%rbx)
+	jl	.LBB0_3
+# %bb.4:                                # %"merge of for3"
+	movq	-24(%rbp), %rdi
+	movq	-48(%rbp), %rsi
+	movl	$20, %edx
+	callq	set.7
+	movq	-24(%rbp), %rdi
+	movl	$20, %esi
+	callq	get.8
+	movq	(%rax), %rdi
+	movq	%rdi, (%r14)
+	callq	print
 	xorl	%eax, %eax
-	movq	%rbp, %rsp
+	leaq	-16(%rbp), %rsp
+	popq	%rbx
+	popq	%r14
 	popq	%rbp
 	retq
 .Lfunc_end0:

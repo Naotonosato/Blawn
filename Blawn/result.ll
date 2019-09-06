@@ -78,6 +78,45 @@ for:                                              ; preds = %for, %entry
   %31 = load %struct.String*, %struct.String** %d
   %32 = load %struct.String*, %struct.String** %d
   call void @print(%struct.String* %32)
+  %i2 = alloca i64
+  store i64 0, i64* %i2
+  %33 = load i64, i64* %i2
+  %34 = load i64, i64* %i2
+  %35 = add i64 %34, 1
+  store i64 %35, i64* %i2
+  %36 = load i64, i64* %i2
+  br label %for1
+
+for1:                                             ; preds = %for1, %"merge of for"
+  %37 = load %List*, %List** %list
+  %38 = load %List*, %List** %list
+  %39 = load %Person*, %Person** %p
+  call void @append.6(%List* %38, %Person* %39)
+  %40 = load i64, i64* %i2
+  %41 = icmp slt i64 %40, 100
+  %42 = icmp eq i1 false, %41
+  %43 = load i64, i64* %i2
+  %44 = load i64, i64* %i2
+  %45 = add i64 %44, 1
+  store i64 %45, i64* %i2
+  %46 = load i64, i64* %i2
+  br i1 %42, label %"merge of for3", label %for1
+
+"merge of for3":                                  ; preds = %for1
+  %47 = load %List*, %List** %list
+  %48 = load %List*, %List** %list
+  %49 = load %Person*, %Person** %p2
+  call void @set.7(%List* %48, %Person* %49, i64 20)
+  %50 = load %struct.String*, %struct.String** %d
+  %51 = load %List*, %List** %list
+  %52 = load %List*, %List** %list
+  %53 = call %Person* @get.8(%List* %52, i64 20)
+  %54 = getelementptr inbounds %Person, %Person* %53, i32 0, i32 0
+  %55 = load %struct.String*, %struct.String** %54
+  store %struct.String* %55, %struct.String** %d
+  %56 = load %struct.String*, %struct.String** %d
+  %57 = load %struct.String*, %struct.String** %d
+  call void @print(%struct.String* %57)
   ret i8 0
 }
 

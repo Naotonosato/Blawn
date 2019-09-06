@@ -61,3 +61,15 @@ for i = 0 ,i < 100 ,i = i+1
 list.set(p2,20)
 d = list.get(20).name
 print(d)
+
+for i = 0 ,i < 100 ,i = i+1
+(
+    list.append(p)
+)
+list.set(p2,20)
+d = list.get(20).name
+print(d)
+a = if 4 == 9
+(
+    0
+)
