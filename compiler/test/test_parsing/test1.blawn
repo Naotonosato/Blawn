@@ -1,7 +1,6 @@
 class type(value)
     @size = sizeof(value)
     @id = typeid(value)
-
 class List(element)
     @size = 0
     @allocated_size = 1
@@ -36,9 +35,6 @@ class List(element)
     @function set(value,index)
         __blawn_set_element__(self.array,self.size,self.element_size,value,index)
         return
-
-
-
 class Person(name)
     @name = name
     @function hello(s)
@@ -55,15 +51,9 @@ class Person(name)
         print(self.i.s)
         return
 
-class V()
-    @n = 10
-    @nn = 0.0
-    @nnn = 0.0
-
 p = Person("John")
-p2 = Person("Tom")
+p2 = Person("Tom!")
 list = List(p)
-
 for i = 0 ,i < 100 ,i = i+1
 (
     list.append(p)

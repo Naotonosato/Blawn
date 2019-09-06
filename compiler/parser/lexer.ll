@@ -65,8 +65,9 @@ EOL                 \n
 
 %%
 
-^[ \t]*\n {loc->lines();/*(^[ \t]*\r\n)|(^[ \t]*\n)*/}
-[ \t] {/*BLOCK_START        \(|\n\(|\(\n|\n\(\n*/}
+^[ \t]*\n {loc->lines();driver->ast_generator->line_number += 1;}
+^[ \t]*\r\n {loc->lines();driver->ast_generator->line_number += 1;}
+[ \t] {}
 {COMMENT} {}
 {STRING_LITERAL} {
     std::string text = yytext;
@@ -223,6 +224,7 @@ EOL                 \n
 }
 {EOL} {
     loc->lines();
+    driver->ast_generator->line_number += 1;
     return Blawn::Parser::token::EOL;
 }
 <<EOF>> {return 0;}

@@ -1,5 +1,6 @@
 #include <llvm/IR/Type.h>
 #include <llvm/IR/Function.h>
+#include <llvm/IR/BasicBlock.h>
 #include "blawn_context.hpp"
 #include "../ast/node.hpp"
 
@@ -87,4 +88,14 @@ llvm::Type* BlawnContext::get_type_with_id(llvm::ConstantInt* id)
 {
     if (id_assigned_types.count(id)) return id_assigned_types[id];
     else return nullptr;
+}
+
+std::vector<std::pair<llvm::Function*,llvm::Value*>> BlawnContext::get_destructors(llvm::BasicBlock* block)
+{
+    return destructors[block];
+}
+
+void BlawnContext::set_destructor(llvm::BasicBlock* block,std::pair<llvm::Function*,llvm::Value*> d)
+{
+    destructors[block].push_back(d);
 }

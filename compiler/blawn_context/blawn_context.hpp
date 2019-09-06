@@ -10,6 +10,7 @@ namespace llvm
     class Type;
     class StructType;
     class ConstantInt;
+    class BasicBlock;
 }
 class FunctionNode;
 class ClassNode;
@@ -24,6 +25,7 @@ class BlawnContext
     std::map<std::string,std::map<std::string,llvm::Function*>> class_with_methods;
     std::map<llvm::Type*,llvm::ConstantInt*> typeids;
     std::map<llvm::ConstantInt*,llvm::Type*> id_assigned_types;
+    std::map<llvm::BasicBlock*,std::vector<std::pair<llvm::Function*,llvm::Value*>>> destructors;
     public:
     void register_element_name(std::string,std::string name,unsigned int index);
     int get_element_index(std::string,std::string name);
@@ -36,6 +38,8 @@ class BlawnContext
     std::shared_ptr<ClassNode> get_class(std::string);
     llvm::ConstantInt* get_typeid(llvm::LLVMContext& context_,llvm::Type*);
     llvm::Type* get_type_with_id(llvm::ConstantInt* id);
+    std::vector<std::pair<llvm::Function*,llvm::Value*>> get_destructors(llvm::BasicBlock*);
+    void set_destructor(llvm::BasicBlock*,std::pair<llvm::Function*,llvm::Value*>);
 };
 
 

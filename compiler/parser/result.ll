@@ -9,7 +9,7 @@ target triple = "x86_64-pc-linux-gnu"
 %struct.List = type { i64, i64, i64, i8* }
 
 @0 = private unnamed_addr constant [5 x i8] c"John\00"
-@1 = private unnamed_addr constant [4 x i8] c"Tom\00"
+@1 = private unnamed_addr constant [5 x i8] c"Tom!\00"
 @2 = private unnamed_addr constant [44 x i8] c"Error: append invalid type element to list.\00"
 @3 = private unnamed_addr constant [4 x i8] c"err\00"
 @.str = private unnamed_addr constant [73 x i8] c"\1B[31mCRITICAL ERROR:\1B[39m failed to realloc at appending element to list\00", align 1
@@ -29,7 +29,7 @@ entry:
   %p = alloca %Person*
   store %Person* %1, %Person** %p
   %2 = load %Person*, %Person** %p
-  %3 = call %struct.String* @string_constructor(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @1, i32 0, i32 0), i64 3)
+  %3 = call %struct.String* @string_constructor(i8* getelementptr inbounds ([5 x i8], [5 x i8]* @1, i32 0, i32 0), i64 4)
   %4 = call %Person* @Person.2(%struct.String* %3)
   %p2 = alloca %Person*
   store %Person* %4, %Person** %p2

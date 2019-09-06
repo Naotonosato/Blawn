@@ -68,7 +68,7 @@ llvm::Value* TypeIdGenerator::generate(Node& node_)
 llvm::Value* CastIRGenerator::generate(Node& node_)
 {
     auto& node = *static_cast<CastNode*>(&node_);
-    BlawnLogger logger;
+    BlawnLogger logger;logger.set_line_number(node.line_number);
     if (node.get_idnode()->is_typeid())
     {
         node.get_idnode()->generate();
@@ -143,7 +143,7 @@ llvm::Value* StringIRGenerator::generate(Node& node)
 llvm::Value* VariableIRGenerator::generate(Node& node_) 
 {
     auto& node = *static_cast<VariableNode*>(&node_);
-    
+    BlawnLogger logger;logger.set_line_number(node.line_number);
     if (!node.is_generated())
     {
         llvm::Value* right;
@@ -152,6 +152,7 @@ llvm::Value* VariableIRGenerator::generate(Node& node_)
             right = node.generated_right_values[node.right_node];
         }
         else right = node.right_node->generate();
+        if (right == nullptr) logger.invalid_right_value_error();
         //std::cout << "new variable " << node.name << std::endl;
         node.alloca_inst = ir_builder.CreateAlloca(right->getType(),0,node.name);
         ir_builder.CreateStore(right,node.alloca_inst);
@@ -167,6 +168,7 @@ llvm::Value* VariableIRGenerator::generate(Node& node_)
 llvm::Value* AssigmentIRGenerator::generate(Node& node_)
 {
     auto& node = *static_cast<AssigmentNode*>(&node_);
+    BlawnLogger logger;logger.set_line_number(node.line_number);
     llvm::Value* pointer;
     if (node.get_target_var() != nullptr)
     {
@@ -179,6 +181,7 @@ llvm::Value* AssigmentIRGenerator::generate(Node& node_)
         pointer = node.get_target_member()->get_pointer();
     }
     auto right_value = node.get_right_node()->generate();
+    if (right_value == nullptr) logger.invalid_right_value_error();
     auto to_store = right_value;
     if (pointer->getType()->getPointerElementType()->isIntegerTy() && right_value->getType()->isDoubleTy())
     {
@@ -191,9 +194,7 @@ llvm::Value* AssigmentIRGenerator::generate(Node& node_)
     }
     if (pointer->getType()->getPointerElementType() != to_store->getType())
     {
-        right_value->print(llvm::outs());
-        std::cout << std::endl;
-        BlawnLogger logger;
+        BlawnLogger logger;logger.set_line_number(node.line_number);
         logger.different_type_error(
             utils::to_string(pointer->getType()->getPointerElementType()),
             utils::to_string(to_store->getType())
@@ -322,6 +323,7 @@ llvm::Function* FunctionIRGenerator::generate(Node& node_)
 llvm::Value* CallFunctionIRGenerator::generate(Node &node_)
 {
     auto& node = *static_cast<CallFunctionNode*>(&node_);
+    BlawnLogger logger;logger.set_line_number(node.line_number);
     if (node.is_builtin)
     {
         for (auto &arg: node.passed_arguments)
@@ -336,6 +338,9 @@ llvm::Value* CallFunctionIRGenerator::generate(Node &node_)
             }
         }
         std::vector<llvm::Value*> args;
+        if (node.builtin_function->arg_size() != node.passed_arguments.size())
+        {logger.invalid_paramater_error("function");}
+        
         int count = 0;
         for (auto &b_arg:node.builtin_function->args())
         {
@@ -346,7 +351,11 @@ llvm::Value* CallFunctionIRGenerator::generate(Node &node_)
                 auto casted = ir_builder.CreateBitCast(value,ir_builder.getInt8PtrTy());
                 args.push_back(casted);
             }
-            else {args.push_back(value);}
+            else
+            {
+                if (value->getType() != b_arg.getType()){logger.invalid_paramater_error("function");}
+                args.push_back(value);
+            }
             count += 1;
         }
         return ir_builder.CreateCall(node.builtin_function,args);
@@ -362,6 +371,8 @@ llvm::Value* CallFunctionIRGenerator::generate(Node &node_)
             }
         }
     }
+    if (node.passed_arguments.size() != node.function->arguments_names.size())
+    {logger.invalid_paramater_error("function");}
     auto callee_block = ir_builder.GetInsertBlock();
     std::vector<llvm::Type*> types;
     std::vector<llvm::Value*> argument_values;
@@ -409,6 +420,14 @@ llvm::Value* CallFunctionIRGenerator::generate(Node &node_)
         line->initialize();
         line->generate();
     }
+
+    auto ds = get_blawn_context().get_destructors(ir_builder.GetInsertBlock());
+    for (auto& d:ds)
+    {
+        ir_builder.CreateCall(d.first,d.second);
+    }
+
+
     llvm::Value* return_value;
     llvm::Type* return_type;
     if (node.function->return_value != nullptr)
@@ -476,7 +495,7 @@ llvm::Value* ClassIRGenerator::generate(Node& node_)
 llvm::Value* CallConstructorIRGenerator::generate(Node& node_)
 {
     auto& node = *static_cast<CallConstructorNode*>(&node_);
-
+    BlawnLogger logger;logger.set_line_number(node.line_number);
     for (auto &arg: node.get_passed_arguments())
     {
         if (arg->is_argument())
@@ -488,6 +507,7 @@ llvm::Value* CallConstructorIRGenerator::generate(Node& node_)
             }
         }
     }
+    
     auto callee_block = ir_builder.GetInsertBlock();
     std::vector<llvm::Type*> types;
     std::vector<llvm::Value*> argument_values;
@@ -501,6 +521,8 @@ llvm::Value* CallConstructorIRGenerator::generate(Node& node_)
     if (f != nullptr)
     //constructor is already generated
     {
+        if (argument_values.size() != f->arg_size())
+        {logger.invalid_paramater_error("function");}
         return ir_builder.CreateCall(f,argument_values);
     }
     auto base_constructor_type = llvm::FunctionType::get(ir_builder.getVoidTy(),types,false);
@@ -599,6 +621,7 @@ llvm::Value* CallConstructorIRGenerator::generate(Node& node_)
         node.get_class()->register_destructor(destructor_args,destructor);
     }
     node.set_destructor(destructor,instance_alloca);
+    get_blawn_context().set_destructor(callee_block,std::make_pair(destructor,instance_alloca));
     ir_builder.SetInsertPoint(callee_block);
     return ir_builder.CreateCall(new_constructor,argument_values);
 
@@ -685,8 +708,8 @@ llvm::Value* ForIRGenerator::generate(Node& node_)
 
 llvm::Value* AccessIRGenerator::generate(Node& node_)
 {
-    BlawnLogger logger;
     auto& node = *static_cast<AccessNode*>(&node_);
+    BlawnLogger logger;logger.set_line_number(node.line_number);
     
     /*
     if (node.get_generated() != nullptr)
@@ -738,6 +761,7 @@ llvm::Value* AccessIRGenerator::generate(Node& node_)
             auto call_node = node.get_call_node();
             CallFunctionIRGenerator gen(context,module,ir_builder);
             auto method_call = CallFunctionNode(
+                node.line_number,
                 gen,
                 call_node->passed_arguments,
                 call_node->argument_collector,
@@ -811,7 +835,7 @@ llvm::Value* ListIRGenerator::generate(Node& node_)
 /*
 llvm::Value* access(llvm::Value* left,llvm::StructType* struct_type,std::string right_name,llvm::IRBuilder<> ir_builder)
 {
-    BlawnLogger logger;
+    BlawnLogger logger;logger.set_line_number(node.line_number);
     std::string type_name = struct_type->getStructName();
     int index = get_blawn_context().get_element_index(type_name,"@"+right_name);
     if (index != -1)

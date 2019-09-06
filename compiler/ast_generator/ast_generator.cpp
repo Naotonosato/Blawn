@@ -46,7 +46,8 @@ call_constructor_generator(context,module,ir_builder),
 if_generator(context,module,ir_builder),
 for_generator(context,module,ir_builder),
 access_generator(context,module,ir_builder),
-list_generator(context,module,ir_builder)
+list_generator(context,module,ir_builder),
+line_number(1)
 {
 }
 
@@ -97,13 +98,13 @@ std::shared_ptr<Node> ASTGenerator::assign(std::string name,std::shared_ptr<Node
     if (variable_collector.exist(name))
     {
         auto variable = variable_collector.get(name);
-        auto assigment = std::shared_ptr<AssigmentNode>(new AssigmentNode(assigment_generator,right_node,variable,nullptr));
+        auto assigment = std::shared_ptr<AssigmentNode>(new AssigmentNode(line_number,assigment_generator,right_node,variable,nullptr));
         return assigment;
     }
     else
     {
         auto variable = std::shared_ptr<VariableNode>(
-            new VariableNode(variable_generator,std::move(right_node),name)
+            new VariableNode(line_number,variable_generator,std::move(right_node),name)
             );
         variable_collector.set(name,variable);
         return variable;
@@ -112,7 +113,7 @@ std::shared_ptr<Node> ASTGenerator::assign(std::string name,std::shared_ptr<Node
 
 std::shared_ptr<Node> ASTGenerator::assign(std::shared_ptr<AccessNode> left,std::shared_ptr<Node> right)
 {
-    auto assigment = std::shared_ptr<AssigmentNode>(new AssigmentNode(assigment_generator,right,nullptr,left));
+    auto assigment = std::shared_ptr<AssigmentNode>(new AssigmentNode(line_number,assigment_generator,right,nullptr,left));
     return assigment;
 }
 
@@ -136,7 +137,7 @@ std::shared_ptr<Node> ASTGenerator::get_named_value(std::string name)
 
 void ASTGenerator::add_argument(std::string arg_name)
 {
-    auto argument = std::shared_ptr<ArgumentNode>(new ArgumentNode(argument_generator,arg_name));
+    auto argument = std::shared_ptr<ArgumentNode>(new ArgumentNode(line_number,argument_generator,arg_name));
     argument_collector.set(arg_name,argument);
 }
 
@@ -146,7 +147,7 @@ void ASTGenerator::book_function(std::string name)
 
 std::shared_ptr<FunctionNode> ASTGenerator::add_function(std::string name,std::vector<std::string> arguments,std::vector<std::shared_ptr<Node>> body,std::shared_ptr<Node> return_value)
 {
-    auto func = std::shared_ptr<FunctionNode>(new FunctionNode(
+    auto func = std::shared_ptr<FunctionNode>(new FunctionNode(line_number,
         function_generator,name,arguments,std::move(body),std::move(return_value))
         );
     std::vector<std::string> previous_namespace = function_collector.get_namespace();
@@ -159,7 +160,7 @@ std::shared_ptr<FunctionNode> ASTGenerator::add_function(std::string name,std::v
 std::shared_ptr<ClassNode> ASTGenerator::add_class(std::string name,std::vector<std::string> arguments,std::vector<std::shared_ptr<Node>> members_definition,std::vector<std::shared_ptr<FunctionNode>> methods)
 {
     auto class_ = std::shared_ptr<ClassNode>(
-        new ClassNode(
+        new ClassNode(line_number,
         class_generator,
         methods,
         members_definition,
@@ -178,24 +179,24 @@ std::unique_ptr<Node> ASTGenerator::create_call(std::string name,std::vector<std
 {
     if (name == "sizeof" && arguments.size() == 1)
     {
-        auto sizeof_node = std::unique_ptr<SizeofNode>(new SizeofNode(sizeof_generator,arguments[0]));
+        auto sizeof_node = std::unique_ptr<SizeofNode>(new SizeofNode(line_number,sizeof_generator,arguments[0]));
         return std::move(sizeof_node);
     }
     if (name == "typeid" && arguments.size() == 1)
     {
-        auto typeid_node = std::unique_ptr<TypeIdNode>(new TypeIdNode(typeid_generator,arguments[0]));
+        auto typeid_node = std::unique_ptr<TypeIdNode>(new TypeIdNode(line_number,typeid_generator,arguments[0]));
         return std::move(typeid_node);
     }
     if (name == "__blawn_cast__" && arguments.size() == 2)
     {
-        auto cast_node = std::unique_ptr<CastNode>(new CastNode(cast_generator,arguments[0],arguments[1]));
+        auto cast_node = std::unique_ptr<CastNode>(new CastNode(line_number,cast_generator,arguments[0],arguments[1]));
         return std::move(cast_node);
     }
     if (get_blawn_context().exist_builtin_function(name))
     {
         auto b_func = get_blawn_context().get_builtin_function(name);
         auto calling = std::unique_ptr<CallFunctionNode>(
-            new CallFunctionNode(
+            new CallFunctionNode(line_number,
                 calling_generator,arguments,argument_collector,b_func
                 )
             );
@@ -205,7 +206,7 @@ std::unique_ptr<Node> ASTGenerator::create_call(std::string name,std::vector<std
     {
         auto function = function_collector.get(name);
         auto calling = std::unique_ptr<CallFunctionNode>(
-            new CallFunctionNode(
+            new CallFunctionNode(line_number,
                 calling_generator,function,arguments,argument_collector
                 )
             );
@@ -216,7 +217,7 @@ std::unique_ptr<Node> ASTGenerator::create_call(std::string name,std::vector<std
     {
         auto class_ = class_collector.get(name);
         auto constructor = std::unique_ptr<CallConstructorNode>(
-            new CallConstructorNode(
+            new CallConstructorNode(line_number,
                 call_constructor_generator,
                 class_,
                 arguments,
@@ -236,7 +237,7 @@ std::shared_ptr<Node> ASTGenerator::create_call(std::shared_ptr<AccessNode> left
     arguments.insert(arguments.begin(),left->get_left_node());
     auto call_node = std::shared_ptr<CallFunctionNode>
     (
-        new CallFunctionNode(
+        new CallFunctionNode(line_number,
             calling_generator,
             nullptr,
             arguments,
@@ -248,28 +249,28 @@ std::shared_ptr<Node> ASTGenerator::create_call(std::shared_ptr<AccessNode> left
 
 std::unique_ptr<IntegerNode> ASTGenerator::create_integer(int num)
 {
-    auto Integer = std::unique_ptr<IntegerNode>(new IntegerNode(int_ir_generator));
+    auto Integer = std::unique_ptr<IntegerNode>(new IntegerNode(line_number,int_ir_generator));
     Integer->int_num = num;
     return std::move(Integer);
 }
 
 std::unique_ptr<FloatNode> ASTGenerator::create_float(double num)
 {
-    auto float_ = std::unique_ptr<FloatNode>(new FloatNode(float_ir_generator));
+    auto float_ = std::unique_ptr<FloatNode>(new FloatNode(line_number,float_ir_generator));
     float_->float_num = num;
     return std::move(float_);
 }
 
 std::unique_ptr<StringNode> ASTGenerator::create_string(std::string str)
 {
-    auto string = std::make_unique<StringNode>(string_generator);
+    auto string = std::make_unique<StringNode>(line_number,string_generator);
     string->string = str;
     return std::move(string);
 }
 
 std::unique_ptr<BinaryExpressionNode> ASTGenerator::attach_operator(std::shared_ptr<Node> left_node,std::shared_ptr<Node> right_node,const std::string operator_kind)
 {
-    auto expression = std::unique_ptr<BinaryExpressionNode>(new BinaryExpressionNode(binary_expression_generator));
+    auto expression = std::unique_ptr<BinaryExpressionNode>(new BinaryExpressionNode(line_number,binary_expression_generator));
     expression->left_node = std::move(left_node);
     expression->right_node = std::move(right_node);
     expression->operator_kind = operator_kind;
@@ -280,7 +281,7 @@ std::shared_ptr<Node> ASTGenerator::create_if(std::shared_ptr<Node> conditions,s
 {
     std::vector<std::shared_ptr<Node>> empty;
     auto if_node = std::shared_ptr<IfNode>(
-        new IfNode(
+        new IfNode(line_number,
             if_generator,
             conditions,
             body,
@@ -292,7 +293,7 @@ std::shared_ptr<Node> ASTGenerator::create_if(std::shared_ptr<Node> conditions,s
 std::shared_ptr<Node> ASTGenerator::create_for(std::shared_ptr<Node> left,std::shared_ptr<Node> center,std::shared_ptr<Node> right,std::vector<std::shared_ptr<Node>> body)
 {
     auto for_node = std::shared_ptr<ForNode>(
-        new ForNode(
+        new ForNode(line_number,
             for_generator,
             left,
             center,
@@ -306,7 +307,7 @@ std::shared_ptr<Node> ASTGenerator::create_for(std::shared_ptr<Node> left,std::s
 std::shared_ptr<Node> ASTGenerator::add_else(std::vector<std::shared_ptr<Node>> body)
 {
     previous_if_node->set_else_body(body);
-    auto res = std::make_shared<Node>(ir_generator);
+    auto res = std::make_shared<Node>(line_number,ir_generator);
     return res;
 }  
 
@@ -314,7 +315,7 @@ std::shared_ptr<AccessNode> ASTGenerator::create_access(std::string left,std::st
 {
     auto left_node = get_named_value(left);
     auto accessing = std::shared_ptr<AccessNode>(
-        new AccessNode(
+        new AccessNode(line_number,
             access_generator,
             left_node,
             right,
@@ -326,7 +327,7 @@ std::shared_ptr<AccessNode> ASTGenerator::create_access(std::string left,std::st
 std::shared_ptr<AccessNode> ASTGenerator::create_access(std::shared_ptr<Node> left,std::string right)
 {
     auto accessing = std::shared_ptr<AccessNode>(
-        new AccessNode(
+        new AccessNode(line_number,
             access_generator,
             left,
             right,
@@ -338,7 +339,7 @@ std::shared_ptr<AccessNode> ASTGenerator::create_access(std::shared_ptr<Node> le
 std::shared_ptr<ListNode> ASTGenerator::create_list(std::vector<std::shared_ptr<Node>> elements)
 {
     auto list_node = std::shared_ptr<ListNode>(
-        new ListNode(
+        new ListNode(line_number,
             list_generator,
             elements
         ));
@@ -347,7 +348,7 @@ std::shared_ptr<ListNode> ASTGenerator::create_list(std::vector<std::shared_ptr<
 std::shared_ptr<ListNode> ASTGenerator::create_list()
 {
     auto list_node = std::shared_ptr<ListNode>(
-        new ListNode(
+        new ListNode(line_number,
             list_generator,
             true
         ));

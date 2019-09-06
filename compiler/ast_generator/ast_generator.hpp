@@ -52,7 +52,7 @@ public:
     ForIRGenerator for_generator;
     AccessIRGenerator access_generator;
     ListIRGenerator list_generator;
-    
+    int line_number;
     ASTGenerator(llvm::Module &module,
     llvm::IRBuilder<> &ir_builder,
     llvm::LLVMContext &context);
