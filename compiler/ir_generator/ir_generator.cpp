@@ -49,6 +49,24 @@ void initialize(llvm::LLVMContext &context,llvm::Module &module,llvm::IRBuilder<
     ir_builder.SetInsertPoint(block);
 }
 
+IRGenerator::IRGenerator(
+        llvm::LLVMContext &context,
+        llvm::Module &module,
+        llvm::IRBuilder<> &ir_builder
+        ):context(context),module(module),ir_builder(ir_builder)
+{
+    static bool flag = true;
+    if (flag)
+    {
+        initialize(context,module,ir_builder);
+        flag = false;
+    }
+}
+
+llvm::Value* IRGenerator::generate(Node& node) 
+{return 0;}
+
+
 llvm::Value* SizeofGenerator::generate(Node& node_)
 {
     auto& node = *static_cast<SizeofNode*>(&node_);
@@ -101,23 +119,6 @@ llvm::Value* CastIRGenerator::generate(Node& node_)
         return 0;
     }
 }
-
-IRGenerator::IRGenerator(
-        llvm::LLVMContext &context,
-        llvm::Module &module,
-        llvm::IRBuilder<> &ir_builder
-        ):context(context),module(module),ir_builder(ir_builder)
-{
-    static bool flag = true;
-    if (flag)
-    {
-        initialize(context,module,ir_builder);
-        flag = false;
-    }
-}
-
-llvm::Value* IRGenerator::generate(Node& node) 
-{return 0;}
 
 llvm::Value* IntegerIRGenerator::generate(Node& node) 
 {

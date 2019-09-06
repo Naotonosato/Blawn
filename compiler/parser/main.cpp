@@ -62,7 +62,7 @@ int main(int argc, char** argv)
     llvm::raw_fd_ostream stream("result.ll",error,llvm::sys::fs::OpenFlags::F_None);
     module->print(stream,nullptr);
     //llvm::verifyModule(*module,&llvm::outs());
-    system("llc -O3 ./result.ll");
+    system("./data/llc -O3 ./result.ll");
     system("gcc ./result.s -no-pie -o result");
     system("./result");
     
