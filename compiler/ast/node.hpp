@@ -130,19 +130,24 @@ class VariableNode: public Node
 {
     private:
     bool _is_generated;
+    bool _is_global;
     public:
     std::shared_ptr<Node> right_node;
     llvm::AllocaInst* alloca_inst;
+    llvm::GlobalVariable* global_ptr;
     std::map<std::shared_ptr<Node>,llvm::Value*> generated_right_values;
     VariableNode(int line_number,
         VariableIRGenerator& ir_generator,
+        bool is_global,
         std::shared_ptr<Node> right_node,
         std::string name=""
         )
-    :Node(line_number,ir_generator,name),_is_generated(false),right_node(right_node),
+    :Node(line_number,ir_generator,name),_is_generated(false),
+    _is_global(is_global),right_node(right_node),
     alloca_inst(nullptr){}
     void assign(std::shared_ptr<Node>);
     bool is_generated();
+    bool is_global(){return _is_global;}
     void generated();
     void initialize() override;
 };
@@ -264,6 +269,27 @@ public:
 };
 
 
+class DeclareCNode: public Node
+{
+    private:
+    std::vector<std::shared_ptr<Node>> _arguments_type;
+    std::shared_ptr<Node> _return_type;
+    public: 
+    DeclareCNode(
+        int line_number,
+        DeclareCIRGenerator& ir_generator,
+        std::string name,
+        std::vector<std::shared_ptr<Node>> arguments_type,
+        std::shared_ptr<Node> return_type
+        )
+    :Node(line_number,ir_generator,name),
+    _arguments_type(arguments_type),
+    _return_type(return_type){}
+    std::vector<std::shared_ptr<Node>> arguments_type(){return _arguments_type;}
+    std::shared_ptr<Node> return_type(){return _return_type;}
+};
+
+
 class CallFunctionNode: public Node
 {
     public:
@@ -272,6 +298,7 @@ class CallFunctionNode: public Node
         NodeCollector<ArgumentNode>& argument_collector;
         bool is_builtin;
         llvm::Function* builtin_function;
+        bool is_C;
         CallFunctionNode(int line_number,
             CallFunctionIRGenerator& ir_generator,
             std::shared_ptr<FunctionNode> function,
@@ -281,7 +308,7 @@ class CallFunctionNode: public Node
         :Node(line_number,ir_generator),function(function),passed_arguments(
             std::make_move_iterator(passed_arguments.begin()),
             std::make_move_iterator(passed_arguments.end())
-            ),argument_collector(argument_collector){}
+            ),argument_collector(argument_collector),is_C(false){}
         CallFunctionNode(int line_number,
             CallFunctionIRGenerator& ir_generator,
             std::vector<std::shared_ptr<Node>> passed_arguments,
@@ -292,7 +319,16 @@ class CallFunctionNode: public Node
             std::make_move_iterator(passed_arguments.begin()),
             std::make_move_iterator(passed_arguments.end())
             ),argument_collector(argument_collector),
-            is_builtin(true),builtin_function(builtin_function){}
+            is_builtin(true),builtin_function(builtin_function),is_C(false){}
+    
+        CallFunctionNode(int line_number,
+            CallFunctionIRGenerator& ir_generator,
+            std::vector<std::shared_ptr<Node>> passed_arguments,
+            NodeCollector<ArgumentNode>& argument_collector,
+            std::string name
+            ):Node(line_number,ir_generator,name),
+            passed_arguments(passed_arguments),
+            argument_collector(argument_collector),is_C(true){}
 };
 
 
@@ -307,17 +343,19 @@ class ClassNode:public Node
         std::map<std::vector<llvm::Type*>,llvm::Function*> destructors;
         std::vector<std::string> self_namespace;
         std::vector<std::string> arguments_names;
+        bool _is_C_type;
     public:
     ClassNode(int line_number,
         ClassIRGenerator& ir_generator,
         std::vector<std::shared_ptr<FunctionNode>> methods,
         std::vector<std::shared_ptr<Node>> members_definition,
         std::vector<std::string> arguments_names,
+        bool is_C_type,
         std::string name=""
         )
     :Node(line_number,ir_generator,name),methods(methods),
     members_definition(members_definition),
-    arguments_names(arguments_names){}
+    arguments_names(arguments_names),_is_C_type(is_C_type){}
     std::vector<std::string> get_arguments_names(){return arguments_names;}
     std::vector<std::shared_ptr<Node>> get_members_definition(){return members_definition;};
     std::vector<std::shared_ptr<FunctionNode>> get_methods(){return methods;}
@@ -332,6 +370,7 @@ class ClassNode:public Node
     llvm::Function* get_temporary_constructor(){return temporary_constructor;}
     void set_base_constructor(llvm::Function* base){base_constructors.push_back(base);}
     std::vector<llvm::Function*> get_base_constructors(){return base_constructors;}
+    bool is_C_type(){return _is_C_type;}
 };
 
 class CallConstructorNode:public Node

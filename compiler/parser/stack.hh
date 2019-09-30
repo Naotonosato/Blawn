@@ -40,7 +40,7 @@
 
 # include <vector>
 
-#line 5 "./parser.yy" // stack.hh:132
+#line 5 "parser.yy" // stack.hh:132
 namespace Blawn {
 #line 46 "stack.hh" // stack.hh:132
   template <class T, class S = std::vector<T> >
@@ -150,7 +150,7 @@ namespace Blawn {
     unsigned int range_;
   };
 
-#line 5 "./parser.yy" // stack.hh:132
+#line 5 "parser.yy" // stack.hh:132
 } // Blawn
 #line 156 "stack.hh" // stack.hh:132
 

@@ -61,6 +61,29 @@ llvm::Function* BlawnContext::get_builtin_method(std::string type_name,std::stri
     else {return nullptr;}
 }
 
+void BlawnContext::add_C_function(std::string name,llvm::Function* function)
+{
+    C_functions[name] = function;
+}
+
+llvm::Function* BlawnContext::get_C_function(std::string name)
+{
+    if (C_functions.count(name))
+    {
+        return C_functions[name];
+    }
+    else {return nullptr;}
+}
+
+bool BlawnContext::exist_C_function(std::string name)
+{
+    if (get_C_function(name) == nullptr)
+    {
+        return false;
+    }
+    else return true;
+}
+
 void BlawnContext::add_class(std::string name,std::shared_ptr<ClassNode> class_)
 {
     classes[name] = class_;
@@ -69,6 +92,17 @@ void BlawnContext::add_class(std::string name,std::shared_ptr<ClassNode> class_)
 std::shared_ptr<ClassNode> BlawnContext::get_class(std::string name)
 {
     if (classes.count(name)) return classes[name];
+    else return nullptr;
+}
+
+void BlawnContext::add_user_type(std::string name,llvm::Type* type)
+{
+    user_types[name] = type;
+}
+
+llvm::Type* BlawnContext::get_user_type(std::string name)
+{
+    if (user_types.count(name)) return user_types[name];
     else return nullptr;
 }
 

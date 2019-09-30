@@ -42,9 +42,12 @@
     enum BLAWN_STATE
     {
         EXIST_IF = 0,
-        NO_IF = 1
+        NO_IF = 1,
+        GLOBAL = 2,
+        NOT_GLOBAL = 3
     };
     BLAWN_STATE blawn_state = NO_IF;
+    BLAWN_STATE is_global = NOT_GLOBAL;
 }
 
 %define api.value.type variant
@@ -53,6 +56,8 @@
 %token <std::string> FUNCTION_DEFINITION
 %token <std::string> METHOD_DEFINITION
 %token <std::string> CLASS_DEFINITION
+%token <std::string> C_TYPE_DEFINITION
+%token <std::string> C_FUNCTION_DECLARATION
 %token  RETURN
 %token <std::string> C_FUNCTION
 %token <std::string> MEMBER_IDENTIFIER
@@ -80,6 +85,9 @@
         FOR
         IN
         WHILE
+        GLOBAL
+        C_FUNCTION_ARGUMENT
+        C_FUNCTION_RETURN
         EOL
 %token <long long> INT_LITERAL
 %token <double> FLOAT_LITERAL
@@ -94,11 +102,16 @@
 %type <std::string> function_start
 %type <std::shared_ptr<Node>> class_definition
 %type <std::string> class_start
+%type <std::shared_ptr<Node>> c_type_definition
+%type <std::string> c_type_start
+%type <std::shared_ptr<Node>> c_function_declaration
 %type <std::vector<std::shared_ptr<FunctionNode>>> methods
 %type <std::shared_ptr<FunctionNode>> method_definition
 %type <std::vector<std::shared_ptr<Node>>> members_definition
 %type <std::vector<std::string>> arguments
 %type <std::vector<std::string>> definition_arguments
+%type <std::shared_ptr<Node>> globals_definition
+%type <std::vector<std::shared_ptr<Node>>> globals_variables
 %type <std::shared_ptr<Node>> return_value
 %type <std::vector<std::shared_ptr<Node>>> expressions
 %type <std::shared_ptr<Node>> expression
@@ -160,6 +173,18 @@ definition:
     |class_definition
     {
         $$ = std::move($1);
+    }
+    |c_type_definition
+    {
+        $$ = std::move($1);
+    }
+    |globals_definition
+    {
+        $$ = std::move($1);
+    }
+    |c_function_declaration
+    {
+        $$ = std::move($1);
     };
 function_definition:
     function_start arguments EOL lines return_value EOL
@@ -175,22 +200,34 @@ function_start:
     };
 class_definition:
     class_start arguments EOL members_definition methods
-    {
-        $$ = std::move(driver.ast_generator->add_class($1,$2,$4,$5));
+    { 
+        $$ = std::move(driver.ast_generator->create_class($1,$2,$4,$5));
         driver.ast_generator->break_out_of_namespace();
     }
     |class_start arguments EOL members_definition
     {
-        $$ = std::move(driver.ast_generator->add_class($1,$2,$4,{}));
+        $$ = std::move(driver.ast_generator->create_class($1,$2,$4,{}));
         driver.ast_generator->break_out_of_namespace();
     }
     |class_start arguments EOL methods
     {
-        $$ = std::move(driver.ast_generator->add_class($1,$2,{},$4));
+        $$ = std::move(driver.ast_generator->create_class($1,$2,{},$4));
         driver.ast_generator->break_out_of_namespace();
     };
 class_start:
     CLASS_DEFINITION
+    {
+        $$ = $1;
+        driver.ast_generator->into_namespace($1);
+    };
+c_type_definition:
+    c_type_start EOL members_definition
+    {
+        $$ = std::move(driver.ast_generator->create_C_type($1,$3));
+        driver.ast_generator->break_out_of_namespace();
+    };
+c_type_start:
+    C_TYPE_DEFINITION
     {
         $$ = $1;
         driver.ast_generator->into_namespace($1);
@@ -216,12 +253,12 @@ method_definition:
 members_definition:
     MEMBER_IDENTIFIER EQUAL expression EOL
     {
-        $$.push_back(driver.ast_generator->assign($1,std::move($3)));
+        $$.push_back(driver.ast_generator->assign($1,std::move($3),false));
     }
     |members_definition MEMBER_IDENTIFIER EQUAL expression EOL
     {
         $$ = std::move($1);
-        $$.push_back(driver.ast_generator->assign($2,std::move($4)));
+        $$.push_back(driver.ast_generator->assign($2,std::move($4),false));
     };
 return_value:
     RETURN expression
@@ -252,6 +289,38 @@ definition_arguments:
         $$ = std::move($1);
         $$.push_back($3);
         driver.ast_generator->add_argument($3);
+    };
+globals_definition:
+    global_start EOL LEFT_PARENTHESIS EOL globals_variables EOL RIGHT_PARENTHESIS EOL
+    {
+        //driver.ast_generator->add_global_variables($5);
+        is_global = NOT_GLOBAL;
+        std::cout << "globals" << std::endl;
+        $$ = driver.ast_generator->no_value_node;
+    };
+global_start:
+    GLOBAL
+    {
+        is_global = GLOBAL;
+    };
+globals_variables:
+    assign_variable
+    {
+        $$.push_back(std::move($1));
+    }
+    |globals_variables EOL assign_variable
+    {
+        $$ = std::move($1);
+        $$.push_back(std::move($3));
+    };
+c_function_declaration:
+    C_FUNCTION_DECLARATION EOL C_FUNCTION_ARGUMENT expressions EOL C_FUNCTION_RETURN expression EOL
+    {
+        $$ = driver.ast_generator->declare_C_function($1,$4,$7);
+    }
+    |C_FUNCTION_DECLARATION EOL C_FUNCTION_ARGUMENT EOL C_FUNCTION_RETURN expression EOL
+    {
+        $$ = driver.ast_generator->declare_C_function($1,{},$6);
     };
 expressions:
     expression
@@ -369,7 +438,6 @@ list:
     {
         $$ = driver.ast_generator->create_list();
     };
-
 access:
     expression DOT_IDENTIFIER
     {
@@ -378,7 +446,10 @@ access:
 assign_variable:
     IDENTIFIER EQUAL expression
     {
-        $$ = driver.ast_generator->assign($1,std::move($3));
+        if (is_global == NOT_GLOBAL)
+        {$$ = driver.ast_generator->assign($1,std::move($3),false);}
+        if (is_global == GLOBAL)
+        {$$ = driver.ast_generator->assign($1,std::move($3),true);}
     }
     |access EQUAL expression
     {

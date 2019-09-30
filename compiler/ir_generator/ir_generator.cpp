@@ -5,6 +5,7 @@
 #include <llvm/IR/Type.h>
 #include <llvm/IR/DerivedTypes.h>
 #include <llvm/IR/Function.h>
+#include <llvm/IR/GlobalVariable.h>
 #include <llvm/IR/BasicBlock.h>
 #include <llvm/IR/Instructions.h>
 #include <llvm/Transforms/Utils/Cloning.h>
@@ -55,16 +56,23 @@ IRGenerator::IRGenerator(
         llvm::IRBuilder<> &ir_builder
         ):context(context),module(module),ir_builder(ir_builder)
 {
-    static bool flag = true;
-    if (flag)
+    static bool initialized = false;
+    if (!initialized)
     {
         initialize(context,module,ir_builder);
-        flag = false;
+        initialized = true;
     }
 }
 
 llvm::Value* IRGenerator::generate(Node& node) 
-{return 0;}
+{
+    std::cout << "Warning: calling not implemented ir generator function" << std::endl;
+    std::cout << "For degug:\n line number: " << node.line_number << std::endl;
+    std::cout << "node name: " << node.name << std::endl;
+    std::cout << "node object's address: " << &node << std::endl;
+    std::cout << "...Done report" << std::endl;
+    return 0;
+}
 
 
 llvm::Value* SizeofGenerator::generate(Node& node_)
@@ -118,7 +126,7 @@ llvm::Value* CastIRGenerator::generate(Node& node_)
         logger.invalid_cast_error("<?>","<?>");
         return 0;
     }
-}
+} 
 
 llvm::Value* IntegerIRGenerator::generate(Node& node) 
 {
@@ -154,6 +162,20 @@ llvm::Value* VariableIRGenerator::generate(Node& node_)
         }
         else right = node.right_node->generate();
         if (right == nullptr) logger.invalid_right_value_error();
+        if (node.is_global())
+        {
+            auto gvalue = new llvm::GlobalVariable(
+                module,
+                right->getType(),
+                false,
+                llvm::GlobalVariable::ExternalLinkage,
+                llvm::Constant::getNullValue(right->getType()),
+                node.name);
+            node.global_ptr = gvalue;
+            ir_builder.CreateStore(right,gvalue);
+            node.generated();
+            return ir_builder.CreateLoad(node.global_ptr);
+        }
         //std::cout << "new variable " << node.name << std::endl;
         node.alloca_inst = ir_builder.CreateAlloca(right->getType(),0,node.name);
         ir_builder.CreateStore(right,node.alloca_inst);
@@ -162,7 +184,8 @@ llvm::Value* VariableIRGenerator::generate(Node& node_)
     }
     else
     {
-        return ir_builder.CreateLoad(node.alloca_inst);
+        if (node.alloca_inst != nullptr) return ir_builder.CreateLoad(node.alloca_inst);
+        if (node.global_ptr != nullptr) return ir_builder.CreateLoad(node.global_ptr);
     }
 }
 
@@ -321,6 +344,30 @@ llvm::Function* FunctionIRGenerator::generate(Node& node_)
     return function;
 } 
 
+llvm::Value* DeclareCIRGenerator::generate(Node &node_)
+{
+    auto& node = *static_cast<DeclareCNode*>(&node_);
+    std::vector<llvm::Type*> arguments_type;
+    for (auto &v:node.arguments_type())
+    {
+        arguments_type.push_back(v->generate()->getType());
+    }
+    llvm::Type* return_type = node.return_type()->generate()->getType();
+    auto ft = llvm::FunctionType::get(
+        return_type,
+        arguments_type,
+        false
+    );
+    auto C_function = llvm::Function::Create(
+        ft,
+        llvm::Function::ExternalLinkage,
+        node.name,
+        &module
+    );
+    get_blawn_context().add_C_function(node.name,C_function);
+    return 0;
+}
+
 llvm::Value* CallFunctionIRGenerator::generate(Node &node_)
 {
     auto& node = *static_cast<CallFunctionNode*>(&node_);
@@ -361,6 +408,39 @@ llvm::Value* CallFunctionIRGenerator::generate(Node &node_)
         }
         return ir_builder.CreateCall(node.builtin_function,args);
     }
+
+    //call C function
+    if (node.is_C)
+    {
+        if (!get_blawn_context().exist_C_function(node.name)){std::cout << "function not defined";exit(1);}
+        auto cfunc = get_blawn_context().get_C_function(node.name); 
+        for (auto &arg: node.passed_arguments)
+        {
+            if (arg->is_argument())
+            {
+                if (static_cast<ArgumentNode*>(arg.get())->get_right_value() == nullptr)
+                {
+                    std::vector<llvm::Value*> empty_arg;
+                    return ir_builder.CreateCall(cfunc,empty_arg);
+                }
+            }
+        }
+        std::vector<llvm::Value*> args;
+        if (cfunc->arg_size() != node.passed_arguments.size())
+        {logger.invalid_paramater_error("function");}
+        
+        int count = 0;
+        for (auto &c_arg:cfunc->args())
+        {
+            auto& arg = node.passed_arguments[count];
+            auto value = arg->generate();
+            if (value->getType() != c_arg.getType()){logger.invalid_paramater_error("function");}
+            args.push_back(value);    
+            count += 1;
+        }
+        return ir_builder.CreateCall(cfunc,args);
+    }
+    //
     for (auto &arg: node.passed_arguments)
     {
         if (arg->is_argument())
@@ -422,13 +502,16 @@ llvm::Value* CallFunctionIRGenerator::generate(Node &node_)
         line->generate();
     }
 
-    auto ds = get_blawn_context().get_destructors(ir_builder.GetInsertBlock());
+    auto ds = get_blawn_context().get_destructors(block);
+    std::string n = block->getParent()->getName(); // print(llvm::outs());
+    std::cout << "function name: " << n << " num of heap pointer: "<< ds.size() << std::endl;
+    /*
     for (auto& d:ds)
     {
         ir_builder.CreateCall(d.first,d.second);
+        //f->print(llvm::outs());
     }
-
-
+    */
     llvm::Value* return_value;
     llvm::Type* return_type;
     if (node.function->return_value != nullptr)
@@ -562,12 +645,14 @@ llvm::Value* CallConstructorIRGenerator::generate(Node& node_)
     }
 
     auto instance_type/*class*/ = llvm::StructType::create(context,fields,node.get_class()->name);
-    auto instance_alloca = utils::malloc_value(instance_type,context,module,ir_builder);
+    auto instance_alloca/*pointer of the instance*/ = utils::malloc_value(instance_type,context,module,ir_builder);
     std::string type_name = instance_type->getStructName();
     get_blawn_context().add_class(type_name,node.get_class());
+    get_blawn_context().add_user_type(node.get_class()->name,instance_type);
 
     for (unsigned int idx=0;idx<=fields.size()-1;idx++)
     {
+        //initialize member variables
         get_blawn_context().register_element_name(type_name,names[idx],idx);
         ir_builder.CreateStore(
             initial_values[idx],
@@ -599,7 +684,7 @@ llvm::Value* CallConstructorIRGenerator::generate(Node& node_)
     }
     
     llvm::SmallVector<llvm::ReturnInst*,0> returns;
-    llvm::CloneFunctionInto(new_constructor,base_constructor,vmap,false,returns);
+    llvm::CloneFunctionInto(new_constructor,base_constructor,vmap,true,returns);
     node.get_class()->register_constructor(types,new_constructor);
     node.get_class()->get_temporary_constructor()->replaceAllUsesWith(new_constructor);
     llvm::verifyFunction(*new_constructor,&llvm::outs());
@@ -612,7 +697,7 @@ llvm::Value* CallConstructorIRGenerator::generate(Node& node_)
         destructor = llvm::Function::Create(
             destructor_type,
             llvm::Function::ExternalLinkage,
-            "destructor_of_" + node.get_class()->name,
+            "destructor<" + node.get_class()->name + ">",
             &module
             );
         auto destructor_entry = llvm::BasicBlock::Create(context,"entry",destructor);
@@ -832,7 +917,28 @@ llvm::Value* ListIRGenerator::generate(Node& node_)
     return first_element_ptr;
 }
 
-
+IRGenerators::IRGenerators(llvm::LLVMContext& context,llvm::Module& module,llvm::IRBuilder<>& ir_builder):
+ir_generator(context,module,ir_builder),
+sizeof_generator(context,module,ir_builder),
+typeid_generator(context,module,ir_builder),
+cast_generator(context,module,ir_builder),
+int_ir_generator(context,module,ir_builder),
+float_ir_generator(context,module,ir_builder),
+string_generator(context,module,ir_builder),
+variable_generator(context,module,ir_builder),
+argument_generator(context,module,ir_builder),
+assigment_generator(context,module,ir_builder),
+binary_expression_generator(context,module,ir_builder),
+function_generator(context,module,ir_builder),
+declare_C_generator(context,module,ir_builder),
+calling_generator(context,module,ir_builder),
+class_generator(context,module,ir_builder),
+call_constructor_generator(context,module,ir_builder),
+if_generator(context,module,ir_builder),
+for_generator(context,module,ir_builder),
+access_generator(context,module,ir_builder),
+list_generator(context,module,ir_builder)
+{}
 /*
 llvm::Value* access(llvm::Value* left,llvm::StructType* struct_type,std::string right_name,llvm::IRBuilder<> ir_builder)
 {

@@ -1,5 +1,6 @@
 #include <iostream>
 #include <memory>
+#include <unistd.h>
 #include <llvm/IR/IRBuilder.h>
 #include <llvm/IR/Module.h>
 #include <llvm/IR/LLVMContext.h>
@@ -24,11 +25,33 @@ int main(int argc, char** argv)
         exit(1);
     }
     std::string filename = argv[1];
+    bool is_link = false;
+    std::string to_link;
+    std::string output = "result";
+    const char* opstring = "l:o:";
+    int opt;
+    while ((opt = getopt(argc,argv,opstring)) != -1)
+    {
+        switch(opt)
+        {
+            case 'l':
+                is_link = true;
+                to_link = optarg;
+                break;
+            case 'o':
+                output = optarg;
+                break;
+            default:
+                std::cerr << "invalid command." << std::endl;
+                exit(1);
+        }
+    }
 
     auto context = std::shared_ptr<llvm::LLVMContext>(new llvm::LLVMContext);
     std::shared_ptr<llvm::Module> module (new llvm::Module("Blawn",*context));
     auto ir_builder = std::shared_ptr<llvm::IRBuilder<>>(new llvm::IRBuilder<>(*context));
-    
+
+    /* 
     llvm::InitializeNativeTarget();
     auto target_triple = llvm::sys::getDefaultTargetTriple();
     module->setTargetTriple(target_triple);
@@ -49,7 +72,7 @@ int main(int argc, char** argv)
 
     module->setDataLayout(TargetMachine->createDataLayout());
     
-
+    */
 
     auto ast_generator = std::make_unique<ASTGenerator>(*module,*ir_builder,*context);
     Blawn::Driver* driver = new Blawn::Driver(std::move(ast_generator));
@@ -62,9 +85,19 @@ int main(int argc, char** argv)
     llvm::raw_fd_ostream stream("result.ll",error,llvm::sys::fs::OpenFlags::F_None);
     module->print(stream,nullptr);
     //llvm::verifyModule(*module,&llvm::outs());
+    std::cout << "\n\n";
     system("./data/llc -O3 ./result.ll");
-    system("gcc ./result.s -no-pie -o result");
-    system("./result");
+    if (is_link)
+    {
+        system("gcc -c ./result.s -o tmp/obj.o -no-pie");
+        std::string cmd = ("gcc -no-pie tmp/obj.o " + to_link + " -o " + output);
+        system(cmd.c_str());
+    }else{
+        system("gcc ./result.s -no-pie -o result");
+    }
+    std::string do_cmds = ("./" + output);
+    const char* do_cmd = ("./" + output).c_str();
+    system(do_cmd);
     
     /*
     std::string filename = "../test/test_parsing/test1.blawn";

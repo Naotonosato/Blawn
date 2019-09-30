@@ -40,7 +40,7 @@
 #ifndef YY_YY_PARSER_TAB_HH_INCLUDED
 # define YY_YY_PARSER_TAB_HH_INCLUDED
 // //                    "%code requires" blocks.
-#line 10 "./parser.yy" // lalr1.cc:377
+#line 10 "parser.yy" // lalr1.cc:377
 
     #include <memory>
     #include <llvm/IR/IRBuilder.h>
@@ -136,7 +136,7 @@
 # define YYDEBUG 0
 #endif
 
-#line 5 "./parser.yy" // lalr1.cc:377
+#line 5 "parser.yy" // lalr1.cc:377
 namespace Blawn {
 #line 142 "parser.tab.hh" // lalr1.cc:377
 
@@ -322,7 +322,10 @@ namespace Blawn {
       // definition
       // function_definition
       // class_definition
+      // c_type_definition
       // return_value
+      // globals_definition
+      // c_function_declaration
       // expression
       // list
       // assign_variable
@@ -334,6 +337,8 @@ namespace Blawn {
       // FUNCTION_DEFINITION
       // METHOD_DEFINITION
       // CLASS_DEFINITION
+      // C_TYPE_DEFINITION
+      // C_FUNCTION_DECLARATION
       // C_FUNCTION
       // MEMBER_IDENTIFIER
       // IDENTIFIER
@@ -341,6 +346,7 @@ namespace Blawn {
       // STRING_LITERAL
       // function_start
       // class_start
+      // c_type_start
       char dummy6[sizeof(std::string)];
 
       // methods
@@ -349,6 +355,7 @@ namespace Blawn {
       // block
       // lines
       // members_definition
+      // globals_variables
       // expressions
       char dummy8[sizeof(std::vector<std::shared_ptr<Node>>)];
 
@@ -381,43 +388,48 @@ namespace Blawn {
         FUNCTION_DEFINITION = 258,
         METHOD_DEFINITION = 259,
         CLASS_DEFINITION = 260,
-        RETURN = 261,
-        C_FUNCTION = 262,
-        MEMBER_IDENTIFIER = 263,
-        IDENTIFIER = 264,
-        EQUAL = 265,
-        OP_AND = 266,
-        OP_OR = 267,
-        OP_EQUAL = 268,
-        OP_NOT_EQUAL = 269,
-        OP_MORE_EQUAL = 270,
-        OP_LESS_EQUAL = 271,
-        OP_MORE = 272,
-        OP_LESS = 273,
-        PLUS = 274,
-        MINUS = 275,
-        ASTERISK = 276,
-        SLASH = 277,
-        DOT_IDENTIFIER = 278,
-        USE = 279,
-        COLON = 280,
-        SEMICOLON = 281,
-        COMMA = 282,
-        LEFT_PARENTHESIS = 283,
-        RIGHT_PARENTHESIS = 284,
-        LEFT_CURLY_BRACE = 285,
-        RIGHT_CURLY_BRACE = 286,
-        LEFT_BRACKET = 287,
-        RIGHT_BRACKET = 288,
-        IF = 289,
-        ELSE = 290,
-        FOR = 291,
-        IN = 292,
-        WHILE = 293,
-        EOL = 294,
-        INT_LITERAL = 295,
-        FLOAT_LITERAL = 296,
-        STRING_LITERAL = 297
+        C_TYPE_DEFINITION = 261,
+        C_FUNCTION_DECLARATION = 262,
+        RETURN = 263,
+        C_FUNCTION = 264,
+        MEMBER_IDENTIFIER = 265,
+        IDENTIFIER = 266,
+        EQUAL = 267,
+        OP_AND = 268,
+        OP_OR = 269,
+        OP_EQUAL = 270,
+        OP_NOT_EQUAL = 271,
+        OP_MORE_EQUAL = 272,
+        OP_LESS_EQUAL = 273,
+        OP_MORE = 274,
+        OP_LESS = 275,
+        PLUS = 276,
+        MINUS = 277,
+        ASTERISK = 278,
+        SLASH = 279,
+        DOT_IDENTIFIER = 280,
+        USE = 281,
+        COLON = 282,
+        SEMICOLON = 283,
+        COMMA = 284,
+        LEFT_PARENTHESIS = 285,
+        RIGHT_PARENTHESIS = 286,
+        LEFT_CURLY_BRACE = 287,
+        RIGHT_CURLY_BRACE = 288,
+        LEFT_BRACKET = 289,
+        RIGHT_BRACKET = 290,
+        IF = 291,
+        ELSE = 292,
+        FOR = 293,
+        IN = 294,
+        WHILE = 295,
+        GLOBAL = 296,
+        C_FUNCTION_ARGUMENT = 297,
+        C_FUNCTION_RETURN = 298,
+        EOL = 299,
+        INT_LITERAL = 300,
+        FLOAT_LITERAL = 301,
+        STRING_LITERAL = 302
       };
     };
 
@@ -558,6 +570,14 @@ namespace Blawn {
 
     static inline
     symbol_type
+    make_C_TYPE_DEFINITION (const std::string& v, const location_type& l);
+
+    static inline
+    symbol_type
+    make_C_FUNCTION_DECLARATION (const std::string& v, const location_type& l);
+
+    static inline
+    symbol_type
     make_RETURN (const location_type& l);
 
     static inline
@@ -690,6 +710,18 @@ namespace Blawn {
 
     static inline
     symbol_type
+    make_GLOBAL (const location_type& l);
+
+    static inline
+    symbol_type
+    make_C_FUNCTION_ARGUMENT (const location_type& l);
+
+    static inline
+    symbol_type
+    make_C_FUNCTION_RETURN (const location_type& l);
+
+    static inline
+    symbol_type
     make_EOL (const location_type& l);
 
     static inline
@@ -779,15 +811,15 @@ namespace Blawn {
   static const unsigned char yydefact_[];
 
   // YYPGOTO[NTERM-NUM].
-  static const signed char yypgoto_[];
+  static const short int yypgoto_[];
 
   // YYDEFGOTO[NTERM-NUM].
-  static const signed char yydefgoto_[];
+  static const short int yydefgoto_[];
 
   // YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
   // positive, shift that token.  If negative, reduce the rule whose
   // number is the opposite.  If YYTABLE_NINF, syntax error.
-  static const unsigned char yytable_[];
+  static const short int yytable_[];
 
   static const short int yycheck_[];
 
@@ -906,12 +938,12 @@ namespace Blawn {
     enum
     {
       yyeof_ = 0,
-      yylast_ = 304,     ///< Last index in yytable_.
-      yynnts_ = 27,  ///< Number of nonterminal symbols.
-      yyfinal_ = 36, ///< Termination state number.
+      yylast_ = 358,     ///< Last index in yytable_.
+      yynnts_ = 33,  ///< Number of nonterminal symbols.
+      yyfinal_ = 45, ///< Termination state number.
       yyterror_ = 1,
       yyerrcode_ = 256,
-      yyntokens_ = 43  ///< Number of tokens.
+      yyntokens_ = 48  ///< Number of tokens.
     };
 
 
@@ -921,9 +953,9 @@ namespace Blawn {
   };
 
 
-#line 5 "./parser.yy" // lalr1.cc:377
+#line 5 "parser.yy" // lalr1.cc:377
 } // Blawn
-#line 927 "parser.tab.hh" // lalr1.cc:377
+#line 959 "parser.tab.hh" // lalr1.cc:377
 
 
 

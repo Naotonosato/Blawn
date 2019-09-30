@@ -45,8 +45,13 @@ ELSE        else
 FOR         for
 IN          in
 WHILE       while
+GLOBAL      global
+C_FUNCTION_DECLARATION  \[Cfunction[ \t]+[a-zA-Z_][0-9a-zA-Z_]*\]
+C_FUNCTION_ARGUMENT     arguments:
+C_FUNCTION_RETURN       return:
 FUNCTION_DEFINITION     function[ \t]+[a-zA-Z_][0-9a-zA-Z_]*
 METHOD_DEFINITION       @function[ \t]+[a-zA-Z_][0-9a-zA-Z_]*
+C_TYPE_DEFINITION       Ctype[ \t]+[a-zA-Z_][0-9a-zA-Z_]*
 CLASS_DEFINITION        class[ \t]+[a-zA-Z_][0-9a-zA-Z_]*
 RETURN                  return
 LEFT_PARENTHESIS  \(
@@ -174,6 +179,9 @@ EOL                 \n
 {WHILE} {
     return Blawn::Parser::token::WHILE;
 }
+{GLOBAL} {
+    return Blawn::Parser::token::GLOBAL;
+}
 {METHOD_DEFINITION} {
     std::string definition = yytext;
     std::string reversed;
@@ -206,6 +214,32 @@ EOL                 \n
     definition.erase(0,index);
     lval->build<std::string>() = definition;
     return Blawn::Parser::token::CLASS_DEFINITION;
+}
+{C_TYPE_DEFINITION} {
+    std::string definition = yytext;
+    std::string reversed;
+    std::reverse_copy(definition.begin(),definition.end(),std::back_inserter(reversed));
+    int index = definition.size() - reversed.find(" ");
+    definition.erase(0,index);
+    lval->build<std::string>() = definition;
+    return Blawn::Parser::token::C_TYPE_DEFINITION;
+}
+{C_FUNCTION_DECLARATION} {
+    //example: [Cfunction cf]
+    std::string definition = yytext;
+    std::string reversed;
+    std::reverse_copy(definition.begin(),definition.end(),std::back_inserter(reversed));
+    int index = definition.size() - reversed.find(" ");
+    definition.erase(0,index);
+    definition.erase(definition.size()-1);
+    lval->build<std::string>() = definition;
+    return Blawn::Parser::token::C_FUNCTION_DECLARATION;
+}
+{C_FUNCTION_ARGUMENT} {
+    return Blawn::Parser::token::C_FUNCTION_ARGUMENT;
+}
+{C_FUNCTION_RETURN} {
+    return Blawn::Parser::token::C_FUNCTION_RETURN;
 }
 {RETURN} {
     return Blawn::Parser::token::RETURN;

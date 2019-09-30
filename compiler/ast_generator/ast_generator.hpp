@@ -30,29 +30,13 @@ private:
     NodeCollector<FunctionNode> function_collector;
     NodeCollector<ArgumentNode> argument_collector;
     NodeCollector<ClassNode> class_collector;
+    NodeCollector<ClassNode> C_type_collector;
     std::shared_ptr<IfNode> previous_if_node;
     std::map<std::string,std::shared_ptr<VariableNode>&> access_namespace(std::vector<std::string>);
 public:
-    IRGenerator ir_generator;
-    SizeofGenerator sizeof_generator;
-    TypeIdGenerator typeid_generator;
-    CastIRGenerator cast_generator;
-    IntegerIRGenerator int_ir_generator;
-    FloatIRGenerator float_ir_generator;
-    StringIRGenerator string_generator;
-    VariableIRGenerator variable_generator;
-    ArgumentIRGenerator argument_generator;
-    AssigmentIRGenerator assigment_generator;
-    BinaryExpressionIRGenerator binary_expression_generator;
-    FunctionIRGenerator function_generator;
-    CallFunctionIRGenerator calling_generator;
-    ClassIRGenerator class_generator;
-    CallConstructorIRGenerator call_constructor_generator;
-    IfIRGenerator if_generator;
-    ForIRGenerator for_generator;
-    AccessIRGenerator access_generator;
-    ListIRGenerator list_generator;
+    IRGenerators ir_generators;
     int line_number;
+    std::shared_ptr<Node> no_value_node;
     ASTGenerator(llvm::Module &module,
     llvm::IRBuilder<> &ir_builder,
     llvm::LLVMContext &context);
@@ -60,11 +44,13 @@ public:
     void into_namespace();
     void break_out_of_namespace();
     std::unique_ptr<BinaryExpressionNode> attach_operator(std::shared_ptr<Node> node,std::shared_ptr<Node> other,const std::string operator_type);
-    std::shared_ptr<Node> assign(std::string name,std::shared_ptr<Node> node);
+    std::shared_ptr<Node> assign(std::string name,std::shared_ptr<Node> node,bool is_global);
     std::shared_ptr<Node> assign(std::shared_ptr<AccessNode> left,std::shared_ptr<Node> right);
     std::shared_ptr<Node> assign_typeid(std::string name,std::shared_ptr<Node> type_id);
     std::shared_ptr<Node> get_typeid(std::string name);
     std::shared_ptr<Node> get_named_value(std::string name);
+    std::shared_ptr<Node> add_global_variables(std::vector<std::shared_ptr<Node>>);
+    std::shared_ptr<Node> declare_C_function(std::string name,std::vector<std::shared_ptr<Node>> args,std::shared_ptr<Node> return_);
     void add_argument(std::string);
     std::unique_ptr<IntegerNode> create_integer(int num);
     std::unique_ptr<FloatNode> create_float(double num);
@@ -73,7 +59,8 @@ public:
     std::shared_ptr<FunctionNode> add_function(std::string name,std::vector<std::string> arguments,std::vector<std::shared_ptr<Node>> body,std::shared_ptr<Node> return_value);
     std::unique_ptr<Node> create_call(std::string name,std::vector<std::shared_ptr<Node>> arguments);
     std::shared_ptr<Node> create_call(std::shared_ptr<AccessNode>,std::vector<std::shared_ptr<Node>> arguments);
-    std::shared_ptr<ClassNode> add_class(std::string,std::vector<std::string> arguments,std::vector<std::shared_ptr<Node>> members_definition,std::vector<std::shared_ptr<FunctionNode>> body);
+    std::shared_ptr<ClassNode> create_class(std::string,std::vector<std::string> arguments,std::vector<std::shared_ptr<Node>> members_definition,std::vector<std::shared_ptr<FunctionNode>> body);
+    std::shared_ptr<ClassNode> create_C_type(std::string name,std::vector<std::shared_ptr<Node>> members_definition);
     std::shared_ptr<Node> create_if(std::shared_ptr<Node>,std::vector<std::shared_ptr<Node>>);
     std::shared_ptr<Node> create_for(std::shared_ptr<Node>,std::shared_ptr<Node>,std::shared_ptr<Node>,std::vector<std::shared_ptr<Node>> body);
     std::shared_ptr<Node> add_else(std::vector<std::shared_ptr<Node>>);

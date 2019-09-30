@@ -181,6 +181,19 @@ public:
 };
 
 
+class DeclareCIRGenerator: public IRGenerator
+{
+    public:
+    DeclareCIRGenerator(
+        llvm::LLVMContext &context,
+        llvm::Module &module,
+        llvm::IRBuilder<> &ir_builder
+        )
+    :IRGenerator(context,module,ir_builder){}
+    llvm::Value* generate(Node &node) override;
+}; 
+
+
 class CallFunctionIRGenerator: public IRGenerator
 {
 public:
@@ -268,4 +281,31 @@ class ListIRGenerator:public IRGenerator
         )
     :IRGenerator(context,module,ir_builder){}
     llvm::Value* generate(Node &node) override;
+};
+
+
+class IRGenerators
+{
+public:
+    IRGenerator ir_generator;
+    SizeofGenerator sizeof_generator;
+    TypeIdGenerator typeid_generator;
+    CastIRGenerator cast_generator;
+    IntegerIRGenerator int_ir_generator;
+    FloatIRGenerator float_ir_generator;
+    StringIRGenerator string_generator;
+    VariableIRGenerator variable_generator;
+    ArgumentIRGenerator argument_generator;
+    AssigmentIRGenerator assigment_generator;
+    BinaryExpressionIRGenerator binary_expression_generator;
+    FunctionIRGenerator function_generator;
+    DeclareCIRGenerator declare_C_generator;
+    CallFunctionIRGenerator calling_generator;
+    ClassIRGenerator class_generator;
+    CallConstructorIRGenerator call_constructor_generator;
+    IfIRGenerator if_generator;
+    ForIRGenerator for_generator;
+    AccessIRGenerator access_generator;
+    ListIRGenerator list_generator;
+    IRGenerators(llvm::LLVMContext&,llvm::Module&,llvm::IRBuilder<>&);
 };

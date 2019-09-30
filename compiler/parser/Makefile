@@ -9,13 +9,13 @@ blawn: ../builtins/builtins.o ../errors/errors.o main.o driver.o ../ast/node.o .
 	g++ -g -c -o driver.o driver.cpp $(LLVM_OPTION) 
 ./parser.o: ./parser.tab.cc ./parser.tab.hh
 	g++ -g -c -o parser.o parser.tab.cc $(LLVM_OPTION)  
-./parser.tab.cc ./parser.tab.hh: ./parser.yy
-	bison -d ./parser.yy -r all --report-file=log.log
+./parser.tab.cc ./parser.tab.hh: ../compiler/parser/parser.yy
+	cd ../compiler/parser && bison -d ./parser.yy -r all --report-file=log.log
 	python3 patch.py
 ./lexer.o: ./lex.yy.cc
 	g++ -g -c -o lexer.o lex.yy.cc $(LLVM_OPTION)
-./lex.yy.cc: ./lexer.ll
-	flex++ -d ./lexer.ll
+./lex.yy.cc: ../compiler/parser/lexer.ll
+	cd ../compiler/parser && flex++ -d ./lexer.ll
 ./main.o: ./main.cpp
 	g++ -g -c -o main.o main.cpp $(LLVM_OPTION)
 ../ir_generator/ir_generator.o: ../ir_generator/ir_generator.cpp ../ir_generator/ir_generator.hpp ../ast_generator/node_collector.hpp ../utils/utils.hpp

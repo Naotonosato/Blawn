@@ -40,7 +40,7 @@
 
 # include "position.hh"
 
-#line 5 "./parser.yy" // location.cc:296
+#line 5 "parser.yy" // location.cc:296
 namespace Blawn {
 #line 46 "location.hh" // location.cc:296
   /// Abstract a location.
@@ -186,7 +186,7 @@ namespace Blawn {
     return ostr;
   }
 
-#line 5 "./parser.yy" // location.cc:296
+#line 5 "parser.yy" // location.cc:296
 } // Blawn
 #line 192 "location.hh" // location.cc:296
 #endif // !YY_YY_LOCATION_HH_INCLUDED
