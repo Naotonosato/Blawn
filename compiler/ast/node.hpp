@@ -242,7 +242,7 @@ private:
     llvm::Function* temporary_function;
     std::vector<llvm::Function*> base_functions;
     std::map<std::vector<llvm::Type*>,llvm::Function*> functions;
-    std::vector<std::string> self_namespace;
+    scope self_namespace;
 public:
     std::vector<std::string> arguments_names;
     std::vector<std::shared_ptr<Node>> body;
@@ -258,8 +258,8 @@ public:
     return_value(std::move(return_value)){}
     bool is_function() override{return true;};
     void register_function(std::vector<llvm::Type*>,llvm::Function*);
-    void set_self_namespace(std::vector<std::string>);
-    std::vector<std::string> get_self_namespace();
+    void set_self_namespace(scope);
+    scope get_self_namespace();
     void set_temporary_function(llvm::Function*);
     llvm::Function* get_temporary_function();
     void set_base_function(llvm::Function*);
@@ -341,7 +341,7 @@ class ClassNode:public Node
         std::vector<llvm::Function*> base_constructors;
         std::map<std::vector<llvm::Type*>,llvm::Function*> constructors;
         std::map<std::vector<llvm::Type*>,llvm::Function*> destructors;
-        std::vector<std::string> self_namespace;
+        scope self_namespace;
         std::vector<std::string> arguments_names;
         bool _is_C_type;
     public:
@@ -364,8 +364,8 @@ class ClassNode:public Node
     llvm::Function* get_constructor(std::vector<llvm::Type*>);
     void register_destructor(std::vector<llvm::Type*>,llvm::Function*);
     llvm::Function* get_destructor(std::vector<llvm::Type*>);
-    void set_self_namespace(std::vector<std::string> n){self_namespace=n;}
-    std::vector<std::string> get_self_namespace(){return self_namespace;}
+    void set_self_namespace(scope n){self_namespace=n;}
+    scope get_self_namespace(){return self_namespace;}
     void set_temporary_constructor(llvm::Function* c){temporary_constructor=c;}
     llvm::Function* get_temporary_constructor(){return temporary_constructor;}
     void set_base_constructor(llvm::Function* base){base_constructors.push_back(base);}
@@ -380,16 +380,21 @@ class CallConstructorNode:public Node
     std::vector<std::shared_ptr<Node>> passed_arguments;
     std::pair<llvm::Function*,llvm::Value*> destructor;
     public:
+    scope belong_to;
     NodeCollector<ArgumentNode>& argument_collector;
-    CallConstructorNode(int line_number,
+
+    CallConstructorNode(
+        int line_number,
         CallConstructorIRGenerator& ir_generator,
         std::shared_ptr<ClassNode> class_node,
         std::vector<std::shared_ptr<Node>> passed_arguments,
+        scope belong_to,
         NodeCollector<ArgumentNode>& argument_collector,
         std::string name=""
         )
     :Node(line_number,ir_generator,name),class_node(class_node),
-    passed_arguments(passed_arguments),argument_collector(argument_collector){}
+    passed_arguments(passed_arguments),belong_to(belong_to),
+    argument_collector(argument_collector){}
     std::shared_ptr<ClassNode> get_class(){return class_node;}
     std::vector<std::shared_ptr<Node>> get_passed_arguments(){return passed_arguments;}
     void set_destructor(llvm::Function* destructor_,llvm::Value* instance){destructor = std::make_pair(destructor_,instance);}
@@ -459,4 +464,15 @@ class ListNode:public Node
         ):Node(line_number,ir_generator),_is_null(is_null){}
     std::vector<std::shared_ptr<Node>> get_elements(){return elements;}
     bool is_null(){return _is_null;}
+};
+
+class BlockEndNode:public Node
+{
+    public:
+    scope block_scope;
+    BlockEndNode(
+        int line_number,
+        BlockEndIRGenerator& ir_generator,
+        scope block_scope
+        ):Node(line_number,ir_generator),block_scope(block_scope){}
 };

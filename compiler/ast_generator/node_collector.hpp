@@ -6,32 +6,33 @@
 #include <iostream>
 
 static unsigned int unique_number_ = 0;
+typedef std::vector<std::string> scope;
 
 template <typename T>
 class NodeCollector
 {
     private:
     std::map<
-            std::vector<std::string>,
+            scope,
             std::pair<
             std::map<std::string,std::shared_ptr<T>>,
-            std::vector<std::string>>
+            scope>
             > 
             nodes;
-    std::vector<std::string> current_namespace;
-    std::vector<std::string> _top;
+    scope current_namespace;
+    scope _top;
     public:
     NodeCollector(std::string top="[TOP]"):current_namespace({top}),
     _top({top}){}
     
-    std::vector<std::string> top()
+    scope top()
     {
         return _top;
     }
 
     std::shared_ptr<T> get(std::string name)
     {
-        std::vector<std::string> upper_namespace;
+        scope upper_namespace;
         for (auto &n:current_namespace)
         {
             upper_namespace.push_back(n);
@@ -43,9 +44,9 @@ class NodeCollector
         return nullptr;
     }
 
-    std::shared_ptr<T> get(std::string name,std::vector<std::string> namespace_)
+    std::shared_ptr<T> get(std::string name,scope namespace_)
     {
-        std::vector<std::string> upper_namespace;
+        scope upper_namespace;
         for (auto &n:namespace_)
         {
             upper_namespace.push_back(n);
@@ -76,7 +77,7 @@ class NodeCollector
         return res;
     }
 
-    std::vector<std::shared_ptr<T>> get_all(std::vector<std::string> namespace_)
+    std::vector<std::shared_ptr<T>> get_all(scope namespace_)
     {
         std::vector<std::shared_ptr<T>> res;
         for (auto& name:nodes[namespace_].second)
@@ -92,7 +93,7 @@ class NodeCollector
         nodes[current_namespace].second.push_back(name);
     }
     
-    void set(std::string name,std::shared_ptr<T> node,std::vector<std::string> namespace_)
+    void set(std::string name,std::shared_ptr<T> node,scope namespace_)
     {
         nodes[namespace_].first[name] = node;
         nodes[namespace_].second.push_back(name);
@@ -101,7 +102,7 @@ class NodeCollector
     void into_namespace(std::string namespace_)
     {
         current_namespace.push_back(namespace_);
-        std::pair<std::map<std::string,std::shared_ptr<T>>,std::vector<std::string>> empty;
+        std::pair<std::map<std::string,std::shared_ptr<T>>,scope> empty;
         nodes[current_namespace] = empty;
     }
 
@@ -113,7 +114,7 @@ class NodeCollector
             }
     }
 
-    std::vector<std::string> get_namespace()
+    scope get_namespace()
     {
         return current_namespace;
     }

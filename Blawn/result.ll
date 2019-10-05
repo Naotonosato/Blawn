@@ -4,10 +4,15 @@ target datalayout = "e-m:e-i64:64-f80:128-n8:16:32:64-S128"
 target triple = "x86_64-pc-linux-gnu"
 
 %struct.String = type { i8*, i64 }
+%P = type { %struct.String* }
 %struct.List = type { i64, i64, i64, i8* }
 
 @C_INT = global i64 0
-@0 = private unnamed_addr constant [2 x i8] c"a\00"
+@0 = private unnamed_addr constant [6 x i8] c"start\00"
+@1 = private unnamed_addr constant [5 x i8] c"name\00"
+@2 = private unnamed_addr constant [3 x i8] c"aa\00"
+@3 = private unnamed_addr constant [5 x i8] c"name\00"
+@4 = private unnamed_addr constant [4 x i8] c"aaa\00"
 @.str = private unnamed_addr constant [73 x i8] c"\1B[31mCRITICAL ERROR:\1B[39m failed to realloc at appending element to list\00", align 1
 @.str.1 = private unnamed_addr constant [31 x i8] c"Error: list index out of range\00", align 1
 @.str.2 = private unnamed_addr constant [4 x i8] c"%s\0A\00", align 1
@@ -24,8 +29,26 @@ entry:
   %0 = load i64, i64* @C_INT
   %1 = load i64, i64* @C_INT
   %2 = load i64, i64* @C_INT
-  %3 = call %struct.String* @string_constructor(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @0, i32 0, i32 0), i64 1)
-  call void @print(%struct.String* %3)
+  %num = alloca i64
+  store i64 0, i64* %num
+  %3 = load i64, i64* %num
+  %4 = call %struct.String* @string_constructor(i8* getelementptr inbounds ([6 x i8], [6 x i8]* @0, i32 0, i32 0), i64 5)
+  call void @print(%struct.String* %4)
+  %5 = call %struct.String* @string_constructor(i8* getelementptr inbounds ([5 x i8], [5 x i8]* @1, i32 0, i32 0), i64 4)
+  %6 = call %P* @P.2(%struct.String* %5)
+  %i = alloca %P*
+  store %P* %6, %P** %i
+  %7 = load %P*, %P** %i
+  %8 = call %struct.String* @string_constructor(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @2, i32 0, i32 0), i64 2)
+  %9 = call %P* @P.2(%struct.String* %8)
+  %i2 = alloca %P*
+  store %P* %9, %P** %i2
+  %10 = load %P*, %P** %i2
+  %11 = call %P* @t.4()
+  %12 = bitcast %P* %9 to i64*
+  call void @free(i64* %12)
+  %13 = bitcast %P* %6 to i64*
+  call void @free(i64* %13)
   ret i8 0
 }
 
@@ -34,6 +57,53 @@ declare i64 @dx_init()
 declare i64 @dx_waitkey()
 
 declare i64 @dx_end()
+
+declare void @P()
+
+declare void @t()
+
+define %P* @P.2(%struct.String* %name) {
+entry:
+  %"@name" = alloca %struct.String*
+  store %struct.String* %name, %struct.String** %"@name"
+  %0 = load %struct.String*, %struct.String** %"@name"
+  %1 = call i64* @malloc(i64 8)
+  %2 = bitcast i64* %1 to %P*
+  %3 = getelementptr inbounds %P, %P* %2, i32 0, i32 0
+  store %struct.String* %0, %struct.String** %3
+  ret %P* %2
+}
+
+define void @"destructor<P>"(%P*) {
+entry:
+  %1 = bitcast %P* %0 to i64*
+  call void @free(i64* %1)
+  ret void
+}
+
+define %P* @t.4() {
+entry:
+  %0 = call %struct.String* @string_constructor(i8* getelementptr inbounds ([5 x i8], [5 x i8]* @3, i32 0, i32 0), i64 4)
+  %1 = call %P* @P.2(%struct.String* %0)
+  %i = alloca %P*
+  store %P* %1, %P** %i
+  %2 = load %P*, %P** %i
+  %3 = load %P*, %P** %i
+  %copy = alloca %P*
+  store %P* %3, %P** %copy
+  %4 = load %P*, %P** %copy
+  %5 = call %struct.String* @string_constructor(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @4, i32 0, i32 0), i64 3)
+  %6 = call %P* @P.2(%struct.String* %5)
+  %i2 = alloca %P*
+  store %P* %6, %P** %i2
+  %7 = load %P*, %P** %i2
+  %8 = bitcast %P* %6 to i64*
+  call void @free(i64* %8)
+  %9 = bitcast %P* %1 to i64*
+  call void @free(i64* %9)
+  %10 = load %P*, %P** %i
+  ret %P* %10
+}
 
 ; Function Attrs: noinline nounwind optnone uwtable
 define %struct.List* @list_constructor(i64) #0 {

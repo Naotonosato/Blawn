@@ -283,6 +283,17 @@ class ListIRGenerator:public IRGenerator
     llvm::Value* generate(Node &node) override;
 };
 
+class BlockEndIRGenerator:public IRGenerator 
+{
+    public:
+    BlockEndIRGenerator(
+        llvm::LLVMContext &context,
+        llvm::Module &module,
+        llvm::IRBuilder<> &ir_builder
+        )
+    :IRGenerator(context,module,ir_builder){}
+    llvm::Value* generate(Node &node) override;
+};
 
 class IRGenerators
 {
@@ -307,5 +318,6 @@ public:
     ForIRGenerator for_generator;
     AccessIRGenerator access_generator;
     ListIRGenerator list_generator;
+    BlockEndIRGenerator block_end_generator;
     IRGenerators(llvm::LLVMContext&,llvm::Module&,llvm::IRBuilder<>&);
 };

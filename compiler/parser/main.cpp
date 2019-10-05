@@ -17,7 +17,7 @@
 #include "../ast_generator/ast_generator.hpp"
 #include "../builtins/builtins.hpp"
 
-int main(int argc, char** argv)
+std::vector<std::string> get_compile_commands(int argc,char**argv)
 {
     if (argc == 1)
     {
@@ -46,7 +46,26 @@ int main(int argc, char** argv)
                 exit(1);
         }
     }
+    std::vector<std::string> commands;
+    commands.push_back("./data/llc -O3 ./result.ll");
+    if (is_link)
+    {
+        commands.push_back("gcc -c ./result.s -o tmp/obj.o -no-pie");
+        std::string cmd = ("gcc -no-pie tmp/obj.o " + to_link + " -o " + output);
+        commands.push_back(cmd.c_str());
+    }else{
+        commands.push_back("gcc ./result.s -no-pie -o result");
+    }
+    std::string do_cmds = ("./" + output);
+    const char* do_cmd = ("./" + output).c_str();
+    commands.push_back(do_cmd);
+    return commands;
+}
 
+int main(int argc, char** argv)
+{
+    
+    std::string filename = argv[1];
     auto context = std::shared_ptr<llvm::LLVMContext>(new llvm::LLVMContext);
     std::shared_ptr<llvm::Module> module (new llvm::Module("Blawn",*context));
     auto ir_builder = std::shared_ptr<llvm::IRBuilder<>>(new llvm::IRBuilder<>(*context));
@@ -85,20 +104,13 @@ int main(int argc, char** argv)
     llvm::raw_fd_ostream stream("result.ll",error,llvm::sys::fs::OpenFlags::F_None);
     module->print(stream,nullptr);
     //llvm::verifyModule(*module,&llvm::outs());
-    std::cout << "\n\n";
-    system("./data/llc -O3 ./result.ll");
-    if (is_link)
-    {
-        system("gcc -c ./result.s -o tmp/obj.o -no-pie");
-        std::string cmd = ("gcc -no-pie tmp/obj.o " + to_link + " -o " + output);
-        system(cmd.c_str());
-    }else{
-        system("gcc ./result.s -no-pie -o result");
-    }
-    std::string do_cmds = ("./" + output);
-    const char* do_cmd = ("./" + output).c_str();
-    system(do_cmd);
     
+    auto commands = get_compile_commands(argc,argv);
+    for (auto& command:commands)
+    {
+        std::cout << "this command is being done >> " << command << std::endl;
+        system(command.c_str());
+    }
     /*
     std::string filename = "../test/test_parsing/test1.blawn";
     std::error_code error;

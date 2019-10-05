@@ -33,7 +33,7 @@ Grammar
    12           | globals_definition
    13           | c_function_declaration
 
-   14 function_definition: function_start arguments EOL lines return_value EOL
+   14 function_definition: function_start arguments EOL block return_value EOL
 
    15 function_start: FUNCTION_DEFINITION
 
@@ -50,7 +50,7 @@ Grammar
    22 methods: method_definition EOL
    23        | methods method_definition EOL
 
-   24 method_definition: METHOD_DEFINITION arguments EOL lines return_value
+   24 method_definition: METHOD_DEFINITION arguments EOL block return_value
 
    25 members_definition: MEMBER_IDENTIFIER EQUAL expression EOL
    26                   | members_definition MEMBER_IDENTIFIER EQUAL expression EOL
@@ -181,9 +181,9 @@ $accept (48)
 program (49)
     on left: 1, on right: 0
 block (50)
-    on left: 2, on right: 1 43 44 45
+    on left: 2, on right: 1 14 24 43 44 45
 lines (51)
-    on left: 3 4, on right: 2 4 14 24
+    on left: 3 4, on right: 2 4
 line (52)
     on left: 5 6 7, on right: 3 4
 line_content (53)
@@ -262,7 +262,7 @@ State 0
    11           | . c_type_definition
    12           | . globals_definition
    13           | . c_function_declaration
-   14 function_definition: . function_start arguments EOL lines return_value EOL
+   14 function_definition: . function_start arguments EOL block return_value EOL
    15 function_start: . FUNCTION_DEFINITION
    16 class_definition: . class_start arguments EOL members_definition methods
    17                 | . class_start arguments EOL members_definition
@@ -576,7 +576,7 @@ State 15
 
 State 16
 
-    2 block: lines .  ["end of file", RIGHT_PARENTHESIS]
+    2 block: lines .  ["end of file", RETURN, RIGHT_PARENTHESIS]
     4 lines: lines . line
     5 line: . line_content EOL
     6     | . line_content "end of file"
@@ -587,7 +587,7 @@ State 16
    11           | . c_type_definition
    12           | . globals_definition
    13           | . c_function_declaration
-   14 function_definition: . function_start arguments EOL lines return_value EOL
+   14 function_definition: . function_start arguments EOL block return_value EOL
    15 function_start: . FUNCTION_DEFINITION
    16 class_definition: . class_start arguments EOL members_definition methods
    17                 | . class_start arguments EOL members_definition
@@ -707,7 +707,7 @@ State 20
 
 State 21
 
-   14 function_definition: function_start . arguments EOL lines return_value EOL
+   14 function_definition: function_start . arguments EOL block return_value EOL
    29 arguments: . LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS
    30          | . LEFT_PARENTHESIS RIGHT_PARENTHESIS
 
@@ -1179,7 +1179,7 @@ State 49
 
 State 50
 
-   14 function_definition: function_start arguments . EOL lines return_value EOL
+   14 function_definition: function_start arguments . EOL block return_value EOL
 
     EOL  shift, and go to state 81
 
@@ -2384,6 +2384,7 @@ State 80
 
 State 81
 
+    2 block: . lines
     3 lines: . line
     4      | . lines line
     5 line: . line_content EOL
@@ -2395,8 +2396,8 @@ State 81
    11           | . c_type_definition
    12           | . globals_definition
    13           | . c_function_declaration
-   14 function_definition: . function_start arguments EOL lines return_value EOL
-   14                    | function_start arguments EOL . lines return_value EOL
+   14 function_definition: . function_start arguments EOL block return_value EOL
+   14                    | function_start arguments EOL . block return_value EOL
    15 function_start: . FUNCTION_DEFINITION
    16 class_definition: . class_start arguments EOL members_definition methods
    17                 | . class_start arguments EOL members_definition
@@ -2459,7 +2460,8 @@ State 81
     FLOAT_LITERAL           shift, and go to state 12
     STRING_LITERAL          shift, and go to state 13
 
-    lines                   go to state 110
+    block                   go to state 110
+    lines                   go to state 16
     line                    go to state 17
     line_content            go to state 18
     definition              go to state 19
@@ -2490,7 +2492,7 @@ State 82
    18                 | class_start arguments EOL . methods
    22 methods: . method_definition EOL
    23        | . methods method_definition EOL
-   24 method_definition: . METHOD_DEFINITION arguments EOL lines return_value
+   24 method_definition: . METHOD_DEFINITION arguments EOL block return_value
    25 members_definition: . MEMBER_IDENTIFIER EQUAL expression EOL
    26                   | . members_definition MEMBER_IDENTIFIER EQUAL expression EOL
 
@@ -3190,110 +3192,18 @@ State 109
 
 State 110
 
-    4 lines: lines . line
-    5 line: . line_content EOL
-    6     | . line_content "end of file"
-    7     | . definition
-    8 line_content: . expression
-    9 definition: . function_definition
-   10           | . class_definition
-   11           | . c_type_definition
-   12           | . globals_definition
-   13           | . c_function_declaration
-   14 function_definition: . function_start arguments EOL lines return_value EOL
-   14                    | function_start arguments EOL lines . return_value EOL
-   15 function_start: . FUNCTION_DEFINITION
-   16 class_definition: . class_start arguments EOL members_definition methods
-   17                 | . class_start arguments EOL members_definition
-   18                 | . class_start arguments EOL methods
-   19 class_start: . CLASS_DEFINITION
-   20 c_type_definition: . c_type_start EOL members_definition
-   21 c_type_start: . C_TYPE_DEFINITION
+   14 function_definition: function_start arguments EOL block . return_value EOL
    27 return_value: . RETURN expression
    28             | . RETURN
-   33 globals_definition: . global_start EOL LEFT_PARENTHESIS EOL globals_variables EOL RIGHT_PARENTHESIS EOL
-   34 global_start: . GLOBAL
-   37 c_function_declaration: . C_FUNCTION_DECLARATION EOL C_FUNCTION_ARGUMENT expressions EOL C_FUNCTION_RETURN expression EOL
-   38                       | . C_FUNCTION_DECLARATION EOL C_FUNCTION_ARGUMENT EOL C_FUNCTION_RETURN expression EOL
-   41 if_start: . IF
-   42 else_start: . ELSE
-   43 expression: . if_start expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
-   44           | . else_start EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
-   45           | . FOR expression COMMA expression COMMA expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
-   46           | . assign_variable
-   47           | . expression PLUS expression
-   48           | . expression MINUS expression
-   49           | . expression ASTERISK expression
-   50           | . expression SLASH expression
-   51           | . expression OP_AND expression
-   52           | . expression OP_OR expression
-   53           | . expression OP_MORE_EQUAL expression
-   54           | . expression OP_LESS_EQUAL expression
-   55           | . expression OP_MORE expression
-   56           | . expression OP_LESS expression
-   57           | . expression OP_NOT_EQUAL expression
-   58           | . expression OP_EQUAL expression
-   59           | . monomial
-   60           | . list
-   61           | . access
-   62 list: . LEFT_CURLY_BRACE expressions RIGHT_CURLY_BRACE
-   63     | . LEFT_CURLY_BRACE RIGHT_CURLY_BRACE
-   64 access: . expression DOT_IDENTIFIER
-   65 assign_variable: . IDENTIFIER EQUAL expression
-   66                | . access EQUAL expression
-   67 monomial: . call
-   68         | . STRING_LITERAL
-   69         | . FLOAT_LITERAL
-   70         | . INT_LITERAL
-   71         | . variable
-   72 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-   73     | . IDENTIFIER LEFT_PARENTHESIS RIGHT_PARENTHESIS
-   74     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-   75     | . access LEFT_PARENTHESIS RIGHT_PARENTHESIS
-   76 variable: . IDENTIFIER
 
-    FUNCTION_DEFINITION     shift, and go to state 1
-    CLASS_DEFINITION        shift, and go to state 2
-    C_TYPE_DEFINITION       shift, and go to state 3
-    C_FUNCTION_DECLARATION  shift, and go to state 4
-    RETURN                  shift, and go to state 125
-    IDENTIFIER              shift, and go to state 5
-    LEFT_CURLY_BRACE        shift, and go to state 6
-    IF                      shift, and go to state 7
-    ELSE                    shift, and go to state 8
-    FOR                     shift, and go to state 9
-    GLOBAL                  shift, and go to state 10
-    INT_LITERAL             shift, and go to state 11
-    FLOAT_LITERAL           shift, and go to state 12
-    STRING_LITERAL          shift, and go to state 13
+    RETURN  shift, and go to state 125
 
-    line                    go to state 46
-    line_content            go to state 18
-    definition              go to state 19
-    function_definition     go to state 20
-    function_start          go to state 21
-    class_definition        go to state 22
-    class_start             go to state 23
-    c_type_definition       go to state 24
-    c_type_start            go to state 25
-    return_value            go to state 126
-    globals_definition      go to state 26
-    global_start            go to state 27
-    c_function_declaration  go to state 28
-    if_start                go to state 29
-    else_start              go to state 30
-    expression              go to state 31
-    list                    go to state 32
-    access                  go to state 33
-    assign_variable         go to state 34
-    monomial                go to state 35
-    call                    go to state 36
-    variable                go to state 37
+    return_value  go to state 126
 
 
 State 111
 
-   24 method_definition: METHOD_DEFINITION . arguments EOL lines return_value
+   24 method_definition: METHOD_DEFINITION . arguments EOL block return_value
    29 arguments: . LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS
    30          | . LEFT_PARENTHESIS RIGHT_PARENTHESIS
 
@@ -3306,7 +3216,7 @@ State 112
 
    18 class_definition: class_start arguments EOL methods .  ["end of file", FUNCTION_DEFINITION, CLASS_DEFINITION, C_TYPE_DEFINITION, C_FUNCTION_DECLARATION, RETURN, IDENTIFIER, RIGHT_PARENTHESIS, LEFT_CURLY_BRACE, IF, ELSE, FOR, GLOBAL, INT_LITERAL, FLOAT_LITERAL, STRING_LITERAL]
    23 methods: methods . method_definition EOL
-   24 method_definition: . METHOD_DEFINITION arguments EOL lines return_value
+   24 method_definition: . METHOD_DEFINITION arguments EOL block return_value
 
     METHOD_DEFINITION  shift, and go to state 111
 
@@ -3328,7 +3238,7 @@ State 114
    17                 | class_start arguments EOL members_definition .  ["end of file", FUNCTION_DEFINITION, CLASS_DEFINITION, C_TYPE_DEFINITION, C_FUNCTION_DECLARATION, RETURN, IDENTIFIER, RIGHT_PARENTHESIS, LEFT_CURLY_BRACE, IF, ELSE, FOR, GLOBAL, INT_LITERAL, FLOAT_LITERAL, STRING_LITERAL]
    22 methods: . method_definition EOL
    23        | . methods method_definition EOL
-   24 method_definition: . METHOD_DEFINITION arguments EOL lines return_value
+   24 method_definition: . METHOD_DEFINITION arguments EOL block return_value
    26 members_definition: members_definition . MEMBER_IDENTIFIER EQUAL expression EOL
 
     METHOD_DEFINITION  shift, and go to state 111
@@ -3491,7 +3401,7 @@ State 119
    11           | . c_type_definition
    12           | . globals_definition
    13           | . c_function_declaration
-   14 function_definition: . function_start arguments EOL lines return_value EOL
+   14 function_definition: . function_start arguments EOL block return_value EOL
    15 function_start: . FUNCTION_DEFINITION
    16 class_definition: . class_start arguments EOL members_definition methods
    17                 | . class_start arguments EOL members_definition
@@ -3786,14 +3696,14 @@ State 125
 
 State 126
 
-   14 function_definition: function_start arguments EOL lines return_value . EOL
+   14 function_definition: function_start arguments EOL block return_value . EOL
 
     EOL  shift, and go to state 142
 
 
 State 127
 
-   24 method_definition: METHOD_DEFINITION arguments . EOL lines return_value
+   24 method_definition: METHOD_DEFINITION arguments . EOL block return_value
 
     EOL  shift, and go to state 143
 
@@ -3816,7 +3726,7 @@ State 130
 
    16 class_definition: class_start arguments EOL members_definition methods .  ["end of file", FUNCTION_DEFINITION, CLASS_DEFINITION, C_TYPE_DEFINITION, C_FUNCTION_DECLARATION, RETURN, IDENTIFIER, RIGHT_PARENTHESIS, LEFT_CURLY_BRACE, IF, ELSE, FOR, GLOBAL, INT_LITERAL, FLOAT_LITERAL, STRING_LITERAL]
    23 methods: methods . method_definition EOL
-   24 method_definition: . METHOD_DEFINITION arguments EOL lines return_value
+   24 method_definition: . METHOD_DEFINITION arguments EOL block return_value
 
     METHOD_DEFINITION  shift, and go to state 111
 
@@ -3980,7 +3890,7 @@ State 136
    11           | . c_type_definition
    12           | . globals_definition
    13           | . c_function_declaration
-   14 function_definition: . function_start arguments EOL lines return_value EOL
+   14 function_definition: . function_start arguments EOL block return_value EOL
    15 function_start: . FUNCTION_DEFINITION
    16 class_definition: . class_start arguments EOL members_definition methods
    17                 | . class_start arguments EOL members_definition
@@ -4238,13 +4148,14 @@ State 141
 
 State 142
 
-   14 function_definition: function_start arguments EOL lines return_value EOL .
+   14 function_definition: function_start arguments EOL block return_value EOL .
 
     $default  reduce using rule 14 (function_definition)
 
 
 State 143
 
+    2 block: . lines
     3 lines: . line
     4      | . lines line
     5 line: . line_content EOL
@@ -4256,7 +4167,7 @@ State 143
    11           | . c_type_definition
    12           | . globals_definition
    13           | . c_function_declaration
-   14 function_definition: . function_start arguments EOL lines return_value EOL
+   14 function_definition: . function_start arguments EOL block return_value EOL
    15 function_start: . FUNCTION_DEFINITION
    16 class_definition: . class_start arguments EOL members_definition methods
    17                 | . class_start arguments EOL members_definition
@@ -4264,7 +4175,7 @@ State 143
    19 class_start: . CLASS_DEFINITION
    20 c_type_definition: . c_type_start EOL members_definition
    21 c_type_start: . C_TYPE_DEFINITION
-   24 method_definition: METHOD_DEFINITION arguments EOL . lines return_value
+   24 method_definition: METHOD_DEFINITION arguments EOL . block return_value
    33 globals_definition: . global_start EOL LEFT_PARENTHESIS EOL globals_variables EOL RIGHT_PARENTHESIS EOL
    34 global_start: . GLOBAL
    37 c_function_declaration: . C_FUNCTION_DECLARATION EOL C_FUNCTION_ARGUMENT expressions EOL C_FUNCTION_RETURN expression EOL
@@ -4320,7 +4231,8 @@ State 143
     FLOAT_LITERAL           shift, and go to state 12
     STRING_LITERAL          shift, and go to state 13
 
-    lines                   go to state 153
+    block                   go to state 153
+    lines                   go to state 16
     line                    go to state 17
     line_content            go to state 18
     definition              go to state 19
@@ -4516,105 +4428,13 @@ State 152
 
 State 153
 
-    4 lines: lines . line
-    5 line: . line_content EOL
-    6     | . line_content "end of file"
-    7     | . definition
-    8 line_content: . expression
-    9 definition: . function_definition
-   10           | . class_definition
-   11           | . c_type_definition
-   12           | . globals_definition
-   13           | . c_function_declaration
-   14 function_definition: . function_start arguments EOL lines return_value EOL
-   15 function_start: . FUNCTION_DEFINITION
-   16 class_definition: . class_start arguments EOL members_definition methods
-   17                 | . class_start arguments EOL members_definition
-   18                 | . class_start arguments EOL methods
-   19 class_start: . CLASS_DEFINITION
-   20 c_type_definition: . c_type_start EOL members_definition
-   21 c_type_start: . C_TYPE_DEFINITION
-   24 method_definition: METHOD_DEFINITION arguments EOL lines . return_value
+   24 method_definition: METHOD_DEFINITION arguments EOL block . return_value
    27 return_value: . RETURN expression
    28             | . RETURN
-   33 globals_definition: . global_start EOL LEFT_PARENTHESIS EOL globals_variables EOL RIGHT_PARENTHESIS EOL
-   34 global_start: . GLOBAL
-   37 c_function_declaration: . C_FUNCTION_DECLARATION EOL C_FUNCTION_ARGUMENT expressions EOL C_FUNCTION_RETURN expression EOL
-   38                       | . C_FUNCTION_DECLARATION EOL C_FUNCTION_ARGUMENT EOL C_FUNCTION_RETURN expression EOL
-   41 if_start: . IF
-   42 else_start: . ELSE
-   43 expression: . if_start expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
-   44           | . else_start EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
-   45           | . FOR expression COMMA expression COMMA expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
-   46           | . assign_variable
-   47           | . expression PLUS expression
-   48           | . expression MINUS expression
-   49           | . expression ASTERISK expression
-   50           | . expression SLASH expression
-   51           | . expression OP_AND expression
-   52           | . expression OP_OR expression
-   53           | . expression OP_MORE_EQUAL expression
-   54           | . expression OP_LESS_EQUAL expression
-   55           | . expression OP_MORE expression
-   56           | . expression OP_LESS expression
-   57           | . expression OP_NOT_EQUAL expression
-   58           | . expression OP_EQUAL expression
-   59           | . monomial
-   60           | . list
-   61           | . access
-   62 list: . LEFT_CURLY_BRACE expressions RIGHT_CURLY_BRACE
-   63     | . LEFT_CURLY_BRACE RIGHT_CURLY_BRACE
-   64 access: . expression DOT_IDENTIFIER
-   65 assign_variable: . IDENTIFIER EQUAL expression
-   66                | . access EQUAL expression
-   67 monomial: . call
-   68         | . STRING_LITERAL
-   69         | . FLOAT_LITERAL
-   70         | . INT_LITERAL
-   71         | . variable
-   72 call: . IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-   73     | . IDENTIFIER LEFT_PARENTHESIS RIGHT_PARENTHESIS
-   74     | . access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
-   75     | . access LEFT_PARENTHESIS RIGHT_PARENTHESIS
-   76 variable: . IDENTIFIER
 
-    FUNCTION_DEFINITION     shift, and go to state 1
-    CLASS_DEFINITION        shift, and go to state 2
-    C_TYPE_DEFINITION       shift, and go to state 3
-    C_FUNCTION_DECLARATION  shift, and go to state 4
-    RETURN                  shift, and go to state 125
-    IDENTIFIER              shift, and go to state 5
-    LEFT_CURLY_BRACE        shift, and go to state 6
-    IF                      shift, and go to state 7
-    ELSE                    shift, and go to state 8
-    FOR                     shift, and go to state 9
-    GLOBAL                  shift, and go to state 10
-    INT_LITERAL             shift, and go to state 11
-    FLOAT_LITERAL           shift, and go to state 12
-    STRING_LITERAL          shift, and go to state 13
+    RETURN  shift, and go to state 125
 
-    line                    go to state 46
-    line_content            go to state 18
-    definition              go to state 19
-    function_definition     go to state 20
-    function_start          go to state 21
-    class_definition        go to state 22
-    class_start             go to state 23
-    c_type_definition       go to state 24
-    c_type_start            go to state 25
-    return_value            go to state 160
-    globals_definition      go to state 26
-    global_start            go to state 27
-    c_function_declaration  go to state 28
-    if_start                go to state 29
-    else_start              go to state 30
-    expression              go to state 31
-    list                    go to state 32
-    access                  go to state 33
-    assign_variable         go to state 34
-    monomial                go to state 35
-    call                    go to state 36
-    variable                go to state 37
+    return_value  go to state 160
 
 
 State 154
@@ -4663,7 +4483,7 @@ State 159
 
 State 160
 
-   24 method_definition: METHOD_DEFINITION arguments EOL lines return_value .
+   24 method_definition: METHOD_DEFINITION arguments EOL block return_value .
 
     $default  reduce using rule 24 (method_definition)
 
@@ -4689,7 +4509,7 @@ State 162
    11           | . c_type_definition
    12           | . globals_definition
    13           | . c_function_declaration
-   14 function_definition: . function_start arguments EOL lines return_value EOL
+   14 function_definition: . function_start arguments EOL block return_value EOL
    15 function_start: . FUNCTION_DEFINITION
    16 class_definition: . class_start arguments EOL members_definition methods
    17                 | . class_start arguments EOL members_definition

@@ -13,6 +13,7 @@ namespace llvm
     class BasicBlock;
 }
 class FunctionNode;
+class CallConstructorNode;
 class ClassNode;
 
 
@@ -28,6 +29,7 @@ class BlawnContext
     std::map<llvm::Type*,llvm::ConstantInt*> typeids;
     std::map<llvm::ConstantInt*,llvm::Type*> id_assigned_types;
     std::map<llvm::BasicBlock*,std::vector<std::pair<llvm::Function*,llvm::Value*>>> destructors;
+    std::map<scope,std::vector<llvm::Value*>> heap_users;
     public:
     void register_element_name(std::string,std::string name,unsigned int index);
     int get_element_index(std::string,std::string name);
@@ -46,6 +48,8 @@ class BlawnContext
     llvm::ConstantInt* get_typeid(llvm::LLVMContext& context_,llvm::Type*);
     llvm::Type* get_type_with_id(llvm::ConstantInt* id);
     std::vector<std::pair<llvm::Function*,llvm::Value*>> get_destructors(llvm::BasicBlock*);
+    void add_heap_user(scope,llvm::Value*);
+    std::vector<llvm::Value*> get_heap_users(scope);
     void set_destructor(llvm::BasicBlock*,std::pair<llvm::Function*,llvm::Value*>);
 };
 

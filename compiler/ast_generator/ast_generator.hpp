@@ -68,5 +68,6 @@ public:
     std::shared_ptr<AccessNode> create_access(std::shared_ptr<Node> left,std::string right);
     std::shared_ptr<ListNode> create_list(std::vector<std::shared_ptr<Node>> elements);
     std::shared_ptr<ListNode> create_list();
+    std::shared_ptr<Node> create_block_end();
     void generate(std::vector<std::shared_ptr<Node>>);
 };

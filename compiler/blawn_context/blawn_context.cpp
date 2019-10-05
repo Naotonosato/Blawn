@@ -129,6 +129,20 @@ std::vector<std::pair<llvm::Function*,llvm::Value*>> BlawnContext::get_destructo
     return destructors[block];
 }
 
+void BlawnContext::add_heap_user(scope belong_scope,llvm::Value* user)
+{
+    heap_users[belong_scope].push_back(user);
+}
+
+std::vector<llvm::Value*> BlawnContext::get_heap_users(scope belong_scope)
+{
+    if (heap_users.count(belong_scope))
+    {
+        return heap_users[belong_scope];
+    }
+    return {};
+}
+
 void BlawnContext::set_destructor(llvm::BasicBlock* block,std::pair<llvm::Function*,llvm::Value*> d)
 {
     destructors[block].push_back(d);

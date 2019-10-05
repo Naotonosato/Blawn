@@ -14,7 +14,7 @@ parser/parser.tab.cc ../compiler/parser/parser.tab.hh: ../compiler/parser/parser
 	cd ../compiler/parser && python3 patch.py
 lexer.o: ../compiler/parser/lex.yy.cc
 	$(CC) -g -c -o lexer.o ../compiler/parser/lex.yy.cc $(LLVM_OPTION)
-parser/lex.yy.cc: ../compiler/parser/lexer.ll
+../compiler/parser/lex.yy.cc: ../compiler/parser/lexer.ll
 	cd ../compiler/parser && flex++ -d lexer.ll
 main.o: ../compiler/parser/main.cpp
 	$(CC) -g -c -o main.o ../compiler/parser/main.cpp $(LLVM_OPTION)

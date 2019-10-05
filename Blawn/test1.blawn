@@ -18,5 +18,21 @@ return: C_INT
 [Cfunction dx_end]
 arguments:
 return: C_INT
+num = 0
+print("start")
+class P(name)
+    @name = name
+    @function m()
+        print(self.name)
+        return
 
-print("a")
+
+function t()
+    i = P("name")
+    copy = i
+    i2 = P("aaa")
+    return i
+
+i = P("name")
+i2 = P("aa")
+t()

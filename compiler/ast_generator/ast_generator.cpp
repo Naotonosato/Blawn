@@ -47,7 +47,7 @@ void ASTGenerator::generate(std::vector<std::shared_ptr<Node>> program)
         for (auto& cv:c->get_base_constructors()) 
         {
             std::string n = cv->getName();
-            std::cout << "erasing constructor named " << n << std::endl;
+            //std::cout << "erasing constructor named " << n << std::endl;
             cv->eraseFromParent();
         }
     }
@@ -56,7 +56,7 @@ void ASTGenerator::generate(std::vector<std::shared_ptr<Node>> program)
         for (auto& cv:c->get_base_constructors()) 
         {
             std::string n = cv->getName();
-            std::cout << "erasing ctype constructor named " << n << std::endl;
+            //std::cout << "erasing ctype constructor named " << n << std::endl;
             cv->eraseFromParent();
         }
     }
@@ -65,8 +65,6 @@ void ASTGenerator::generate(std::vector<std::shared_ptr<Node>> program)
         for (auto &fv:f->get_base_functions()) 
         {fv->eraseFromParent();}
     }
-    
-    std::cout << "erased all invalid functions." << std::endl;
 }
 
 
@@ -260,10 +258,12 @@ std::unique_ptr<Node> ASTGenerator::create_call(std::string name,std::vector<std
     {
         auto class_ = class_collector.get(name);
         auto constructor = std::unique_ptr<CallConstructorNode>(
-            new CallConstructorNode(line_number,
+            new CallConstructorNode(
+                line_number,
                 ir_generators.call_constructor_generator,
                 class_,
                 arguments,
+                class_collector.get_namespace(),
                 argument_collector
             ));
         return std::move(constructor);
@@ -276,6 +276,7 @@ std::unique_ptr<Node> ASTGenerator::create_call(std::string name,std::vector<std
                 ir_generators.call_constructor_generator,
                 C_type,
                 arguments,
+                class_collector.get_namespace(),
                 argument_collector
             ));
         return std::move(constructor);
@@ -415,4 +416,16 @@ std::shared_ptr<ListNode> ASTGenerator::create_list()
             true
         ));
     return list_node;
+}
+
+std::shared_ptr<Node> ASTGenerator::create_block_end()
+{
+    auto end_scope = variable_collector.get_namespace();
+    auto node = std::shared_ptr<BlockEndNode>(
+        new BlockEndNode(
+            line_number,
+            ir_generators.block_end_generator,
+            end_scope
+        ));
+    return node;
 }

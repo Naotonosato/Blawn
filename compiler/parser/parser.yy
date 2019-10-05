@@ -131,11 +131,12 @@ program:
     {
         driver.ast_generator->break_out_of_namespace();
         driver.ast_generator->generate(std::move($1));
-    };
+    };  
 block:
     lines
     {
         $$ = std::move($1);
+        $$.push_back(driver.ast_generator->create_block_end());
     };
 lines:
     line
@@ -187,7 +188,7 @@ definition:
         $$ = std::move($1);
     };
 function_definition:
-    function_start arguments EOL lines return_value EOL
+    function_start arguments EOL block return_value EOL
     {
         $$ = driver.ast_generator->add_function($1,std::move($2),std::move($4),std::move($5));
         driver.ast_generator->break_out_of_namespace();
@@ -243,7 +244,7 @@ methods:
         $$.push_back($2);
     };
 method_definition:
-    METHOD_DEFINITION arguments EOL lines return_value
+    METHOD_DEFINITION arguments EOL block return_value
     {
         auto args = std::move($2);
         args.insert(args.begin(),"self");
@@ -295,7 +296,6 @@ globals_definition:
     {
         //driver.ast_generator->add_global_variables($5);
         is_global = NOT_GLOBAL;
-        std::cout << "globals" << std::endl;
         $$ = driver.ast_generator->no_value_node;
     };
 global_start:
@@ -502,5 +502,6 @@ variable:
 
 void Blawn::Parser::error( const location_type &l, const std::string &err_message )
 {
-   std::cerr << "Error: " << err_message << " at " << l << "\n";
+    std::cerr << "Error: " << err_message << " at " << l << "\n";
+    exit(1);
 } 

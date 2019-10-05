@@ -938,7 +938,7 @@ namespace Blawn {
     enum
     {
       yyeof_ = 0,
-      yylast_ = 358,     ///< Last index in yytable_.
+      yylast_ = 344,     ///< Last index in yytable_.
       yynnts_ = 33,  ///< Number of nonterminal symbols.
       yyfinal_ = 45, ///< Termination state number.
       yyterror_ = 1,
