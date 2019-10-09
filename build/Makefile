@@ -12,10 +12,9 @@ parser.o: ../compiler/parser/parser.tab.cc ../compiler/parser/parser.tab.hh
 parser/parser.tab.cc ../compiler/parser/parser.tab.hh: ../compiler/parser/parser.yy
 	cd ../compiler/parser && bison -d parser.yy -r all --report-file=log.log
 	cd ../compiler/parser && python3 patch.py
-lexer.o: ../compiler/parser/lex.yy.cc
-	$(CC) -g -c -o lexer.o ../compiler/parser/lex.yy.cc $(LLVM_OPTION)
-../compiler/parser/lex.yy.cc: ../compiler/parser/lexer.ll
+lexer.o: ../compiler/parser/lexer.ll
 	cd ../compiler/parser && flex++ -d lexer.ll
+	$(CC) -g -c -o lexer.o ../compiler/parser/lex.yy.cc $(LLVM_OPTION)
 main.o: ../compiler/parser/main.cpp
 	$(CC) -g -c -o main.o ../compiler/parser/main.cpp $(LLVM_OPTION)
 ir_generator.o: ../compiler/ir_generator/ir_generator.cpp ../compiler/ir_generator/ir_generator.hpp ../compiler/ast_generator/node_collector.hpp ../compiler/utils/utils.hpp
@@ -27,6 +26,7 @@ utils.o: ../compiler/utils/utils.cpp
 builtins.o: ../compiler/builtins/builtins.cpp ../compiler/builtins/builtins.hpp ../compiler/builtins/builtins.c
 	$(CC) -g -c ../compiler/builtins/builtins.cpp -o builtins.o $(LLVM_OPTION)
 	clang -c -S -emit-llvm ../compiler/builtins/builtins.c -o builtins.ll
+	cp builtins.ll ../blawn/data/builtins.ll
 ast_generator.o: ../compiler/ast_generator/ast_generator.cpp ../compiler/ast_generator/ast_generator.hpp ../compiler/ast_generator/node_collector.hpp
 	$(CC) -g -c ../compiler/ast_generator/ast_generator.cpp -o ast_generator.o $(LLVM_OPTION)
 node.o: ../compiler/ast/node.cpp ../compiler/ast/node.hpp ../compiler/ir_generator/ir_generator.hpp
@@ -38,9 +38,12 @@ errors.o: ../compiler/errors/errors.cpp ../compiler/errors/errors.hpp
 clean:
 	rm *.o
 	rm *.ll
+	python3 ../dev_utils/format_cpp.py ../compiler
 	-fsanitize=address
 
 test:
 	cd ../blawn && ./blawn test1.blawn
 lli: 
 	cd ../blawn && lli result.ll
+format:
+	python3 ../dev_utils/format_cpp.py ../compiler

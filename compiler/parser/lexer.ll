@@ -51,7 +51,7 @@ C_FUNCTION_ARGUMENT     arguments:
 C_FUNCTION_RETURN       return:
 FUNCTION_DEFINITION     function[ \t]+[a-zA-Z_][0-9a-zA-Z_]*
 METHOD_DEFINITION       @function[ \t]+[a-zA-Z_][0-9a-zA-Z_]*
-C_TYPE_DEFINITION       Ctype[ \t]+[a-zA-Z_][0-9a-zA-Z_]*
+C_TYPE_DEFINITION       Ctype[ \t]+[a-zA-Z_][0-9a-zA-Z_]* 
 CLASS_DEFINITION        class[ \t]+[a-zA-Z_][0-9a-zA-Z_]*
 RETURN                  return
 LEFT_PARENTHESIS  \(
@@ -63,17 +63,16 @@ RIGHT_CURLY_BRACE \}
 
 CALL        .+\(.*\)
 C_FUNCTION  c\.[a-zA-Z_][0-9a-zA-Z_]*
-MEMBER_IDENTIFIER @[a-zA-Z_][0-9a-zA-Z_]*
+MEMBER_IDENTIFIER @[a-zA-Z_][0-9a-zA-Z_]* 
 IDENTIFIER  [a-zA-Z_][0-9a-zA-Z_]*
-EOL                 \n
-
+EOL                 \n|\r\n
 
 %%
 
 ^[ \t]*\n {loc->lines();driver->ast_generator->line_number += 1;}
 ^[ \t]*\r\n {loc->lines();driver->ast_generator->line_number += 1;}
 [ \t] {}
-{COMMENT} {}
+{COMMENT} {loc->lines();driver->ast_generator->line_number += 1;}
 {STRING_LITERAL} {
     std::string text = yytext;
     text = text.substr(1,text.size()-2);
@@ -248,6 +247,7 @@ EOL                 \n
     lval->build<std::string>() = yytext;
     return Blawn::Parser::token::C_FUNCTION;
 }
+
 {MEMBER_IDENTIFIER} {
     lval->build<std::string>() = yytext;
     return Blawn::Parser::token::MEMBER_IDENTIFIER;

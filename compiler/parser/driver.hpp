@@ -1,23 +1,24 @@
 #pragma once
 #include <cstddef>
 #include <istream>
-#include "scanner.hpp"
 #include "parser.tab.hh"
+#include "scanner.hpp"
 
-namespace Blawn{
+namespace Blawn {
 
-class Driver{
+class Driver {
 public:
     std::unique_ptr<ASTGenerator> ast_generator;
-    Driver(std::unique_ptr<ASTGenerator> ast_generator):ast_generator(std::move(ast_generator)){};
+    Driver(std::unique_ptr<ASTGenerator> ast_generator)
+        : ast_generator(std::move(ast_generator)){};
     virtual ~Driver();
-    void parse( const char * const filename );
-    void parse( std::istream &iss );
+    void parse(const char *const filename);
+    void parse(std::istream &iss);
     Blawn::Scanner *scanner = nullptr;
-private:
 
-    void parse_helper( std::istream &stream );
-    Blawn::Parser  *parser  = nullptr;
+private:
+    void parse_helper(std::istream &stream);
+    Blawn::Parser *parser = nullptr;
 };
 
-} 
+}  // namespace Blawn

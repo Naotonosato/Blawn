@@ -1,0 +1,38 @@
+Ctype String
+   type string = __C_UNSUPPORTED_TYPE_PTR__
+   type size = __C_INTEGER__
+Ctype List
+   type size = __C_INTEGER__
+   type allocated_size = __C_INTEGER__
+   type element_size = __C_INTEGER__
+   type elements = __C_UNSUPPORTED_TYPE_PTR__
+[Cfunction list_constructor]
+    arguments: __C_INTEGER__
+    return: __C_UNSUPPORTED_TYPE_PTR__
+[Cfunction blawn_realloc]
+    arguments: __C_UNSUPPORTED_TYPE_PTR__,__C_INTEGER__,__C_INTEGER__
+    return: __C_UNSUPPORTED_TYPE_PTR__
+[Cfunction blawn_memcpy]
+    arguments: __C_UNSUPPORTED_TYPE_PTR__,__C_INTEGER__,__C_INTEGER__,__C_UNSUPPORTED_TYPE_PTR__
+    return: void
+[Cfunction blawn_index]
+    arguments: __C_UNSUPPORTED_TYPE_PTR__,__C_INTEGER__,__C_INTEGER__,__C_INTEGER__
+    return: __C_UNSUPPORTED_TYPE_PTR__
+[Cfunction blawn_set_element]
+    arguments: __C_UNSUPPORTED_TYPE_PTR__,__C_INTEGER__,__C_INTEGER__,__C_UNSUPPORTED_TYPE_PTR__,__C_INTEGER__
+    return: void
+[Cfunction print]
+    arguments: __C_UNSUPPORTED_TYPE_PTR__
+    return: void
+[Cfunction string_constructor]
+    arguments: __C_UNSUPPORTED_TYPE_PTR__,__C_INTEGER__
+    return: __C_UNSUPPORTED_TYPE_PTR__
+[Cfunction append_string]
+    arguments: __C_UNSUPPORTED_TYPE_PTR__,__C_UNSUPPORTED_TYPE_PTR__
+    return: void
+[Cfunction int_to_str]
+    arguments: __C_INTEGER__
+    return: __C_UNSUPPORTED_TYPE_PTR__
+[Cfunction float_to_str]
+    arguments: __C_REAL_NUMBER__
+    return: __C_UNSUPPORTED_TYPE_PTR__

@@ -107,6 +107,8 @@
 %type <std::shared_ptr<Node>> c_function_declaration
 %type <std::vector<std::shared_ptr<FunctionNode>>> methods
 %type <std::shared_ptr<FunctionNode>> method_definition
+%type <std::vector<std::shared_ptr<Node>>> C_members_definition
+%type <std::vector<std::string>> C_type_identifier
 %type <std::vector<std::shared_ptr<Node>>> members_definition
 %type <std::vector<std::string>> arguments
 %type <std::vector<std::string>> definition_arguments
@@ -222,7 +224,7 @@ class_start:
         driver.ast_generator->into_namespace($1);
     };
 c_type_definition:
-    c_type_start EOL members_definition
+    c_type_start EOL C_members_definition
     {
         $$ = std::move(driver.ast_generator->create_C_type($1,$3));
         driver.ast_generator->break_out_of_namespace();
@@ -250,7 +252,7 @@ method_definition:
         args.insert(args.begin(),"self");
         $$ = driver.ast_generator->add_function($1,std::move(args),std::move($4),std::move($5));
         driver.ast_generator->break_out_of_namespace();
-    };
+    };  
 members_definition:
     MEMBER_IDENTIFIER EQUAL expression EOL
     {
@@ -260,6 +262,32 @@ members_definition:
     {
         $$ = std::move($1);
         $$.push_back(driver.ast_generator->assign($2,std::move($4),false));
+    };
+C_members_definition:
+    MEMBER_IDENTIFIER EQUAL C_type_identifier EOL
+    {
+        std::string type_identifier;
+        for(auto& t:$3){type_identifier+=" " + t;}
+        auto assign_value = driver.ast_generator->create_C_member(type_identifier);
+        $$.push_back(driver.ast_generator->assign($1,std::move(assign_value),false));
+    }
+    |C_members_definition MEMBER_IDENTIFIER EQUAL C_type_identifier EOL
+    {
+        std::string type_identifier;
+        for(auto& t:$4){type_identifier+=" " + t;}
+        auto assign_value = driver.ast_generator->create_C_member(type_identifier);
+        $$ = std::move($1);
+        $$.push_back(driver.ast_generator->assign($2,std::move(assign_value),false));
+    };
+C_type_identifier:
+    IDENTIFIER
+    {
+        $$.push_back($1);
+    }
+    |C_type_identifier IDENTIFIER
+    {
+        $$ = std::move($1);
+        $$.push_back($2);
     };
 return_value:
     RETURN expression
@@ -353,7 +381,7 @@ expression:
     {
         if (blawn_state != EXIST_IF)
         {
-            std::cerr << "Error: If expression is not exist." << std::endl;
+            std::cerr << "Error: else block without if block is valid." << std::endl;
             exit(1);
         }
         $$ = driver.ast_generator->add_else($5);

@@ -1,5 +1,5 @@
-; ModuleID = '../builtins/builtins.c'
-source_filename = "../builtins/builtins.c"
+; ModuleID = '../compiler/builtins/builtins.c'
+source_filename = "../compiler/builtins/builtins.c"
 target datalayout = "e-m:e-i64:64-f80:128-n8:16:32:64-S128"
 target triple = "x86_64-pc-linux-gnu"
 
@@ -273,7 +273,7 @@ define %struct.String* @int_to_str(i64) #0 {
   br i1 %8, label %9, label %19
 
 ; <label>:9:                                      ; preds = %1
-  store i64 0, i64* %4, align 8
+  store i64 1, i64* %4, align 8
   br label %10
 
 ; <label>:10:                                     ; preds = %13, %9
@@ -294,7 +294,7 @@ define %struct.String* @int_to_str(i64) #0 {
   br label %31
 
 ; <label>:19:                                     ; preds = %1
-  store i64 1, i64* %4, align 8
+  store i64 2, i64* %4, align 8
   %20 = load i64, i64* %2, align 8
   %21 = sub nsw i64 0, %20
   store i64 %21, i64* %2, align 8
