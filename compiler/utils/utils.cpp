@@ -37,17 +37,20 @@ void utils::split(std::string text, std::string splitter,
     }
 }
 
-void utils::replace(std::string& text,std::string from,std::string to,unsigned int from_index)
-{
-    std::string::size_type index = text.find(from,from_index);
-    if (index != std::string::npos && !from.empty())
-    {
-        if (text.find(from,index + from.length()) != std::string::npos)
-        {
-            replace(text,from,to,index + from.length());
+void utils::replace(std::string& text, std::string from, std::string to,
+                    unsigned int from_index) {
+    std::string::size_type index = text.find(from, from_index);
+    if (index != std::string::npos && !from.empty()) {
+        if (text.find(from, index + from.length()) != std::string::npos) {
+            replace(text, from, to, index + from.length());
         }
-        text = text.replace(index,from.length(),to);
+        text = text.replace(index, from.length(), to);
     }
+}
+
+bool utils::exist(std::string text,std::string to_find)
+{
+    return std::find(text.begin(),text.end(),to_find) != text.end();
 }
 
 uint64_t utils::get_sizeof(llvm::Type* type, llvm::Module& module) {

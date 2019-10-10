@@ -1,4 +1,5 @@
 import os
+import ctypes
 import clang.cindex
 from clang.cindex import Index,Config,CursorKind,TypeKind,TranslationUnit
 Config.set_library_path('/usr/lib/llvm-6.0/lib/')
@@ -12,6 +13,49 @@ INTEGER_TYPES = set({
     TypeKind.UCHAR,TypeKind.CHAR32
 })
 NUMERIC_TYPES = REAL_NUMBER_TYPES | INTEGER_TYPES
+
+BUILTIN_C_TYPES = {
+TypeKind.BOOL:ctypes.c_bool,
+TypeKind.CHAR_S:ctypes.c_char,
+TypeKind.CHAR_U:ctypes.c_char,
+TypeKind.DOUBLE:ctypes.c_double,
+TypeKind.FLOAT:ctypes.c_float,
+TypeKind.INT:ctypes.c_int,
+TypeKind.LONG:ctypes.c_long,
+TypeKind.LONGDOUBLE:ctypes.c_longdouble,
+TypeKind.LONGLONG:ctypes.c_longlong,
+TypeKind.SCHAR:ctypes.c_char,
+TypeKind.SHORT:ctypes.c_short,
+TypeKind.UCHAR:ctypes.c_char,
+TypeKind.UINT:ctypes.c_uint,
+TypeKind.ULONG:ctypes.c_ulong,
+TypeKind.ULONGLONG:ctypes.c_ulonglong,
+TypeKind.USHORT:ctypes.c_ushort,
+TypeKind.WCHAR:ctypes.c_wchar
+}
+BUILTIN_C_TYPE_NAMES = {
+TypeKind.BOOL:"__C_BOOL__",
+TypeKind.CHAR_S:"__C_CHAR__",
+TypeKind.CHAR_U:"__C_CHAR__",
+TypeKind.DOUBLE:"__C_DOUBLE__",
+TypeKind.FLOAT:"__C_FLOAT__",
+TypeKind.INT:"__C_INT__",
+TypeKind.LONG:"__C_LONG__",
+TypeKind.LONGDOUBLE:"__C_LONGDOUBLE__",
+TypeKind.LONGLONG:"__C_LONGLONG__",
+TypeKind.SCHAR:"__C_SCHAR__",
+TypeKind.SHORT:"__C_SHORT__",
+TypeKind.UCHAR:"__C_UCHAR__",
+TypeKind.UINT:"__C_UINT__",
+TypeKind.ULONG:"__C_ULONG__",
+TypeKind.ULONGLONG:"__C_ULONGLONG__",
+TypeKind.USHORT:"__C_USHORT__",
+TypeKind.WCHAR:"__C_WCHAR__",
+}
+
+for t in BUILTIN_C_TYPE_NAMES:
+    size = ctypes.sizeof(BUILTIN_C_TYPES[t])
+    BUILTIN_C_TYPE_NAMES[t] += "SIZE_" + str(size)
 
 def is_supported_type(type_info):
     if type_info.kind == TypeKind.POINTER:
@@ -40,12 +84,14 @@ def to_blawn_type(type_info):
     if type_info.kind == TypeKind.VOID:
         return ""
     if type_info.kind == TypeKind.POINTER:
+        print(type_info.spelling, " is ptr")
         type_info,count = get_finally_pointee(type_info)
         return "__PTR__ " * count + to_blawn_type(type_info)
-    if type_info.kind in INTEGER_TYPES:
-        return "__C_INTEGER__"
-    if type_info.kind in REAL_NUMBER_TYPES:
-        return "__C_REAL_NUMBER__"
+    if type_info.kind in BUILTIN_C_TYPE_NAMES:
+        print("size of ",type_info.spelling,type_info.get_size())
+        return BUILTIN_C_TYPE_NAMES[type_info.kind]
+    print("size of ",type_info.spelling,type_info.get_size())
+    
     return _rename_type(type_info.spelling)
 
 
@@ -84,7 +130,8 @@ def generate_wrapper(functions):
 
 
 def get_functions(filename,node,functions_dict={},structures_dict={}):
-    if node.location.file is not None and node.location.file.name == filename:
+    if 1:#node.location.file is not None and node.location.file.name == filename:
+        print(node.kind.name)
         if node.kind == CursorKind.STRUCT_DECL:
             spelling = node.type.get_canonical().spelling
             #fields = [{"name":element.spelling,"type":element.type.get_canonical()} for element in node.type.get_canonical().get_fields()]
@@ -98,7 +145,7 @@ def get_functions(filename,node,functions_dict={},structures_dict={}):
     return functions_dict,structures_dict
 
 if __name__ == "__main__":
-    source_filename = "test/test1.h"#"../compiler/builtins/builtins.c"
+    source_filename = "test/test1.h"#"../compiler/builtins/builtins.c"#"test/test1.h"#"../compiler/builtins/builtins.c"
     output_filename = os.path.splitext(os.path.basename(source_filename))[0] + ".bridge"
     cursor = Index.create().parse(source_filename, options = TranslationUnit.PARSE_SKIP_FUNCTION_BODIES).cursor
     functions,structures = get_functions(source_filename,cursor)

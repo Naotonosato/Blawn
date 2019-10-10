@@ -9,7 +9,7 @@ global
 
 Ctype ct
     @n = __PTR__ __PTR__ __C_INTEGER__
-    @ctmem = __PTR__ __C_INTEGER__
+    @ctmem = __C_INTEGER__
 Ctype nnn
     @nm = ct
 insct = ct()

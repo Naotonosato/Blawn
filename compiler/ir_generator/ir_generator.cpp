@@ -125,6 +125,8 @@ llvm::Type* _get_C_type();
 llvm::Value* NullIRGenerator::generate(Node& node_) {
     auto& node = *static_cast<NullNode*>(&node_);
     std::map<std::string, llvm::Value*> builtin_C_types;
+    std::vector<std::string> real_num_types = {"__C_DOUBLE__","__C_FLOAT__","__C_LONGDOUBLE__"};
+    std::vector<std::string> unsigned_types = {"__C_UCHAR__","__C_UINT__","__C_ULONG__","__C_ULONGLONG__","__C_USHORT__"};
     builtin_C_types["__C_INTEGER__"] =
         llvm::ConstantInt::get(context, llvm::APInt(64, 0, true));
     builtin_C_types["__C_REAL_NUMBER__"] =
@@ -135,16 +137,28 @@ llvm::Value* NullIRGenerator::generate(Node& node_) {
     std::vector<std::string> parsed;
     utils::split(node.type_name, ptr, parsed);
     std::string type_name = parsed.back();
-    utils::replace(type_name," ","");
+    std::vector<std::string> res;
+    utils::split(type_name,std::string("SIZE_"),res);
+    unsigned int type_size = std::stoi(res.back());
+    type_name = res.front();
+    utils::replace(type_name, " ", "");
+    bool is_real_num_type = utils::exist(real_num_types,type_name); //std::find(real_num_types.begin(),real_num_types.end(),type_name) != real_num_types.end();
+    bool is_unsigned = utils::exist(unsigned_types,type_name);
     parsed.pop_back();
+
     if (node.class_node == nullptr) {
         if (builtin_C_types.count(type_name)) {
-            if (parsed.size() == 1) return builtin_C_types[type_name];
-            auto type = builtin_C_types[type_name]->getType();
+            if (parsed.size() == 0) 
+            {   
+                if (!is_real_num_type) return llvm::ConstantInt::get(context, llvm::APInt(type_size, 0, is_unsigned));
+                return llvm::ConstantFP::get(context, llvm::APFloat(0.0));
+            }
+            llvm::Type* type = is_real_num_type? ir_builder.getFloatTy():ir_builder.getIntNTy(type_size);
             for (auto& _ : parsed) {
                 type = type->getPointerTo();
             }
-            return llvm::ConstantPointerNull::get(type->getPointerTo());
+            auto ptype =  llvm::dyn_cast<llvm::PointerType>(type);
+            return llvm::ConstantPointerNull::get(ptype);
         } else {
             BlawnLogger logger;
             logger.set_line_number(node.line_number);

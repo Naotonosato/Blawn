@@ -1,25 +1,25 @@
 Ctype Struct
-    @member = __C_INTEGER__
-    @member2 = __C_INTEGER__
+    @member = __C_INT__SIZE_4
+    @member2 = __C_INT__SIZE_4
 Ctype NestStruct
-    @member = __C_INTEGER__
-    @member2 = __C_INTEGER__
+    @member = __C_INT__SIZE_4
+    @member2 = __C_INT__SIZE_4
     @s = __PTR__ __PTR__ __PTR__ __PTR__ Struct
 [Cfunction TEST_no_arg_func]
     arguments: 
-    return: __C_INTEGER__
+    return: __C_INT__SIZE_4
 [Cfunction TEST_arg_func]
-    arguments: __C_INTEGER__
-    return: __C_INTEGER__
+    arguments: __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
 [Cfunction TEST_struct_arg_func]
     arguments: __PTR__ Struct
-    return: __C_INTEGER__
+    return: __C_INT__SIZE_4
 [Cfunction TEST_return_struct_func]
     arguments: 
     return: __PTR__ Struct
 [Cfunction TEST_arg_nest_struct]
     arguments: __PTR__ NestStruct
-    return: __C_INTEGER__
+    return: __C_INT__SIZE_4
 [Cfunction TEST_return_nest_struct]
     arguments: 
     return: __PTR__ NestStruct
