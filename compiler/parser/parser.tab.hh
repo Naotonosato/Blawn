@@ -323,6 +323,7 @@ namespace Blawn {
       // function_definition
       // class_definition
       // c_type_definition
+      // C_returns
       // return_value
       // globals_definition
       // c_function_declaration
@@ -356,6 +357,7 @@ namespace Blawn {
       // lines
       // members_definition
       // C_members_definition
+      // C_arguments
       // globals_variables
       // expressions
       char dummy8[sizeof(std::vector<std::shared_ptr<Node>>)];
@@ -940,8 +942,8 @@ namespace Blawn {
     enum
     {
       yyeof_ = 0,
-      yylast_ = 379,     ///< Last index in yytable_.
-      yynnts_ = 35,  ///< Number of nonterminal symbols.
+      yylast_ = 334,     ///< Last index in yytable_.
+      yynnts_ = 37,  ///< Number of nonterminal symbols.
       yyfinal_ = 45, ///< Termination state number.
       yyterror_ = 1,
       yyerrcode_ = 256,
@@ -957,7 +959,7 @@ namespace Blawn {
 
 #line 5 "parser.yy" // lalr1.cc:377
 } // Blawn
-#line 961 "parser.tab.hh" // lalr1.cc:377
+#line 963 "parser.tab.hh" // lalr1.cc:377
 
 
 

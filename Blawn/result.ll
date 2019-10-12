@@ -3,12 +3,16 @@ source_filename = "Blawn"
 target datalayout = "e-m:e-i64:64-f80:128-n8:16:32:64-S128"
 target triple = "x86_64-pc-linux-gnu"
 
-%ct = type { i64***, i64 }
+%Struct = type { i16, i64 }
+%TestClass = type { %T1* }
+%T1 = type { i64 }
+%NestStruct.0 = type { i16, i16, %Struct }
 %struct.String = type { i8*, i64 }
+%ct = type { i16**, i64 }
 %Person = type { %struct.String* }
+%NestStruct = type { i16, i16, %Struct }
 %struct.List = type { i64, i64, i64, i8* }
 
-@C_INT = global i64 0
 @0 = private unnamed_addr constant [5 x i8] c"John\00"
 @1 = private unnamed_addr constant [5 x i8] c"Tom!\00"
 @2 = private unnamed_addr constant [7 x i8] c"person\00"
@@ -29,108 +33,236 @@ declare void @free(i64*)
 
 define i8 @main() {
 entry:
-  %0 = call %ct* @ct.2()
+  %"@member" = alloca i16
+  store i16 0, i16* %"@member"
+  %0 = load i16, i16* %"@member"
+  %"@member2" = alloca i64
+  store i64 0, i64* %"@member2"
+  %1 = load i64, i64* %"@member2"
+  %2 = alloca %Struct
+  %3 = load %Struct, %Struct* %2
+  %"@member1" = alloca i16
+  store i16 0, i16* %"@member1"
+  %4 = load i16, i16* %"@member1"
+  %"@member22" = alloca i16
+  store i16 0, i16* %"@member22"
+  %5 = load i16, i16* %"@member22"
+  %6 = alloca %Struct
+  %7 = load %Struct, %Struct* %6
+  %"@s" = alloca %Struct
+  store %Struct %7, %Struct* %"@s"
+  %8 = load %Struct, %Struct* %"@s"
+  %9 = call %TestClass* @TestClass.5()
+  %ti = alloca %TestClass*
+  store %TestClass* %9, %TestClass** %ti
+  %10 = load %TestClass*, %TestClass** %ti
+  %11 = call %NestStruct.0* @NestStruct.7()
+  %ns = alloca %NestStruct.0*
+  store %NestStruct.0* %11, %NestStruct.0** %ns
+  %12 = load %NestStruct.0*, %NestStruct.0** %ns
+  %13 = load %TestClass*, %TestClass** %ti
+  %14 = getelementptr inbounds %TestClass, %TestClass* %13, i32 0, i32 0
+  %15 = load %T1*, %T1** %14
+  %16 = getelementptr inbounds %T1, %T1* %15, i32 0, i32 0
+  %17 = load i64, i64* %16
+  %18 = call %struct.String* @int_to_str(i64 %17)
+  call void @print(%struct.String* %18)
+  %19 = call %ct* @ct.9()
   %insct = alloca %ct*
-  store %ct* %0, %ct** %insct
-  %1 = load %ct*, %ct** %insct
-  %2 = load %ct*, %ct** %insct
-  %3 = getelementptr inbounds %ct, %ct* %2, i32 0, i32 1
-  %4 = load i64, i64* %3
-  %5 = call %struct.String* @int_to_str(i64 %4)
-  call void @print(%struct.String* %5)
-  store i64 0, i64* @C_INT
-  %6 = load i64, i64* @C_INT
-  %7 = load i64, i64* @C_INT
-  %8 = load i64, i64* @C_INT
-  %9 = call %struct.String* @string_constructor(i8* getelementptr inbounds ([5 x i8], [5 x i8]* @0, i32 0, i32 0), i64 4)
-  %10 = call %Person* @Person.4(%struct.String* %9)
+  store %ct* %19, %ct** %insct
+  %20 = load %ct*, %ct** %insct
+  %21 = load %ct*, %ct** %insct
+  %22 = getelementptr inbounds %ct, %ct* %21, i32 0, i32 1
+  %23 = load i64, i64* %22
+  %24 = call %struct.String* @int_to_str(i64 %23)
+  call void @print(%struct.String* %24)
+  %25 = call %struct.String* @string_constructor(i8* getelementptr inbounds ([5 x i8], [5 x i8]* @0, i32 0, i32 0), i64 4)
+  %26 = call %Person* @Person.11(%struct.String* %25)
   %p = alloca %Person*
-  store %Person* %10, %Person** %p
-  %11 = load %Person*, %Person** %p
-  %12 = call %struct.String* @string_constructor(i8* getelementptr inbounds ([5 x i8], [5 x i8]* @1, i32 0, i32 0), i64 4)
-  %13 = call %Person* @Person.4(%struct.String* %12)
+  store %Person* %26, %Person** %p
+  %27 = load %Person*, %Person** %p
+  %28 = call %struct.String* @string_constructor(i8* getelementptr inbounds ([5 x i8], [5 x i8]* @1, i32 0, i32 0), i64 4)
+  %29 = call %Person* @Person.11(%struct.String* %28)
   %p2 = alloca %Person*
-  store %Person* %13, %Person** %p2
-  %14 = load %Person*, %Person** %p2
+  store %Person* %29, %Person** %p2
+  %30 = load %Person*, %Person** %p2
   %i = alloca i64
   store i64 0, i64* %i
-  %15 = load i64, i64* %i
-  %16 = load i64, i64* %i
-  %17 = add i64 %16, 1
-  store i64 %17, i64* %i
-  %18 = load i64, i64* %i
+  %31 = load i64, i64* %i
+  %32 = load i64, i64* %i
+  %33 = add i64 %32, 1
+  store i64 %33, i64* %i
+  %34 = load i64, i64* %i
   br label %for
 
 for:                                              ; preds = %for, %entry
-  %19 = call %struct.String* @string_constructor(i8* getelementptr inbounds ([7 x i8], [7 x i8]* @2, i32 0, i32 0), i64 6)
-  %20 = call %Person* @Person.4(%struct.String* %19)
+  %35 = call %struct.String* @string_constructor(i8* getelementptr inbounds ([7 x i8], [7 x i8]* @2, i32 0, i32 0), i64 6)
+  %36 = call %Person* @Person.11(%struct.String* %35)
   %new = alloca %Person*
-  store %Person* %20, %Person** %new
-  %21 = load %Person*, %Person** %new
-  %22 = bitcast %Person* %20 to i64*
-  call void @free(i64* %22)
-  %23 = load i64, i64* %i
-  %24 = icmp slt i64 %23, 100
-  %25 = icmp eq i1 false, %24
-  %26 = load i64, i64* %i
-  %27 = load i64, i64* %i
-  %28 = add i64 %27, 1
-  store i64 %28, i64* %i
-  %29 = load i64, i64* %i
-  br i1 %25, label %"merge of for", label %for
+  store %Person* %36, %Person** %new
+  %37 = load %Person*, %Person** %new
+  %38 = bitcast %Person* %36 to i64*
+  call void @free(i64* %38)
+  %39 = load i64, i64* %i
+  %40 = icmp slt i64 %39, 100
+  %41 = icmp eq i1 false, %40
+  %42 = load i64, i64* %i
+  %43 = load i64, i64* %i
+  %44 = add i64 %43, 1
+  store i64 %44, i64* %i
+  %45 = load i64, i64* %i
+  br i1 %41, label %"merge of for", label %for
 
 "merge of for":                                   ; preds = %for
-  %30 = call %struct.String* @string_constructor(i8* getelementptr inbounds ([1 x i8], [1 x i8]* @3, i32 0, i32 0), i64 0)
+  %46 = call %struct.String* @string_constructor(i8* getelementptr inbounds ([1 x i8], [1 x i8]* @3, i32 0, i32 0), i64 0)
   %d = alloca %struct.String*
-  store %struct.String* %30, %struct.String** %d
-  %31 = load %struct.String*, %struct.String** %d
-  %32 = load %struct.String*, %struct.String** %d
-  call void @print(%struct.String* %32)
-  %33 = call %struct.String* @string_constructor(i8* getelementptr inbounds ([10 x i8], [10 x i8]* @4, i32 0, i32 0), i64 9)
-  call void @print(%struct.String* %33)
+  store %struct.String* %46, %struct.String** %d
+  %47 = load %struct.String*, %struct.String** %d
+  %48 = load %struct.String*, %struct.String** %d
+  call void @print(%struct.String* %48)
+  %49 = call %struct.String* @string_constructor(i8* getelementptr inbounds ([10 x i8], [10 x i8]* @4, i32 0, i32 0), i64 9)
+  call void @print(%struct.String* %49)
   store i64 0, i64* @pass
-  %34 = load i64, i64* @pass
-  br label %for1
+  %50 = load i64, i64* @pass
+  br label %for3
 
-for1:                                             ; preds = %for1, %"merge of for"
-  %35 = call %struct.String* @string_constructor(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @5, i32 0, i32 0), i64 1)
-  call void @print(%struct.String* %35)
-  %36 = bitcast %Person* %20 to i64*
-  call void @free(i64* %36)
+for3:                                             ; preds = %for3, %"merge of for"
+  %51 = call %struct.String* @string_constructor(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @5, i32 0, i32 0), i64 1)
+  call void @print(%struct.String* %51)
+  %52 = bitcast %Person* %36 to i64*
+  call void @free(i64* %52)
   store i1 false, i1* @false
-  %37 = load i1, i1* @false
-  %38 = icmp eq i1 false, %37
-  %39 = load i64, i64* @pass
-  br i1 %38, label %"merge of for2", label %for1
+  %53 = load i1, i1* @false
+  %54 = icmp eq i1 false, %53
+  %55 = load i64, i64* @pass
+  br i1 %54, label %"merge of for4", label %for3
 
-"merge of for2":                                  ; preds = %for1
-  %40 = load %Person*, %Person** %p
-  call void @f.6(%Person* %40)
-  %41 = bitcast %Person* %13 to i64*
-  call void @free(i64* %41)
-  %42 = bitcast %Person* %10 to i64*
-  call void @free(i64* %42)
-  %43 = bitcast %ct* %0 to i64*
-  call void @free(i64* %43)
+"merge of for4":                                  ; preds = %for3
+  %56 = load %Person*, %Person** %p
+  call void @f.13(%Person* %56)
+  %57 = bitcast %Person* %29 to i64*
+  call void @free(i64* %57)
+  %58 = bitcast %Person* %26 to i64*
+  call void @free(i64* %58)
+  %59 = bitcast %ct* %19 to i64*
+  call void @free(i64* %59)
+  %60 = bitcast %NestStruct.0* %11 to i64*
+  call void @free(i64* %60)
+  %61 = bitcast %TestClass* %9 to i64*
+  call void @free(i64* %61)
   ret i8 0
+}
+
+declare void @Struct()
+
+declare void @NestStruct()
+
+declare %Struct @load(%Struct*)
+
+declare i16 @main.1()
+
+declare i16 @TEST_no_arg_func()
+
+declare i16 @TEST_arg_func(i16)
+
+declare i16 @TEST_struct_arg_func(%Struct*)
+
+declare %Struct* @TEST_return_struct_func()
+
+declare i16 @TEST_arg_nest_struct(%NestStruct*)
+
+declare %NestStruct* @TEST_return_nest_struct()
+
+declare void @T1()
+
+declare void @TestClass()
+
+define %T1* @T1.4() {
+entry:
+  %"@num" = alloca i64
+  store i64 0, i64* %"@num"
+  %0 = load i64, i64* %"@num"
+  %1 = call i64* @malloc(i64 8)
+  %2 = bitcast i64* %1 to %T1*
+  %3 = getelementptr inbounds %T1, %T1* %2, i32 0, i32 0
+  store i64 %0, i64* %3
+  ret %T1* %2
+}
+
+define void @"destructor<T1>"(%T1*) {
+entry:
+  %1 = bitcast %T1* %0 to i64*
+  call void @free(i64* %1)
+  ret void
+}
+
+define %TestClass* @TestClass.5() {
+entry:
+  %0 = call %T1* @T1.4()
+  %"@c_m" = alloca %T1*
+  store %T1* %0, %T1** %"@c_m"
+  %1 = load %T1*, %T1** %"@c_m"
+  %2 = call i64* @malloc(i64 8)
+  %3 = bitcast i64* %2 to %TestClass*
+  %4 = getelementptr inbounds %TestClass, %TestClass* %3, i32 0, i32 0
+  store %T1* %1, %T1** %4
+  ret %TestClass* %3
+}
+
+define void @"destructor<TestClass>"(%TestClass*) {
+entry:
+  %1 = bitcast %TestClass* %0 to i64*
+  call void @free(i64* %1)
+  ret void
+}
+
+define %NestStruct.0* @NestStruct.7() {
+entry:
+  %"@member" = alloca i16
+  store i16 0, i16* %"@member"
+  %0 = load i16, i16* %"@member"
+  %"@member2" = alloca i16
+  store i16 0, i16* %"@member2"
+  %1 = load i16, i16* %"@member2"
+  %2 = alloca %Struct
+  %3 = load %Struct, %Struct* %2
+  %"@s" = alloca %Struct
+  store %Struct %3, %Struct* %"@s"
+  %4 = load %Struct, %Struct* %"@s"
+  %5 = call i64* @malloc(i64 16)
+  %6 = bitcast i64* %5 to %NestStruct.0*
+  %7 = getelementptr inbounds %NestStruct.0, %NestStruct.0* %6, i32 0, i32 0
+  store i16 %0, i16* %7
+  %8 = getelementptr inbounds %NestStruct.0, %NestStruct.0* %6, i32 0, i32 1
+  store i16 %1, i16* %8
+  %9 = getelementptr inbounds %NestStruct.0, %NestStruct.0* %6, i32 0, i32 2
+  store %Struct %4, %Struct* %9
+  ret %NestStruct.0* %6
+}
+
+define void @"destructor<NestStruct>"(%NestStruct.0*) {
+entry:
+  %1 = bitcast %NestStruct.0* %0 to i64*
+  call void @free(i64* %1)
+  ret void
 }
 
 declare void @ct()
 
 declare void @nnn()
 
-define %ct* @ct.2() {
+define %ct* @ct.9() {
 entry:
-  %"@n" = alloca i64***
-  store i64*** null, i64**** %"@n"
-  %0 = load i64***, i64**** %"@n"
+  %"@n" = alloca i16**
+  store i16** null, i16*** %"@n"
+  %0 = load i16**, i16*** %"@n"
   %"@ctmem" = alloca i64
   store i64 0, i64* %"@ctmem"
   %1 = load i64, i64* %"@ctmem"
   %2 = call i64* @malloc(i64 16)
   %3 = bitcast i64* %2 to %ct*
   %4 = getelementptr inbounds %ct, %ct* %3, i32 0, i32 0
-  store i64*** %0, i64**** %4
+  store i16** %0, i16*** %4
   %5 = getelementptr inbounds %ct, %ct* %3, i32 0, i32 1
   store i64 %1, i64* %5
   ret %ct* %3
@@ -143,11 +275,11 @@ entry:
   ret void
 }
 
-declare i64 @dx_init()
+declare i16 @dx_init()
 
-declare i64 @dx_waitkey()
+declare i16 @dx_waitkey()
 
-declare i64 @dx_end()
+declare i16 @dx_end()
 
 declare void @type()
 
@@ -155,7 +287,7 @@ declare void @List()
 
 declare void @Person()
 
-define %Person* @Person.4(%struct.String* %name) {
+define %Person* @Person.11(%struct.String* %name) {
 entry:
   %"@name" = alloca %struct.String*
   store %struct.String* %name, %struct.String** %"@name"
@@ -176,7 +308,7 @@ entry:
 
 declare void @f()
 
-define void @f.6(%Person* %arg) {
+define void @f.13(%Person* %arg) {
 entry:
   %0 = getelementptr inbounds %Person, %Person* %arg, i32 0, i32 0
   %1 = load %struct.String*, %struct.String** %0

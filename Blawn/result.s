@@ -16,35 +16,54 @@ main:                                   # @main
 	pushq	%r13
 	pushq	%r12
 	pushq	%rbx
-	subq	$40, %rsp
+	subq	$136, %rsp
 	.cfi_offset %rbx, -56
 	.cfi_offset %r12, -48
 	.cfi_offset %r13, -40
 	.cfi_offset %r14, -32
 	.cfi_offset %r15, -24
-	callq	ct.2
-	movq	%rax, %r15
-	movq	%r15, -72(%rbp)
-	movq	8(%r15), %rdi
+	movw	$0, -46(%rbp)
+	movq	$0, -152(%rbp)
+	movw	$0, -44(%rbp)
+	movw	$0, -42(%rbp)
+	movzwl	-144(%rbp), %eax
+	movq	-136(%rbp), %rcx
+	movq	%rcx, -120(%rbp)
+	movw	%ax, -128(%rbp)
+	callq	TestClass.5
+	movq	%rax, -72(%rbp)         # 8-byte Spill
+	movq	%rax, -88(%rbp)
+	callq	NestStruct.7
+	movq	%rax, -64(%rbp)         # 8-byte Spill
+	movq	%rax, -112(%rbp)
+	movq	-88(%rbp), %rax
+	movq	(%rax), %rax
+	movq	(%rax), %rdi
 	callq	int_to_str
 	movq	%rax, %rdi
 	callq	print
-	movq	$0, C_INT(%rip)
+	callq	ct.9
+	movq	%rax, %r13
+	movq	%r13, -104(%rbp)
+	movq	8(%r13), %rdi
+	callq	int_to_str
+	movq	%rax, %rdi
+	callq	print
 	movl	$.L__unnamed_1, %edi
 	movl	$4, %esi
 	callq	string_constructor
 	movq	%rax, %rdi
-	callq	Person.4
-	movq	%rax, %r14
-	movq	%r14, -56(%rbp)
+	callq	Person.11
+	movq	%rax, %r12
+	movq	%r12, -80(%rbp)
 	movl	$.L__unnamed_2, %edi
 	movl	$4, %esi
 	callq	string_constructor
 	movq	%rax, %rdi
-	callq	Person.4
-	movq	%rax, %r12
-	movq	%r12, -64(%rbp)
-	movq	$1, -48(%rbp)
+	callq	Person.11
+	movq	%rax, %rbx
+	movq	%rbx, -96(%rbp)
+	movq	$1, -56(%rbp)
 	.p2align	4, 0x90
 .LBB0_1:                                # %for
                                         # =>This Inner Loop Header: Depth=1
@@ -52,20 +71,20 @@ main:                                   # @main
 	movl	$6, %esi
 	callq	string_constructor
 	movq	%rax, %rdi
-	callq	Person.4
-	movq	%rax, %rbx
+	callq	Person.11
+	movq	%rax, %r14
 	movq	%rsp, %rax
 	leaq	-16(%rax), %rsp
-	movq	%rbx, -16(%rax)
-	movq	%rbx, %rdi
+	movq	%r14, -16(%rax)
+	movq	%r14, %rdi
 	callq	free
-	movq	-48(%rbp), %rax
+	movq	-56(%rbp), %rax
 	cmpq	$100, %rax
 	leaq	1(%rax), %rax
-	movq	%rax, -48(%rbp)
+	movq	%rax, -56(%rbp)
 	jl	.LBB0_1
 # %bb.2:                                # %"merge of for"
-	xorl	%r13d, %r13d
+	xorl	%r15d, %r15d
 	movl	$.L__unnamed_4, %edi
 	xorl	%esi, %esi
 	callq	string_constructor
@@ -81,26 +100,30 @@ main:                                   # @main
 	callq	print
 	movq	$0, pass(%rip)
 	.p2align	4, 0x90
-.LBB0_3:                                # %for1
+.LBB0_3:                                # %for3
                                         # =>This Inner Loop Header: Depth=1
 	movl	$.L__unnamed_6, %edi
 	movl	$1, %esi
 	callq	string_constructor
 	movq	%rax, %rdi
 	callq	print
-	movq	%rbx, %rdi
-	callq	free
-	movb	$0, false(%rip)
-	testb	%r13b, %r13b
-	jne	.LBB0_3
-# %bb.4:                                # %"merge of for2"
-	movq	-56(%rbp), %rdi
-	callq	f.6
-	movq	%r12, %rdi
-	callq	free
 	movq	%r14, %rdi
 	callq	free
-	movq	%r15, %rdi
+	movb	$0, false(%rip)
+	testb	%r15b, %r15b
+	jne	.LBB0_3
+# %bb.4:                                # %"merge of for4"
+	movq	-80(%rbp), %rdi
+	callq	f.13
+	movq	%rbx, %rdi
+	callq	free
+	movq	%r12, %rdi
+	callq	free
+	movq	%r13, %rdi
+	callq	free
+	movq	-64(%rbp), %rdi         # 8-byte Reload
+	callq	free
+	movq	-72(%rbp), %rdi         # 8-byte Reload
 	callq	free
 	xorl	%eax, %eax
 	leaq	-40(%rbp), %rsp
@@ -115,10 +138,130 @@ main:                                   # @main
 	.size	main, .Lfunc_end0-main
 	.cfi_endproc
                                         # -- End function
-	.globl	ct.2                    # -- Begin function ct.2
+	.globl	T1.4                    # -- Begin function T1.4
 	.p2align	4, 0x90
-	.type	ct.2,@function
-ct.2:                                   # @ct.2
+	.type	T1.4,@function
+T1.4:                                   # @T1.4
+	.cfi_startproc
+# %bb.0:                                # %entry
+	pushq	%rax
+	.cfi_def_cfa_offset 16
+	movq	$0, (%rsp)
+	movl	$8, %edi
+	callq	malloc
+	movq	$0, (%rax)
+	popq	%rcx
+	retq
+.Lfunc_end1:
+	.size	T1.4, .Lfunc_end1-T1.4
+	.cfi_endproc
+                                        # -- End function
+	.globl	"destructor<T1>"        # -- Begin function destructor<T1>
+	.p2align	4, 0x90
+	.type	"destructor<T1>",@function
+"destructor<T1>":                       # @"destructor<T1>"
+	.cfi_startproc
+# %bb.0:                                # %entry
+	pushq	%rax
+	.cfi_def_cfa_offset 16
+	callq	free
+	popq	%rax
+	retq
+.Lfunc_end2:
+	.size	"destructor<T1>", .Lfunc_end2-"destructor<T1>"
+	.cfi_endproc
+                                        # -- End function
+	.globl	TestClass.5             # -- Begin function TestClass.5
+	.p2align	4, 0x90
+	.type	TestClass.5,@function
+TestClass.5:                            # @TestClass.5
+	.cfi_startproc
+# %bb.0:                                # %entry
+	pushq	%rbx
+	.cfi_def_cfa_offset 16
+	subq	$16, %rsp
+	.cfi_def_cfa_offset 32
+	.cfi_offset %rbx, -16
+	callq	T1.4
+	movq	%rax, %rbx
+	movq	%rbx, 8(%rsp)
+	movl	$8, %edi
+	callq	malloc
+	movq	%rbx, (%rax)
+	addq	$16, %rsp
+	popq	%rbx
+	retq
+.Lfunc_end3:
+	.size	TestClass.5, .Lfunc_end3-TestClass.5
+	.cfi_endproc
+                                        # -- End function
+	.globl	"destructor<TestClass>" # -- Begin function destructor<TestClass>
+	.p2align	4, 0x90
+	.type	"destructor<TestClass>",@function
+"destructor<TestClass>":                # @"destructor<TestClass>"
+	.cfi_startproc
+# %bb.0:                                # %entry
+	pushq	%rax
+	.cfi_def_cfa_offset 16
+	callq	free
+	popq	%rax
+	retq
+.Lfunc_end4:
+	.size	"destructor<TestClass>", .Lfunc_end4-"destructor<TestClass>"
+	.cfi_endproc
+                                        # -- End function
+	.globl	NestStruct.7            # -- Begin function NestStruct.7
+	.p2align	4, 0x90
+	.type	NestStruct.7,@function
+NestStruct.7:                           # @NestStruct.7
+	.cfi_startproc
+# %bb.0:                                # %entry
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	pushq	%rbx
+	.cfi_def_cfa_offset 24
+	subq	$40, %rsp
+	.cfi_def_cfa_offset 64
+	.cfi_offset %rbx, -24
+	.cfi_offset %rbp, -16
+	movw	$0, 6(%rsp)
+	movw	$0, 4(%rsp)
+	movzwl	24(%rsp), %ebp
+	movq	32(%rsp), %rbx
+	movq	%rbx, 16(%rsp)
+	movw	%bp, 8(%rsp)
+	movl	$16, %edi
+	callq	malloc
+	movl	$0, (%rax)
+	movq	%rbx, 16(%rax)
+	movw	%bp, 8(%rax)
+	addq	$40, %rsp
+	popq	%rbx
+	popq	%rbp
+	retq
+.Lfunc_end5:
+	.size	NestStruct.7, .Lfunc_end5-NestStruct.7
+	.cfi_endproc
+                                        # -- End function
+	.globl	"destructor<NestStruct>" # -- Begin function destructor<NestStruct>
+	.p2align	4, 0x90
+	.type	"destructor<NestStruct>",@function
+"destructor<NestStruct>":               # @"destructor<NestStruct>"
+	.cfi_startproc
+# %bb.0:                                # %entry
+	pushq	%rax
+	.cfi_def_cfa_offset 16
+	callq	free
+	popq	%rax
+	retq
+.Lfunc_end6:
+	.size	"destructor<NestStruct>", .Lfunc_end6-"destructor<NestStruct>"
+	.cfi_endproc
+                                        # -- End function
+	.globl	ct.9                    # -- Begin function ct.9
+	.p2align	4, 0x90
+	.type	ct.9,@function
+ct.9:                                   # @ct.9
 	.cfi_startproc
 # %bb.0:                                # %entry
 	subq	$24, %rsp
@@ -131,8 +274,8 @@ ct.2:                                   # @ct.2
 	movq	$0, 8(%rax)
 	addq	$24, %rsp
 	retq
-.Lfunc_end1:
-	.size	ct.2, .Lfunc_end1-ct.2
+.Lfunc_end7:
+	.size	ct.9, .Lfunc_end7-ct.9
 	.cfi_endproc
                                         # -- End function
 	.globl	"destructor<ct>"        # -- Begin function destructor<ct>
@@ -146,14 +289,14 @@ ct.2:                                   # @ct.2
 	callq	free
 	popq	%rax
 	retq
-.Lfunc_end2:
-	.size	"destructor<ct>", .Lfunc_end2-"destructor<ct>"
+.Lfunc_end8:
+	.size	"destructor<ct>", .Lfunc_end8-"destructor<ct>"
 	.cfi_endproc
                                         # -- End function
-	.globl	Person.4                # -- Begin function Person.4
+	.globl	Person.11               # -- Begin function Person.11
 	.p2align	4, 0x90
-	.type	Person.4,@function
-Person.4:                               # @Person.4
+	.type	Person.11,@function
+Person.11:                              # @Person.11
 	.cfi_startproc
 # %bb.0:                                # %entry
 	pushq	%rbx
@@ -169,8 +312,8 @@ Person.4:                               # @Person.4
 	addq	$16, %rsp
 	popq	%rbx
 	retq
-.Lfunc_end3:
-	.size	Person.4, .Lfunc_end3-Person.4
+.Lfunc_end9:
+	.size	Person.11, .Lfunc_end9-Person.11
 	.cfi_endproc
                                         # -- End function
 	.globl	"destructor<Person>"    # -- Begin function destructor<Person>
@@ -184,14 +327,14 @@ Person.4:                               # @Person.4
 	callq	free
 	popq	%rax
 	retq
-.Lfunc_end4:
-	.size	"destructor<Person>", .Lfunc_end4-"destructor<Person>"
+.Lfunc_end10:
+	.size	"destructor<Person>", .Lfunc_end10-"destructor<Person>"
 	.cfi_endproc
                                         # -- End function
-	.globl	f.6                     # -- Begin function f.6
+	.globl	f.13                    # -- Begin function f.13
 	.p2align	4, 0x90
-	.type	f.6,@function
-f.6:                                    # @f.6
+	.type	f.13,@function
+f.13:                                   # @f.13
 	.cfi_startproc
 # %bb.0:                                # %entry
 	pushq	%rax
@@ -200,8 +343,8 @@ f.6:                                    # @f.6
 	callq	print
 	popq	%rax
 	retq
-.Lfunc_end5:
-	.size	f.6, .Lfunc_end5-f.6
+.Lfunc_end11:
+	.size	f.13, .Lfunc_end11-f.13
 	.cfi_endproc
                                         # -- End function
 	.globl	list_constructor        # -- Begin function list_constructor
@@ -233,8 +376,8 @@ list_constructor:                       # @list_constructor
 	addq	$16, %rsp
 	popq	%rbp
 	retq
-.Lfunc_end6:
-	.size	list_constructor, .Lfunc_end6-list_constructor
+.Lfunc_end12:
+	.size	list_constructor, .Lfunc_end12-list_constructor
 	.cfi_endproc
                                         # -- End function
 	.globl	blawn_realloc           # -- Begin function blawn_realloc
@@ -258,19 +401,19 @@ blawn_realloc:                          # @blawn_realloc
 	callq	realloc
 	movq	%rax, -8(%rbp)
 	cmpq	$0, -8(%rbp)
-	jne	.LBB7_2
+	jne	.LBB13_2
 # %bb.1:
 	movabsq	$.L.str, %rdi
 	callq	puts
 	movl	$1, %edi
 	callq	exit
-.LBB7_2:
+.LBB13_2:
 	movq	-8(%rbp), %rax
 	addq	$32, %rsp
 	popq	%rbp
 	retq
-.Lfunc_end7:
-	.size	blawn_realloc, .Lfunc_end7-blawn_realloc
+.Lfunc_end13:
+	.size	blawn_realloc, .Lfunc_end13-blawn_realloc
 	.cfi_endproc
                                         # -- End function
 	.globl	blawn_memcpy            # -- Begin function blawn_memcpy
@@ -300,8 +443,8 @@ blawn_memcpy:                           # @blawn_memcpy
 	addq	$32, %rsp
 	popq	%rbp
 	retq
-.Lfunc_end8:
-	.size	blawn_memcpy, .Lfunc_end8-blawn_memcpy
+.Lfunc_end14:
+	.size	blawn_memcpy, .Lfunc_end14-blawn_memcpy
 	.cfi_endproc
                                         # -- End function
 	.globl	blawn_index             # -- Begin function blawn_index
@@ -322,11 +465,11 @@ blawn_index:                            # @blawn_index
 	movq	%rdx, -16(%rbp)
 	movq	%rcx, -8(%rbp)
 	cmpq	-8(%rbp), %rax
-	jg	.LBB9_3
+	jg	.LBB15_3
 # %bb.1:
 	movq	-8(%rbp), %rax
 	cmpq	-24(%rbp), %rax
-	jge	.LBB9_3
+	jge	.LBB15_3
 # %bb.2:
 	movq	-32(%rbp), %rax
 	movq	-16(%rbp), %rcx
@@ -335,13 +478,13 @@ blawn_index:                            # @blawn_index
 	addq	$32, %rsp
 	popq	%rbp
 	retq
-.LBB9_3:
+.LBB15_3:
 	movabsq	$.L.str.1, %rdi
 	callq	puts
 	movl	$1, %edi
 	callq	exit
-.Lfunc_end9:
-	.size	blawn_index, .Lfunc_end9-blawn_index
+.Lfunc_end15:
+	.size	blawn_index, .Lfunc_end15-blawn_index
 	.cfi_endproc
                                         # -- End function
 	.globl	blawn_set_element       # -- Begin function blawn_set_element
@@ -363,29 +506,29 @@ blawn_set_element:                      # @blawn_set_element
 	movq	%rcx, -16(%rbp)
 	movq	%r8, -8(%rbp)
 	cmpq	-8(%rbp), %rax
-	jg	.LBB10_3
+	jg	.LBB16_3
 # %bb.1:
 	movq	-8(%rbp), %rax
 	cmpq	-32(%rbp), %rax
-	jge	.LBB10_3
+	jge	.LBB16_3
 # %bb.2:
 	movq	-16(%rbp), %rax
 	movq	-40(%rbp), %rcx
 	movq	-24(%rbp), %rdx
 	imulq	-8(%rbp), %rdx
 	movq	%rax, (%rcx,%rdx)
-	jmp	.LBB10_4
-.LBB10_3:
+	jmp	.LBB16_4
+.LBB16_3:
 	movabsq	$.L.str.1, %rdi
 	callq	puts
 	movl	$1, %edi
 	callq	exit
-.LBB10_4:
+.LBB16_4:
 	addq	$48, %rsp
 	popq	%rbp
 	retq
-.Lfunc_end10:
-	.size	blawn_set_element, .Lfunc_end10-blawn_set_element
+.Lfunc_end16:
+	.size	blawn_set_element, .Lfunc_end16-blawn_set_element
 	.cfi_endproc
                                         # -- End function
 	.globl	print                   # -- Begin function print
@@ -410,8 +553,8 @@ print:                                  # @print
 	addq	$16, %rsp
 	popq	%rbp
 	retq
-.Lfunc_end11:
-	.size	print, .Lfunc_end11-print
+.Lfunc_end17:
+	.size	print, .Lfunc_end17-print
 	.cfi_endproc
                                         # -- End function
 	.globl	string_constructor      # -- Begin function string_constructor
@@ -441,8 +584,8 @@ string_constructor:                     # @string_constructor
 	addq	$32, %rsp
 	popq	%rbp
 	retq
-.Lfunc_end12:
-	.size	string_constructor, .Lfunc_end12-string_constructor
+.Lfunc_end18:
+	.size	string_constructor, .Lfunc_end18-string_constructor
 	.cfi_endproc
                                         # -- End function
 	.globl	append_string           # -- Begin function append_string
@@ -486,8 +629,8 @@ append_string:                          # @append_string
 	addq	$32, %rsp
 	popq	%rbp
 	retq
-.Lfunc_end13:
-	.size	append_string, .Lfunc_end13-append_string
+.Lfunc_end19:
+	.size	append_string, .Lfunc_end19-append_string
 	.cfi_endproc
                                         # -- End function
 	.globl	int_to_str              # -- Begin function int_to_str
@@ -506,13 +649,13 @@ int_to_str:                             # @int_to_str
 	movq	-8(%rbp), %rax
 	movq	%rax, -32(%rbp)
 	cmpq	$0, -8(%rbp)
-	jl	.LBB14_5
+	jl	.LBB20_5
 # %bb.1:
 	movq	$1, -16(%rbp)
-.LBB14_2:                               # =>This Inner Loop Header: Depth=1
+.LBB20_2:                               # =>This Inner Loop Header: Depth=1
 	cmpq	$0, -8(%rbp)
-	je	.LBB14_4
-# %bb.3:                                #   in Loop: Header=BB14_2 Depth=1
+	je	.LBB20_4
+# %bb.3:                                #   in Loop: Header=BB20_2 Depth=1
 	movl	$10, %ecx
 	movq	-8(%rbp), %rax
 	cqto
@@ -521,18 +664,18 @@ int_to_str:                             # @int_to_str
 	movq	-16(%rbp), %rax
 	addq	$1, %rax
 	movq	%rax, -16(%rbp)
-	jmp	.LBB14_2
-.LBB14_4:
-	jmp	.LBB14_9
-.LBB14_5:
+	jmp	.LBB20_2
+.LBB20_4:
+	jmp	.LBB20_9
+.LBB20_5:
 	xorl	%eax, %eax
 	movq	$2, -16(%rbp)
 	subq	-8(%rbp), %rax
 	movq	%rax, -8(%rbp)
-.LBB14_6:                               # =>This Inner Loop Header: Depth=1
+.LBB20_6:                               # =>This Inner Loop Header: Depth=1
 	cmpq	$0, -8(%rbp)
-	je	.LBB14_8
-# %bb.7:                                #   in Loop: Header=BB14_6 Depth=1
+	je	.LBB20_8
+# %bb.7:                                #   in Loop: Header=BB20_6 Depth=1
 	movl	$10, %ecx
 	movq	-8(%rbp), %rax
 	cqto
@@ -541,10 +684,10 @@ int_to_str:                             # @int_to_str
 	movq	-16(%rbp), %rax
 	addq	$1, %rax
 	movq	%rax, -16(%rbp)
-	jmp	.LBB14_6
-.LBB14_8:
-	jmp	.LBB14_9
-.LBB14_9:
+	jmp	.LBB20_6
+.LBB20_8:
+	jmp	.LBB20_9
+.LBB20_9:
 	movq	-16(%rbp), %rdi
 	callq	malloc
 	movabsq	$.L.str.3, %rdx
@@ -561,8 +704,8 @@ int_to_str:                             # @int_to_str
 	addq	$32, %rsp
 	popq	%rbp
 	retq
-.Lfunc_end14:
-	.size	int_to_str, .Lfunc_end14-int_to_str
+.Lfunc_end20:
+	.size	int_to_str, .Lfunc_end20-int_to_str
 	.cfi_endproc
                                         # -- End function
 	.globl	float_to_str            # -- Begin function float_to_str
@@ -596,18 +739,10 @@ float_to_str:                           # @float_to_str
 	addq	$32, %rsp
 	popq	%rbp
 	retq
-.Lfunc_end15:
-	.size	float_to_str, .Lfunc_end15-float_to_str
+.Lfunc_end21:
+	.size	float_to_str, .Lfunc_end21-float_to_str
 	.cfi_endproc
                                         # -- End function
-	.type	C_INT,@object           # @C_INT
-	.bss
-	.globl	C_INT
-	.p2align	3
-C_INT:
-	.quad	0                       # 0x0
-	.size	C_INT, 8
-
 	.type	.L__unnamed_1,@object   # @0
 	.section	.rodata.str1.1,"aMS",@progbits,1
 .L__unnamed_1:

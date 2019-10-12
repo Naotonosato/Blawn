@@ -48,6 +48,12 @@
     };
     BLAWN_STATE blawn_state = NO_IF;
     BLAWN_STATE is_global = NOT_GLOBAL;
+    std::string join(std::vector<std::string> text)
+    {
+        std::string type_identifier;
+        for(auto& t:text){type_identifier+=" " + t;}
+        return type_identifier;
+    }    
 }
 
 %define api.value.type variant
@@ -109,6 +115,8 @@
 %type <std::shared_ptr<FunctionNode>> method_definition
 %type <std::vector<std::shared_ptr<Node>>> C_members_definition
 %type <std::vector<std::string>> C_type_identifier
+%type <std::vector<std::shared_ptr<Node>>> C_arguments
+%type <std::shared_ptr<Node>> C_returns
 %type <std::vector<std::shared_ptr<Node>>> members_definition
 %type <std::vector<std::string>> arguments
 %type <std::vector<std::string>> definition_arguments
@@ -266,15 +274,13 @@ members_definition:
 C_members_definition:
     MEMBER_IDENTIFIER EQUAL C_type_identifier EOL
     {
-        std::string type_identifier;
-        for(auto& t:$3){type_identifier+=" " + t;}
+        std::string type_identifier = join($3);
         auto assign_value = driver.ast_generator->create_C_member(type_identifier);
         $$.push_back(driver.ast_generator->assign($1,std::move(assign_value),false));
     }
     |C_members_definition MEMBER_IDENTIFIER EQUAL C_type_identifier EOL
     {
-        std::string type_identifier;
-        for(auto& t:$4){type_identifier+=" " + t;}
+        std::string type_identifier = join($4);
         auto assign_value = driver.ast_generator->create_C_member(type_identifier);
         $$ = std::move($1);
         $$.push_back(driver.ast_generator->assign($2,std::move(assign_value),false));
@@ -288,6 +294,26 @@ C_type_identifier:
     {
         $$ = std::move($1);
         $$.push_back($2);
+    };
+C_arguments:
+    C_type_identifier
+    {
+        std::string type_identifier = join($1);
+        auto assign_value = driver.ast_generator->create_C_member(type_identifier);
+        $$.push_back(assign_value);
+    }
+    |C_arguments COMMA C_type_identifier
+    {
+        $$ = std::move($1);
+        std::string type_identifier = join($3);
+        auto assign_value = driver.ast_generator->create_C_member(type_identifier);
+        $$.push_back(assign_value);
+    };
+C_returns:
+    C_type_identifier
+    {
+        std::string type_identifier = join($1);
+        $$ = driver.ast_generator->create_C_member(type_identifier);
     };
 return_value:
     RETURN expression
@@ -342,11 +368,11 @@ globals_variables:
         $$.push_back(std::move($3));
     };
 c_function_declaration:
-    C_FUNCTION_DECLARATION EOL C_FUNCTION_ARGUMENT expressions EOL C_FUNCTION_RETURN expression EOL
+    C_FUNCTION_DECLARATION EOL C_FUNCTION_ARGUMENT C_arguments EOL C_FUNCTION_RETURN C_returns EOL
     {
         $$ = driver.ast_generator->declare_C_function($1,$4,$7);
     }
-    |C_FUNCTION_DECLARATION EOL C_FUNCTION_ARGUMENT EOL C_FUNCTION_RETURN expression EOL
+    |C_FUNCTION_DECLARATION EOL C_FUNCTION_ARGUMENT EOL C_FUNCTION_RETURN C_returns EOL
     {
         $$ = driver.ast_generator->declare_C_function($1,{},$6);
     };

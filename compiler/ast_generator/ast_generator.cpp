@@ -7,6 +7,7 @@
 #include "../ir_generator/ir_generator.hpp"
 #include "../utils/utils.hpp"
 #include "node_collector.hpp"
+#include "../errors/errors.hpp"
 #include "ast_generator.hpp"
 
 static unsigned int unique_number = 0;
@@ -28,8 +29,9 @@ ASTGenerator::ASTGenerator(llvm::Module& module, llvm::IRBuilder<>& ir_builder,
       class_collector("TOP"),
       C_type_collector("TOP"),
       ir_generators(context, module, ir_builder),
-      line_number(1),
-      no_value_node(new Node(0, ir_generators.ir_generator)) {}
+      line_number(0),
+      no_value_node(new Node(0, ir_generators.ir_generator)),
+      logger() {}
 
 void ASTGenerator::generate(std::vector<std::shared_ptr<Node>> program) {
     std::vector<std::string> top = {"TOP"};
@@ -120,19 +122,20 @@ std::shared_ptr<Node> ASTGenerator::get_named_value(std::string name) {
         if (argument_collector.exist(name)) {
             return argument_collector.get(name);
         }
-        std::cout << "Error: variable '" << name << "' is not declared.\n";
-        exit(0);
+        logger.set_line_number(line_number);
+        logger.unknown_identifier_error("variable",name);
     }
 }
 
 std::shared_ptr<Node> ASTGenerator::create_C_member(std::string name) {
     std::string splitter =
-        "__C_PTR__"
+        "__PTR__"
         " ";
     std::vector<std::string> parsed;
     utils::split(name, splitter, parsed);
     std::string type_name = parsed.back();
-    auto class_node = C_type_collector.get(type_name);
+    utils::replace(type_name, " ", "");
+    auto class_node = C_type_collector.get(type_name, {"TOP"});
     auto node = std::shared_ptr<Node>(new NullNode(
         line_number, ir_generators.null_generator, name, class_node));
     return node;
@@ -258,9 +261,6 @@ std::unique_ptr<Node> ASTGenerator::create_call(
             new CallFunctionNode(line_number, ir_generators.calling_generator,
                                  arguments, argument_collector, name));
         return std::move(calling);
-        // std::cout << "Error: function or class '" << name << "' is not
-        // defined."
-        // << std::endl; exit(0);
     }
 }
 

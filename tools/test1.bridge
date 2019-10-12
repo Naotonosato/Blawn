@@ -5,6 +5,12 @@ Ctype NestStruct
     @member = __C_INT__SIZE_4
     @member2 = __C_INT__SIZE_4
     @s = __PTR__ __PTR__ __PTR__ __PTR__ Struct
+[Cfunction main]
+    arguments: 
+    return: __C_INT__SIZE_4
+[Cfunction f]
+    arguments: __PTR__ __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
 [Cfunction TEST_no_arg_func]
     arguments: 
     return: __C_INT__SIZE_4

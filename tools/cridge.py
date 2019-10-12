@@ -57,19 +57,6 @@ for t in BUILTIN_C_TYPE_NAMES:
     size = ctypes.sizeof(BUILTIN_C_TYPES[t])
     BUILTIN_C_TYPE_NAMES[t] += "SIZE_" + str(size)
 
-def is_supported_type(type_info):
-    if type_info.kind == TypeKind.POINTER:
-        if type_info.get_pointee().kind == TypeKind.POINTER:
-            print("pointer to pointer type is not supported yet.")
-            return False
-        if type_info.get_pointee().kind in NUMERIC_TYPES:
-            print("pointer to numeric type is not supported yet.")
-            return False
-    if type_info.kind == TypeKind.RECORD and type_info.kind != TypeKind.POINTER:
-        print("not pointer structure type is not supported yet.")
-        return False 
-    return True
-
 def _rename_type(name):
     to_delete = "struct "
     return name.replace(to_delete,"")
@@ -84,14 +71,12 @@ def to_blawn_type(type_info):
     if type_info.kind == TypeKind.VOID:
         return ""
     if type_info.kind == TypeKind.POINTER:
-        print(type_info.spelling, " is ptr")
         type_info,count = get_finally_pointee(type_info)
         return "__PTR__ " * count + to_blawn_type(type_info)
     if type_info.kind in BUILTIN_C_TYPE_NAMES:
-        print("size of ",type_info.spelling,type_info.get_size())
         return BUILTIN_C_TYPE_NAMES[type_info.kind]
-    print("size of ",type_info.spelling,type_info.get_size())
-    
+    if type_info.kind == TypeKind.CONSTANTARRAY:
+        return "__PTR__ " + to_blawn_type(type_info.get_array_element_type())
     return _rename_type(type_info.spelling)
 
 
@@ -130,8 +115,7 @@ def generate_wrapper(functions):
 
 
 def get_functions(filename,node,functions_dict={},structures_dict={}):
-    if 1:#node.location.file is not None and node.location.file.name == filename:
-        print(node.kind.name)
+    if node.location.file is not None and node.location.file.name == filename:
         if node.kind == CursorKind.STRUCT_DECL:
             spelling = node.type.get_canonical().spelling
             #fields = [{"name":element.spelling,"type":element.type.get_canonical()} for element in node.type.get_canonical().get_fields()]

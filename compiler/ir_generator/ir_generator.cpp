@@ -124,55 +124,68 @@ llvm::Type* _get_C_type();
 
 llvm::Value* NullIRGenerator::generate(Node& node_) {
     auto& node = *static_cast<NullNode*>(&node_);
-    std::map<std::string, llvm::Value*> builtin_C_types;
-    std::vector<std::string> real_num_types = {"__C_DOUBLE__","__C_FLOAT__","__C_LONGDOUBLE__"};
-    std::vector<std::string> unsigned_types = {"__C_UCHAR__","__C_UINT__","__C_ULONG__","__C_ULONGLONG__","__C_USHORT__"};
-    builtin_C_types["__C_INTEGER__"] =
-        llvm::ConstantInt::get(context, llvm::APInt(64, 0, true));
-    builtin_C_types["__C_REAL_NUMBER__"] =
-        llvm::ConstantFP::get(context, llvm::APFloat(0.0));
-    std::string ptr =
-        "__PTR__"
-        " ";
+    BlawnLogger logger;
+    logger.set_line_number(node.line_number);
+    std::vector<std::string> real_num_types = {"__C_DOUBLE__", "__C_FLOAT__",
+                                               "__C_LONGDOUBLE__"};
+    std::vector<std::string> unsigned_types = {"__C_UCHAR__", "__C_UINT__",
+                                               "__C_ULONG__", "__C_ULONGLONG__",
+                                               "__C_USHORT__"};
+
+    std::vector<std::string> builtin_C_types = {
+        "__C_BOOL__",     "__C_CHAR__",  "__C_CHAR__",      "__C_DOUBLE__",
+        "__C_FLOAT__",    "__C_INT__",   "__C_LONG__",      "__C_LONGDOUBLE__",
+        "__C_LONGLONG__", "__C_SCHAR__", "__C_SHORT__",     "__C_UCHAR__",
+        "__C_UINT__",     "__C_ULONG__", "__C_ULONGLONG__", "__C_USHORT__",
+        "__C_WCHAR__"};
     std::vector<std::string> parsed;
-    utils::split(node.type_name, ptr, parsed);
+    utils::split(node.type_name, "__PTR__ ", parsed);
     std::string type_name = parsed.back();
     std::vector<std::string> res;
-    utils::split(type_name,std::string("SIZE_"),res);
-    unsigned int type_size = std::stoi(res.back());
-    type_name = res.front();
-    utils::replace(type_name, " ", "");
-    bool is_real_num_type = utils::exist(real_num_types,type_name); //std::find(real_num_types.begin(),real_num_types.end(),type_name) != real_num_types.end();
-    bool is_unsigned = utils::exist(unsigned_types,type_name);
+    utils::split(type_name, std::string("SIZE_"), res);
+    if ((res.back() == "" or res.size() <= 1) && node.class_node == nullptr)
+        logger.unknown_identifier_error("type name or variable",
+                                        node.type_name);
     parsed.pop_back();
 
     if (node.class_node == nullptr) {
-        if (builtin_C_types.count(type_name)) {
-            if (parsed.size() == 0) 
-            {   
-                if (!is_real_num_type) return llvm::ConstantInt::get(context, llvm::APInt(type_size, 0, is_unsigned));
+        unsigned int type_size = std::stoi(res.back().c_str()) * 4;
+        type_name = res.front();
+        utils::replace(type_name, " ", "");
+        bool is_real_num_type = utils::exist(real_num_types, type_name);
+        bool is_unsigned = utils::exist(unsigned_types, type_name);
+        if (utils::exist(builtin_C_types, type_name)) {
+            if (parsed.size() == 0) {
+                if (!is_real_num_type)
+                    return llvm::ConstantInt::get(
+                        context, llvm::APInt(type_size, 0, is_unsigned));
                 return llvm::ConstantFP::get(context, llvm::APFloat(0.0));
             }
-            llvm::Type* type = is_real_num_type? ir_builder.getFloatTy():ir_builder.getIntNTy(type_size);
+            llvm::Type* type = is_real_num_type
+                                   ? ir_builder.getFloatTy()
+                                   : ir_builder.getIntNTy(type_size);
             for (auto& _ : parsed) {
                 type = type->getPointerTo();
             }
-            auto ptype =  llvm::dyn_cast<llvm::PointerType>(type);
+            auto ptype = llvm::dyn_cast<llvm::PointerType>(type);
             return llvm::ConstantPointerNull::get(ptype);
         } else {
-            BlawnLogger logger;
-            logger.set_line_number(node.line_number);
-            logger.unknown_identifier_error("type name or variable",
-                                            node.type_name);
+            std::cout << "defined ctype " << node.class_node << std::endl;
+            logger.unknown_identifier_error("type name or variable", type_name);
             return 0;
         }
     } else {
         auto type = utils::get_or_create_type(context, node.class_node,
                                               node.class_node->name);
-        for (auto& _ : parsed) {
-            type = type->getPointerTo();
+        if (parsed.size()) {
+            for (auto& _ : parsed) {
+                type = type->getPointerTo();
+            }
+            auto ptype = llvm::dyn_cast<llvm::PointerType>(type);
+            return llvm::ConstantPointerNull::get(ptype);
+        } else {
+            return ir_builder.CreateLoad(ir_builder.CreateAlloca(type, 0, ""));
         }
-        return llvm::ConstantPointerNull::get(type->getPointerTo());
     }
 }
 
@@ -819,48 +832,33 @@ llvm::Value* AccessIRGenerator::generate(Node& node_) {
     BlawnLogger logger;
     logger.set_line_number(node.line_number);
 
-    /*
-    if (node.get_generated() != nullptr)
-    {
-        std::cout << "------" << node.get_right_name() << ": " << std::flush;
-        node.get_generated()->print(llvm::outs());
-        std::cout << "--end--" << std::endl;
-        return node.get_generated();
-    }*/
-
-    auto left =
-        node.get_left_node()
-            ->generate();  // node.get_left_value();//node.get_left_node()->generate();
+    auto left = node.get_left_node()->generate();
     auto left_type = left->getType();
     if (!left_type->isPointerTy()) {
         logger.has_no_member_error(utils::to_string(left_type),
                                    node.get_right_name());
         return 0;
     }
-    if (!left_type->getPointerElementType()->isStructTy()) {
+    if (left_type->isPointerTy() && !left_type->getPointerElementType()->isStructTy()) {
         logger.has_no_member_error(utils::to_string(left_type),
                                    node.get_right_name());
         return 0;
     }
-
-    auto struct_type =
+    llvm::StructType* struct_type;
+    if (left_type->isPointerTy()) {
+        struct_type =
         llvm::dyn_cast<llvm::StructType>(left_type->getPointerElementType());
+    
+    }
+    else {struct_type = llvm::dyn_cast<llvm::StructType>(left_type);}
     std::string type_name = struct_type->getStructName();
     int index = get_blawn_context().get_element_index(
         type_name, "@" + node.get_right_name());
     if (index != -1) {
-        auto pointer = ir_builder.CreateStructGEP(nullptr, left, index);
+        auto pointer = ir_builder.CreateStructGEP(struct_type, left, index);
         node.set_pointer(pointer);
         auto value = ir_builder.CreateLoad(pointer);
         node.set_generated(value);
-        /*if (value->getType()->isPointerTy())
-        {
-            node.set_pointer(value);
-            value =  ir_builder.CreateLoad(value);
-            node.set_generated(value);
-        }*/
-
-        // std::cout<<type_name<<"::"<<node.get_right_name()<<std::flush;value->print(llvm::outs());std::cout<<std::endl;
         return value;
     } else {
         auto bm = get_blawn_context().get_builtin_method(type_name,

@@ -11,6 +11,7 @@ class Node;
 class FunctionNode;
 class IntegerIRGenerator;
 class FloatIRGenerator;
+class BlawnLogger;
 namespace llvm {
 class Module;
 template <typename T, typename Inserter>
@@ -36,6 +37,7 @@ public:
     IRGenerators ir_generators;
     int line_number;
     std::shared_ptr<Node> no_value_node;
+    BlawnLogger logger;
     ASTGenerator(llvm::Module &module, llvm::IRBuilder<> &ir_builder,
                  llvm::LLVMContext &context);
     void into_namespace(std::string name);

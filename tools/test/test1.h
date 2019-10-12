@@ -2,6 +2,7 @@ int main()
 {
     unsigned int a;
 }
+int f(int[100]){}
 int TEST_no_arg_func()
 {
     return 0;

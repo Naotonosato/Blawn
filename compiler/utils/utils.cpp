@@ -48,9 +48,8 @@ void utils::replace(std::string& text, std::string from, std::string to,
     }
 }
 
-bool utils::exist(std::string text,std::string to_find)
-{
-    return std::find(text.begin(),text.end(),to_find) != text.end();
+bool utils::exist(std::string text, std::string to_find) {
+    return text.find(to_find) != std::string::npos;
 }
 
 uint64_t utils::get_sizeof(llvm::Type* type, llvm::Module& module) {
@@ -88,10 +87,19 @@ llvm::Type* utils::get_or_create_type(llvm::LLVMContext& context,
         std::vector<llvm::Value*> initial_values;
         std::vector<std::string> names;
         for (auto& line : members_definition) {
-            fields.push_back(line->generate()->getType());
+            auto val = line->generate();
+            fields.push_back(val->getType());
             names.push_back(line->name);
         }
         type = llvm::StructType::create(context, fields, class_node->name);
+        unsigned int index = 0;
+        
+        for (auto& name:names)
+        {
+            get_blawn_context().register_element_name(type->getStructName(),
+                                                      name, index);
+            index += 1;
+        }
         get_blawn_context().add_user_type(class_node->name, type);
     }
     return type;
