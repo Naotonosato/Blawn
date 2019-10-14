@@ -34,6 +34,10 @@ llvm::Value* AccessNode::get_left_value() {
 
 void ArgumentNode::set_right_value(llvm::Value* value) { right_value = value; }
 
+void ArgumentNode::set_right_node(std::shared_ptr<Node> node) {
+    right_node = node;
+}
+
 llvm::Value* ArgumentNode::get_right_value() { return right_value; }
 
 std::shared_ptr<VariableNode> AssigmentNode::get_target_var() const {
@@ -84,11 +88,11 @@ std::vector<llvm::Function*> FunctionNode::get_functions() {
     return res;
 }
 
-void FunctionNode::set_self_namespace(std::vector<std::string> self) {
+void FunctionNode::set_self_namespace(Scope self) {
     self_namespace = self;
 }
 
-std::vector<std::string> FunctionNode::get_self_namespace() {
+Scope FunctionNode::get_self_namespace() {
     return self_namespace;
 }
 

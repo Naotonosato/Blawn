@@ -8,6 +8,14 @@
 #include "../blawn_context/blawn_context.hpp"
 #include "utils.hpp"
 
+std::string utils::to_string(Scope& s) {
+    std::string cur = ".";
+    for (auto& i : s) {
+        cur += "/" + i;
+    }
+    return cur;
+}
+
 std::string utils::to_string(llvm::Type* type) {
     std::string str;
     llvm::raw_string_ostream rso(str);
@@ -93,9 +101,8 @@ llvm::Type* utils::get_or_create_type(llvm::LLVMContext& context,
         }
         type = llvm::StructType::create(context, fields, class_node->name);
         unsigned int index = 0;
-        
-        for (auto& name:names)
-        {
+
+        for (auto& name : names) {
             get_blawn_context().register_element_name(type->getStructName(),
                                                       name, index);
             index += 1;

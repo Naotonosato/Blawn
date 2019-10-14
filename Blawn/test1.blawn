@@ -1,154 +1,49 @@
-Ctype Struct
-    @member = __C_INT__SIZE_4
-    @member2 = __C_INT__SIZE_16
-Ctype NestStruct
-    @member = __C_INT__SIZE_4
-    @member2 = __C_INT__SIZE_4
-    @s = Struct
-[Cfunction load]
-    arguments: __PTR__ Struct
-    return: Struct
-[Cfunction main]
-    arguments: 
-    return: __C_INT__SIZE_4
-[Cfunction TEST_no_arg_func]
-    arguments: 
-    return: __C_INT__SIZE_4
-[Cfunction TEST_arg_func]
-    arguments: __C_INT__SIZE_4
-    return: __C_INT__SIZE_4
-[Cfunction TEST_struct_arg_func]
-    arguments: __PTR__ Struct
-    return: __C_INT__SIZE_4
-[Cfunction TEST_return_struct_func]
-    arguments: 
-    return: __PTR__ Struct
-[Cfunction TEST_arg_nest_struct]
-    arguments: __PTR__ NestStruct
-    return: __C_INT__SIZE_4
-[Cfunction TEST_return_nest_struct]
-    arguments: 
-    return: __PTR__ NestStruct
-
-
-
-
-class T1()
-    @num = 0
-class TestClass()
-    @c_m = T1()
-
-ti = TestClass()
-
-ns = NestStruct()
-print(int_to_str(ti.c_m.num))
-//TEST_return_nest_struct()
-global
-(
-    C_INT = 0
-    C_FLOAT = 0.0
-    true = 1 > 0
-    false = 1 < 0
-    pass = 0
-)
-
-Ctype ct
-    @n =   __PTR__      __PTR__  __C_INT__SIZE_4
-    @ctmem = __C_LONG__SIZE_16
-Ctype nnn
-    @nm = ct
-insct = ct()
-print(int_to_str(insct.ctmem))
-
-[Cfunction dx_init]
-arguments:
-return: __C_INT__SIZE_4
-
-[Cfunction dx_waitkey]
-arguments:
-return: __C_INT__SIZE_4
-
-[Cfunction dx_end]
-arguments:
-return: __C_INT__SIZE_4
-class type(value)
-    @size = sizeof(value)
-    @id = typeid(value)
-class List(element)
-    @size = 0
-    @allocated_size = 1
-    @element_typeid = 0
-    @element_size = 0
-    @array = {}
-    @function resize()
-        print("will realloc")
-        print(int_to_str(self.size))
-        self.allocated_size = self.allocated_size * 2
-        self.array = __blawn_realloc__(self.array,self.element_size,self.allocated_size)
-        return
-    @function append(new_element)
-        if self.size == 0 
-        (
-            self.element_typeid = typeid(new_element)
-            self.element_size = sizeof(new_element)
-        )
-        if typeid(new_element) != self.element_typeid
-        (
-            print("Error: append invalid type element to list.")
-        )
-        if self.size + 1 >= self.allocated_size
-        (   
-            self.resize()
-        )
-        __blawn_memcpy__(self.array,self.size,self.element_size,new_element)
-        self.size = self.size + 1
-        return
-    @function get(index)
-        if self.size == 0
-        (
-            print("Error: list index out of range")
-        )
-        data = __blawn_index__(self.array,self.size,self.element_size,index)
-        res = __blawn_cast__(typeid(self.element),data)
-        return res
-    @function set(value,index)
-        __blawn_set_element__(self.array,self.size,self.element_size,value,index)
-        return
-class Person(name)
-    @name = name
+class M(idm)
+    @idm = idm
+class S(id,m)
+    @id = id
+    @m = m
+class Person(id,m)
+    @id = id
+    @m = m
     @function hello(s)
         text = "Hello! I'm "
         text.append(self.name)
         print(text)
         print(s)
         return
-    @function m()
-        print("call m")
-        return
-    @function mm()
-        print("call mm")
-        print(self.i.s)
-        return
-
-p = Person("John")
-p2 = Person("Tom!")
-//list = List(p)
-for i = 0 ,i < 100 ,i = i+1
+global
 (
-    //list.append(p)
-    new = Person("person")
+    true = 1 > 0
+    false = 1 < 0
+    pass = 0
+    m = M(0)
+si = S(0,m)
+p = Person(0,si)
+int = 100
 )
-//list.set(p2,20)
-d = ""
-//list.get(20).name
-print(d)
-print("succeed!!")
-for pass,false,pass
-(
-    print("a")
-)
-
-function f(arg)
-    print(arg.name)
+function n()
     return
+print("start")
+function f(arg)
+    m2 = M(10)
+    s2 = S(10,m2)
+    p2 = Person(10,s2)
+    if true
+    (
+        m3 = M(30)
+        s3 = S(30,m3)
+        p3 = Person(30,s3)
+
+        p2 <- p3
+
+        //p2.id <- p3.id
+        //p2.m.id <- p3.m.id
+        //p2.m.m.idm <- p3.m.m.idm
+        
+    )
+    print(int_to_str(p2.m.m.idm))
+    return
+
 f(p)
+//print(int_to_str(p.m.m.idm))

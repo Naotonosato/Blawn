@@ -12,6 +12,12 @@ void BlawnContext::register_element_name(std::string type, std::string name,
     element_names[type][name] = index;
 }
 
+std::map<std::string, unsigned int> BlawnContext::get_elements(std::string type_name)
+{
+    if (element_names.count(type_name)) return element_names[type_name];
+    return {};
+}
+
 int BlawnContext::get_element_index(std::string type, std::string name) {
     if (element_names.count(type)) {
         if (element_names[type].count(name))
@@ -123,11 +129,11 @@ BlawnContext::get_destructors(llvm::BasicBlock* block) {
     return destructors[block];
 }
 
-void BlawnContext::add_heap_user(scope belong_scope, llvm::Value* user) {
+void BlawnContext::add_heap_user(Scope belong_scope, llvm::Value* user) {
     heap_users[belong_scope].push_back(user);
 }
 
-std::vector<llvm::Value*> BlawnContext::get_heap_users(scope belong_scope) {
+std::vector<llvm::Value*> BlawnContext::get_heap_users(Scope belong_scope) {
     if (heap_users.count(belong_scope)) {
         return heap_users[belong_scope];
     }

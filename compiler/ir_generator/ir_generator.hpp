@@ -22,7 +22,7 @@ class IRBuilder;
 void initialize();
 
 class IRGenerator {
-public:
+    public:
     llvm::LLVMContext &context;
     llvm::Module &module;
     llvm::IRBuilder<> &ir_builder;
@@ -33,7 +33,7 @@ public:
 };
 
 class SizeofGenerator : public IRGenerator {
-public:
+    public:
     SizeofGenerator(llvm::LLVMContext &context, llvm::Module &module,
                     llvm::IRBuilder<> &ir_builder)
         : IRGenerator(context, module, ir_builder) {}
@@ -41,7 +41,7 @@ public:
 };
 
 class TypeIdGenerator : public IRGenerator {
-public:
+    public:
     TypeIdGenerator(llvm::LLVMContext &context, llvm::Module &module,
                     llvm::IRBuilder<> &ir_builder)
         : IRGenerator(context, module, ir_builder) {}
@@ -49,7 +49,7 @@ public:
 };
 
 class CastIRGenerator : public IRGenerator {
-public:
+    public:
     CastIRGenerator(llvm::LLVMContext &context, llvm::Module &module,
                     llvm::IRBuilder<> &ir_builder)
         : IRGenerator(context, module, ir_builder) {}
@@ -57,7 +57,7 @@ public:
 };
 
 class NullIRGenerator : public IRGenerator {
-public:
+    public:
     NullIRGenerator(llvm::LLVMContext &context, llvm::Module &module,
                     llvm::IRBuilder<> &ir_builder)
         : IRGenerator(context, module, ir_builder) {}
@@ -65,7 +65,7 @@ public:
 };
 
 class IntegerIRGenerator : public IRGenerator {
-public:
+    public:
     IntegerIRGenerator(llvm::LLVMContext &context, llvm::Module &module,
                        llvm::IRBuilder<> &ir_builder)
         : IRGenerator(context, module, ir_builder) {}
@@ -74,7 +74,7 @@ public:
 };
 
 class FloatIRGenerator : public IRGenerator {
-public:
+    public:
     FloatIRGenerator(llvm::LLVMContext &context, llvm::Module &module,
                      llvm::IRBuilder<> &ir_builder)
         : IRGenerator(context, module, ir_builder) {}
@@ -82,7 +82,7 @@ public:
 };
 
 class StringIRGenerator : public IRGenerator {
-public:
+    public:
     StringIRGenerator(llvm::LLVMContext &context, llvm::Module &module,
                       llvm::IRBuilder<> &ir_builder)
         : IRGenerator(context, module, ir_builder) {}
@@ -90,7 +90,7 @@ public:
 };
 
 class ArgumentIRGenerator : public IRGenerator {
-public:
+    public:
     ArgumentIRGenerator(llvm::LLVMContext &context, llvm::Module &module,
                         llvm::IRBuilder<> &ir_builder)
         : IRGenerator(context, module, ir_builder) {}
@@ -98,7 +98,7 @@ public:
 };
 
 class VariableIRGenerator : public IRGenerator {
-public:
+    public:
     VariableIRGenerator(llvm::LLVMContext &context, llvm::Module &module,
                         llvm::IRBuilder<> &ir_builder)
         : IRGenerator(context, module, ir_builder) {}
@@ -106,15 +106,26 @@ public:
 };
 
 class AssigmentIRGenerator : public IRGenerator {
-public:
+    public:
     AssigmentIRGenerator(llvm::LLVMContext &context, llvm::Module &module,
                          llvm::IRBuilder<> &ir_builder)
         : IRGenerator(context, module, ir_builder) {}
     llvm::Value *generate(Node &) override;
 };
 
+
+class StoreIRGenerator: public IRGenerator
+{
+    public:
+    StoreIRGenerator(llvm::LLVMContext &context, llvm::Module &module,
+                         llvm::IRBuilder<> &ir_builder)
+        : IRGenerator(context, module, ir_builder) {}
+    llvm::Value *generate(Node &) override;
+};
+
+
 class BinaryExpressionIRGenerator : public IRGenerator {
-public:
+    public:
     BinaryExpressionIRGenerator(llvm::LLVMContext &context,
                                 llvm::Module &module,
                                 llvm::IRBuilder<> &ir_builder)
@@ -123,7 +134,7 @@ public:
 };
 
 class FunctionIRGenerator : public IRGenerator {
-public:
+    public:
     FunctionIRGenerator(llvm::LLVMContext &context, llvm::Module &module,
                         llvm::IRBuilder<> &ir_builder)
         : IRGenerator(context, module, ir_builder) {}
@@ -131,7 +142,7 @@ public:
 };
 
 class DeclareCIRGenerator : public IRGenerator {
-public:
+    public:
     DeclareCIRGenerator(llvm::LLVMContext &context, llvm::Module &module,
                         llvm::IRBuilder<> &ir_builder)
         : IRGenerator(context, module, ir_builder) {}
@@ -139,7 +150,7 @@ public:
 };
 
 class CallFunctionIRGenerator : public IRGenerator {
-public:
+    public:
     CallFunctionIRGenerator(llvm::LLVMContext &context, llvm::Module &module,
                             llvm::IRBuilder<> &ir_builder)
         : IRGenerator(context, module, ir_builder) {}
@@ -147,7 +158,7 @@ public:
 };
 
 class ClassIRGenerator : public IRGenerator {
-public:
+    public:
     ClassIRGenerator(llvm::LLVMContext &context, llvm::Module &module,
                      llvm::IRBuilder<> &ir_builder)
         : IRGenerator(context, module, ir_builder) {}
@@ -155,7 +166,7 @@ public:
 };
 
 class CallConstructorIRGenerator : public IRGenerator {
-public:
+    public:
     CallConstructorIRGenerator(llvm::LLVMContext &context, llvm::Module &module,
                                llvm::IRBuilder<> &ir_builder)
         : IRGenerator(context, module, ir_builder) {}
@@ -163,7 +174,7 @@ public:
 };
 
 class IfIRGenerator : public IRGenerator {
-public:
+    public:
     IfIRGenerator(llvm::LLVMContext &context, llvm::Module &module,
                   llvm::IRBuilder<> &ir_builder)
         : IRGenerator(context, module, ir_builder) {}
@@ -171,7 +182,7 @@ public:
 };
 
 class AccessIRGenerator : public IRGenerator {
-public:
+    public:
     AccessIRGenerator(llvm::LLVMContext &context, llvm::Module &module,
                       llvm::IRBuilder<> &ir_builder)
         : IRGenerator(context, module, ir_builder) {}
@@ -179,7 +190,7 @@ public:
 };
 
 class ForIRGenerator : public IRGenerator {
-public:
+    public:
     ForIRGenerator(llvm::LLVMContext &context, llvm::Module &module,
                    llvm::IRBuilder<> &ir_builder)
         : IRGenerator(context, module, ir_builder) {}
@@ -187,7 +198,7 @@ public:
 };
 
 class ListIRGenerator : public IRGenerator {
-public:
+    public:
     ListIRGenerator(llvm::LLVMContext &context, llvm::Module &module,
                     llvm::IRBuilder<> &ir_builder)
         : IRGenerator(context, module, ir_builder) {}
@@ -195,7 +206,7 @@ public:
 };
 
 class BlockEndIRGenerator : public IRGenerator {
-public:
+    public:
     BlockEndIRGenerator(llvm::LLVMContext &context, llvm::Module &module,
                         llvm::IRBuilder<> &ir_builder)
         : IRGenerator(context, module, ir_builder) {}
@@ -203,7 +214,7 @@ public:
 };
 
 class IRGenerators {
-public:
+    public:
     IRGenerator ir_generator;
     SizeofGenerator sizeof_generator;
     TypeIdGenerator typeid_generator;
@@ -215,6 +226,7 @@ public:
     VariableIRGenerator variable_generator;
     ArgumentIRGenerator argument_generator;
     AssigmentIRGenerator assigment_generator;
+    StoreIRGenerator store_generator;
     BinaryExpressionIRGenerator binary_expression_generator;
     FunctionIRGenerator function_generator;
     DeclareCIRGenerator declare_C_generator;
@@ -227,4 +239,5 @@ public:
     ListIRGenerator list_generator;
     BlockEndIRGenerator block_end_generator;
     IRGenerators(llvm::LLVMContext &, llvm::Module &, llvm::IRBuilder<> &);
+    IRGenerators& get_generators();
 };

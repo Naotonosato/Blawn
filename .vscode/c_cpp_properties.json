@@ -6,6 +6,7 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "./**",
+                "C:/Users/pcnaoto/AppData/Local/Packages/CanonicalGroupLimited.Ubuntu18.04onWindows_79rhkp1fndgsc/LocalState/rootfs/usr/local/include/",
                 "/usr/include/llvm-6.0/llvm",
                 "C:/Users/pcnaoto/AppData/Local/Packages/CanonicalGroupLimited.Ubuntu18.04onWindows_79rhkp1fndgsc/LocalState/rootfs/usr/include/llvm-6.0",
                 "C:/Users/pcnaoto/AppData/Local/Packages/CanonicalGroupLimited.Ubuntu18.04onWindows_79rhkp1fndgsc/LocalState/rootfs/usr/include/llvm-c-6.0",

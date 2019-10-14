@@ -59,7 +59,7 @@ for t in BUILTIN_C_TYPE_NAMES:
 
 def _rename_type(name):
     to_delete = "struct "
-    return name.replace(to_delete,"")
+    return name.replace(to_delete,"").replace("const ","").replace("union ","")
 
 def get_finally_pointee(node_type,count=0):
     if node_type.kind == TypeKind.POINTER:
@@ -77,8 +77,16 @@ def to_blawn_type(type_info):
         return BUILTIN_C_TYPE_NAMES[type_info.kind]
     if type_info.kind == TypeKind.CONSTANTARRAY:
         return "__PTR__ " + to_blawn_type(type_info.get_array_element_type())
+    if type_info.get_declaration().is_anonymous():
+        print([e.type.spelling for e in type_info.get_fields()])
+        return "__C_INT__SIZE_" + str(type_info.get_size())
     return _rename_type(type_info.spelling)
 
+def rename_element(element):
+    if element["type"].get_declaration().is_anonymous():
+        return "__NOT_SUPPORTED__"
+    else:
+        return element["name"]
 
 def generate_Ctype(structures):
     Ctype_template = "Ctype {}\n"
@@ -89,13 +97,15 @@ def generate_Ctype(structures):
         C_type_wrapper = Ctype_template.format(name.replace("struct ",""))
         for element in field:
             element_type_name = to_blawn_type(element["type"])
-            element_name = element["name"]
+            element_name = rename_element(element)
             #if not is_supported_type(element["type"]):
             #   element_name = "__cannot_access__<type {} is not supported>".format(element_type_name)
             C_type_wrapper += member_template.format(
                 element_name,
                 element_type_name
                 )
+            if name.replace("struct ","") == element_type_name.split(" ")[-1].replace(" ",""):
+                print("再帰しとる...")
         classes += C_type_wrapper
     return classes
 
@@ -115,7 +125,7 @@ def generate_wrapper(functions):
 
 
 def get_functions(filename,node,functions_dict={},structures_dict={}):
-    if node.location.file is not None and node.location.file.name == filename:
+    if 1:#node.location.file is not None and node.location.file.name == filename:
         if node.kind == CursorKind.STRUCT_DECL:
             spelling = node.type.get_canonical().spelling
             #fields = [{"name":element.spelling,"type":element.type.get_canonical()} for element in node.type.get_canonical().get_fields()]

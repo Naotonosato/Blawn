@@ -10,6 +10,7 @@ class Type;
 }  // namespace llvm
 
 namespace utils {
+std::string to_string(Scope&);
 std::string to_string(llvm::Type*);
 std::string to_string(llvm::Value*);
 void split(std::string text, std::string splitter,

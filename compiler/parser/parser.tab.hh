@@ -360,6 +360,7 @@ namespace Blawn {
       // C_arguments
       // globals_variables
       // expressions
+      // for_start
       char dummy8[sizeof(std::vector<std::shared_ptr<Node>>)];
 
       // C_type_identifier
@@ -399,41 +400,42 @@ namespace Blawn {
         MEMBER_IDENTIFIER = 265,
         IDENTIFIER = 266,
         EQUAL = 267,
-        OP_AND = 268,
-        OP_OR = 269,
-        OP_EQUAL = 270,
-        OP_NOT_EQUAL = 271,
-        OP_MORE_EQUAL = 272,
-        OP_LESS_EQUAL = 273,
-        OP_MORE = 274,
-        OP_LESS = 275,
-        PLUS = 276,
-        MINUS = 277,
-        ASTERISK = 278,
-        SLASH = 279,
-        DOT_IDENTIFIER = 280,
-        USE = 281,
-        COLON = 282,
-        SEMICOLON = 283,
-        COMMA = 284,
-        LEFT_PARENTHESIS = 285,
-        RIGHT_PARENTHESIS = 286,
-        LEFT_CURLY_BRACE = 287,
-        RIGHT_CURLY_BRACE = 288,
-        LEFT_BRACKET = 289,
-        RIGHT_BRACKET = 290,
-        IF = 291,
-        ELSE = 292,
-        FOR = 293,
-        IN = 294,
-        WHILE = 295,
-        GLOBAL = 296,
-        C_FUNCTION_ARGUMENT = 297,
-        C_FUNCTION_RETURN = 298,
-        EOL = 299,
-        INT_LITERAL = 300,
-        FLOAT_LITERAL = 301,
-        STRING_LITERAL = 302
+        ARROW = 268,
+        OP_AND = 269,
+        OP_OR = 270,
+        OP_EQUAL = 271,
+        OP_NOT_EQUAL = 272,
+        OP_MORE_EQUAL = 273,
+        OP_LESS_EQUAL = 274,
+        OP_MORE = 275,
+        OP_LESS = 276,
+        PLUS = 277,
+        MINUS = 278,
+        ASTERISK = 279,
+        SLASH = 280,
+        DOT_IDENTIFIER = 281,
+        USE = 282,
+        COLON = 283,
+        SEMICOLON = 284,
+        COMMA = 285,
+        LEFT_PARENTHESIS = 286,
+        RIGHT_PARENTHESIS = 287,
+        LEFT_CURLY_BRACE = 288,
+        RIGHT_CURLY_BRACE = 289,
+        LEFT_BRACKET = 290,
+        RIGHT_BRACKET = 291,
+        IF = 292,
+        ELSE = 293,
+        FOR = 294,
+        IN = 295,
+        WHILE = 296,
+        GLOBAL = 297,
+        C_FUNCTION_ARGUMENT = 298,
+        C_FUNCTION_RETURN = 299,
+        EOL = 300,
+        INT_LITERAL = 301,
+        FLOAT_LITERAL = 302,
+        STRING_LITERAL = 303
       };
     };
 
@@ -599,6 +601,10 @@ namespace Blawn {
     static inline
     symbol_type
     make_EQUAL (const location_type& l);
+
+    static inline
+    symbol_type
+    make_ARROW (const location_type& l);
 
     static inline
     symbol_type
@@ -942,12 +948,12 @@ namespace Blawn {
     enum
     {
       yyeof_ = 0,
-      yylast_ = 334,     ///< Last index in yytable_.
-      yynnts_ = 37,  ///< Number of nonterminal symbols.
-      yyfinal_ = 45, ///< Termination state number.
+      yylast_ = 317,     ///< Last index in yytable_.
+      yynnts_ = 38,  ///< Number of nonterminal symbols.
+      yyfinal_ = 46, ///< Termination state number.
       yyterror_ = 1,
       yyerrcode_ = 256,
-      yyntokens_ = 48  ///< Number of tokens.
+      yyntokens_ = 49  ///< Number of tokens.
     };
 
 
@@ -959,7 +965,7 @@ namespace Blawn {
 
 #line 5 "parser.yy" // lalr1.cc:377
 } // Blawn
-#line 963 "parser.tab.hh" // lalr1.cc:377
+#line 969 "parser.tab.hh" // lalr1.cc:377
 
 
 

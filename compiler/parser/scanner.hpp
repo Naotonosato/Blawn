@@ -11,7 +11,7 @@
 namespace Blawn {
 
 class Scanner : public yyFlexLexer {
-public:
+    public:
     Driver *driver;
     Scanner(std::istream *in, Driver *driver)
         : yyFlexLexer(in), driver(driver){};
@@ -22,7 +22,7 @@ public:
     virtual int yylex(Blawn::Parser::semantic_type *const lval,
                       Blawn::Parser::location_type *location);
 
-private:
+    private:
     Blawn::Parser::semantic_type *yylval = nullptr;
 };
 

@@ -7,7 +7,7 @@
 namespace Blawn {
 
 class Driver {
-public:
+    public:
     std::unique_ptr<ASTGenerator> ast_generator;
     Driver(std::unique_ptr<ASTGenerator> ast_generator)
         : ast_generator(std::move(ast_generator)){};
@@ -16,7 +16,7 @@ public:
     void parse(std::istream &iss);
     Blawn::Scanner *scanner = nullptr;
 
-private:
+    private:
     void parse_helper(std::istream &stream);
     Blawn::Parser *parser = nullptr;
 };

@@ -69,7 +69,7 @@
 %token <std::string> MEMBER_IDENTIFIER
 %token <std::string> IDENTIFIER
 
-%right EQUAL
+%right EQUAL ARROW
 %left OP_AND OP_OR
 %left OP_EQUAL OP_NOT_EQUAL OP_MORE_EQUAL OP_LESS_EQUAL OP_MORE OP_LESS
 %left PLUS MINUS
@@ -125,6 +125,7 @@
 %type <std::shared_ptr<Node>> return_value
 %type <std::vector<std::shared_ptr<Node>>> expressions
 %type <std::shared_ptr<Node>> expression
+%type <std::vector<std::shared_ptr<Node>>> for_start
 %type <std::shared_ptr<Node>> list
 
 %type <std::shared_ptr<AccessNode>> access
@@ -202,6 +203,11 @@ function_definition:
     {
         $$ = driver.ast_generator->add_function($1,std::move($2),std::move($4),std::move($5));
         driver.ast_generator->break_out_of_namespace();
+    }
+    |function_start arguments EOL return_value EOL
+    {
+        $$ = driver.ast_generator->add_function($1,std::move($2),{},std::move($4));
+        driver.ast_generator->break_out_of_namespace();
     };
 function_start:
     FUNCTION_DEFINITION
@@ -264,26 +270,26 @@ method_definition:
 members_definition:
     MEMBER_IDENTIFIER EQUAL expression EOL
     {
-        $$.push_back(driver.ast_generator->assign($1,std::move($3),false));
+        $$.push_back(driver.ast_generator->create_assign($1,std::move($3),false));
     }
     |members_definition MEMBER_IDENTIFIER EQUAL expression EOL
     {
         $$ = std::move($1);
-        $$.push_back(driver.ast_generator->assign($2,std::move($4),false));
+        $$.push_back(driver.ast_generator->create_assign($2,std::move($4),false));
     };
 C_members_definition:
     MEMBER_IDENTIFIER EQUAL C_type_identifier EOL
     {
         std::string type_identifier = join($3);
         auto assign_value = driver.ast_generator->create_C_member(type_identifier);
-        $$.push_back(driver.ast_generator->assign($1,std::move(assign_value),false));
+        $$.push_back(driver.ast_generator->create_assign($1,std::move(assign_value),false));
     }
     |C_members_definition MEMBER_IDENTIFIER EQUAL C_type_identifier EOL
     {
         std::string type_identifier = join($4);
         auto assign_value = driver.ast_generator->create_C_member(type_identifier);
         $$ = std::move($1);
-        $$.push_back(driver.ast_generator->assign($2,std::move(assign_value),false));
+        $$.push_back(driver.ast_generator->create_assign($2,std::move(assign_value),false));
     };
 C_type_identifier:
     IDENTIFIER
@@ -316,7 +322,7 @@ C_returns:
         $$ = driver.ast_generator->create_C_member(type_identifier);
     };
 return_value:
-    RETURN expression
+    RETURN expression 
     {
         $$ = $2;
     }
@@ -396,6 +402,14 @@ else_start:
     {
         driver.ast_generator->into_namespace();
     };
+for_start:
+    FOR expression COMMA expression COMMA expression
+    {
+        driver.ast_generator->into_namespace();
+        $$.push_back($2);
+        $$.push_back($4);
+        $$.push_back($6);
+    };
 expression:
     if_start expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
     {
@@ -414,14 +428,18 @@ expression:
         blawn_state = NO_IF;
         driver.ast_generator->break_out_of_namespace();
     }
-    |FOR expression COMMA expression COMMA expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+    |for_start EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
     {
-        $$ = driver.ast_generator->create_for($2,$4,$6,$10);
+        $$ = driver.ast_generator->create_for($1[0],$1[1],$1[2],$5);
         driver.ast_generator->break_out_of_namespace();
     }
     |assign_variable
     {
         $$ = $1;
+    }
+    |expression ARROW expression
+    {
+        $$ = driver.ast_generator->create_store($1,$3);
     }
     |expression PLUS expression
     {
@@ -501,13 +519,13 @@ assign_variable:
     IDENTIFIER EQUAL expression
     {
         if (is_global == NOT_GLOBAL)
-        {$$ = driver.ast_generator->assign($1,std::move($3),false);}
+        {$$ = driver.ast_generator->create_assign($1,std::move($3),false);}
         if (is_global == GLOBAL)
-        {$$ = driver.ast_generator->assign($1,std::move($3),true);}
+        {$$ = driver.ast_generator->create_assign($1,std::move($3),true);}
     }
     |access EQUAL expression
     {
-        $$ = driver.ast_generator->assign($1,std::move($3));
+        $$ = driver.ast_generator->create_assign($1,std::move($3));
     };
 monomial:
     call

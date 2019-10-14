@@ -15,7 +15,7 @@ class CallConstructorNode;
 class ClassNode;
 
 class BlawnContext {
-private:
+    private:
     std::map<std::string, std::map<std::string, unsigned int>> element_names;
     std::map<std::string, llvm::Function*> builtin_functions;
     std::map<std::string, llvm::Function*> C_functions;
@@ -28,11 +28,12 @@ private:
     std::map<llvm::BasicBlock*,
              std::vector<std::pair<llvm::Function*, llvm::Value*>>>
         destructors;
-    std::map<scope, std::vector<llvm::Value*>> heap_users;
-
-public:
+    std::map<Scope, std::vector<llvm::Value*>> heap_users;
+    
+    public:
     void register_element_name(std::string, std::string name,
                                unsigned int index);
+    std::map<std::string, unsigned int> get_elements(std::string type_name);
     int get_element_index(std::string, std::string name);
     void add_builtin_function(std::string name, llvm::Function* function);
     void add_C_function(std::string name, llvm::Function* function);
@@ -51,8 +52,8 @@ public:
     llvm::Type* get_type_with_id(llvm::ConstantInt* id);
     std::vector<std::pair<llvm::Function*, llvm::Value*>> get_destructors(
         llvm::BasicBlock*);
-    void add_heap_user(scope, llvm::Value*);
-    std::vector<llvm::Value*> get_heap_users(scope);
+    void add_heap_user(Scope, llvm::Value*);
+    std::vector<llvm::Value*> get_heap_users(Scope);
     void set_destructor(llvm::BasicBlock*,
                         std::pair<llvm::Function*, llvm::Value*>);
 };

@@ -38,7 +38,6 @@ errors.o: ../compiler/errors/errors.cpp ../compiler/errors/errors.hpp
 clean:
 	rm *.o
 	rm *.ll
-	python3 ../dev_utils/format_cpp.py ../compiler
 	-fsanitize=address
 
 test:

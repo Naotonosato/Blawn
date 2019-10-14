@@ -31,6 +31,7 @@ OP_LESS     <
 OP_AND      and
 OP_OR       or
 EQUAL       =
+ARROW       <-
 PLUS        \+
 MINUS       -
 ASTERISK    \*
@@ -111,6 +112,9 @@ EOL                 \n|\r\n
 {EQUAL} {
     return Blawn::Parser::token::EQUAL;
 }
+{ARROW} {
+    return Blawn::Parser::token::ARROW;
+}
 {OP_EQUAL} {
     return Blawn::Parser::token::OP_EQUAL;
 }
@@ -169,7 +173,6 @@ EOL                 \n|\r\n
     return Blawn::Parser::token::ELSE;
 }
 {FOR} {
-    driver->ast_generator->into_namespace("");
     return Blawn::Parser::token::FOR;
 }
 {IN} {
