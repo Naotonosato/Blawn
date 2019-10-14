@@ -31,6 +31,7 @@ class Node {
     private:
     llvm::Type* type;
     bool _is_argument;
+
     public:
     int line_number;
     Scope self_scope;
@@ -39,8 +40,8 @@ class Node {
     std::string string;
     IRGenerator& ir_generator;
     std::string name;
-    Node(int line_number,Scope self_scope, IRGenerator& ir_generator, std::string name = "",
-         bool is_argument = false)
+    Node(int line_number, Scope self_scope, IRGenerator& ir_generator,
+         std::string name = "", bool is_argument = false)
         : _is_argument(is_argument),
           line_number(line_number),
           self_scope(self_scope),
@@ -51,7 +52,7 @@ class Node {
     virtual bool is_typeid() { return false; }
     virtual bool is_function() { return false; }
     virtual bool is_calling_constructor() { return false; }
-    virtual bool is_accessing() {return false;}
+    virtual bool is_accessing() { return false; }
     virtual std::shared_ptr<Node> get_typeid_value() { return nullptr; }
     virtual llvm::Value* generate();
     virtual void initialize() {}
@@ -62,9 +63,9 @@ class SizeofNode : public Node {
     std::shared_ptr<Node> value;
 
     public:
-    SizeofNode(int line_number,Scope self_scope, SizeofGenerator& ir_generator,
+    SizeofNode(int line_number, Scope self_scope, SizeofGenerator& ir_generator,
                std::shared_ptr<Node> value)
-        : Node(line_number,self_scope, ir_generator), value(value) {}
+        : Node(line_number, self_scope, ir_generator), value(value) {}
     std::shared_ptr<Node> get_value() { return value; }
 };
 
@@ -74,9 +75,11 @@ class TypeIdNode : public Node {
     llvm::ConstantInt* id_;
 
     public:
-    TypeIdNode(int line_number,Scope self_scope, TypeIdGenerator& ir_generator,
+    TypeIdNode(int line_number, Scope self_scope, TypeIdGenerator& ir_generator,
                std::shared_ptr<Node> value)
-        : Node(line_number,self_scope, ir_generator), value(value), id_(nullptr) {}
+        : Node(line_number, self_scope, ir_generator),
+          value(value),
+          id_(nullptr) {}
     std::shared_ptr<Node> get_value() { return value; }
     void set_id(llvm::ConstantInt* id) { id_ = id; }
     llvm::ConstantInt* get_id() { return id_; }
@@ -90,9 +93,9 @@ class CastNode : public Node {
     std::shared_ptr<Node> value;
 
     public:
-    CastNode(int line_number,Scope self_scope, CastIRGenerator& ir_generator,
+    CastNode(int line_number, Scope self_scope, CastIRGenerator& ir_generator,
              std::shared_ptr<Node> id, std::shared_ptr<Node> value)
-        : Node(line_number,self_scope, ir_generator), id(id), value(value) {}
+        : Node(line_number, self_scope, ir_generator), id(id), value(value) {}
     std::shared_ptr<Node> get_idnode() { return id; }
     std::shared_ptr<Node> get_value() { return value; }
 };
@@ -101,29 +104,31 @@ class NullNode : public Node {
     public:
     std::string type_name;
     std::shared_ptr<ClassNode> class_node;
-    NullNode(int line_number,Scope self_scope, NullIRGenerator& ir_generator,
+    NullNode(int line_number, Scope self_scope, NullIRGenerator& ir_generator,
              std::string type_name, std::shared_ptr<ClassNode> class_node)
-        : Node(line_number,self_scope, ir_generator),
+        : Node(line_number, self_scope, ir_generator),
           type_name(type_name),
           class_node(class_node) {}
 };
 
 class IntegerNode : public Node {
     public:
-    IntegerNode(int line_number,Scope self_scope, IntegerIRGenerator& ir_generator)
-        : Node(line_number,self_scope, ir_generator) {}
+    IntegerNode(int line_number, Scope self_scope,
+                IntegerIRGenerator& ir_generator)
+        : Node(line_number, self_scope, ir_generator) {}
 };
 
 class FloatNode : public Node {
     public:
-    FloatNode(int line_number,Scope self_scope, FloatIRGenerator& ir_generator)
-        : Node(line_number,self_scope, ir_generator) {}
+    FloatNode(int line_number, Scope self_scope, FloatIRGenerator& ir_generator)
+        : Node(line_number, self_scope, ir_generator) {}
 };
 
 class StringNode : public Node {
     public:
-    StringNode(int line_number,Scope self_scope, StringIRGenerator& ir_generator)
-        : Node(line_number,self_scope, ir_generator) {}
+    StringNode(int line_number, Scope self_scope,
+               StringIRGenerator& ir_generator)
+        : Node(line_number, self_scope, ir_generator) {}
 };
 
 class VariableNode : public Node {
@@ -136,10 +141,10 @@ class VariableNode : public Node {
     llvm::AllocaInst* alloca_inst;
     llvm::GlobalVariable* global_ptr;
     std::map<std::shared_ptr<Node>, llvm::Value*> generated_right_values;
-    VariableNode(int line_number,Scope self_scope, VariableIRGenerator& ir_generator,
-                 bool is_global, std::shared_ptr<Node> right_node,
-                 std::string name = "")
-        : Node(line_number,self_scope, ir_generator, name),
+    VariableNode(int line_number, Scope self_scope,
+                 VariableIRGenerator& ir_generator, bool is_global,
+                 std::shared_ptr<Node> right_node, std::string name = "")
+        : Node(line_number, self_scope, ir_generator, name),
           _is_generated(false),
           _is_global(is_global),
           right_node(right_node),
@@ -165,10 +170,11 @@ class AccessNode : public Node {
     std::shared_ptr<CallFunctionNode> call_node;
 
     public:
-    AccessNode(int line_number,Scope self_scope, AccessIRGenerator& ir_generator,
-               std::shared_ptr<Node> left_node, std::string right_name,
+    AccessNode(int line_number, Scope self_scope,
+               AccessIRGenerator& ir_generator, std::shared_ptr<Node> left_node,
+               std::string right_name,
                NodeCollector<FunctionNode>& function_collector)
-        : Node(line_number,self_scope, ir_generator),
+        : Node(line_number, self_scope, ir_generator),
           left_node(left_node),
           left_value(nullptr),
           right_name(right_name),
@@ -184,7 +190,7 @@ class AccessNode : public Node {
     void set_call_node(std::shared_ptr<CallFunctionNode> n) { call_node = n; }
     std::shared_ptr<CallFunctionNode> get_call_node() { return call_node; }
     void set_generated(llvm::Value* c) { generated = c; }
-    bool is_accessing() override {return true;}
+    bool is_accessing() override { return true; }
     llvm::Value* get_generated() { return generated; }
 };
 
@@ -197,27 +203,30 @@ class AssigmentNode : public Node {
     std::shared_ptr<AccessNode> target_member;
     std::shared_ptr<ArgumentNode> target_arg;
 
-    AssigmentNode(int line_number,Scope self_scope, AssigmentIRGenerator& ir_generator,
+    AssigmentNode(int line_number, Scope self_scope,
+                  AssigmentIRGenerator& ir_generator,
                   std::shared_ptr<Node> right_node,
                   std::shared_ptr<VariableNode> target_var = nullptr,
                   std::string name = "")
-        : Node(line_number,self_scope, ir_generator, name),
+        : Node(line_number, self_scope, ir_generator, name),
           right_node(right_node),
           target_var(target_var),
           target_member(nullptr) {}
-    AssigmentNode(int line_number,Scope self_scope, AssigmentIRGenerator& ir_generator,
+    AssigmentNode(int line_number, Scope self_scope,
+                  AssigmentIRGenerator& ir_generator,
                   std::shared_ptr<Node> right_node,
                   std::shared_ptr<AccessNode> target_member = nullptr,
                   std::string name = "")
-        : Node(line_number,self_scope, ir_generator, name),
+        : Node(line_number, self_scope, ir_generator, name),
           right_node(right_node),
           target_var(nullptr),
           target_member(target_member) {}
-    AssigmentNode(int line_number,Scope self_scope, AssigmentIRGenerator& ir_generator,
+    AssigmentNode(int line_number, Scope self_scope,
+                  AssigmentIRGenerator& ir_generator,
                   std::shared_ptr<Node> right_node,
                   std::shared_ptr<ArgumentNode> target_arg,
                   std::string name = "")
-        : Node(line_number,self_scope, ir_generator, name),
+        : Node(line_number, self_scope, ir_generator, name),
           right_node(right_node),
           target_var(nullptr),
           target_member(nullptr),
@@ -227,14 +236,15 @@ class AssigmentNode : public Node {
     std::shared_ptr<Node> get_right_node() const;
 };
 
-class StoreNode:public Node
-{
+class StoreNode : public Node {
     public:
     std::shared_ptr<Node> pointer;
     std::shared_ptr<Node> object;
-    StoreNode(int line_number,Scope self_scope, StoreIRGenerator& ir_generator,
-               std::shared_ptr<Node> pointer,std::shared_ptr<Node> object)
-        : Node(line_number,self_scope, ir_generator),pointer(pointer),object(object){}
+    StoreNode(int line_number, Scope self_scope, StoreIRGenerator& ir_generator,
+              std::shared_ptr<Node> pointer, std::shared_ptr<Node> object)
+        : Node(line_number, self_scope, ir_generator),
+          pointer(pointer),
+          object(object) {}
 };
 
 class ArgumentNode : public Node {
@@ -244,9 +254,10 @@ class ArgumentNode : public Node {
     public:
     std::shared_ptr<Node> right_node;
     llvm::AllocaInst* alloca_inst;
-    ArgumentNode(int line_number,Scope self_scope, ArgumentIRGenerator& ir_generator,
-                 std::string name = "")
-        : Node(line_number,self_scope, ir_generator, name, true), alloca_inst(nullptr) {}
+    ArgumentNode(int line_number, Scope self_scope,
+                 ArgumentIRGenerator& ir_generator, std::string name = "")
+        : Node(line_number, self_scope, ir_generator, name, true),
+          alloca_inst(nullptr) {}
     void set_right_value(llvm::Value*);
     void set_right_node(std::shared_ptr<Node>);
     llvm::Value* get_right_value();
@@ -257,9 +268,9 @@ class BinaryExpressionNode : public Node {
     std::shared_ptr<Node> left_node;
     std::shared_ptr<Node> right_node;
     std::string operator_kind;
-    BinaryExpressionNode(int line_number,Scope self_scope,
+    BinaryExpressionNode(int line_number, Scope self_scope,
                          BinaryExpressionIRGenerator& ir_generator)
-        : Node(line_number,self_scope, ir_generator) {}
+        : Node(line_number, self_scope, ir_generator) {}
 };
 
 class FunctionNode : public Node {
@@ -273,11 +284,12 @@ class FunctionNode : public Node {
     std::vector<std::string> arguments_names;
     std::vector<std::shared_ptr<Node>> body;
     std::shared_ptr<Node> return_value;
-    FunctionNode(int line_number,Scope self_scope, FunctionIRGenerator& ir_generator,
-                 std::string name, std::vector<std::string> arguments_names,
+    FunctionNode(int line_number, Scope self_scope,
+                 FunctionIRGenerator& ir_generator, std::string name,
+                 std::vector<std::string> arguments_names,
                  std::vector<std::shared_ptr<Node>> body,
                  std::shared_ptr<Node> return_value)
-        : Node(line_number,self_scope, ir_generator, name),
+        : Node(line_number, self_scope, ir_generator, name),
           arguments_names(arguments_names),
           body(std::make_move_iterator(body.begin()),
                std::make_move_iterator(body.end())),
@@ -300,11 +312,11 @@ class DeclareCNode : public Node {
     std::shared_ptr<Node> _return_type;
 
     public:
-    DeclareCNode(int line_number,Scope self_scope, DeclareCIRGenerator& ir_generator,
-                 std::string name,
+    DeclareCNode(int line_number, Scope self_scope,
+                 DeclareCIRGenerator& ir_generator, std::string name,
                  std::vector<std::shared_ptr<Node>> arguments_type,
                  std::shared_ptr<Node> return_type)
-        : Node(line_number,self_scope, ir_generator, name),
+        : Node(line_number, self_scope, ir_generator, name),
           _arguments_type(arguments_type),
           _return_type(return_type) {}
     std::vector<std::shared_ptr<Node>> arguments_type() {
@@ -321,21 +333,24 @@ class CallFunctionNode : public Node {
     bool is_builtin;
     llvm::Function* builtin_function;
     bool is_C;
-    CallFunctionNode(int line_number,Scope self_scope, CallFunctionIRGenerator& ir_generator,
+    CallFunctionNode(int line_number, Scope self_scope,
+                     CallFunctionIRGenerator& ir_generator,
                      std::shared_ptr<FunctionNode> function,
                      std::vector<std::shared_ptr<Node>> passed_arguments,
                      NodeCollector<ArgumentNode>& argument_collector)
-        : Node(line_number,self_scope, ir_generator),
+        : Node(line_number, self_scope, ir_generator),
           function(function),
           passed_arguments(std::make_move_iterator(passed_arguments.begin()),
                            std::make_move_iterator(passed_arguments.end())),
           argument_collector(argument_collector),
+          is_builtin(false),
           is_C(false) {}
-    CallFunctionNode(int line_number,Scope self_scope, CallFunctionIRGenerator& ir_generator,
+    CallFunctionNode(int line_number, Scope self_scope,
+                     CallFunctionIRGenerator& ir_generator,
                      std::vector<std::shared_ptr<Node>> passed_arguments,
                      NodeCollector<ArgumentNode>& argument_collector,
                      llvm::Function* builtin_function)
-        : Node(line_number,self_scope, ir_generator),
+        : Node(line_number, self_scope, ir_generator),
           passed_arguments(std::make_move_iterator(passed_arguments.begin()),
                            std::make_move_iterator(passed_arguments.end())),
           argument_collector(argument_collector),
@@ -343,13 +358,15 @@ class CallFunctionNode : public Node {
           builtin_function(builtin_function),
           is_C(false) {}
 
-    CallFunctionNode(int line_number,Scope self_scope, CallFunctionIRGenerator& ir_generator,
+    CallFunctionNode(int line_number, Scope self_scope,
+                     CallFunctionIRGenerator& ir_generator,
                      std::vector<std::shared_ptr<Node>> passed_arguments,
                      NodeCollector<ArgumentNode>& argument_collector,
                      std::string name)
-        : Node(line_number,self_scope, ir_generator, name),
+        : Node(line_number, self_scope, ir_generator, name),
           passed_arguments(passed_arguments),
           argument_collector(argument_collector),
+          is_builtin(false),
           is_C(true) {}
 };
 
@@ -366,12 +383,12 @@ class ClassNode : public Node {
     bool _is_C_type;
 
     public:
-    ClassNode(int line_number,Scope self_scope, ClassIRGenerator& ir_generator,
+    ClassNode(int line_number, Scope self_scope, ClassIRGenerator& ir_generator,
               std::vector<std::shared_ptr<FunctionNode>> methods,
               std::vector<std::shared_ptr<Node>> members_definition,
               std::vector<std::string> arguments_names, bool is_C_type,
               std::string name = "")
-        : Node(line_number,self_scope, ir_generator, name),
+        : Node(line_number, self_scope, ir_generator, name),
           methods(methods),
           members_definition(members_definition),
           arguments_names(arguments_names),
@@ -413,14 +430,14 @@ class CallConstructorNode : public Node {
     Scope belong_to;
     NodeCollector<ArgumentNode>& argument_collector;
 
-    CallConstructorNode(int line_number,Scope self_scope,
+    CallConstructorNode(int line_number, Scope self_scope,
                         CallConstructorIRGenerator& ir_generator,
                         std::shared_ptr<ClassNode> class_node,
                         std::vector<std::shared_ptr<Node>> passed_arguments,
                         Scope belong_to,
                         NodeCollector<ArgumentNode>& argument_collector,
                         std::string name = "")
-        : Node(line_number,self_scope, ir_generator, name),
+        : Node(line_number, self_scope, ir_generator, name),
           class_node(class_node),
           passed_arguments(passed_arguments),
           belong_to(belong_to),
@@ -445,11 +462,11 @@ class IfNode : public Node {
     std::vector<std::shared_ptr<Node>> else_body;
 
     public:
-    IfNode(int line_number,Scope self_scope, IfIRGenerator& ir_generator,
+    IfNode(int line_number, Scope self_scope, IfIRGenerator& ir_generator,
            std::shared_ptr<Node> conditions,
            std::vector<std::shared_ptr<Node>> if_body,
            std::vector<std::shared_ptr<Node>> else_body)
-        : Node(line_number,self_scope, ir_generator),
+        : Node(line_number, self_scope, ir_generator),
           conditions(conditions),
           if_body(if_body),
           else_body(else_body) {}
@@ -469,12 +486,12 @@ class ForNode : public Node {
     std::vector<std::shared_ptr<Node>> body;
 
     public:
-    ForNode(int line_number,Scope self_scope, ForIRGenerator& ir_generator,
+    ForNode(int line_number, Scope self_scope, ForIRGenerator& ir_generator,
             std::shared_ptr<Node> left_expression,
             std::shared_ptr<Node> center_expression,
             std::shared_ptr<Node> right_expression,
             std::vector<std::shared_ptr<Node>> body)
-        : Node(line_number,self_scope, ir_generator),
+        : Node(line_number, self_scope, ir_generator),
           left_expression(right_expression),
           center_expression(center_expression),
           right_expression(right_expression),
@@ -491,11 +508,12 @@ class ListNode : public Node {
     bool _is_null;
 
     public:
-    ListNode(int line_number,Scope self_scope, ListIRGenerator& ir_generator,
+    ListNode(int line_number, Scope self_scope, ListIRGenerator& ir_generator,
              std::vector<std::shared_ptr<Node>> elements)
-        : Node(line_number,self_scope, ir_generator), elements(elements) {}
-    ListNode(int line_number,Scope self_scope, ListIRGenerator& ir_generator, bool is_null)
-        : Node(line_number,self_scope, ir_generator), _is_null(is_null) {}
+        : Node(line_number, self_scope, ir_generator), elements(elements) {}
+    ListNode(int line_number, Scope self_scope, ListIRGenerator& ir_generator,
+             bool is_null)
+        : Node(line_number, self_scope, ir_generator), _is_null(is_null) {}
     std::vector<std::shared_ptr<Node>> get_elements() { return elements; }
     bool is_null() { return _is_null; }
 };
@@ -503,7 +521,8 @@ class ListNode : public Node {
 class BlockEndNode : public Node {
     public:
     Scope block_scope;
-    BlockEndNode(int line_number,Scope self_scope, BlockEndIRGenerator& ir_generator,
-                 Scope block_scope)
-        : Node(line_number,self_scope, ir_generator), block_scope(block_scope) {}
+    BlockEndNode(int line_number, Scope self_scope,
+                 BlockEndIRGenerator& ir_generator, Scope block_scope)
+        : Node(line_number, self_scope, ir_generator),
+          block_scope(block_scope) {}
 };

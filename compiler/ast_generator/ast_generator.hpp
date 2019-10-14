@@ -40,7 +40,7 @@ class ASTGenerator {
     std::shared_ptr<Node> no_value_node;
     BlawnLogger logger;
     ASTGenerator(llvm::Module &module, llvm::IRBuilder<> &ir_builder,
-                 llvm::LLVMContext &context);
+                 llvm::LLVMContext &context,int line_number=1);
     void into_namespace(std::string name);
     void into_namespace();
     void break_out_of_namespace();
@@ -67,7 +67,7 @@ class ASTGenerator {
     void add_argument(std::string);
     std::unique_ptr<IntegerNode> create_integer(int num);
     std::unique_ptr<FloatNode> create_float(double num);
-    std::unique_ptr<StringNode> create_string(std::string str);
+    std::shared_ptr<StringNode> create_string(std::string str);
     void book_function(std::string name);
     std::shared_ptr<FunctionNode> add_function(
         std::string name, std::vector<std::string> arguments,

@@ -8,6 +8,19 @@
 #include "../blawn_context/blawn_context.hpp"
 #include "utils.hpp"
 
+std::string utils::get_filename(std::string name) {
+    auto index = name.rfind("/");
+    std::string filename_with_ext = name;
+    if (index != std::string::npos)
+        filename_with_ext = name.substr(index + 1, name.size() - index - 1);
+    index = name.rfind('\\');
+    if (index != std::string::npos)
+        filename_with_ext = name.substr(index + 1, name.size() - index - 1);
+    auto ext_index = filename_with_ext.find_last_of(".");
+    if (ext_index == std::string::npos) return filename_with_ext;
+    return filename_with_ext.substr(0, ext_index);
+}
+
 std::string utils::to_string(Scope& s) {
     std::string cur = ".";
     for (auto& i : s) {

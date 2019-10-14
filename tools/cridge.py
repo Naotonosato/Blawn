@@ -1,4 +1,4 @@
-import os
+import sys,os
 import ctypes
 import clang.cindex
 from clang.cindex import Index,Config,CursorKind,TypeKind,TranslationUnit
@@ -53,13 +53,20 @@ TypeKind.USHORT:"__C_USHORT__",
 TypeKind.WCHAR:"__C_WCHAR__",
 }
 
+UNIQUE_NUMBER = 0
+GENERATED = set()
+def get_unique():
+    global UNIQUE_NUMBER
+    UNIQUE_NUMBER += 1
+    return UNIQUE_NUMBER
+
 for t in BUILTIN_C_TYPE_NAMES:
     size = ctypes.sizeof(BUILTIN_C_TYPES[t])
     BUILTIN_C_TYPE_NAMES[t] += "SIZE_" + str(size)
 
 def _rename_type(name):
     to_delete = "struct "
-    return name.replace(to_delete,"").replace("const ","").replace("union ","")
+    return name.replace(to_delete,"").replace("const ","")
 
 def get_finally_pointee(node_type,count=0):
     if node_type.kind == TypeKind.POINTER:
@@ -68,44 +75,80 @@ def get_finally_pointee(node_type,count=0):
     return node_type,count
 
 def to_blawn_type(type_info):
+    global GENERATED
     if type_info.kind == TypeKind.VOID:
-        return ""
+        return "__C_VOID__"
     if type_info.kind == TypeKind.POINTER:
+        ptr_size = str(type_info.get_size())
         type_info,count = get_finally_pointee(type_info)
+        if to_blawn_type(type_info) == "__C_VOID__":
+            return "__PTR__ " * count + "__C_INT__SIZE_" + ptr_size
         return "__PTR__ " * count + to_blawn_type(type_info)
     if type_info.kind in BUILTIN_C_TYPE_NAMES:
         return BUILTIN_C_TYPE_NAMES[type_info.kind]
-    if type_info.kind == TypeKind.CONSTANTARRAY:
-        return "__PTR__ " + to_blawn_type(type_info.get_array_element_type())
-    if type_info.get_declaration().is_anonymous():
-        print([e.type.spelling for e in type_info.get_fields()])
+    if type_info.kind == TypeKind.ENUM:
         return "__C_INT__SIZE_" + str(type_info.get_size())
+    if type_info.kind in (TypeKind.FUNCTIONPROTO,TypeKind.FUNCTIONNOPROTO):
+        return "__C_UNKNOWN__SIZE_" + str(type_info.get_size())
+    if type_info.kind == TypeKind.CONSTANTARRAY:
+        return "__C_UNKNOWN__SIZE_" + str(type_info.get_size())
+    if type_info.get_declaration().is_anonymous():
+        return "__C_UNKNOWN__SIZE_" + str(type_info.get_size())
+    if type_info.get_size() < 0:
+        return "__PTR__ __C_UNKNOWN__SIZE_1"
+    if "union " in type_info.spelling:
+        return "__C_UNKNOWN__SIZE_" + str(type_info.get_size())
+    if not (_rename_type(type_info.spelling) in GENERATED):
+        pass#print(_rename_type(type_info.spelling))
     return _rename_type(type_info.spelling)
 
+def get_unsupported(element):
+    return f"__NOT_SUPPORTED__{get_unique()}","__C_UNKNOWN__SIZE_" + str(element["type"].get_size())
+
 def rename_element(element):
+    if element["type"].kind == TypeKind.CONSTANTARRAY:
+        return f"__NOT_SUPPORTED__{get_unique()}"
+    if element["type"].get_size() < 0:
+        return f"__NOT_SUPPORTED__{get_unique()}"
+    if "union " in element["type"].spelling:
+        return f"__NOT_SUPPORTED__{get_unique()}"
     if element["type"].get_declaration().is_anonymous():
-        return "__NOT_SUPPORTED__"
+        return f"__NOT_SUPPORTED__{get_unique()}"
     else:
         return element["name"]
 
 def generate_Ctype(structures):
+    global GENERATED
     Ctype_template = "Ctype {}\n"
     member_template = "    @{} = {}\n"
     classes = ""
     for name,struct in structures.items():
         field = [{"name":element.spelling,"type":element.type.get_canonical()} for element in struct.get_fields()]
         C_type_wrapper = Ctype_template.format(name.replace("struct ",""))
+        if struct.get_size() > 0 and len(field) == 0:
+            C_type_wrapper += member_template.format(
+                f"__NOT_SUPPORTED__{get_unique()}",
+                "__C_UNKNOWN__SIZE_" + str(struct.get_size())
+                )
+        if struct.get_size() < 0:
+            continue
+        if "::(anonymous at" in name:
+            continue
+        if "union " in name:
+            continue
         for element in field:
             element_type_name = to_blawn_type(element["type"])
             element_name = rename_element(element)
             #if not is_supported_type(element["type"]):
             #   element_name = "__cannot_access__<type {} is not supported>".format(element_type_name)
+            
+            if name.replace("struct ","") == element_type_name.split(" ")[-1].replace(" ",""):
+                element_name,element_type_name = get_unsupported(element)
             C_type_wrapper += member_template.format(
                 element_name,
                 element_type_name
                 )
-            if name.replace("struct ","") == element_type_name.split(" ")[-1].replace(" ",""):
-                print("再帰しとる...")
+            GENERATED.add(element_type_name)
         classes += C_type_wrapper
     return classes
 
@@ -125,21 +168,24 @@ def generate_wrapper(functions):
 
 
 def get_functions(filename,node,functions_dict={},structures_dict={}):
-    if 1:#node.location.file is not None and node.location.file.name == filename:
-        if node.kind == CursorKind.STRUCT_DECL:
-            spelling = node.type.get_canonical().spelling
-            #fields = [{"name":element.spelling,"type":element.type.get_canonical()} for element in node.type.get_canonical().get_fields()]
+    global GENERATED
+    if node.kind in (CursorKind.STRUCT_DECL,CursorKind.UNION_DECL):
+        spelling = node.type.get_canonical().spelling
+        #print(node.canonical.is_anonymous())
+        if not node.is_anonymous():
+            GENERATED.add(spelling)
             structures_dict[spelling] = node.type.get_canonical()
-        if node.kind == CursorKind.FUNCTION_DECL:
-            functions_dict[node.spelling] = {"RESULT_TYPE":node.result_type.get_canonical(),"ARGUMENTS_TYPE":[]}
-            for arg in node.get_arguments():
-                functions_dict[node.spelling]["ARGUMENTS_TYPE"].append(arg.type.get_canonical())
+    if node.kind == CursorKind.FUNCTION_DECL:
+        functions_dict[node.spelling] = {"RESULT_TYPE":node.result_type.get_canonical(),"ARGUMENTS_TYPE":[]}
+        for arg in node.get_arguments():
+            functions_dict[node.spelling]["ARGUMENTS_TYPE"].append(arg.type.get_canonical())
     for child in node.get_children():
         get_functions(filename,child,functions_dict,structures_dict)
     return functions_dict,structures_dict
 
 if __name__ == "__main__":
-    source_filename = "test/test1.h"#"../compiler/builtins/builtins.c"#"test/test1.h"#"../compiler/builtins/builtins.c"
+    source_filename = sys.argv[1]#"test/test1.h"#"../compiler/builtins/builtins.c"#"test/test1.h"#"../compiler/builtins/builtins.c"
+    print(source_filename)
     output_filename = os.path.splitext(os.path.basename(source_filename))[0] + ".bridge"
     cursor = Index.create().parse(source_filename, options = TranslationUnit.PARSE_SKIP_FUNCTION_BODIES).cursor
     functions,structures = get_functions(source_filename,cursor)

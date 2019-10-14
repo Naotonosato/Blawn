@@ -29,7 +29,7 @@ class BlawnContext {
              std::vector<std::pair<llvm::Function*, llvm::Value*>>>
         destructors;
     std::map<Scope, std::vector<llvm::Value*>> heap_users;
-    
+
     public:
     void register_element_name(std::string, std::string name,
                                unsigned int index);

@@ -1,6 +1,8 @@
 #include <SDL2/SDL.h>
+
 int main()
 {
+    SDL_Renderer* i;
     unsigned int a;
 }
 int f(int[100]){}

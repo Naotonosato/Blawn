@@ -32,12 +32,12 @@ void Blawn::Driver::parse(std::istream &stream) {
 }
 
 void Blawn::Driver::parse_helper(std::istream &stream) {
-    delete (scanner);
-    scanner = new Blawn::Scanner(&stream, this);
-    delete (parser);
-    parser = new Blawn::Parser(*scanner, *this);
+    // delete (scanner);
+    auto new_scanner = new Blawn::Scanner(&stream,this);
+    // delete (parser);
+    auto new_parser = new Blawn::Parser(*new_scanner, *this);
     const int accept(0);
-    if (parser->parse() != accept) {
+    if (new_parser->parse() != accept) {
         std::cerr << "syntax error" << std::endl;
         /*<< "\033[38;2;0;0;255m"
         << "YOU LOSE\033[0m\n" << "構文解析器の勝ち！\n"

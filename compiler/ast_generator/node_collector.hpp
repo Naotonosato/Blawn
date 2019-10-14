@@ -7,38 +7,31 @@
 
 static unsigned int unique_number_ = 0;
 
-class Scope:public std::vector<std::string>
-{
+class Scope : public std::vector<std::string> {
     public:
     using std::vector<std::string>::vector;
-    bool is_longer(Scope s)
-    {
+    bool is_longer(Scope s) {
         if (s.size() <= this->size()) return false;
         unsigned int index = 0;
-        for(auto& e:*this)
-        {
+        for (auto& e : *this) {
             if (s[index] != e) return false;
             index += 1;
         }
         return true;
     }
-    bool is_equal(Scope s)
-    {
+    bool is_equal(Scope s) {
         if (s.size() != this->size()) return false;
         unsigned int index = 0;
-        for(auto& e:*this)
-        {
+        for (auto& e : *this) {
             if (s[index] != e) return false;
             index += 1;
         }
         return true;
     }
-    bool is_shorter_than(Scope s)
-    {
+    bool is_shorter_than(Scope s) {
         if (s.size() >= this->size()) return false;
         unsigned int index = 0;
-        for(auto& e:s)
-        {
+        for (auto& e : s) {
             if ((*this)[index] != e) return false;
             index += 1;
         }
@@ -161,15 +154,13 @@ class NodeCollector {
         return cur;
     }
 
-    void dump()
-    {
-        for (auto& node_map:nodes)
-        {
-            std::cout << "in scope '" << get_namespace_as_string(node_map.first) << "':" << std::endl; 
-            for (auto& name : nodes[node_map.first].second) 
-            {
-                std::cout << "    " << name <<  std::endl;
-                //nodes[node_map.first].first[name];
+    void dump() {
+        for (auto& node_map : nodes) {
+            std::cout << "in scope '" << get_namespace_as_string(node_map.first)
+                      << "':" << std::endl;
+            for (auto& name : nodes[node_map.first].second) {
+                std::cout << "    " << name << std::endl;
+                // nodes[node_map.first].first[name];
             }
         }
     }

@@ -1,7 +1,7 @@
 Ctype __fsid_t
-    @__val = __PTR__ __C_INT__SIZE_4
+    @__NOT_SUPPORTED__1 = __C_UNKNOWN__SIZE_8
 Ctype __sigset_t
-    @__val = __PTR__ __C_ULONG__SIZE_8
+    @__NOT_SUPPORTED__2 = __C_UNKNOWN__SIZE_128
 Ctype timeval
     @tv_sec = __C_LONG__SIZE_8
     @tv_usec = __C_LONG__SIZE_8
@@ -9,7 +9,7 @@ Ctype timespec
     @tv_sec = __C_LONG__SIZE_8
     @tv_nsec = __C_LONG__SIZE_8
 Ctype fd_set
-    @__fds_bits = __PTR__ __C_LONG__SIZE_8
+    @__NOT_SUPPORTED__3 = __C_UNKNOWN__SIZE_128
 Ctype __pthread_rwlock_arch_t
     @__readers = __C_UINT__SIZE_4
     @__writers = __C_UINT__SIZE_4
@@ -20,12 +20,12 @@ Ctype __pthread_rwlock_arch_t
     @__cur_writer = __C_INT__SIZE_4
     @__shared = __C_INT__SIZE_4
     @__rwelision = __C_SCHAR__SIZE_1
-    @__pad1 = __PTR__ __C_UCHAR__SIZE_1
+    @__NOT_SUPPORTED__4 = __C_UNKNOWN__SIZE_7
     @__pad2 = __C_ULONG__SIZE_8
     @__flags = __C_UINT__SIZE_4
 Ctype __pthread_internal_list
-    @__prev = __PTR__ __pthread_internal_list
-    @__next = __PTR__ __pthread_internal_list
+    @__NOT_SUPPORTED__5 = __C_UNKNOWN__SIZE_8
+    @__NOT_SUPPORTED__6 = __C_UNKNOWN__SIZE_8
 Ctype __pthread_mutex_s
     @__lock = __C_INT__SIZE_4
     @__count = __C_UINT__SIZE_4
@@ -36,35 +36,55 @@ Ctype __pthread_mutex_s
     @__elision = __C_SHORT__SIZE_2
     @__list = __pthread_internal_list
 Ctype __pthread_cond_s
-    @__NOT_SUPPORTED__ = __C_INT__SIZE_8
-    @__NOT_SUPPORTED__ = __C_INT__SIZE_8
-    @__g_refs = __PTR__ __C_UINT__SIZE_4
-    @__g_size = __PTR__ __C_UINT__SIZE_4
+    @__NOT_SUPPORTED__7 = __C_UNKNOWN__SIZE_8
+    @__NOT_SUPPORTED__8 = __C_UNKNOWN__SIZE_8
+    @__NOT_SUPPORTED__9 = __C_UNKNOWN__SIZE_8
+    @__NOT_SUPPORTED__10 = __C_UNKNOWN__SIZE_8
     @__g1_orig_size = __C_UINT__SIZE_4
     @__wrefs = __C_UINT__SIZE_4
-    @__g_signals = __PTR__ __C_UINT__SIZE_4
-Ctype __pthread_cond_s::(anonymous at /usr/include/x86_64-linux-gnu/bits/thread-shared-types.h:156:5)
-    @__low = __C_UINT__SIZE_4
-    @__high = __C_UINT__SIZE_4
-Ctype __pthread_cond_s::(anonymous at /usr/include/x86_64-linux-gnu/bits/thread-shared-types.h:165:5)
-    @__low = __C_UINT__SIZE_4
-    @__high = __C_UINT__SIZE_4
+    @__NOT_SUPPORTED__11 = __C_UNKNOWN__SIZE_8
+Ctype pthread_mutexattr_t
+    @__NOT_SUPPORTED__12 = __C_UNKNOWN__SIZE_4
+    @__align = __C_INT__SIZE_4
+Ctype pthread_condattr_t
+    @__NOT_SUPPORTED__13 = __C_UNKNOWN__SIZE_4
+    @__align = __C_INT__SIZE_4
+Ctype pthread_mutex_t
+    @__data = __pthread_mutex_s
+    @__NOT_SUPPORTED__14 = __C_UNKNOWN__SIZE_40
+    @__align = __C_LONG__SIZE_8
+Ctype pthread_cond_t
+    @__data = __pthread_cond_s
+    @__NOT_SUPPORTED__15 = __C_UNKNOWN__SIZE_48
+    @__align = __C_LONGLONG__SIZE_8
+Ctype pthread_rwlock_t
+    @__data = __pthread_rwlock_arch_t
+    @__NOT_SUPPORTED__16 = __C_UNKNOWN__SIZE_56
+    @__align = __C_LONG__SIZE_8
+Ctype pthread_rwlockattr_t
+    @__NOT_SUPPORTED__17 = __C_UNKNOWN__SIZE_8
+    @__align = __C_LONG__SIZE_8
+Ctype pthread_barrier_t
+    @__NOT_SUPPORTED__18 = __C_UNKNOWN__SIZE_32
+    @__align = __C_LONG__SIZE_8
+Ctype pthread_barrierattr_t
+    @__NOT_SUPPORTED__19 = __C_UNKNOWN__SIZE_4
+    @__align = __C_INT__SIZE_4
 Ctype _IO_FILE
+    @__NOT_SUPPORTED__20 = __C_UNKNOWN__SIZE_1
 Ctype __mbstate_t
     @__count = __C_INT__SIZE_4
-    @__value = __mbstate_t::(anonymous at /usr/include/x86_64-linux-gnu/bits/types/__mbstate_t.h:16:3)
+    @__NOT_SUPPORTED__21 = __C_UNKNOWN__SIZE_4
 Ctype _G_fpos_t
     @__pos = __C_LONG__SIZE_8
     @__state = __mbstate_t
 Ctype _G_fpos64_t
     @__pos = __C_LONG__SIZE_8
     @__state = __mbstate_t
-Ctype _IO_jump_t
 Ctype _IO_marker
-    @_next = __PTR__ _IO_marker
+    @__NOT_SUPPORTED__22 = __C_UNKNOWN__SIZE_8
     @_sbuf = __PTR__ _IO_FILE
     @_pos = __C_INT__SIZE_4
-Ctype _IO_FILE_plus
 Ctype div_t
     @quot = __C_INT__SIZE_4
     @rem = __C_INT__SIZE_4
@@ -83,23 +103,20 @@ Ctype random_data
     @rand_sep = __C_INT__SIZE_4
     @end_ptr = __PTR__ __C_INT__SIZE_4
 Ctype drand48_data
-    @__x = __PTR__ __C_USHORT__SIZE_2
-    @__old_x = __PTR__ __C_USHORT__SIZE_2
+    @__NOT_SUPPORTED__23 = __C_UNKNOWN__SIZE_6
+    @__NOT_SUPPORTED__24 = __C_UNKNOWN__SIZE_6
     @__c = __C_USHORT__SIZE_2
     @__init = __C_USHORT__SIZE_2
     @__a = __C_ULONGLONG__SIZE_8
 Ctype __locale_struct
-    @__locales = __PTR__ __PTR__ __locale_data
+    @__NOT_SUPPORTED__25 = __C_UNKNOWN__SIZE_104
     @__ctype_b = __PTR__ __C_USHORT__SIZE_2
     @__ctype_tolower = __PTR__ __C_INT__SIZE_4
     @__ctype_toupper = __PTR__ __C_INT__SIZE_4
-    @__names = __PTR__ __PTR__ __C_CHAR__SIZE_1
-Ctype __locale_data
-Ctype tm
+    @__NOT_SUPPORTED__26 = __C_UNKNOWN__SIZE_104
 Ctype imaxdiv_t
     @quot = __C_LONG__SIZE_8
     @rem = __C_LONG__SIZE_8
-Ctype _SDL_iconv_t
 Ctype SDL_AssertData
     @always_ignore = __C_INT__SIZE_4
     @trigger_count = __C_UINT__SIZE_4
@@ -107,24 +124,11 @@ Ctype SDL_AssertData
     @filename = __PTR__ __C_CHAR__SIZE_1
     @linenum = __C_INT__SIZE_4
     @function = __PTR__ __C_CHAR__SIZE_1
-    @next = __PTR__ SDL_AssertData
+    @__NOT_SUPPORTED__27 = __C_UNKNOWN__SIZE_8
 Ctype SDL_atomic_t
     @value = __C_INT__SIZE_4
-Ctype SDL_mutex
-Ctype SDL_semaphore
-Ctype SDL_cond
-Ctype SDL_Thread
 Ctype SDL_RWops
-Ctype SDL_RWops::(anonymous at /usr/include/SDL2/SDL_rwops.h:124:9)
-    @autoclose = SDL_bool
-    @fp = __PTR__ _IO_FILE
-Ctype SDL_RWops::(anonymous at /usr/include/SDL2/SDL_rwops.h:130:9)
-    @base = __PTR__ __C_UCHAR__SIZE_1
-    @here = __PTR__ __C_UCHAR__SIZE_1
-    @stop = __PTR__ __C_UCHAR__SIZE_1
-Ctype SDL_RWops::(anonymous at /usr/include/SDL2/SDL_rwops.h:136:9)
-    @data1 = __PTR__ 
-    @data2 = __PTR__ 
+    @__NOT_SUPPORTED__28 = __C_UNKNOWN__SIZE_1
 Ctype SDL_AudioSpec
     @freq = __C_INT__SIZE_4
     @format = __C_USHORT__SIZE_2
@@ -133,8 +137,8 @@ Ctype SDL_AudioSpec
     @samples = __C_USHORT__SIZE_2
     @padding = __C_USHORT__SIZE_2
     @size = __C_UINT__SIZE_4
-    @callback = __PTR__ void (void *, unsigned char *, int)
-    @userdata = __PTR__ 
+    @callback = __PTR__ __C_UNKNOWN__SIZE_1
+    @userdata = __PTR__ __C_INT__SIZE_8
 Ctype SDL_AudioCVT
     @needed = __C_INT__SIZE_4
     @src_format = __C_USHORT__SIZE_2
@@ -145,9 +149,8 @@ Ctype SDL_AudioCVT
     @len_cvt = __C_INT__SIZE_4
     @len_mult = __C_INT__SIZE_4
     @len_ratio = __C_DOUBLE__SIZE_8
-    @filters = __PTR__ __PTR__ void (SDL_AudioCVT *, unsigned short)
+    @__NOT_SUPPORTED__29 = __C_UNKNOWN__SIZE_80
     @filter_index = __C_INT__SIZE_4
-Ctype _SDL_AudioStream
 Ctype SDL_Color
     @r = __C_UCHAR__SIZE_1
     @g = __C_UCHAR__SIZE_1
@@ -163,7 +166,7 @@ Ctype SDL_PixelFormat
     @palette = __PTR__ SDL_Palette
     @BitsPerPixel = __C_UCHAR__SIZE_1
     @BytesPerPixel = __C_UCHAR__SIZE_1
-    @padding = __PTR__ __C_UCHAR__SIZE_1
+    @__NOT_SUPPORTED__30 = __C_UNKNOWN__SIZE_2
     @Rmask = __C_UINT__SIZE_4
     @Gmask = __C_UINT__SIZE_4
     @Bmask = __C_UINT__SIZE_4
@@ -177,7 +180,7 @@ Ctype SDL_PixelFormat
     @Bshift = __C_UCHAR__SIZE_1
     @Ashift = __C_UCHAR__SIZE_1
     @refcount = __C_INT__SIZE_4
-    @next = __PTR__ SDL_PixelFormat
+    @__NOT_SUPPORTED__31 = __C_UNKNOWN__SIZE_8
 Ctype SDL_Point
     @x = __C_INT__SIZE_4
     @y = __C_INT__SIZE_4
@@ -192,37 +195,29 @@ Ctype SDL_Surface
     @w = __C_INT__SIZE_4
     @h = __C_INT__SIZE_4
     @pitch = __C_INT__SIZE_4
-    @pixels = __PTR__ 
-    @userdata = __PTR__ 
+    @pixels = __PTR__ __C_INT__SIZE_8
+    @userdata = __PTR__ __C_INT__SIZE_8
     @locked = __C_INT__SIZE_4
-    @lock_data = __PTR__ 
+    @lock_data = __PTR__ __C_INT__SIZE_8
     @clip_rect = SDL_Rect
-    @map = __PTR__ SDL_BlitMap
+    @map = __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
     @refcount = __C_INT__SIZE_4
-Ctype SDL_BlitMap
 Ctype SDL_DisplayMode
     @format = __C_UINT__SIZE_4
     @w = __C_INT__SIZE_4
     @h = __C_INT__SIZE_4
     @refresh_rate = __C_INT__SIZE_4
-    @driverdata = __PTR__ 
-Ctype SDL_Window
+    @driverdata = __PTR__ __C_INT__SIZE_8
 Ctype SDL_Keysym
-    @scancode = SDL_Scancode
+    @scancode = __C_INT__SIZE_4
     @sym = __C_INT__SIZE_4
     @mod = __C_USHORT__SIZE_2
     @unused = __C_UINT__SIZE_4
-Ctype SDL_Cursor
-Ctype _SDL_Joystick
 Ctype SDL_JoystickGUID
-    @data = __PTR__ __C_UCHAR__SIZE_1
-Ctype _SDL_GameController
+    @__NOT_SUPPORTED__32 = __C_UNKNOWN__SIZE_16
 Ctype SDL_GameControllerButtonBind
-    @bindType = SDL_GameControllerBindType
-    @value = SDL_GameControllerButtonBind::(anonymous at /usr/include/SDL2/SDL_gamecontroller.h:75:5)
-Ctype SDL_GameControllerButtonBind::(anonymous at /usr/include/SDL2/SDL_gamecontroller.h:79:9)
-    @hat = __C_INT__SIZE_4
-    @hat_mask = __C_INT__SIZE_4
+    @bindType = __C_INT__SIZE_4
+    @__NOT_SUPPORTED__33 = __C_UNKNOWN__SIZE_8
 Ctype SDL_Finger
     @id = __C_LONG__SIZE_8
     @x = __C_FLOAT__SIZE_4
@@ -254,14 +249,14 @@ Ctype SDL_TextEditingEvent
     @type = __C_UINT__SIZE_4
     @timestamp = __C_UINT__SIZE_4
     @windowID = __C_UINT__SIZE_4
-    @text = __PTR__ __C_CHAR__SIZE_1
+    @__NOT_SUPPORTED__34 = __C_UNKNOWN__SIZE_32
     @start = __C_INT__SIZE_4
     @length = __C_INT__SIZE_4
 Ctype SDL_TextInputEvent
     @type = __C_UINT__SIZE_4
     @timestamp = __C_UINT__SIZE_4
     @windowID = __C_UINT__SIZE_4
-    @text = __PTR__ __C_CHAR__SIZE_1
+    @__NOT_SUPPORTED__35 = __C_UNKNOWN__SIZE_32
 Ctype SDL_MouseMotionEvent
     @type = __C_UINT__SIZE_4
     @timestamp = __C_UINT__SIZE_4
@@ -406,17 +401,15 @@ Ctype SDL_UserEvent
     @timestamp = __C_UINT__SIZE_4
     @windowID = __C_UINT__SIZE_4
     @code = __C_INT__SIZE_4
-    @data1 = __PTR__ 
-    @data2 = __PTR__ 
-Ctype SDL_SysWMmsg
+    @data1 = __PTR__ __C_INT__SIZE_8
+    @data2 = __PTR__ __C_INT__SIZE_8
 Ctype SDL_SysWMEvent
     @type = __C_UINT__SIZE_4
     @timestamp = __C_UINT__SIZE_4
-    @msg = __PTR__ SDL_SysWMmsg
-Ctype _SDL_Haptic
+    @msg = __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
 Ctype SDL_HapticDirection
     @type = __C_UCHAR__SIZE_1
-    @dir = __PTR__ __C_INT__SIZE_4
+    @__NOT_SUPPORTED__36 = __C_UNKNOWN__SIZE_12
 Ctype SDL_HapticConstant
     @type = __C_USHORT__SIZE_2
     @direction = SDL_HapticDirection
@@ -451,12 +444,12 @@ Ctype SDL_HapticCondition
     @delay = __C_USHORT__SIZE_2
     @button = __C_USHORT__SIZE_2
     @interval = __C_USHORT__SIZE_2
-    @right_sat = __PTR__ __C_USHORT__SIZE_2
-    @left_sat = __PTR__ __C_USHORT__SIZE_2
-    @right_coeff = __PTR__ __C_SHORT__SIZE_2
-    @left_coeff = __PTR__ __C_SHORT__SIZE_2
-    @deadband = __PTR__ __C_USHORT__SIZE_2
-    @center = __PTR__ __C_SHORT__SIZE_2
+    @__NOT_SUPPORTED__37 = __C_UNKNOWN__SIZE_6
+    @__NOT_SUPPORTED__38 = __C_UNKNOWN__SIZE_6
+    @__NOT_SUPPORTED__39 = __C_UNKNOWN__SIZE_6
+    @__NOT_SUPPORTED__40 = __C_UNKNOWN__SIZE_6
+    @__NOT_SUPPORTED__41 = __C_UNKNOWN__SIZE_6
+    @__NOT_SUPPORTED__42 = __C_UNKNOWN__SIZE_6
 Ctype SDL_HapticRamp
     @type = __C_USHORT__SIZE_2
     @direction = SDL_HapticDirection
@@ -499,10 +492,10 @@ Ctype SDL_MessageBoxColor
     @g = __C_UCHAR__SIZE_1
     @b = __C_UCHAR__SIZE_1
 Ctype SDL_MessageBoxColorScheme
-    @colors = __PTR__ SDL_MessageBoxColor
+    @__NOT_SUPPORTED__43 = __C_UNKNOWN__SIZE_15
 Ctype SDL_MessageBoxData
     @flags = __C_UINT__SIZE_4
-    @window = __PTR__ SDL_Window
+    @window = __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
     @title = __PTR__ __C_CHAR__SIZE_1
     @message = __PTR__ __C_CHAR__SIZE_1
     @numbuttons = __C_INT__SIZE_4
@@ -512,13 +505,14 @@ Ctype SDL_RendererInfo
     @name = __PTR__ __C_CHAR__SIZE_1
     @flags = __C_UINT__SIZE_4
     @num_texture_formats = __C_UINT__SIZE_4
-    @texture_formats = __PTR__ __C_UINT__SIZE_4
+    @__NOT_SUPPORTED__44 = __C_UNKNOWN__SIZE_64
     @max_texture_width = __C_INT__SIZE_4
     @max_texture_height = __C_INT__SIZE_4
-Ctype SDL_Renderer
-Ctype SDL_Texture
+Ctype SDL_WindowShapeParams
+    @binarizationCutoff = __C_UCHAR__SIZE_1
+    @colorKey = SDL_Color
 Ctype SDL_WindowShapeMode
-    @mode = WindowShapeMode
+    @mode = __C_INT__SIZE_4
     @parameters = SDL_WindowShapeParams
 Ctype SDL_version
     @major = __C_UCHAR__SIZE_1
@@ -584,10 +578,10 @@ Ctype NestStruct
     return: __C_INT__SIZE_4
 [Cfunction _IO_flockfile]
     arguments: __PTR__ _IO_FILE
-    return: 
+    return: __C_VOID__
 [Cfunction _IO_funlockfile]
     arguments: __PTR__ _IO_FILE
-    return: 
+    return: __C_VOID__
 [Cfunction _IO_ftrylockfile]
     arguments: __PTR__ _IO_FILE
     return: __C_INT__SIZE_4
@@ -601,7 +595,7 @@ Ctype NestStruct
     arguments: __PTR__ _IO_FILE,__C_INT__SIZE_4,__C_LONG__SIZE_8
     return: __C_LONG__SIZE_8
 [Cfunction _IO_sgetn]
-    arguments: __PTR__ _IO_FILE,__PTR__ ,__C_INT__SIZE_4
+    arguments: __PTR__ _IO_FILE,__PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4
     return: __C_INT__SIZE_4
 [Cfunction _IO_seekoff]
     arguments: __PTR__ _IO_FILE,__C_LONG__SIZE_8,__C_INT__SIZE_4,__C_INT__SIZE_4
@@ -611,7 +605,7 @@ Ctype NestStruct
     return: __C_LONG__SIZE_8
 [Cfunction _IO_free_backup_area]
     arguments: __PTR__ _IO_FILE
-    return: 
+    return: __C_VOID__
 [Cfunction remove]
     arguments: __PTR__ __C_CHAR__SIZE_1
     return: __C_INT__SIZE_4
@@ -652,23 +646,23 @@ Ctype NestStruct
     arguments: __C_INT__SIZE_4,__PTR__ __C_CHAR__SIZE_1
     return: __PTR__ _IO_FILE
 [Cfunction fmemopen]
-    arguments: __PTR__ ,__C_INT__SIZE_4,__PTR__ __C_CHAR__SIZE_1
+    arguments: __PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4,__PTR__ __C_CHAR__SIZE_1
     return: __PTR__ _IO_FILE
 [Cfunction open_memstream]
     arguments: __PTR__ __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_INT__SIZE_4
     return: __PTR__ _IO_FILE
 [Cfunction setbuf]
     arguments: __PTR__ _IO_FILE,__PTR__ __C_CHAR__SIZE_1
-    return: 
+    return: __C_VOID__
 [Cfunction setvbuf]
     arguments: __PTR__ _IO_FILE,__PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4,__C_INT__SIZE_4
     return: __C_INT__SIZE_4
 [Cfunction setbuffer]
     arguments: __PTR__ _IO_FILE,__PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
-    return: 
+    return: __C_VOID__
 [Cfunction setlinebuf]
     arguments: __PTR__ _IO_FILE
-    return: 
+    return: __C_VOID__
 [Cfunction fprintf]
     arguments: __PTR__ _IO_FILE,__PTR__ __C_CHAR__SIZE_1
     return: __C_INT__SIZE_4
@@ -781,16 +775,16 @@ Ctype NestStruct
     arguments: __C_INT__SIZE_4,__PTR__ _IO_FILE
     return: __C_INT__SIZE_4
 [Cfunction fread]
-    arguments: __PTR__ ,__C_INT__SIZE_4,__C_INT__SIZE_4,__PTR__ _IO_FILE
+    arguments: __PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4,__C_INT__SIZE_4,__PTR__ _IO_FILE
     return: __C_INT__SIZE_4
 [Cfunction fwrite]
-    arguments: __PTR__ ,__C_INT__SIZE_4,__C_INT__SIZE_4,__PTR__ _IO_FILE
+    arguments: __PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4,__C_INT__SIZE_4,__PTR__ _IO_FILE
     return: __C_INT__SIZE_4
 [Cfunction fread_unlocked]
-    arguments: __PTR__ ,__C_INT__SIZE_4,__C_INT__SIZE_4,__PTR__ _IO_FILE
+    arguments: __PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4,__C_INT__SIZE_4,__PTR__ _IO_FILE
     return: __C_INT__SIZE_4
 [Cfunction fwrite_unlocked]
-    arguments: __PTR__ ,__C_INT__SIZE_4,__C_INT__SIZE_4,__PTR__ _IO_FILE
+    arguments: __PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4,__C_INT__SIZE_4,__PTR__ _IO_FILE
     return: __C_INT__SIZE_4
 [Cfunction fseek]
     arguments: __PTR__ _IO_FILE,__C_LONG__SIZE_8,__C_INT__SIZE_4
@@ -800,7 +794,7 @@ Ctype NestStruct
     return: __C_LONG__SIZE_8
 [Cfunction rewind]
     arguments: __PTR__ _IO_FILE
-    return: 
+    return: __C_VOID__
 [Cfunction fseeko]
     arguments: __PTR__ _IO_FILE,__C_LONG__SIZE_8,__C_INT__SIZE_4
     return: __C_INT__SIZE_4
@@ -815,7 +809,7 @@ Ctype NestStruct
     return: __C_INT__SIZE_4
 [Cfunction clearerr]
     arguments: __PTR__ _IO_FILE
-    return: 
+    return: __C_VOID__
 [Cfunction feof]
     arguments: __PTR__ _IO_FILE
     return: __C_INT__SIZE_4
@@ -824,7 +818,7 @@ Ctype NestStruct
     return: __C_INT__SIZE_4
 [Cfunction clearerr_unlocked]
     arguments: __PTR__ _IO_FILE
-    return: 
+    return: __C_VOID__
 [Cfunction feof_unlocked]
     arguments: __PTR__ _IO_FILE
     return: __C_INT__SIZE_4
@@ -833,7 +827,7 @@ Ctype NestStruct
     return: __C_INT__SIZE_4
 [Cfunction perror]
     arguments: __PTR__ __C_CHAR__SIZE_1
-    return: 
+    return: __C_VOID__
 [Cfunction fileno]
     arguments: __PTR__ _IO_FILE
     return: __C_INT__SIZE_4
@@ -851,13 +845,13 @@ Ctype NestStruct
     return: __PTR__ __C_CHAR__SIZE_1
 [Cfunction flockfile]
     arguments: __PTR__ _IO_FILE
-    return: 
+    return: __C_VOID__
 [Cfunction ftrylockfile]
     arguments: __PTR__ _IO_FILE
     return: __C_INT__SIZE_4
 [Cfunction funlockfile]
     arguments: __PTR__ _IO_FILE
-    return: 
+    return: __C_VOID__
 [Cfunction __ctype_get_mb_cur_max]
     arguments: 
     return: __C_INT__SIZE_4
@@ -911,7 +905,7 @@ Ctype NestStruct
     return: __C_LONG__SIZE_8
 [Cfunction srandom]
     arguments: __C_UINT__SIZE_4
-    return: 
+    return: __C_VOID__
 [Cfunction initstate]
     arguments: __C_UINT__SIZE_4,__PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
     return: __PTR__ __C_CHAR__SIZE_1
@@ -935,7 +929,7 @@ Ctype NestStruct
     return: __C_INT__SIZE_4
 [Cfunction srand]
     arguments: __C_UINT__SIZE_4
-    return: 
+    return: __C_VOID__
 [Cfunction rand_r]
     arguments: __PTR__ __C_UINT__SIZE_4
     return: __C_INT__SIZE_4
@@ -943,101 +937,101 @@ Ctype NestStruct
     arguments: 
     return: __C_DOUBLE__SIZE_8
 [Cfunction erand48]
-    arguments: __PTR__ __C_USHORT__SIZE_2
+    arguments: __C_UNKNOWN__SIZE_6
     return: __C_DOUBLE__SIZE_8
 [Cfunction lrand48]
     arguments: 
     return: __C_LONG__SIZE_8
 [Cfunction nrand48]
-    arguments: __PTR__ __C_USHORT__SIZE_2
+    arguments: __C_UNKNOWN__SIZE_6
     return: __C_LONG__SIZE_8
 [Cfunction mrand48]
     arguments: 
     return: __C_LONG__SIZE_8
 [Cfunction jrand48]
-    arguments: __PTR__ __C_USHORT__SIZE_2
+    arguments: __C_UNKNOWN__SIZE_6
     return: __C_LONG__SIZE_8
 [Cfunction srand48]
     arguments: __C_LONG__SIZE_8
-    return: 
+    return: __C_VOID__
 [Cfunction seed48]
-    arguments: __PTR__ __C_USHORT__SIZE_2
+    arguments: __C_UNKNOWN__SIZE_6
     return: __PTR__ __C_USHORT__SIZE_2
 [Cfunction lcong48]
-    arguments: __PTR__ __C_USHORT__SIZE_2
-    return: 
+    arguments: __C_UNKNOWN__SIZE_14
+    return: __C_VOID__
 [Cfunction drand48_r]
     arguments: __PTR__ drand48_data,__PTR__ __C_DOUBLE__SIZE_8
     return: __C_INT__SIZE_4
 [Cfunction erand48_r]
-    arguments: __PTR__ __C_USHORT__SIZE_2,__PTR__ drand48_data,__PTR__ __C_DOUBLE__SIZE_8
+    arguments: __C_UNKNOWN__SIZE_6,__PTR__ drand48_data,__PTR__ __C_DOUBLE__SIZE_8
     return: __C_INT__SIZE_4
 [Cfunction lrand48_r]
     arguments: __PTR__ drand48_data,__PTR__ __C_LONG__SIZE_8
     return: __C_INT__SIZE_4
 [Cfunction nrand48_r]
-    arguments: __PTR__ __C_USHORT__SIZE_2,__PTR__ drand48_data,__PTR__ __C_LONG__SIZE_8
+    arguments: __C_UNKNOWN__SIZE_6,__PTR__ drand48_data,__PTR__ __C_LONG__SIZE_8
     return: __C_INT__SIZE_4
 [Cfunction mrand48_r]
     arguments: __PTR__ drand48_data,__PTR__ __C_LONG__SIZE_8
     return: __C_INT__SIZE_4
 [Cfunction jrand48_r]
-    arguments: __PTR__ __C_USHORT__SIZE_2,__PTR__ drand48_data,__PTR__ __C_LONG__SIZE_8
+    arguments: __C_UNKNOWN__SIZE_6,__PTR__ drand48_data,__PTR__ __C_LONG__SIZE_8
     return: __C_INT__SIZE_4
 [Cfunction srand48_r]
     arguments: __C_LONG__SIZE_8,__PTR__ drand48_data
     return: __C_INT__SIZE_4
 [Cfunction seed48_r]
-    arguments: __PTR__ __C_USHORT__SIZE_2,__PTR__ drand48_data
+    arguments: __C_UNKNOWN__SIZE_6,__PTR__ drand48_data
     return: __C_INT__SIZE_4
 [Cfunction lcong48_r]
-    arguments: __PTR__ __C_USHORT__SIZE_2,__PTR__ drand48_data
+    arguments: __C_UNKNOWN__SIZE_14,__PTR__ drand48_data
     return: __C_INT__SIZE_4
 [Cfunction malloc]
     arguments: __C_INT__SIZE_4
-    return: __PTR__ 
+    return: __PTR__ __C_INT__SIZE_8
 [Cfunction calloc]
     arguments: __C_INT__SIZE_4,__C_INT__SIZE_4
-    return: __PTR__ 
+    return: __PTR__ __C_INT__SIZE_8
 [Cfunction realloc]
-    arguments: __PTR__ ,__C_INT__SIZE_4
-    return: __PTR__ 
+    arguments: __PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4
+    return: __PTR__ __C_INT__SIZE_8
 [Cfunction free]
-    arguments: __PTR__ 
-    return: 
+    arguments: __PTR__ __C_INT__SIZE_8
+    return: __C_VOID__
 [Cfunction alloca]
     arguments: __C_INT__SIZE_4
-    return: __PTR__ 
+    return: __PTR__ __C_INT__SIZE_8
 [Cfunction valloc]
     arguments: __C_INT__SIZE_4
-    return: __PTR__ 
+    return: __PTR__ __C_INT__SIZE_8
 [Cfunction posix_memalign]
-    arguments: __PTR__ __PTR__ ,__C_INT__SIZE_4,__C_INT__SIZE_4
+    arguments: __PTR__ __PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4,__C_INT__SIZE_4
     return: __C_INT__SIZE_4
 [Cfunction aligned_alloc]
     arguments: __C_INT__SIZE_4,__C_INT__SIZE_4
-    return: __PTR__ 
+    return: __PTR__ __C_INT__SIZE_8
 [Cfunction abort]
     arguments: 
-    return: 
+    return: __C_VOID__
 [Cfunction atexit]
-    arguments: __PTR__ void (void)
+    arguments: __PTR__ __C_UNKNOWN__SIZE_1
     return: __C_INT__SIZE_4
 [Cfunction at_quick_exit]
-    arguments: __PTR__ void (void)
+    arguments: __PTR__ __C_UNKNOWN__SIZE_1
     return: __C_INT__SIZE_4
 [Cfunction on_exit]
-    arguments: __PTR__ void (int, void *),__PTR__ 
+    arguments: __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_INT__SIZE_8
     return: __C_INT__SIZE_4
 [Cfunction exit]
     arguments: __C_INT__SIZE_4
-    return: 
+    return: __C_VOID__
 [Cfunction quick_exit]
     arguments: __C_INT__SIZE_4
-    return: 
+    return: __C_VOID__
 [Cfunction _Exit]
     arguments: __C_INT__SIZE_4
-    return: 
+    return: __C_VOID__
 [Cfunction getenv]
     arguments: __PTR__ __C_CHAR__SIZE_1
     return: __PTR__ __C_CHAR__SIZE_1
@@ -1072,11 +1066,11 @@ Ctype NestStruct
     arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1
     return: __PTR__ __C_CHAR__SIZE_1
 [Cfunction bsearch]
-    arguments: __PTR__ ,__PTR__ ,__C_INT__SIZE_4,__C_INT__SIZE_4,__PTR__ int (void *, void *)
-    return: __PTR__ 
+    arguments: __PTR__ __C_INT__SIZE_8,__PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4,__C_INT__SIZE_4,__PTR__ __C_UNKNOWN__SIZE_1
+    return: __PTR__ __C_INT__SIZE_8
 [Cfunction qsort]
-    arguments: __PTR__ ,__C_INT__SIZE_4,__C_INT__SIZE_4,__PTR__ int (void *, void *)
-    return: 
+    arguments: __PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4,__C_INT__SIZE_4,__PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_VOID__
 [Cfunction abs]
     arguments: __C_INT__SIZE_4
     return: __C_INT__SIZE_4
@@ -1147,26 +1141,26 @@ Ctype NestStruct
     arguments: __PTR__ __PTR__ __C_CHAR__SIZE_1,__PTR__ __PTR__ __C_CHAR__SIZE_1,__PTR__ __PTR__ __C_CHAR__SIZE_1
     return: __C_INT__SIZE_4
 [Cfunction getloadavg]
-    arguments: double [],__C_INT__SIZE_4
+    arguments: __PTR__ __C_UNKNOWN__SIZE_1,__C_INT__SIZE_4
     return: __C_INT__SIZE_4
 [Cfunction memcpy]
-    arguments: __PTR__ ,__PTR__ ,__C_INT__SIZE_4
-    return: __PTR__ 
+    arguments: __PTR__ __C_INT__SIZE_8,__PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4
+    return: __PTR__ __C_INT__SIZE_8
 [Cfunction memmove]
-    arguments: __PTR__ ,__PTR__ ,__C_INT__SIZE_4
-    return: __PTR__ 
+    arguments: __PTR__ __C_INT__SIZE_8,__PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4
+    return: __PTR__ __C_INT__SIZE_8
 [Cfunction memccpy]
-    arguments: __PTR__ ,__PTR__ ,__C_INT__SIZE_4,__C_INT__SIZE_4
-    return: __PTR__ 
+    arguments: __PTR__ __C_INT__SIZE_8,__PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __PTR__ __C_INT__SIZE_8
 [Cfunction memset]
-    arguments: __PTR__ ,__C_INT__SIZE_4,__C_INT__SIZE_4
-    return: __PTR__ 
+    arguments: __PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __PTR__ __C_INT__SIZE_8
 [Cfunction memcmp]
-    arguments: __PTR__ ,__PTR__ ,__C_INT__SIZE_4
+    arguments: __PTR__ __C_INT__SIZE_8,__PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4
     return: __C_INT__SIZE_4
 [Cfunction memchr]
-    arguments: __PTR__ ,__C_INT__SIZE_4,__C_INT__SIZE_4
-    return: __PTR__ 
+    arguments: __PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __PTR__ __C_INT__SIZE_8
 [Cfunction strcpy]
     arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1
     return: __PTR__ __C_CHAR__SIZE_1
@@ -1246,14 +1240,14 @@ Ctype NestStruct
     arguments: __C_INT__SIZE_4,__PTR__ __locale_struct
     return: __PTR__ __C_CHAR__SIZE_1
 [Cfunction bcmp]
-    arguments: __PTR__ ,__PTR__ ,__C_INT__SIZE_4
+    arguments: __PTR__ __C_INT__SIZE_8,__PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4
     return: __C_INT__SIZE_4
 [Cfunction bcopy]
-    arguments: __PTR__ ,__PTR__ ,__C_INT__SIZE_4
-    return: 
+    arguments: __PTR__ __C_INT__SIZE_8,__PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4
+    return: __C_VOID__
 [Cfunction bzero]
-    arguments: __PTR__ ,__C_INT__SIZE_4
-    return: 
+    arguments: __PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4
+    return: __C_VOID__
 [Cfunction index]
     arguments: __PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
     return: __PTR__ __C_CHAR__SIZE_1
@@ -1282,8 +1276,8 @@ Ctype NestStruct
     arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4,__PTR__ __locale_struct
     return: __C_INT__SIZE_4
 [Cfunction explicit_bzero]
-    arguments: __PTR__ ,__C_INT__SIZE_4
-    return: 
+    arguments: __PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4
+    return: __C_VOID__
 [Cfunction strsep]
     arguments: __PTR__ __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1
     return: __PTR__ __C_CHAR__SIZE_1
@@ -1519,7 +1513,7 @@ Ctype NestStruct
     arguments: __C_UINT__SIZE_4,__PTR__ _IO_FILE
     return: __C_UINT__SIZE_4
 [Cfunction wcsftime]
-    arguments: __PTR__ __C_INT__SIZE_4,__C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4,__PTR__ tm
+    arguments: __PTR__ __C_INT__SIZE_4,__C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4,__PTR__ __PTR__ __C_UNKNOWN__SIZE_1
     return: __C_INT__SIZE_4
 [Cfunction imaxabs]
     arguments: __C_LONG__SIZE_8
@@ -2966,21 +2960,21 @@ Ctype NestStruct
     return: __C_LONGDOUBLE__SIZE_16
 [Cfunction SDL_malloc]
     arguments: __C_INT__SIZE_4
-    return: __PTR__ 
+    return: __PTR__ __C_INT__SIZE_8
 [Cfunction SDL_calloc]
     arguments: __C_INT__SIZE_4,__C_INT__SIZE_4
-    return: __PTR__ 
+    return: __PTR__ __C_INT__SIZE_8
 [Cfunction SDL_realloc]
-    arguments: __PTR__ ,__C_INT__SIZE_4
-    return: __PTR__ 
+    arguments: __PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4
+    return: __PTR__ __C_INT__SIZE_8
 [Cfunction SDL_free]
-    arguments: __PTR__ 
-    return: 
+    arguments: __PTR__ __C_INT__SIZE_8
+    return: __C_VOID__
 [Cfunction SDL_GetMemoryFunctions]
-    arguments: __PTR__ __PTR__ void *(int),__PTR__ __PTR__ void *(int, int),__PTR__ __PTR__ void *(void *, int),__PTR__ __PTR__ void (void *)
-    return: 
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_VOID__
 [Cfunction SDL_SetMemoryFunctions]
-    arguments: __PTR__ void *(int),__PTR__ void *(int, int),__PTR__ void *(void *, int),__PTR__ void (void *)
+    arguments: __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_UNKNOWN__SIZE_1
     return: __C_INT__SIZE_4
 [Cfunction SDL_GetNumAllocations]
     arguments: 
@@ -2992,8 +2986,8 @@ Ctype NestStruct
     arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
     return: __C_INT__SIZE_4
 [Cfunction SDL_qsort]
-    arguments: __PTR__ ,__C_INT__SIZE_4,__C_INT__SIZE_4,__PTR__ int (void *, void *)
-    return: 
+    arguments: __PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4,__C_INT__SIZE_4,__PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_VOID__
 [Cfunction SDL_abs]
     arguments: __C_INT__SIZE_4
     return: __C_INT__SIZE_4
@@ -3010,19 +3004,19 @@ Ctype NestStruct
     arguments: __C_INT__SIZE_4
     return: __C_INT__SIZE_4
 [Cfunction SDL_memset]
-    arguments: __PTR__ ,__C_INT__SIZE_4,__C_INT__SIZE_4
-    return: __PTR__ 
+    arguments: __PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __PTR__ __C_INT__SIZE_8
 [Cfunction SDL_memset4]
-    arguments: __PTR__ ,__C_UINT__SIZE_4,__C_INT__SIZE_4
-    return: 
+    arguments: __PTR__ __C_INT__SIZE_8,__C_UINT__SIZE_4,__C_INT__SIZE_4
+    return: __C_VOID__
 [Cfunction SDL_memcpy]
-    arguments: __PTR__ ,__PTR__ ,__C_INT__SIZE_4
-    return: __PTR__ 
+    arguments: __PTR__ __C_INT__SIZE_8,__PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4
+    return: __PTR__ __C_INT__SIZE_8
 [Cfunction SDL_memmove]
-    arguments: __PTR__ ,__PTR__ ,__C_INT__SIZE_4
-    return: __PTR__ 
+    arguments: __PTR__ __C_INT__SIZE_8,__PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4
+    return: __PTR__ __C_INT__SIZE_8
 [Cfunction SDL_memcmp]
-    arguments: __PTR__ ,__PTR__ ,__C_INT__SIZE_4
+    arguments: __PTR__ __C_INT__SIZE_8,__PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4
     return: __C_INT__SIZE_4
 [Cfunction SDL_wcslen]
     arguments: __PTR__ __C_INT__SIZE_4
@@ -3239,61 +3233,61 @@ Ctype NestStruct
     return: __C_FLOAT__SIZE_4
 [Cfunction SDL_iconv_open]
     arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1
-    return: __PTR__ _SDL_iconv_t
+    return: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
 [Cfunction SDL_iconv_close]
-    arguments: __PTR__ _SDL_iconv_t
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
     return: __C_INT__SIZE_4
 [Cfunction SDL_iconv]
-    arguments: __PTR__ _SDL_iconv_t,__PTR__ __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_INT__SIZE_4,__PTR__ __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_INT__SIZE_4
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_INT__SIZE_4,__PTR__ __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_INT__SIZE_4
     return: __C_INT__SIZE_4
 [Cfunction SDL_iconv_string]
     arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
     return: __PTR__ __C_CHAR__SIZE_1
 [Cfunction SDL_memcpy4]
-    arguments: __PTR__ ,__PTR__ ,__C_INT__SIZE_4
-    return: __PTR__ 
+    arguments: __PTR__ __C_INT__SIZE_8,__PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4
+    return: __PTR__ __C_INT__SIZE_8
 [Cfunction SDL_main]
-    arguments: __C_INT__SIZE_4,char *[]
+    arguments: __C_INT__SIZE_4,__PTR__ __C_UNKNOWN__SIZE_1
     return: __C_INT__SIZE_4
 [Cfunction SDL_SetMainReady]
     arguments: 
-    return: 
+    return: __C_VOID__
 [Cfunction SDL_ReportAssertion]
     arguments: __PTR__ SDL_AssertData,__PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
-    return: SDL_AssertState
+    return: __C_INT__SIZE_4
 [Cfunction SDL_SetAssertionHandler]
-    arguments: __PTR__ SDL_AssertState (SDL_AssertData *, void *),__PTR__ 
-    return: 
+    arguments: __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_INT__SIZE_8
+    return: __C_VOID__
 [Cfunction SDL_GetDefaultAssertionHandler]
     arguments: 
-    return: __PTR__ SDL_AssertState (SDL_AssertData *, void *)
+    return: __PTR__ __C_UNKNOWN__SIZE_1
 [Cfunction SDL_GetAssertionHandler]
-    arguments: __PTR__ __PTR__ 
-    return: __PTR__ SDL_AssertState (SDL_AssertData *, void *)
+    arguments: __PTR__ __PTR__ __C_INT__SIZE_8
+    return: __PTR__ __C_UNKNOWN__SIZE_1
 [Cfunction SDL_GetAssertionReport]
     arguments: 
     return: __PTR__ SDL_AssertData
 [Cfunction SDL_ResetAssertionReport]
     arguments: 
-    return: 
+    return: __C_VOID__
 [Cfunction SDL_AtomicTryLock]
     arguments: __PTR__ __C_INT__SIZE_4
-    return: SDL_bool
+    return: __C_INT__SIZE_4
 [Cfunction SDL_AtomicLock]
     arguments: __PTR__ __C_INT__SIZE_4
-    return: 
+    return: __C_VOID__
 [Cfunction SDL_AtomicUnlock]
     arguments: __PTR__ __C_INT__SIZE_4
-    return: 
+    return: __C_VOID__
 [Cfunction SDL_MemoryBarrierReleaseFunction]
     arguments: 
-    return: 
+    return: __C_VOID__
 [Cfunction SDL_MemoryBarrierAcquireFunction]
     arguments: 
-    return: 
+    return: __C_VOID__
 [Cfunction SDL_AtomicCAS]
     arguments: __PTR__ SDL_atomic_t,__C_INT__SIZE_4,__C_INT__SIZE_4
-    return: SDL_bool
+    return: __C_INT__SIZE_4
 [Cfunction SDL_AtomicSet]
     arguments: __PTR__ SDL_atomic_t,__C_INT__SIZE_4
     return: __C_INT__SIZE_4
@@ -3304,14 +3298,14 @@ Ctype NestStruct
     arguments: __PTR__ SDL_atomic_t,__C_INT__SIZE_4
     return: __C_INT__SIZE_4
 [Cfunction SDL_AtomicCASPtr]
-    arguments: __PTR__ __PTR__ ,__PTR__ ,__PTR__ 
-    return: SDL_bool
+    arguments: __PTR__ __PTR__ __C_INT__SIZE_8,__PTR__ __C_INT__SIZE_8,__PTR__ __C_INT__SIZE_8
+    return: __C_INT__SIZE_4
 [Cfunction SDL_AtomicSetPtr]
-    arguments: __PTR__ __PTR__ ,__PTR__ 
-    return: __PTR__ 
+    arguments: __PTR__ __PTR__ __C_INT__SIZE_8,__PTR__ __C_INT__SIZE_8
+    return: __PTR__ __C_INT__SIZE_8
 [Cfunction SDL_AtomicGetPtr]
-    arguments: __PTR__ __PTR__ 
-    return: __PTR__ 
+    arguments: __PTR__ __PTR__ __C_INT__SIZE_8
+    return: __PTR__ __C_INT__SIZE_8
 [Cfunction SDL_SetError]
     arguments: __PTR__ __C_CHAR__SIZE_1
     return: __C_INT__SIZE_4
@@ -3320,9 +3314,9 @@ Ctype NestStruct
     return: __PTR__ __C_CHAR__SIZE_1
 [Cfunction SDL_ClearError]
     arguments: 
-    return: 
+    return: __C_VOID__
 [Cfunction SDL_Error]
-    arguments: SDL_errorcode
+    arguments: __C_INT__SIZE_4
     return: __C_INT__SIZE_4
 [Cfunction SDL_Swap16]
     arguments: __C_USHORT__SIZE_2
@@ -3338,109 +3332,109 @@ Ctype NestStruct
     return: __C_FLOAT__SIZE_4
 [Cfunction SDL_CreateMutex]
     arguments: 
-    return: __PTR__ SDL_mutex
+    return: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
 [Cfunction SDL_LockMutex]
-    arguments: __PTR__ SDL_mutex
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
     return: __C_INT__SIZE_4
 [Cfunction SDL_TryLockMutex]
-    arguments: __PTR__ SDL_mutex
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
     return: __C_INT__SIZE_4
 [Cfunction SDL_UnlockMutex]
-    arguments: __PTR__ SDL_mutex
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
     return: __C_INT__SIZE_4
 [Cfunction SDL_DestroyMutex]
-    arguments: __PTR__ SDL_mutex
-    return: 
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_VOID__
 [Cfunction SDL_CreateSemaphore]
     arguments: __C_UINT__SIZE_4
-    return: __PTR__ SDL_semaphore
+    return: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
 [Cfunction SDL_DestroySemaphore]
-    arguments: __PTR__ SDL_semaphore
-    return: 
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_VOID__
 [Cfunction SDL_SemWait]
-    arguments: __PTR__ SDL_semaphore
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
     return: __C_INT__SIZE_4
 [Cfunction SDL_SemTryWait]
-    arguments: __PTR__ SDL_semaphore
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
     return: __C_INT__SIZE_4
 [Cfunction SDL_SemWaitTimeout]
-    arguments: __PTR__ SDL_semaphore,__C_UINT__SIZE_4
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_UINT__SIZE_4
     return: __C_INT__SIZE_4
 [Cfunction SDL_SemPost]
-    arguments: __PTR__ SDL_semaphore
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
     return: __C_INT__SIZE_4
 [Cfunction SDL_SemValue]
-    arguments: __PTR__ SDL_semaphore
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
     return: __C_UINT__SIZE_4
 [Cfunction SDL_CreateCond]
     arguments: 
-    return: __PTR__ SDL_cond
+    return: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
 [Cfunction SDL_DestroyCond]
-    arguments: __PTR__ SDL_cond
-    return: 
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_VOID__
 [Cfunction SDL_CondSignal]
-    arguments: __PTR__ SDL_cond
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
     return: __C_INT__SIZE_4
 [Cfunction SDL_CondBroadcast]
-    arguments: __PTR__ SDL_cond
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
     return: __C_INT__SIZE_4
 [Cfunction SDL_CondWait]
-    arguments: __PTR__ SDL_cond,__PTR__ SDL_mutex
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __PTR__ __C_UNKNOWN__SIZE_1
     return: __C_INT__SIZE_4
 [Cfunction SDL_CondWaitTimeout]
-    arguments: __PTR__ SDL_cond,__PTR__ SDL_mutex,__C_UINT__SIZE_4
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_UINT__SIZE_4
     return: __C_INT__SIZE_4
 [Cfunction SDL_CreateThread]
-    arguments: __PTR__ int (void *),__PTR__ __C_CHAR__SIZE_1,__PTR__ 
-    return: __PTR__ SDL_Thread
+    arguments: __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_CHAR__SIZE_1,__PTR__ __C_INT__SIZE_8
+    return: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
 [Cfunction SDL_GetThreadName]
-    arguments: __PTR__ SDL_Thread
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
     return: __PTR__ __C_CHAR__SIZE_1
 [Cfunction SDL_ThreadID]
     arguments: 
     return: __C_ULONG__SIZE_8
 [Cfunction SDL_GetThreadID]
-    arguments: __PTR__ SDL_Thread
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
     return: __C_ULONG__SIZE_8
 [Cfunction SDL_SetThreadPriority]
-    arguments: SDL_ThreadPriority
+    arguments: __C_INT__SIZE_4
     return: __C_INT__SIZE_4
 [Cfunction SDL_WaitThread]
-    arguments: __PTR__ SDL_Thread,__PTR__ __C_INT__SIZE_4
-    return: 
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_INT__SIZE_4
+    return: __C_VOID__
 [Cfunction SDL_DetachThread]
-    arguments: __PTR__ SDL_Thread
-    return: 
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_VOID__
 [Cfunction SDL_TLSCreate]
     arguments: 
     return: __C_UINT__SIZE_4
 [Cfunction SDL_TLSGet]
     arguments: __C_UINT__SIZE_4
-    return: __PTR__ 
+    return: __PTR__ __C_INT__SIZE_8
 [Cfunction SDL_TLSSet]
-    arguments: __C_UINT__SIZE_4,__PTR__ ,__PTR__ void (void *)
+    arguments: __C_UINT__SIZE_4,__PTR__ __C_INT__SIZE_8,__PTR__ __C_UNKNOWN__SIZE_1
     return: __C_INT__SIZE_4
 [Cfunction SDL_RWFromFile]
     arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1
     return: __PTR__ SDL_RWops
 [Cfunction SDL_RWFromFP]
-    arguments: __PTR__ _IO_FILE,SDL_bool
+    arguments: __PTR__ _IO_FILE,__C_INT__SIZE_4
     return: __PTR__ SDL_RWops
 [Cfunction SDL_RWFromMem]
-    arguments: __PTR__ ,__C_INT__SIZE_4
+    arguments: __PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4
     return: __PTR__ SDL_RWops
 [Cfunction SDL_RWFromConstMem]
-    arguments: __PTR__ ,__C_INT__SIZE_4
+    arguments: __PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4
     return: __PTR__ SDL_RWops
 [Cfunction SDL_AllocRW]
     arguments: 
     return: __PTR__ SDL_RWops
 [Cfunction SDL_FreeRW]
     arguments: __PTR__ SDL_RWops
-    return: 
+    return: __C_VOID__
 [Cfunction SDL_LoadFile_RW]
     arguments: __PTR__ SDL_RWops,__PTR__ __C_INT__SIZE_4,__C_INT__SIZE_4
-    return: __PTR__ 
+    return: __PTR__ __C_INT__SIZE_8
 [Cfunction SDL_ReadU8]
     arguments: __PTR__ SDL_RWops
     return: __C_UCHAR__SIZE_1
@@ -3494,7 +3488,7 @@ Ctype NestStruct
     return: __C_INT__SIZE_4
 [Cfunction SDL_AudioQuit]
     arguments: 
-    return: 
+    return: __C_VOID__
 [Cfunction SDL_GetCurrentAudioDriver]
     arguments: 
     return: __PTR__ __C_CHAR__SIZE_1
@@ -3512,22 +3506,22 @@ Ctype NestStruct
     return: __C_UINT__SIZE_4
 [Cfunction SDL_GetAudioStatus]
     arguments: 
-    return: SDL_AudioStatus
+    return: __C_INT__SIZE_4
 [Cfunction SDL_GetAudioDeviceStatus]
     arguments: __C_UINT__SIZE_4
-    return: SDL_AudioStatus
+    return: __C_INT__SIZE_4
 [Cfunction SDL_PauseAudio]
     arguments: __C_INT__SIZE_4
-    return: 
+    return: __C_VOID__
 [Cfunction SDL_PauseAudioDevice]
     arguments: __C_UINT__SIZE_4,__C_INT__SIZE_4
-    return: 
+    return: __C_VOID__
 [Cfunction SDL_LoadWAV_RW]
     arguments: __PTR__ SDL_RWops,__C_INT__SIZE_4,__PTR__ SDL_AudioSpec,__PTR__ __PTR__ __C_UCHAR__SIZE_1,__PTR__ __C_UINT__SIZE_4
     return: __PTR__ SDL_AudioSpec
 [Cfunction SDL_FreeWAV]
     arguments: __PTR__ __C_UCHAR__SIZE_1
-    return: 
+    return: __C_VOID__
 [Cfunction SDL_BuildAudioCVT]
     arguments: __PTR__ SDL_AudioCVT,__C_USHORT__SIZE_2,__C_UCHAR__SIZE_1,__C_INT__SIZE_4,__C_USHORT__SIZE_2,__C_UCHAR__SIZE_1,__C_INT__SIZE_4
     return: __C_INT__SIZE_4
@@ -3536,61 +3530,61 @@ Ctype NestStruct
     return: __C_INT__SIZE_4
 [Cfunction SDL_NewAudioStream]
     arguments: __C_USHORT__SIZE_2,__C_UCHAR__SIZE_1,__C_INT__SIZE_4,__C_USHORT__SIZE_2,__C_UCHAR__SIZE_1,__C_INT__SIZE_4
-    return: __PTR__ _SDL_AudioStream
+    return: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
 [Cfunction SDL_AudioStreamPut]
-    arguments: __PTR__ _SDL_AudioStream,__PTR__ ,__C_INT__SIZE_4
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4
     return: __C_INT__SIZE_4
 [Cfunction SDL_AudioStreamGet]
-    arguments: __PTR__ _SDL_AudioStream,__PTR__ ,__C_INT__SIZE_4
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4
     return: __C_INT__SIZE_4
 [Cfunction SDL_AudioStreamAvailable]
-    arguments: __PTR__ _SDL_AudioStream
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
     return: __C_INT__SIZE_4
 [Cfunction SDL_AudioStreamFlush]
-    arguments: __PTR__ _SDL_AudioStream
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
     return: __C_INT__SIZE_4
 [Cfunction SDL_AudioStreamClear]
-    arguments: __PTR__ _SDL_AudioStream
-    return: 
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_VOID__
 [Cfunction SDL_FreeAudioStream]
-    arguments: __PTR__ _SDL_AudioStream
-    return: 
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_VOID__
 [Cfunction SDL_MixAudio]
     arguments: __PTR__ __C_UCHAR__SIZE_1,__PTR__ __C_UCHAR__SIZE_1,__C_UINT__SIZE_4,__C_INT__SIZE_4
-    return: 
+    return: __C_VOID__
 [Cfunction SDL_MixAudioFormat]
     arguments: __PTR__ __C_UCHAR__SIZE_1,__PTR__ __C_UCHAR__SIZE_1,__C_USHORT__SIZE_2,__C_UINT__SIZE_4,__C_INT__SIZE_4
-    return: 
+    return: __C_VOID__
 [Cfunction SDL_QueueAudio]
-    arguments: __C_UINT__SIZE_4,__PTR__ ,__C_UINT__SIZE_4
+    arguments: __C_UINT__SIZE_4,__PTR__ __C_INT__SIZE_8,__C_UINT__SIZE_4
     return: __C_INT__SIZE_4
 [Cfunction SDL_DequeueAudio]
-    arguments: __C_UINT__SIZE_4,__PTR__ ,__C_UINT__SIZE_4
+    arguments: __C_UINT__SIZE_4,__PTR__ __C_INT__SIZE_8,__C_UINT__SIZE_4
     return: __C_UINT__SIZE_4
 [Cfunction SDL_GetQueuedAudioSize]
     arguments: __C_UINT__SIZE_4
     return: __C_UINT__SIZE_4
 [Cfunction SDL_ClearQueuedAudio]
     arguments: __C_UINT__SIZE_4
-    return: 
+    return: __C_VOID__
 [Cfunction SDL_LockAudio]
     arguments: 
-    return: 
+    return: __C_VOID__
 [Cfunction SDL_LockAudioDevice]
     arguments: __C_UINT__SIZE_4
-    return: 
+    return: __C_VOID__
 [Cfunction SDL_UnlockAudio]
     arguments: 
-    return: 
+    return: __C_VOID__
 [Cfunction SDL_UnlockAudioDevice]
     arguments: __C_UINT__SIZE_4
-    return: 
+    return: __C_VOID__
 [Cfunction SDL_CloseAudio]
     arguments: 
-    return: 
+    return: __C_VOID__
 [Cfunction SDL_CloseAudioDevice]
     arguments: __C_UINT__SIZE_4
-    return: 
+    return: __C_VOID__
 [Cfunction SDL_SetClipboardText]
     arguments: __PTR__ __C_CHAR__SIZE_1
     return: __C_INT__SIZE_4
@@ -3599,7 +3593,7 @@ Ctype NestStruct
     return: __PTR__ __C_CHAR__SIZE_1
 [Cfunction SDL_HasClipboardText]
     arguments: 
-    return: SDL_bool
+    return: __C_INT__SIZE_4
 [Cfunction SDL_GetCPUCount]
     arguments: 
     return: __C_INT__SIZE_4
@@ -3608,40 +3602,40 @@ Ctype NestStruct
     return: __C_INT__SIZE_4
 [Cfunction SDL_HasRDTSC]
     arguments: 
-    return: SDL_bool
+    return: __C_INT__SIZE_4
 [Cfunction SDL_HasAltiVec]
     arguments: 
-    return: SDL_bool
+    return: __C_INT__SIZE_4
 [Cfunction SDL_HasMMX]
     arguments: 
-    return: SDL_bool
+    return: __C_INT__SIZE_4
 [Cfunction SDL_Has3DNow]
     arguments: 
-    return: SDL_bool
+    return: __C_INT__SIZE_4
 [Cfunction SDL_HasSSE]
     arguments: 
-    return: SDL_bool
+    return: __C_INT__SIZE_4
 [Cfunction SDL_HasSSE2]
     arguments: 
-    return: SDL_bool
+    return: __C_INT__SIZE_4
 [Cfunction SDL_HasSSE3]
     arguments: 
-    return: SDL_bool
+    return: __C_INT__SIZE_4
 [Cfunction SDL_HasSSE41]
     arguments: 
-    return: SDL_bool
+    return: __C_INT__SIZE_4
 [Cfunction SDL_HasSSE42]
     arguments: 
-    return: SDL_bool
+    return: __C_INT__SIZE_4
 [Cfunction SDL_HasAVX]
     arguments: 
-    return: SDL_bool
+    return: __C_INT__SIZE_4
 [Cfunction SDL_HasAVX2]
     arguments: 
-    return: SDL_bool
+    return: __C_INT__SIZE_4
 [Cfunction SDL_HasNEON]
     arguments: 
-    return: SDL_bool
+    return: __C_INT__SIZE_4
 [Cfunction SDL_GetSystemRAM]
     arguments: 
     return: __C_INT__SIZE_4
@@ -3650,7 +3644,7 @@ Ctype NestStruct
     return: __PTR__ __C_CHAR__SIZE_1
 [Cfunction SDL_PixelFormatEnumToMasks]
     arguments: __C_UINT__SIZE_4,__PTR__ __C_INT__SIZE_4,__PTR__ __C_UINT__SIZE_4,__PTR__ __C_UINT__SIZE_4,__PTR__ __C_UINT__SIZE_4,__PTR__ __C_UINT__SIZE_4
-    return: SDL_bool
+    return: __C_INT__SIZE_4
 [Cfunction SDL_MasksToPixelFormatEnum]
     arguments: __C_INT__SIZE_4,__C_UINT__SIZE_4,__C_UINT__SIZE_4,__C_UINT__SIZE_4,__C_UINT__SIZE_4
     return: __C_UINT__SIZE_4
@@ -3659,7 +3653,7 @@ Ctype NestStruct
     return: __PTR__ SDL_PixelFormat
 [Cfunction SDL_FreeFormat]
     arguments: __PTR__ SDL_PixelFormat
-    return: 
+    return: __C_VOID__
 [Cfunction SDL_AllocPalette]
     arguments: __C_INT__SIZE_4
     return: __PTR__ SDL_Palette
@@ -3671,7 +3665,7 @@ Ctype NestStruct
     return: __C_INT__SIZE_4
 [Cfunction SDL_FreePalette]
     arguments: __PTR__ SDL_Palette
-    return: 
+    return: __C_VOID__
 [Cfunction SDL_MapRGB]
     arguments: __PTR__ SDL_PixelFormat,__C_UCHAR__SIZE_1,__C_UCHAR__SIZE_1,__C_UCHAR__SIZE_1
     return: __C_UINT__SIZE_4
@@ -3680,40 +3674,40 @@ Ctype NestStruct
     return: __C_UINT__SIZE_4
 [Cfunction SDL_GetRGB]
     arguments: __C_UINT__SIZE_4,__PTR__ SDL_PixelFormat,__PTR__ __C_UCHAR__SIZE_1,__PTR__ __C_UCHAR__SIZE_1,__PTR__ __C_UCHAR__SIZE_1
-    return: 
+    return: __C_VOID__
 [Cfunction SDL_GetRGBA]
     arguments: __C_UINT__SIZE_4,__PTR__ SDL_PixelFormat,__PTR__ __C_UCHAR__SIZE_1,__PTR__ __C_UCHAR__SIZE_1,__PTR__ __C_UCHAR__SIZE_1,__PTR__ __C_UCHAR__SIZE_1
-    return: 
+    return: __C_VOID__
 [Cfunction SDL_CalculateGammaRamp]
     arguments: __C_FLOAT__SIZE_4,__PTR__ __C_USHORT__SIZE_2
-    return: 
+    return: __C_VOID__
 [Cfunction SDL_PointInRect]
     arguments: __PTR__ SDL_Point,__PTR__ SDL_Rect
-    return: SDL_bool
+    return: __C_INT__SIZE_4
 [Cfunction SDL_RectEmpty]
     arguments: __PTR__ SDL_Rect
-    return: SDL_bool
+    return: __C_INT__SIZE_4
 [Cfunction SDL_RectEquals]
     arguments: __PTR__ SDL_Rect,__PTR__ SDL_Rect
-    return: SDL_bool
+    return: __C_INT__SIZE_4
 [Cfunction SDL_HasIntersection]
     arguments: __PTR__ SDL_Rect,__PTR__ SDL_Rect
-    return: SDL_bool
+    return: __C_INT__SIZE_4
 [Cfunction SDL_IntersectRect]
     arguments: __PTR__ SDL_Rect,__PTR__ SDL_Rect,__PTR__ SDL_Rect
-    return: SDL_bool
+    return: __C_INT__SIZE_4
 [Cfunction SDL_UnionRect]
     arguments: __PTR__ SDL_Rect,__PTR__ SDL_Rect,__PTR__ SDL_Rect
-    return: 
+    return: __C_VOID__
 [Cfunction SDL_EnclosePoints]
     arguments: __PTR__ SDL_Point,__C_INT__SIZE_4,__PTR__ SDL_Rect,__PTR__ SDL_Rect
-    return: SDL_bool
+    return: __C_INT__SIZE_4
 [Cfunction SDL_IntersectRectAndLine]
     arguments: __PTR__ SDL_Rect,__PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4
-    return: SDL_bool
+    return: __C_INT__SIZE_4
 [Cfunction SDL_ComposeCustomBlendMode]
-    arguments: SDL_BlendFactor,SDL_BlendFactor,SDL_BlendOperation,SDL_BlendFactor,SDL_BlendFactor,SDL_BlendOperation
-    return: SDL_BlendMode
+    arguments: __C_INT__SIZE_4,__C_INT__SIZE_4,__C_INT__SIZE_4,__C_INT__SIZE_4,__C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
 [Cfunction SDL_CreateRGBSurface]
     arguments: __C_UINT__SIZE_4,__C_INT__SIZE_4,__C_INT__SIZE_4,__C_INT__SIZE_4,__C_UINT__SIZE_4,__C_UINT__SIZE_4,__C_UINT__SIZE_4,__C_UINT__SIZE_4
     return: __PTR__ SDL_Surface
@@ -3721,14 +3715,14 @@ Ctype NestStruct
     arguments: __C_UINT__SIZE_4,__C_INT__SIZE_4,__C_INT__SIZE_4,__C_INT__SIZE_4,__C_UINT__SIZE_4
     return: __PTR__ SDL_Surface
 [Cfunction SDL_CreateRGBSurfaceFrom]
-    arguments: __PTR__ ,__C_INT__SIZE_4,__C_INT__SIZE_4,__C_INT__SIZE_4,__C_INT__SIZE_4,__C_UINT__SIZE_4,__C_UINT__SIZE_4,__C_UINT__SIZE_4,__C_UINT__SIZE_4
+    arguments: __PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4,__C_INT__SIZE_4,__C_INT__SIZE_4,__C_INT__SIZE_4,__C_UINT__SIZE_4,__C_UINT__SIZE_4,__C_UINT__SIZE_4,__C_UINT__SIZE_4
     return: __PTR__ SDL_Surface
 [Cfunction SDL_CreateRGBSurfaceWithFormatFrom]
-    arguments: __PTR__ ,__C_INT__SIZE_4,__C_INT__SIZE_4,__C_INT__SIZE_4,__C_INT__SIZE_4,__C_UINT__SIZE_4
+    arguments: __PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4,__C_INT__SIZE_4,__C_INT__SIZE_4,__C_INT__SIZE_4,__C_UINT__SIZE_4
     return: __PTR__ SDL_Surface
 [Cfunction SDL_FreeSurface]
     arguments: __PTR__ SDL_Surface
-    return: 
+    return: __C_VOID__
 [Cfunction SDL_SetSurfacePalette]
     arguments: __PTR__ SDL_Surface,__PTR__ SDL_Palette
     return: __C_INT__SIZE_4
@@ -3737,7 +3731,7 @@ Ctype NestStruct
     return: __C_INT__SIZE_4
 [Cfunction SDL_UnlockSurface]
     arguments: __PTR__ SDL_Surface
-    return: 
+    return: __C_VOID__
 [Cfunction SDL_LoadBMP_RW]
     arguments: __PTR__ SDL_RWops,__C_INT__SIZE_4
     return: __PTR__ SDL_Surface
@@ -3766,17 +3760,17 @@ Ctype NestStruct
     arguments: __PTR__ SDL_Surface,__PTR__ __C_UCHAR__SIZE_1
     return: __C_INT__SIZE_4
 [Cfunction SDL_SetSurfaceBlendMode]
-    arguments: __PTR__ SDL_Surface,SDL_BlendMode
+    arguments: __PTR__ SDL_Surface,__C_INT__SIZE_4
     return: __C_INT__SIZE_4
 [Cfunction SDL_GetSurfaceBlendMode]
-    arguments: __PTR__ SDL_Surface,__PTR__ SDL_BlendMode
+    arguments: __PTR__ SDL_Surface,__PTR__ __C_INT__SIZE_4
     return: __C_INT__SIZE_4
 [Cfunction SDL_SetClipRect]
     arguments: __PTR__ SDL_Surface,__PTR__ SDL_Rect
-    return: SDL_bool
+    return: __C_INT__SIZE_4
 [Cfunction SDL_GetClipRect]
     arguments: __PTR__ SDL_Surface,__PTR__ SDL_Rect
-    return: 
+    return: __C_VOID__
 [Cfunction SDL_DuplicateSurface]
     arguments: __PTR__ SDL_Surface
     return: __PTR__ SDL_Surface
@@ -3787,7 +3781,7 @@ Ctype NestStruct
     arguments: __PTR__ SDL_Surface,__C_UINT__SIZE_4,__C_UINT__SIZE_4
     return: __PTR__ SDL_Surface
 [Cfunction SDL_ConvertPixels]
-    arguments: __C_INT__SIZE_4,__C_INT__SIZE_4,__C_UINT__SIZE_4,__PTR__ ,__C_INT__SIZE_4,__C_UINT__SIZE_4,__PTR__ ,__C_INT__SIZE_4
+    arguments: __C_INT__SIZE_4,__C_INT__SIZE_4,__C_UINT__SIZE_4,__PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4,__C_UINT__SIZE_4,__PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4
     return: __C_INT__SIZE_4
 [Cfunction SDL_FillRect]
     arguments: __PTR__ SDL_Surface,__PTR__ SDL_Rect,__C_UINT__SIZE_4
@@ -3811,14 +3805,14 @@ Ctype NestStruct
     arguments: __PTR__ SDL_Surface,__PTR__ SDL_Rect,__PTR__ SDL_Surface,__PTR__ SDL_Rect
     return: __C_INT__SIZE_4
 [Cfunction SDL_SetYUVConversionMode]
-    arguments: SDL_YUV_CONVERSION_MODE
-    return: 
+    arguments: __C_INT__SIZE_4
+    return: __C_VOID__
 [Cfunction SDL_GetYUVConversionMode]
     arguments: 
-    return: SDL_YUV_CONVERSION_MODE
+    return: __C_INT__SIZE_4
 [Cfunction SDL_GetYUVConversionModeForResolution]
     arguments: __C_INT__SIZE_4,__C_INT__SIZE_4
-    return: SDL_YUV_CONVERSION_MODE
+    return: __C_INT__SIZE_4
 [Cfunction SDL_GetNumVideoDrivers]
     arguments: 
     return: __C_INT__SIZE_4
@@ -3830,7 +3824,7 @@ Ctype NestStruct
     return: __C_INT__SIZE_4
 [Cfunction SDL_VideoQuit]
     arguments: 
-    return: 
+    return: __C_VOID__
 [Cfunction SDL_GetCurrentVideoDriver]
     arguments: 
     return: __PTR__ __C_CHAR__SIZE_1
@@ -3865,194 +3859,194 @@ Ctype NestStruct
     arguments: __C_INT__SIZE_4,__PTR__ SDL_DisplayMode,__PTR__ SDL_DisplayMode
     return: __PTR__ SDL_DisplayMode
 [Cfunction SDL_GetWindowDisplayIndex]
-    arguments: __PTR__ SDL_Window
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
     return: __C_INT__SIZE_4
 [Cfunction SDL_SetWindowDisplayMode]
-    arguments: __PTR__ SDL_Window,__PTR__ SDL_DisplayMode
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ SDL_DisplayMode
     return: __C_INT__SIZE_4
 [Cfunction SDL_GetWindowDisplayMode]
-    arguments: __PTR__ SDL_Window,__PTR__ SDL_DisplayMode
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ SDL_DisplayMode
     return: __C_INT__SIZE_4
 [Cfunction SDL_GetWindowPixelFormat]
-    arguments: __PTR__ SDL_Window
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
     return: __C_UINT__SIZE_4
 [Cfunction SDL_CreateWindow]
     arguments: __PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4,__C_INT__SIZE_4,__C_INT__SIZE_4,__C_INT__SIZE_4,__C_UINT__SIZE_4
-    return: __PTR__ SDL_Window
+    return: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
 [Cfunction SDL_CreateWindowFrom]
-    arguments: __PTR__ 
-    return: __PTR__ SDL_Window
+    arguments: __PTR__ __C_INT__SIZE_8
+    return: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
 [Cfunction SDL_GetWindowID]
-    arguments: __PTR__ SDL_Window
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
     return: __C_UINT__SIZE_4
 [Cfunction SDL_GetWindowFromID]
     arguments: __C_UINT__SIZE_4
-    return: __PTR__ SDL_Window
+    return: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
 [Cfunction SDL_GetWindowFlags]
-    arguments: __PTR__ SDL_Window
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
     return: __C_UINT__SIZE_4
 [Cfunction SDL_SetWindowTitle]
-    arguments: __PTR__ SDL_Window,__PTR__ __C_CHAR__SIZE_1
-    return: 
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_CHAR__SIZE_1
+    return: __C_VOID__
 [Cfunction SDL_GetWindowTitle]
-    arguments: __PTR__ SDL_Window
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
     return: __PTR__ __C_CHAR__SIZE_1
 [Cfunction SDL_SetWindowIcon]
-    arguments: __PTR__ SDL_Window,__PTR__ SDL_Surface
-    return: 
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ SDL_Surface
+    return: __C_VOID__
 [Cfunction SDL_SetWindowData]
-    arguments: __PTR__ SDL_Window,__PTR__ __C_CHAR__SIZE_1,__PTR__ 
-    return: __PTR__ 
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_CHAR__SIZE_1,__PTR__ __C_INT__SIZE_8
+    return: __PTR__ __C_INT__SIZE_8
 [Cfunction SDL_GetWindowData]
-    arguments: __PTR__ SDL_Window,__PTR__ __C_CHAR__SIZE_1
-    return: __PTR__ 
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_CHAR__SIZE_1
+    return: __PTR__ __C_INT__SIZE_8
 [Cfunction SDL_SetWindowPosition]
-    arguments: __PTR__ SDL_Window,__C_INT__SIZE_4,__C_INT__SIZE_4
-    return: 
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __C_VOID__
 [Cfunction SDL_GetWindowPosition]
-    arguments: __PTR__ SDL_Window,__PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4
-    return: 
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4
+    return: __C_VOID__
 [Cfunction SDL_SetWindowSize]
-    arguments: __PTR__ SDL_Window,__C_INT__SIZE_4,__C_INT__SIZE_4
-    return: 
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __C_VOID__
 [Cfunction SDL_GetWindowSize]
-    arguments: __PTR__ SDL_Window,__PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4
-    return: 
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4
+    return: __C_VOID__
 [Cfunction SDL_GetWindowBordersSize]
-    arguments: __PTR__ SDL_Window,__PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4
     return: __C_INT__SIZE_4
 [Cfunction SDL_SetWindowMinimumSize]
-    arguments: __PTR__ SDL_Window,__C_INT__SIZE_4,__C_INT__SIZE_4
-    return: 
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __C_VOID__
 [Cfunction SDL_GetWindowMinimumSize]
-    arguments: __PTR__ SDL_Window,__PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4
-    return: 
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4
+    return: __C_VOID__
 [Cfunction SDL_SetWindowMaximumSize]
-    arguments: __PTR__ SDL_Window,__C_INT__SIZE_4,__C_INT__SIZE_4
-    return: 
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __C_VOID__
 [Cfunction SDL_GetWindowMaximumSize]
-    arguments: __PTR__ SDL_Window,__PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4
-    return: 
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4
+    return: __C_VOID__
 [Cfunction SDL_SetWindowBordered]
-    arguments: __PTR__ SDL_Window,SDL_bool
-    return: 
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_INT__SIZE_4
+    return: __C_VOID__
 [Cfunction SDL_SetWindowResizable]
-    arguments: __PTR__ SDL_Window,SDL_bool
-    return: 
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_INT__SIZE_4
+    return: __C_VOID__
 [Cfunction SDL_ShowWindow]
-    arguments: __PTR__ SDL_Window
-    return: 
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_VOID__
 [Cfunction SDL_HideWindow]
-    arguments: __PTR__ SDL_Window
-    return: 
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_VOID__
 [Cfunction SDL_RaiseWindow]
-    arguments: __PTR__ SDL_Window
-    return: 
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_VOID__
 [Cfunction SDL_MaximizeWindow]
-    arguments: __PTR__ SDL_Window
-    return: 
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_VOID__
 [Cfunction SDL_MinimizeWindow]
-    arguments: __PTR__ SDL_Window
-    return: 
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_VOID__
 [Cfunction SDL_RestoreWindow]
-    arguments: __PTR__ SDL_Window
-    return: 
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_VOID__
 [Cfunction SDL_SetWindowFullscreen]
-    arguments: __PTR__ SDL_Window,__C_UINT__SIZE_4
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_UINT__SIZE_4
     return: __C_INT__SIZE_4
 [Cfunction SDL_GetWindowSurface]
-    arguments: __PTR__ SDL_Window
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
     return: __PTR__ SDL_Surface
 [Cfunction SDL_UpdateWindowSurface]
-    arguments: __PTR__ SDL_Window
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
     return: __C_INT__SIZE_4
 [Cfunction SDL_UpdateWindowSurfaceRects]
-    arguments: __PTR__ SDL_Window,__PTR__ SDL_Rect,__C_INT__SIZE_4
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ SDL_Rect,__C_INT__SIZE_4
     return: __C_INT__SIZE_4
 [Cfunction SDL_SetWindowGrab]
-    arguments: __PTR__ SDL_Window,SDL_bool
-    return: 
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_INT__SIZE_4
+    return: __C_VOID__
 [Cfunction SDL_GetWindowGrab]
-    arguments: __PTR__ SDL_Window
-    return: SDL_bool
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_INT__SIZE_4
 [Cfunction SDL_GetGrabbedWindow]
     arguments: 
-    return: __PTR__ SDL_Window
+    return: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
 [Cfunction SDL_SetWindowBrightness]
-    arguments: __PTR__ SDL_Window,__C_FLOAT__SIZE_4
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_FLOAT__SIZE_4
     return: __C_INT__SIZE_4
 [Cfunction SDL_GetWindowBrightness]
-    arguments: __PTR__ SDL_Window
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
     return: __C_FLOAT__SIZE_4
 [Cfunction SDL_SetWindowOpacity]
-    arguments: __PTR__ SDL_Window,__C_FLOAT__SIZE_4
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_FLOAT__SIZE_4
     return: __C_INT__SIZE_4
 [Cfunction SDL_GetWindowOpacity]
-    arguments: __PTR__ SDL_Window,__PTR__ __C_FLOAT__SIZE_4
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_FLOAT__SIZE_4
     return: __C_INT__SIZE_4
 [Cfunction SDL_SetWindowModalFor]
-    arguments: __PTR__ SDL_Window,__PTR__ SDL_Window
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __PTR__ __C_UNKNOWN__SIZE_1
     return: __C_INT__SIZE_4
 [Cfunction SDL_SetWindowInputFocus]
-    arguments: __PTR__ SDL_Window
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
     return: __C_INT__SIZE_4
 [Cfunction SDL_SetWindowGammaRamp]
-    arguments: __PTR__ SDL_Window,__PTR__ __C_USHORT__SIZE_2,__PTR__ __C_USHORT__SIZE_2,__PTR__ __C_USHORT__SIZE_2
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_USHORT__SIZE_2,__PTR__ __C_USHORT__SIZE_2,__PTR__ __C_USHORT__SIZE_2
     return: __C_INT__SIZE_4
 [Cfunction SDL_GetWindowGammaRamp]
-    arguments: __PTR__ SDL_Window,__PTR__ __C_USHORT__SIZE_2,__PTR__ __C_USHORT__SIZE_2,__PTR__ __C_USHORT__SIZE_2
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_USHORT__SIZE_2,__PTR__ __C_USHORT__SIZE_2,__PTR__ __C_USHORT__SIZE_2
     return: __C_INT__SIZE_4
 [Cfunction SDL_SetWindowHitTest]
-    arguments: __PTR__ SDL_Window,__PTR__ SDL_HitTestResult (SDL_Window *, SDL_Point *, void *),__PTR__ 
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_INT__SIZE_8
     return: __C_INT__SIZE_4
 [Cfunction SDL_DestroyWindow]
-    arguments: __PTR__ SDL_Window
-    return: 
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_VOID__
 [Cfunction SDL_IsScreenSaverEnabled]
     arguments: 
-    return: SDL_bool
+    return: __C_INT__SIZE_4
 [Cfunction SDL_EnableScreenSaver]
     arguments: 
-    return: 
+    return: __C_VOID__
 [Cfunction SDL_DisableScreenSaver]
     arguments: 
-    return: 
+    return: __C_VOID__
 [Cfunction SDL_GL_LoadLibrary]
     arguments: __PTR__ __C_CHAR__SIZE_1
     return: __C_INT__SIZE_4
 [Cfunction SDL_GL_GetProcAddress]
     arguments: __PTR__ __C_CHAR__SIZE_1
-    return: __PTR__ 
+    return: __PTR__ __C_INT__SIZE_8
 [Cfunction SDL_GL_UnloadLibrary]
     arguments: 
-    return: 
+    return: __C_VOID__
 [Cfunction SDL_GL_ExtensionSupported]
     arguments: __PTR__ __C_CHAR__SIZE_1
-    return: SDL_bool
+    return: __C_INT__SIZE_4
 [Cfunction SDL_GL_ResetAttributes]
     arguments: 
-    return: 
+    return: __C_VOID__
 [Cfunction SDL_GL_SetAttribute]
-    arguments: SDL_GLattr,__C_INT__SIZE_4
+    arguments: __C_INT__SIZE_4,__C_INT__SIZE_4
     return: __C_INT__SIZE_4
 [Cfunction SDL_GL_GetAttribute]
-    arguments: SDL_GLattr,__PTR__ __C_INT__SIZE_4
+    arguments: __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4
     return: __C_INT__SIZE_4
 [Cfunction SDL_GL_CreateContext]
-    arguments: __PTR__ SDL_Window
-    return: __PTR__ 
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __PTR__ __C_INT__SIZE_8
 [Cfunction SDL_GL_MakeCurrent]
-    arguments: __PTR__ SDL_Window,__PTR__ 
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_INT__SIZE_8
     return: __C_INT__SIZE_4
 [Cfunction SDL_GL_GetCurrentWindow]
     arguments: 
-    return: __PTR__ SDL_Window
+    return: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
 [Cfunction SDL_GL_GetCurrentContext]
     arguments: 
-    return: __PTR__ 
+    return: __PTR__ __C_INT__SIZE_8
 [Cfunction SDL_GL_GetDrawableSize]
-    arguments: __PTR__ SDL_Window,__PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4
-    return: 
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4
+    return: __C_VOID__
 [Cfunction SDL_GL_SetSwapInterval]
     arguments: __C_INT__SIZE_4
     return: __C_INT__SIZE_4
@@ -4060,35 +4054,35 @@ Ctype NestStruct
     arguments: 
     return: __C_INT__SIZE_4
 [Cfunction SDL_GL_SwapWindow]
-    arguments: __PTR__ SDL_Window
-    return: 
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_VOID__
 [Cfunction SDL_GL_DeleteContext]
-    arguments: __PTR__ 
-    return: 
+    arguments: __PTR__ __C_INT__SIZE_8
+    return: __C_VOID__
 [Cfunction SDL_GetKeyboardFocus]
     arguments: 
-    return: __PTR__ SDL_Window
+    return: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
 [Cfunction SDL_GetKeyboardState]
     arguments: __PTR__ __C_INT__SIZE_4
     return: __PTR__ __C_UCHAR__SIZE_1
 [Cfunction SDL_GetModState]
     arguments: 
-    return: SDL_Keymod
+    return: __C_INT__SIZE_4
 [Cfunction SDL_SetModState]
-    arguments: SDL_Keymod
-    return: 
+    arguments: __C_INT__SIZE_4
+    return: __C_VOID__
 [Cfunction SDL_GetKeyFromScancode]
-    arguments: SDL_Scancode
+    arguments: __C_INT__SIZE_4
     return: __C_INT__SIZE_4
 [Cfunction SDL_GetScancodeFromKey]
     arguments: __C_INT__SIZE_4
-    return: SDL_Scancode
+    return: __C_INT__SIZE_4
 [Cfunction SDL_GetScancodeName]
-    arguments: SDL_Scancode
+    arguments: __C_INT__SIZE_4
     return: __PTR__ __C_CHAR__SIZE_1
 [Cfunction SDL_GetScancodeFromName]
     arguments: __PTR__ __C_CHAR__SIZE_1
-    return: SDL_Scancode
+    return: __C_INT__SIZE_4
 [Cfunction SDL_GetKeyName]
     arguments: __C_INT__SIZE_4
     return: __PTR__ __C_CHAR__SIZE_1
@@ -4097,25 +4091,25 @@ Ctype NestStruct
     return: __C_INT__SIZE_4
 [Cfunction SDL_StartTextInput]
     arguments: 
-    return: 
+    return: __C_VOID__
 [Cfunction SDL_IsTextInputActive]
     arguments: 
-    return: SDL_bool
+    return: __C_INT__SIZE_4
 [Cfunction SDL_StopTextInput]
     arguments: 
-    return: 
+    return: __C_VOID__
 [Cfunction SDL_SetTextInputRect]
     arguments: __PTR__ SDL_Rect
-    return: 
+    return: __C_VOID__
 [Cfunction SDL_HasScreenKeyboardSupport]
     arguments: 
-    return: SDL_bool
+    return: __C_INT__SIZE_4
 [Cfunction SDL_IsScreenKeyboardShown]
-    arguments: __PTR__ SDL_Window
-    return: SDL_bool
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_INT__SIZE_4
 [Cfunction SDL_GetMouseFocus]
     arguments: 
-    return: __PTR__ SDL_Window
+    return: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
 [Cfunction SDL_GetMouseState]
     arguments: __PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4
     return: __C_UINT__SIZE_4
@@ -4126,50 +4120,50 @@ Ctype NestStruct
     arguments: __PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4
     return: __C_UINT__SIZE_4
 [Cfunction SDL_WarpMouseInWindow]
-    arguments: __PTR__ SDL_Window,__C_INT__SIZE_4,__C_INT__SIZE_4
-    return: 
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __C_VOID__
 [Cfunction SDL_WarpMouseGlobal]
     arguments: __C_INT__SIZE_4,__C_INT__SIZE_4
     return: __C_INT__SIZE_4
 [Cfunction SDL_SetRelativeMouseMode]
-    arguments: SDL_bool
+    arguments: __C_INT__SIZE_4
     return: __C_INT__SIZE_4
 [Cfunction SDL_CaptureMouse]
-    arguments: SDL_bool
+    arguments: __C_INT__SIZE_4
     return: __C_INT__SIZE_4
 [Cfunction SDL_GetRelativeMouseMode]
     arguments: 
-    return: SDL_bool
+    return: __C_INT__SIZE_4
 [Cfunction SDL_CreateCursor]
     arguments: __PTR__ __C_UCHAR__SIZE_1,__PTR__ __C_UCHAR__SIZE_1,__C_INT__SIZE_4,__C_INT__SIZE_4,__C_INT__SIZE_4,__C_INT__SIZE_4
-    return: __PTR__ SDL_Cursor
+    return: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
 [Cfunction SDL_CreateColorCursor]
     arguments: __PTR__ SDL_Surface,__C_INT__SIZE_4,__C_INT__SIZE_4
-    return: __PTR__ SDL_Cursor
+    return: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
 [Cfunction SDL_CreateSystemCursor]
-    arguments: SDL_SystemCursor
-    return: __PTR__ SDL_Cursor
+    arguments: __C_INT__SIZE_4
+    return: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
 [Cfunction SDL_SetCursor]
-    arguments: __PTR__ SDL_Cursor
-    return: 
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_VOID__
 [Cfunction SDL_GetCursor]
     arguments: 
-    return: __PTR__ SDL_Cursor
+    return: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
 [Cfunction SDL_GetDefaultCursor]
     arguments: 
-    return: __PTR__ SDL_Cursor
+    return: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
 [Cfunction SDL_FreeCursor]
-    arguments: __PTR__ SDL_Cursor
-    return: 
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_VOID__
 [Cfunction SDL_ShowCursor]
     arguments: __C_INT__SIZE_4
     return: __C_INT__SIZE_4
 [Cfunction SDL_LockJoysticks]
     arguments: 
-    return: 
+    return: __C_VOID__
 [Cfunction SDL_UnlockJoysticks]
     arguments: 
-    return: 
+    return: __C_VOID__
 [Cfunction SDL_NumJoysticks]
     arguments: 
     return: __C_INT__SIZE_4
@@ -4190,85 +4184,85 @@ Ctype NestStruct
     return: __C_USHORT__SIZE_2
 [Cfunction SDL_JoystickGetDeviceType]
     arguments: __C_INT__SIZE_4
-    return: SDL_JoystickType
+    return: __C_INT__SIZE_4
 [Cfunction SDL_JoystickGetDeviceInstanceID]
     arguments: __C_INT__SIZE_4
     return: __C_INT__SIZE_4
 [Cfunction SDL_JoystickOpen]
     arguments: __C_INT__SIZE_4
-    return: __PTR__ _SDL_Joystick
+    return: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
 [Cfunction SDL_JoystickFromInstanceID]
     arguments: __C_INT__SIZE_4
-    return: __PTR__ _SDL_Joystick
+    return: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
 [Cfunction SDL_JoystickName]
-    arguments: __PTR__ _SDL_Joystick
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
     return: __PTR__ __C_CHAR__SIZE_1
 [Cfunction SDL_JoystickGetGUID]
-    arguments: __PTR__ _SDL_Joystick
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
     return: SDL_JoystickGUID
 [Cfunction SDL_JoystickGetVendor]
-    arguments: __PTR__ _SDL_Joystick
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
     return: __C_USHORT__SIZE_2
 [Cfunction SDL_JoystickGetProduct]
-    arguments: __PTR__ _SDL_Joystick
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
     return: __C_USHORT__SIZE_2
 [Cfunction SDL_JoystickGetProductVersion]
-    arguments: __PTR__ _SDL_Joystick
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
     return: __C_USHORT__SIZE_2
 [Cfunction SDL_JoystickGetType]
-    arguments: __PTR__ _SDL_Joystick
-    return: SDL_JoystickType
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_INT__SIZE_4
 [Cfunction SDL_JoystickGetGUIDString]
     arguments: SDL_JoystickGUID,__PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
-    return: 
+    return: __C_VOID__
 [Cfunction SDL_JoystickGetGUIDFromString]
     arguments: __PTR__ __C_CHAR__SIZE_1
     return: SDL_JoystickGUID
 [Cfunction SDL_JoystickGetAttached]
-    arguments: __PTR__ _SDL_Joystick
-    return: SDL_bool
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_INT__SIZE_4
 [Cfunction SDL_JoystickInstanceID]
-    arguments: __PTR__ _SDL_Joystick
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
     return: __C_INT__SIZE_4
 [Cfunction SDL_JoystickNumAxes]
-    arguments: __PTR__ _SDL_Joystick
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
     return: __C_INT__SIZE_4
 [Cfunction SDL_JoystickNumBalls]
-    arguments: __PTR__ _SDL_Joystick
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
     return: __C_INT__SIZE_4
 [Cfunction SDL_JoystickNumHats]
-    arguments: __PTR__ _SDL_Joystick
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
     return: __C_INT__SIZE_4
 [Cfunction SDL_JoystickNumButtons]
-    arguments: __PTR__ _SDL_Joystick
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
     return: __C_INT__SIZE_4
 [Cfunction SDL_JoystickUpdate]
     arguments: 
-    return: 
+    return: __C_VOID__
 [Cfunction SDL_JoystickEventState]
     arguments: __C_INT__SIZE_4
     return: __C_INT__SIZE_4
 [Cfunction SDL_JoystickGetAxis]
-    arguments: __PTR__ _SDL_Joystick,__C_INT__SIZE_4
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_INT__SIZE_4
     return: __C_SHORT__SIZE_2
 [Cfunction SDL_JoystickGetAxisInitialState]
-    arguments: __PTR__ _SDL_Joystick,__C_INT__SIZE_4,__PTR__ __C_SHORT__SIZE_2
-    return: SDL_bool
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_INT__SIZE_4,__PTR__ __C_SHORT__SIZE_2
+    return: __C_INT__SIZE_4
 [Cfunction SDL_JoystickGetHat]
-    arguments: __PTR__ _SDL_Joystick,__C_INT__SIZE_4
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_INT__SIZE_4
     return: __C_UCHAR__SIZE_1
 [Cfunction SDL_JoystickGetBall]
-    arguments: __PTR__ _SDL_Joystick,__C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4
     return: __C_INT__SIZE_4
 [Cfunction SDL_JoystickGetButton]
-    arguments: __PTR__ _SDL_Joystick,__C_INT__SIZE_4
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_INT__SIZE_4
     return: __C_UCHAR__SIZE_1
 [Cfunction SDL_JoystickClose]
-    arguments: __PTR__ _SDL_Joystick
-    return: 
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_VOID__
 [Cfunction SDL_JoystickCurrentPowerLevel]
-    arguments: __PTR__ _SDL_Joystick
-    return: SDL_JoystickPowerLevel
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_INT__SIZE_4
 [Cfunction SDL_GameControllerAddMappingsFromRW]
     arguments: __PTR__ SDL_RWops,__C_INT__SIZE_4
     return: __C_INT__SIZE_4
@@ -4285,71 +4279,71 @@ Ctype NestStruct
     arguments: SDL_JoystickGUID
     return: __PTR__ __C_CHAR__SIZE_1
 [Cfunction SDL_GameControllerMapping]
-    arguments: __PTR__ _SDL_GameController
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
     return: __PTR__ __C_CHAR__SIZE_1
 [Cfunction SDL_IsGameController]
     arguments: __C_INT__SIZE_4
-    return: SDL_bool
+    return: __C_INT__SIZE_4
 [Cfunction SDL_GameControllerNameForIndex]
     arguments: __C_INT__SIZE_4
     return: __PTR__ __C_CHAR__SIZE_1
 [Cfunction SDL_GameControllerOpen]
     arguments: __C_INT__SIZE_4
-    return: __PTR__ _SDL_GameController
+    return: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
 [Cfunction SDL_GameControllerFromInstanceID]
     arguments: __C_INT__SIZE_4
-    return: __PTR__ _SDL_GameController
+    return: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
 [Cfunction SDL_GameControllerName]
-    arguments: __PTR__ _SDL_GameController
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
     return: __PTR__ __C_CHAR__SIZE_1
 [Cfunction SDL_GameControllerGetVendor]
-    arguments: __PTR__ _SDL_GameController
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
     return: __C_USHORT__SIZE_2
 [Cfunction SDL_GameControllerGetProduct]
-    arguments: __PTR__ _SDL_GameController
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
     return: __C_USHORT__SIZE_2
 [Cfunction SDL_GameControllerGetProductVersion]
-    arguments: __PTR__ _SDL_GameController
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
     return: __C_USHORT__SIZE_2
 [Cfunction SDL_GameControllerGetAttached]
-    arguments: __PTR__ _SDL_GameController
-    return: SDL_bool
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_INT__SIZE_4
 [Cfunction SDL_GameControllerGetJoystick]
-    arguments: __PTR__ _SDL_GameController
-    return: __PTR__ _SDL_Joystick
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
 [Cfunction SDL_GameControllerEventState]
     arguments: __C_INT__SIZE_4
     return: __C_INT__SIZE_4
 [Cfunction SDL_GameControllerUpdate]
     arguments: 
-    return: 
+    return: __C_VOID__
 [Cfunction SDL_GameControllerGetAxisFromString]
     arguments: __PTR__ __C_CHAR__SIZE_1
-    return: SDL_GameControllerAxis
+    return: __C_INT__SIZE_4
 [Cfunction SDL_GameControllerGetStringForAxis]
-    arguments: SDL_GameControllerAxis
+    arguments: __C_INT__SIZE_4
     return: __PTR__ __C_CHAR__SIZE_1
 [Cfunction SDL_GameControllerGetBindForAxis]
-    arguments: __PTR__ _SDL_GameController,SDL_GameControllerAxis
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_INT__SIZE_4
     return: SDL_GameControllerButtonBind
 [Cfunction SDL_GameControllerGetAxis]
-    arguments: __PTR__ _SDL_GameController,SDL_GameControllerAxis
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_INT__SIZE_4
     return: __C_SHORT__SIZE_2
 [Cfunction SDL_GameControllerGetButtonFromString]
     arguments: __PTR__ __C_CHAR__SIZE_1
-    return: SDL_GameControllerButton
+    return: __C_INT__SIZE_4
 [Cfunction SDL_GameControllerGetStringForButton]
-    arguments: SDL_GameControllerButton
+    arguments: __C_INT__SIZE_4
     return: __PTR__ __C_CHAR__SIZE_1
 [Cfunction SDL_GameControllerGetBindForButton]
-    arguments: __PTR__ _SDL_GameController,SDL_GameControllerButton
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_INT__SIZE_4
     return: SDL_GameControllerButtonBind
 [Cfunction SDL_GameControllerGetButton]
-    arguments: __PTR__ _SDL_GameController,SDL_GameControllerButton
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_INT__SIZE_4
     return: __C_UCHAR__SIZE_1
 [Cfunction SDL_GameControllerClose]
-    arguments: __PTR__ _SDL_GameController
-    return: 
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_VOID__
 [Cfunction SDL_GetNumTouchDevices]
     arguments: 
     return: __C_INT__SIZE_4
@@ -4376,49 +4370,49 @@ Ctype NestStruct
     return: __C_INT__SIZE_4
 [Cfunction SDL_PumpEvents]
     arguments: 
-    return: 
+    return: __C_VOID__
 [Cfunction SDL_PeepEvents]
-    arguments: __PTR__ SDL_Event,__C_INT__SIZE_4,SDL_eventaction,__C_UINT__SIZE_4,__C_UINT__SIZE_4
+    arguments: __PTR__ __C_UNKNOWN__SIZE_56,__C_INT__SIZE_4,__C_INT__SIZE_4,__C_UINT__SIZE_4,__C_UINT__SIZE_4
     return: __C_INT__SIZE_4
 [Cfunction SDL_HasEvent]
     arguments: __C_UINT__SIZE_4
-    return: SDL_bool
+    return: __C_INT__SIZE_4
 [Cfunction SDL_HasEvents]
     arguments: __C_UINT__SIZE_4,__C_UINT__SIZE_4
-    return: SDL_bool
+    return: __C_INT__SIZE_4
 [Cfunction SDL_FlushEvent]
     arguments: __C_UINT__SIZE_4
-    return: 
+    return: __C_VOID__
 [Cfunction SDL_FlushEvents]
     arguments: __C_UINT__SIZE_4,__C_UINT__SIZE_4
-    return: 
+    return: __C_VOID__
 [Cfunction SDL_PollEvent]
-    arguments: __PTR__ SDL_Event
+    arguments: __PTR__ __C_UNKNOWN__SIZE_56
     return: __C_INT__SIZE_4
 [Cfunction SDL_WaitEvent]
-    arguments: __PTR__ SDL_Event
+    arguments: __PTR__ __C_UNKNOWN__SIZE_56
     return: __C_INT__SIZE_4
 [Cfunction SDL_WaitEventTimeout]
-    arguments: __PTR__ SDL_Event,__C_INT__SIZE_4
+    arguments: __PTR__ __C_UNKNOWN__SIZE_56,__C_INT__SIZE_4
     return: __C_INT__SIZE_4
 [Cfunction SDL_PushEvent]
-    arguments: __PTR__ SDL_Event
+    arguments: __PTR__ __C_UNKNOWN__SIZE_56
     return: __C_INT__SIZE_4
 [Cfunction SDL_SetEventFilter]
-    arguments: __PTR__ int (void *, SDL_Event *),__PTR__ 
-    return: 
+    arguments: __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_INT__SIZE_8
+    return: __C_VOID__
 [Cfunction SDL_GetEventFilter]
-    arguments: __PTR__ __PTR__ int (void *, SDL_Event *),__PTR__ __PTR__ 
-    return: SDL_bool
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __PTR__ __C_INT__SIZE_8
+    return: __C_INT__SIZE_4
 [Cfunction SDL_AddEventWatch]
-    arguments: __PTR__ int (void *, SDL_Event *),__PTR__ 
-    return: 
+    arguments: __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_INT__SIZE_8
+    return: __C_VOID__
 [Cfunction SDL_DelEventWatch]
-    arguments: __PTR__ int (void *, SDL_Event *),__PTR__ 
-    return: 
+    arguments: __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_INT__SIZE_8
+    return: __C_VOID__
 [Cfunction SDL_FilterEvents]
-    arguments: __PTR__ int (void *, SDL_Event *),__PTR__ 
-    return: 
+    arguments: __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_INT__SIZE_8
+    return: __C_VOID__
 [Cfunction SDL_EventState]
     arguments: __C_UINT__SIZE_4,__C_INT__SIZE_4
     return: __C_UCHAR__SIZE_1
@@ -4439,172 +4433,172 @@ Ctype NestStruct
     return: __PTR__ __C_CHAR__SIZE_1
 [Cfunction SDL_HapticOpen]
     arguments: __C_INT__SIZE_4
-    return: __PTR__ _SDL_Haptic
+    return: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
 [Cfunction SDL_HapticOpened]
     arguments: __C_INT__SIZE_4
     return: __C_INT__SIZE_4
 [Cfunction SDL_HapticIndex]
-    arguments: __PTR__ _SDL_Haptic
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
     return: __C_INT__SIZE_4
 [Cfunction SDL_MouseIsHaptic]
     arguments: 
     return: __C_INT__SIZE_4
 [Cfunction SDL_HapticOpenFromMouse]
     arguments: 
-    return: __PTR__ _SDL_Haptic
+    return: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
 [Cfunction SDL_JoystickIsHaptic]
-    arguments: __PTR__ _SDL_Joystick
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
     return: __C_INT__SIZE_4
 [Cfunction SDL_HapticOpenFromJoystick]
-    arguments: __PTR__ _SDL_Joystick
-    return: __PTR__ _SDL_Haptic
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
 [Cfunction SDL_HapticClose]
-    arguments: __PTR__ _SDL_Haptic
-    return: 
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_VOID__
 [Cfunction SDL_HapticNumEffects]
-    arguments: __PTR__ _SDL_Haptic
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
     return: __C_INT__SIZE_4
 [Cfunction SDL_HapticNumEffectsPlaying]
-    arguments: __PTR__ _SDL_Haptic
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
     return: __C_INT__SIZE_4
 [Cfunction SDL_HapticQuery]
-    arguments: __PTR__ _SDL_Haptic
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
     return: __C_UINT__SIZE_4
 [Cfunction SDL_HapticNumAxes]
-    arguments: __PTR__ _SDL_Haptic
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
     return: __C_INT__SIZE_4
 [Cfunction SDL_HapticEffectSupported]
-    arguments: __PTR__ _SDL_Haptic,__PTR__ SDL_HapticEffect
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_UNKNOWN__SIZE_72
     return: __C_INT__SIZE_4
 [Cfunction SDL_HapticNewEffect]
-    arguments: __PTR__ _SDL_Haptic,__PTR__ SDL_HapticEffect
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_UNKNOWN__SIZE_72
     return: __C_INT__SIZE_4
 [Cfunction SDL_HapticUpdateEffect]
-    arguments: __PTR__ _SDL_Haptic,__C_INT__SIZE_4,__PTR__ SDL_HapticEffect
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_INT__SIZE_4,__PTR__ __C_UNKNOWN__SIZE_72
     return: __C_INT__SIZE_4
 [Cfunction SDL_HapticRunEffect]
-    arguments: __PTR__ _SDL_Haptic,__C_INT__SIZE_4,__C_UINT__SIZE_4
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_INT__SIZE_4,__C_UINT__SIZE_4
     return: __C_INT__SIZE_4
 [Cfunction SDL_HapticStopEffect]
-    arguments: __PTR__ _SDL_Haptic,__C_INT__SIZE_4
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_INT__SIZE_4
     return: __C_INT__SIZE_4
 [Cfunction SDL_HapticDestroyEffect]
-    arguments: __PTR__ _SDL_Haptic,__C_INT__SIZE_4
-    return: 
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_INT__SIZE_4
+    return: __C_VOID__
 [Cfunction SDL_HapticGetEffectStatus]
-    arguments: __PTR__ _SDL_Haptic,__C_INT__SIZE_4
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_INT__SIZE_4
     return: __C_INT__SIZE_4
 [Cfunction SDL_HapticSetGain]
-    arguments: __PTR__ _SDL_Haptic,__C_INT__SIZE_4
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_INT__SIZE_4
     return: __C_INT__SIZE_4
 [Cfunction SDL_HapticSetAutocenter]
-    arguments: __PTR__ _SDL_Haptic,__C_INT__SIZE_4
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_INT__SIZE_4
     return: __C_INT__SIZE_4
 [Cfunction SDL_HapticPause]
-    arguments: __PTR__ _SDL_Haptic
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
     return: __C_INT__SIZE_4
 [Cfunction SDL_HapticUnpause]
-    arguments: __PTR__ _SDL_Haptic
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
     return: __C_INT__SIZE_4
 [Cfunction SDL_HapticStopAll]
-    arguments: __PTR__ _SDL_Haptic
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
     return: __C_INT__SIZE_4
 [Cfunction SDL_HapticRumbleSupported]
-    arguments: __PTR__ _SDL_Haptic
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
     return: __C_INT__SIZE_4
 [Cfunction SDL_HapticRumbleInit]
-    arguments: __PTR__ _SDL_Haptic
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
     return: __C_INT__SIZE_4
 [Cfunction SDL_HapticRumblePlay]
-    arguments: __PTR__ _SDL_Haptic,__C_FLOAT__SIZE_4,__C_UINT__SIZE_4
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_FLOAT__SIZE_4,__C_UINT__SIZE_4
     return: __C_INT__SIZE_4
 [Cfunction SDL_HapticRumbleStop]
-    arguments: __PTR__ _SDL_Haptic
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
     return: __C_INT__SIZE_4
 [Cfunction SDL_SetHintWithPriority]
-    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1,SDL_HintPriority
-    return: SDL_bool
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
 [Cfunction SDL_SetHint]
     arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1
-    return: SDL_bool
+    return: __C_INT__SIZE_4
 [Cfunction SDL_GetHint]
     arguments: __PTR__ __C_CHAR__SIZE_1
     return: __PTR__ __C_CHAR__SIZE_1
 [Cfunction SDL_GetHintBoolean]
-    arguments: __PTR__ __C_CHAR__SIZE_1,SDL_bool
-    return: SDL_bool
+    arguments: __PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
 [Cfunction SDL_AddHintCallback]
-    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ void (void *, char *, char *, char *),__PTR__ 
-    return: 
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_INT__SIZE_8
+    return: __C_VOID__
 [Cfunction SDL_DelHintCallback]
-    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ void (void *, char *, char *, char *),__PTR__ 
-    return: 
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_INT__SIZE_8
+    return: __C_VOID__
 [Cfunction SDL_ClearHints]
     arguments: 
-    return: 
+    return: __C_VOID__
 [Cfunction SDL_LoadObject]
     arguments: __PTR__ __C_CHAR__SIZE_1
-    return: __PTR__ 
+    return: __PTR__ __C_INT__SIZE_8
 [Cfunction SDL_LoadFunction]
-    arguments: __PTR__ ,__PTR__ __C_CHAR__SIZE_1
-    return: __PTR__ 
+    arguments: __PTR__ __C_INT__SIZE_8,__PTR__ __C_CHAR__SIZE_1
+    return: __PTR__ __C_INT__SIZE_8
 [Cfunction SDL_UnloadObject]
-    arguments: __PTR__ 
-    return: 
+    arguments: __PTR__ __C_INT__SIZE_8
+    return: __C_VOID__
 [Cfunction SDL_LogSetAllPriority]
-    arguments: SDL_LogPriority
-    return: 
+    arguments: __C_INT__SIZE_4
+    return: __C_VOID__
 [Cfunction SDL_LogSetPriority]
-    arguments: __C_INT__SIZE_4,SDL_LogPriority
-    return: 
+    arguments: __C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __C_VOID__
 [Cfunction SDL_LogGetPriority]
     arguments: __C_INT__SIZE_4
-    return: SDL_LogPriority
+    return: __C_INT__SIZE_4
 [Cfunction SDL_LogResetPriorities]
     arguments: 
-    return: 
+    return: __C_VOID__
 [Cfunction SDL_Log]
     arguments: __PTR__ __C_CHAR__SIZE_1
-    return: 
+    return: __C_VOID__
 [Cfunction SDL_LogVerbose]
     arguments: __C_INT__SIZE_4,__PTR__ __C_CHAR__SIZE_1
-    return: 
+    return: __C_VOID__
 [Cfunction SDL_LogDebug]
     arguments: __C_INT__SIZE_4,__PTR__ __C_CHAR__SIZE_1
-    return: 
+    return: __C_VOID__
 [Cfunction SDL_LogInfo]
     arguments: __C_INT__SIZE_4,__PTR__ __C_CHAR__SIZE_1
-    return: 
+    return: __C_VOID__
 [Cfunction SDL_LogWarn]
     arguments: __C_INT__SIZE_4,__PTR__ __C_CHAR__SIZE_1
-    return: 
+    return: __C_VOID__
 [Cfunction SDL_LogError]
     arguments: __C_INT__SIZE_4,__PTR__ __C_CHAR__SIZE_1
-    return: 
+    return: __C_VOID__
 [Cfunction SDL_LogCritical]
     arguments: __C_INT__SIZE_4,__PTR__ __C_CHAR__SIZE_1
-    return: 
+    return: __C_VOID__
 [Cfunction SDL_LogMessage]
-    arguments: __C_INT__SIZE_4,SDL_LogPriority,__PTR__ __C_CHAR__SIZE_1
-    return: 
+    arguments: __C_INT__SIZE_4,__C_INT__SIZE_4,__PTR__ __C_CHAR__SIZE_1
+    return: __C_VOID__
 [Cfunction SDL_LogMessageV]
-    arguments: __C_INT__SIZE_4,SDL_LogPriority,__PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
-    return: 
+    arguments: __C_INT__SIZE_4,__C_INT__SIZE_4,__PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __C_VOID__
 [Cfunction SDL_LogGetOutputFunction]
-    arguments: __PTR__ __PTR__ void (void *, int, SDL_LogPriority, char *),__PTR__ __PTR__ 
-    return: 
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __PTR__ __C_INT__SIZE_8
+    return: __C_VOID__
 [Cfunction SDL_LogSetOutputFunction]
-    arguments: __PTR__ void (void *, int, SDL_LogPriority, char *),__PTR__ 
-    return: 
+    arguments: __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_INT__SIZE_8
+    return: __C_VOID__
 [Cfunction SDL_ShowMessageBox]
     arguments: __PTR__ SDL_MessageBoxData,__PTR__ __C_INT__SIZE_4
     return: __C_INT__SIZE_4
 [Cfunction SDL_ShowSimpleMessageBox]
-    arguments: __C_UINT__SIZE_4,__PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1,__PTR__ SDL_Window
+    arguments: __C_UINT__SIZE_4,__PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1,__PTR__ __PTR__ __C_UNKNOWN__SIZE_1
     return: __C_INT__SIZE_4
 [Cfunction SDL_GetPowerInfo]
     arguments: __PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4
-    return: SDL_PowerState
+    return: __C_INT__SIZE_4
 [Cfunction SDL_GetNumRenderDrivers]
     arguments: 
     return: __C_INT__SIZE_4
@@ -4612,184 +4606,184 @@ Ctype NestStruct
     arguments: __C_INT__SIZE_4,__PTR__ SDL_RendererInfo
     return: __C_INT__SIZE_4
 [Cfunction SDL_CreateWindowAndRenderer]
-    arguments: __C_INT__SIZE_4,__C_INT__SIZE_4,__C_UINT__SIZE_4,__PTR__ __PTR__ SDL_Window,__PTR__ __PTR__ SDL_Renderer
+    arguments: __C_INT__SIZE_4,__C_INT__SIZE_4,__C_UINT__SIZE_4,__PTR__ __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
     return: __C_INT__SIZE_4
 [Cfunction SDL_CreateRenderer]
-    arguments: __PTR__ SDL_Window,__C_INT__SIZE_4,__C_UINT__SIZE_4
-    return: __PTR__ SDL_Renderer
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_INT__SIZE_4,__C_UINT__SIZE_4
+    return: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
 [Cfunction SDL_CreateSoftwareRenderer]
     arguments: __PTR__ SDL_Surface
-    return: __PTR__ SDL_Renderer
+    return: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
 [Cfunction SDL_GetRenderer]
-    arguments: __PTR__ SDL_Window
-    return: __PTR__ SDL_Renderer
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
 [Cfunction SDL_GetRendererInfo]
-    arguments: __PTR__ SDL_Renderer,__PTR__ SDL_RendererInfo
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ SDL_RendererInfo
     return: __C_INT__SIZE_4
 [Cfunction SDL_GetRendererOutputSize]
-    arguments: __PTR__ SDL_Renderer,__PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4
     return: __C_INT__SIZE_4
 [Cfunction SDL_CreateTexture]
-    arguments: __PTR__ SDL_Renderer,__C_UINT__SIZE_4,__C_INT__SIZE_4,__C_INT__SIZE_4,__C_INT__SIZE_4
-    return: __PTR__ SDL_Texture
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_UINT__SIZE_4,__C_INT__SIZE_4,__C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
 [Cfunction SDL_CreateTextureFromSurface]
-    arguments: __PTR__ SDL_Renderer,__PTR__ SDL_Surface
-    return: __PTR__ SDL_Texture
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ SDL_Surface
+    return: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
 [Cfunction SDL_QueryTexture]
-    arguments: __PTR__ SDL_Texture,__PTR__ __C_UINT__SIZE_4,__PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_UINT__SIZE_4,__PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4
     return: __C_INT__SIZE_4
 [Cfunction SDL_SetTextureColorMod]
-    arguments: __PTR__ SDL_Texture,__C_UCHAR__SIZE_1,__C_UCHAR__SIZE_1,__C_UCHAR__SIZE_1
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_UCHAR__SIZE_1,__C_UCHAR__SIZE_1,__C_UCHAR__SIZE_1
     return: __C_INT__SIZE_4
 [Cfunction SDL_GetTextureColorMod]
-    arguments: __PTR__ SDL_Texture,__PTR__ __C_UCHAR__SIZE_1,__PTR__ __C_UCHAR__SIZE_1,__PTR__ __C_UCHAR__SIZE_1
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_UCHAR__SIZE_1,__PTR__ __C_UCHAR__SIZE_1,__PTR__ __C_UCHAR__SIZE_1
     return: __C_INT__SIZE_4
 [Cfunction SDL_SetTextureAlphaMod]
-    arguments: __PTR__ SDL_Texture,__C_UCHAR__SIZE_1
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_UCHAR__SIZE_1
     return: __C_INT__SIZE_4
 [Cfunction SDL_GetTextureAlphaMod]
-    arguments: __PTR__ SDL_Texture,__PTR__ __C_UCHAR__SIZE_1
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_UCHAR__SIZE_1
     return: __C_INT__SIZE_4
 [Cfunction SDL_SetTextureBlendMode]
-    arguments: __PTR__ SDL_Texture,SDL_BlendMode
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_INT__SIZE_4
     return: __C_INT__SIZE_4
 [Cfunction SDL_GetTextureBlendMode]
-    arguments: __PTR__ SDL_Texture,__PTR__ SDL_BlendMode
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_INT__SIZE_4
     return: __C_INT__SIZE_4
 [Cfunction SDL_UpdateTexture]
-    arguments: __PTR__ SDL_Texture,__PTR__ SDL_Rect,__PTR__ ,__C_INT__SIZE_4
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ SDL_Rect,__PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4
     return: __C_INT__SIZE_4
 [Cfunction SDL_UpdateYUVTexture]
-    arguments: __PTR__ SDL_Texture,__PTR__ SDL_Rect,__PTR__ __C_UCHAR__SIZE_1,__C_INT__SIZE_4,__PTR__ __C_UCHAR__SIZE_1,__C_INT__SIZE_4,__PTR__ __C_UCHAR__SIZE_1,__C_INT__SIZE_4
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ SDL_Rect,__PTR__ __C_UCHAR__SIZE_1,__C_INT__SIZE_4,__PTR__ __C_UCHAR__SIZE_1,__C_INT__SIZE_4,__PTR__ __C_UCHAR__SIZE_1,__C_INT__SIZE_4
     return: __C_INT__SIZE_4
 [Cfunction SDL_LockTexture]
-    arguments: __PTR__ SDL_Texture,__PTR__ SDL_Rect,__PTR__ __PTR__ ,__PTR__ __C_INT__SIZE_4
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ SDL_Rect,__PTR__ __PTR__ __C_INT__SIZE_8,__PTR__ __C_INT__SIZE_4
     return: __C_INT__SIZE_4
 [Cfunction SDL_UnlockTexture]
-    arguments: __PTR__ SDL_Texture
-    return: 
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_VOID__
 [Cfunction SDL_RenderTargetSupported]
-    arguments: __PTR__ SDL_Renderer
-    return: SDL_bool
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_INT__SIZE_4
 [Cfunction SDL_SetRenderTarget]
-    arguments: __PTR__ SDL_Renderer,__PTR__ SDL_Texture
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __PTR__ __C_UNKNOWN__SIZE_1
     return: __C_INT__SIZE_4
 [Cfunction SDL_GetRenderTarget]
-    arguments: __PTR__ SDL_Renderer
-    return: __PTR__ SDL_Texture
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
 [Cfunction SDL_RenderSetLogicalSize]
-    arguments: __PTR__ SDL_Renderer,__C_INT__SIZE_4,__C_INT__SIZE_4
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_INT__SIZE_4,__C_INT__SIZE_4
     return: __C_INT__SIZE_4
 [Cfunction SDL_RenderGetLogicalSize]
-    arguments: __PTR__ SDL_Renderer,__PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4
-    return: 
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4
+    return: __C_VOID__
 [Cfunction SDL_RenderSetIntegerScale]
-    arguments: __PTR__ SDL_Renderer,SDL_bool
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_INT__SIZE_4
     return: __C_INT__SIZE_4
 [Cfunction SDL_RenderGetIntegerScale]
-    arguments: __PTR__ SDL_Renderer
-    return: SDL_bool
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_INT__SIZE_4
 [Cfunction SDL_RenderSetViewport]
-    arguments: __PTR__ SDL_Renderer,__PTR__ SDL_Rect
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ SDL_Rect
     return: __C_INT__SIZE_4
 [Cfunction SDL_RenderGetViewport]
-    arguments: __PTR__ SDL_Renderer,__PTR__ SDL_Rect
-    return: 
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ SDL_Rect
+    return: __C_VOID__
 [Cfunction SDL_RenderSetClipRect]
-    arguments: __PTR__ SDL_Renderer,__PTR__ SDL_Rect
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ SDL_Rect
     return: __C_INT__SIZE_4
 [Cfunction SDL_RenderGetClipRect]
-    arguments: __PTR__ SDL_Renderer,__PTR__ SDL_Rect
-    return: 
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ SDL_Rect
+    return: __C_VOID__
 [Cfunction SDL_RenderIsClipEnabled]
-    arguments: __PTR__ SDL_Renderer
-    return: SDL_bool
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_INT__SIZE_4
 [Cfunction SDL_RenderSetScale]
-    arguments: __PTR__ SDL_Renderer,__C_FLOAT__SIZE_4,__C_FLOAT__SIZE_4
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_FLOAT__SIZE_4,__C_FLOAT__SIZE_4
     return: __C_INT__SIZE_4
 [Cfunction SDL_RenderGetScale]
-    arguments: __PTR__ SDL_Renderer,__PTR__ __C_FLOAT__SIZE_4,__PTR__ __C_FLOAT__SIZE_4
-    return: 
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_FLOAT__SIZE_4,__PTR__ __C_FLOAT__SIZE_4
+    return: __C_VOID__
 [Cfunction SDL_SetRenderDrawColor]
-    arguments: __PTR__ SDL_Renderer,__C_UCHAR__SIZE_1,__C_UCHAR__SIZE_1,__C_UCHAR__SIZE_1,__C_UCHAR__SIZE_1
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_UCHAR__SIZE_1,__C_UCHAR__SIZE_1,__C_UCHAR__SIZE_1,__C_UCHAR__SIZE_1
     return: __C_INT__SIZE_4
 [Cfunction SDL_GetRenderDrawColor]
-    arguments: __PTR__ SDL_Renderer,__PTR__ __C_UCHAR__SIZE_1,__PTR__ __C_UCHAR__SIZE_1,__PTR__ __C_UCHAR__SIZE_1,__PTR__ __C_UCHAR__SIZE_1
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_UCHAR__SIZE_1,__PTR__ __C_UCHAR__SIZE_1,__PTR__ __C_UCHAR__SIZE_1,__PTR__ __C_UCHAR__SIZE_1
     return: __C_INT__SIZE_4
 [Cfunction SDL_SetRenderDrawBlendMode]
-    arguments: __PTR__ SDL_Renderer,SDL_BlendMode
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_INT__SIZE_4
     return: __C_INT__SIZE_4
 [Cfunction SDL_GetRenderDrawBlendMode]
-    arguments: __PTR__ SDL_Renderer,__PTR__ SDL_BlendMode
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_INT__SIZE_4
     return: __C_INT__SIZE_4
 [Cfunction SDL_RenderClear]
-    arguments: __PTR__ SDL_Renderer
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
     return: __C_INT__SIZE_4
 [Cfunction SDL_RenderDrawPoint]
-    arguments: __PTR__ SDL_Renderer,__C_INT__SIZE_4,__C_INT__SIZE_4
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_INT__SIZE_4,__C_INT__SIZE_4
     return: __C_INT__SIZE_4
 [Cfunction SDL_RenderDrawPoints]
-    arguments: __PTR__ SDL_Renderer,__PTR__ SDL_Point,__C_INT__SIZE_4
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ SDL_Point,__C_INT__SIZE_4
     return: __C_INT__SIZE_4
 [Cfunction SDL_RenderDrawLine]
-    arguments: __PTR__ SDL_Renderer,__C_INT__SIZE_4,__C_INT__SIZE_4,__C_INT__SIZE_4,__C_INT__SIZE_4
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_INT__SIZE_4,__C_INT__SIZE_4,__C_INT__SIZE_4,__C_INT__SIZE_4
     return: __C_INT__SIZE_4
 [Cfunction SDL_RenderDrawLines]
-    arguments: __PTR__ SDL_Renderer,__PTR__ SDL_Point,__C_INT__SIZE_4
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ SDL_Point,__C_INT__SIZE_4
     return: __C_INT__SIZE_4
 [Cfunction SDL_RenderDrawRect]
-    arguments: __PTR__ SDL_Renderer,__PTR__ SDL_Rect
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ SDL_Rect
     return: __C_INT__SIZE_4
 [Cfunction SDL_RenderDrawRects]
-    arguments: __PTR__ SDL_Renderer,__PTR__ SDL_Rect,__C_INT__SIZE_4
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ SDL_Rect,__C_INT__SIZE_4
     return: __C_INT__SIZE_4
 [Cfunction SDL_RenderFillRect]
-    arguments: __PTR__ SDL_Renderer,__PTR__ SDL_Rect
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ SDL_Rect
     return: __C_INT__SIZE_4
 [Cfunction SDL_RenderFillRects]
-    arguments: __PTR__ SDL_Renderer,__PTR__ SDL_Rect,__C_INT__SIZE_4
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ SDL_Rect,__C_INT__SIZE_4
     return: __C_INT__SIZE_4
 [Cfunction SDL_RenderCopy]
-    arguments: __PTR__ SDL_Renderer,__PTR__ SDL_Texture,__PTR__ SDL_Rect,__PTR__ SDL_Rect
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ SDL_Rect,__PTR__ SDL_Rect
     return: __C_INT__SIZE_4
 [Cfunction SDL_RenderCopyEx]
-    arguments: __PTR__ SDL_Renderer,__PTR__ SDL_Texture,__PTR__ SDL_Rect,__PTR__ SDL_Rect,__C_DOUBLE__SIZE_8,__PTR__ SDL_Point,SDL_RendererFlip
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ SDL_Rect,__PTR__ SDL_Rect,__C_DOUBLE__SIZE_8,__PTR__ SDL_Point,__C_INT__SIZE_4
     return: __C_INT__SIZE_4
 [Cfunction SDL_RenderReadPixels]
-    arguments: __PTR__ SDL_Renderer,__PTR__ SDL_Rect,__C_UINT__SIZE_4,__PTR__ ,__C_INT__SIZE_4
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ SDL_Rect,__C_UINT__SIZE_4,__PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4
     return: __C_INT__SIZE_4
 [Cfunction SDL_RenderPresent]
-    arguments: __PTR__ SDL_Renderer
-    return: 
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_VOID__
 [Cfunction SDL_DestroyTexture]
-    arguments: __PTR__ SDL_Texture
-    return: 
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_VOID__
 [Cfunction SDL_DestroyRenderer]
-    arguments: __PTR__ SDL_Renderer
-    return: 
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_VOID__
 [Cfunction SDL_GL_BindTexture]
-    arguments: __PTR__ SDL_Texture,__PTR__ __C_FLOAT__SIZE_4,__PTR__ __C_FLOAT__SIZE_4
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_FLOAT__SIZE_4,__PTR__ __C_FLOAT__SIZE_4
     return: __C_INT__SIZE_4
 [Cfunction SDL_GL_UnbindTexture]
-    arguments: __PTR__ SDL_Texture
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
     return: __C_INT__SIZE_4
 [Cfunction SDL_RenderGetMetalLayer]
-    arguments: __PTR__ SDL_Renderer
-    return: __PTR__ 
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __PTR__ __C_INT__SIZE_8
 [Cfunction SDL_RenderGetMetalCommandEncoder]
-    arguments: __PTR__ SDL_Renderer
-    return: __PTR__ 
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __PTR__ __C_INT__SIZE_8
 [Cfunction SDL_CreateShapedWindow]
     arguments: __PTR__ __C_CHAR__SIZE_1,__C_UINT__SIZE_4,__C_UINT__SIZE_4,__C_UINT__SIZE_4,__C_UINT__SIZE_4,__C_UINT__SIZE_4
-    return: __PTR__ SDL_Window
+    return: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
 [Cfunction SDL_IsShapedWindow]
-    arguments: __PTR__ SDL_Window
-    return: SDL_bool
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_INT__SIZE_4
 [Cfunction SDL_SetWindowShape]
-    arguments: __PTR__ SDL_Window,__PTR__ SDL_Surface,__PTR__ SDL_WindowShapeMode
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ SDL_Surface,__PTR__ SDL_WindowShapeMode
     return: __C_INT__SIZE_4
 [Cfunction SDL_GetShapedWindowMode]
-    arguments: __PTR__ SDL_Window,__PTR__ SDL_WindowShapeMode
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ SDL_WindowShapeMode
     return: __C_INT__SIZE_4
 [Cfunction SDL_GetTicks]
     arguments: 
@@ -4802,16 +4796,16 @@ Ctype NestStruct
     return: __C_ULONG__SIZE_8
 [Cfunction SDL_Delay]
     arguments: __C_UINT__SIZE_4
-    return: 
+    return: __C_VOID__
 [Cfunction SDL_AddTimer]
-    arguments: __C_UINT__SIZE_4,__PTR__ unsigned int (unsigned int, void *),__PTR__ 
+    arguments: __C_UINT__SIZE_4,__PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_INT__SIZE_8
     return: __C_INT__SIZE_4
 [Cfunction SDL_RemoveTimer]
     arguments: __C_INT__SIZE_4
-    return: SDL_bool
+    return: __C_INT__SIZE_4
 [Cfunction SDL_GetVersion]
     arguments: __PTR__ SDL_version
-    return: 
+    return: __C_VOID__
 [Cfunction SDL_GetRevision]
     arguments: 
     return: __PTR__ __C_CHAR__SIZE_1
@@ -4826,18 +4820,18 @@ Ctype NestStruct
     return: __C_INT__SIZE_4
 [Cfunction SDL_QuitSubSystem]
     arguments: __C_UINT__SIZE_4
-    return: 
+    return: __C_VOID__
 [Cfunction SDL_WasInit]
     arguments: __C_UINT__SIZE_4
     return: __C_UINT__SIZE_4
 [Cfunction SDL_Quit]
     arguments: 
-    return: 
+    return: __C_VOID__
 [Cfunction main]
     arguments: 
     return: __C_INT__SIZE_4
 [Cfunction f]
-    arguments: __PTR__ __C_INT__SIZE_4
+    arguments: __C_UNKNOWN__SIZE_400
     return: __C_INT__SIZE_4
 [Cfunction TEST_no_arg_func]
     arguments: 

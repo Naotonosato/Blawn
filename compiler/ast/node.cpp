@@ -88,13 +88,9 @@ std::vector<llvm::Function*> FunctionNode::get_functions() {
     return res;
 }
 
-void FunctionNode::set_self_namespace(Scope self) {
-    self_namespace = self;
-}
+void FunctionNode::set_self_namespace(Scope self) { self_namespace = self; }
 
-Scope FunctionNode::get_self_namespace() {
-    return self_namespace;
-}
+Scope FunctionNode::get_self_namespace() { return self_namespace; }
 
 void ClassNode::register_constructor(std::vector<llvm::Type*> types,
                                      llvm::Function* constructor) {

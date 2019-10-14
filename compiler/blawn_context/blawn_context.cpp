@@ -12,8 +12,8 @@ void BlawnContext::register_element_name(std::string type, std::string name,
     element_names[type][name] = index;
 }
 
-std::map<std::string, unsigned int> BlawnContext::get_elements(std::string type_name)
-{
+std::map<std::string, unsigned int> BlawnContext::get_elements(
+    std::string type_name) {
     if (element_names.count(type_name)) return element_names[type_name];
     return {};
 }
@@ -76,10 +76,8 @@ llvm::Function* BlawnContext::get_C_function(std::string name) {
 }
 
 bool BlawnContext::exist_C_function(std::string name) {
-    if (get_C_function(name) == nullptr) {
-        return false;
-    } else
-        return true;
+    if (C_functions.count(name)) return true;
+    return false;
 }
 
 void BlawnContext::add_class(std::string name,

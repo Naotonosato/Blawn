@@ -1,10 +1,11 @@
-LLVM_OPTION := `llvm-config --cxxflags --system-libs --ldflags --libs core` -fexceptions -O0 -std=c++14 
-CC := g++
+LLVM_OPTION := `llvm-config --cxxflags --system-libs --ldflags --libs core` -fexceptions -O0 -std=gnu++17 -std=c++17 -lstdc++fs
+CC := g++ -std=gnu++17 -std=c++17 -lstdc++fs
 all: blawn
-blawn: builtins.o errors.o main.o driver.o node.o parser.o lexer.o ast_generator.o node.o ir_generator.o utils.o blawn_context.o errors.o
-	$(CC) -g -o blawn main.o driver.o parser.o lexer.o ast_generator.o \
+blawn: builtins.o errors.o main.o compiler.o driver.o node.o parser.o lexer.o ast_generator.o node.o ir_generator.o utils.o blawn_context.o errors.o
+	$(CC) -g -o blawn main.o compiler.o driver.o parser.o lexer.o ast_generator.o \
 	./node.o builtins.o ir_generator.o utils.o errors.o blawn_context.o -ll $(LLVM_OPTION)
 	cp blawn ../blawn/blawn
+	cp -r ../blawn ../test
 driver.o: ../compiler/parser/driver.cpp ../compiler/ir_generator/ir_generator.hpp
 	$(CC) -g -c -o driver.o ../compiler/parser/driver.cpp $(LLVM_OPTION) 
 parser.o: ../compiler/parser/parser.tab.cc ../compiler/parser/parser.tab.hh
@@ -17,6 +18,8 @@ lexer.o: ../compiler/parser/lexer.ll
 	$(CC) -g -c -o lexer.o ../compiler/parser/lex.yy.cc $(LLVM_OPTION)
 main.o: ../compiler/parser/main.cpp
 	$(CC) -g -c -o main.o ../compiler/parser/main.cpp $(LLVM_OPTION)
+compiler.o: ../compiler/compiler/compiler.cpp ../compiler/compiler/compiler.hpp
+	$(CC) -g -c -o compiler.o ../compiler/compiler/compiler.cpp $(LLVM_OPTION)
 ir_generator.o: ../compiler/ir_generator/ir_generator.cpp ../compiler/ir_generator/ir_generator.hpp ../compiler/ast_generator/node_collector.hpp ../compiler/utils/utils.hpp
 	$(CC) -g -c ../compiler/ir_generator/ir_generator.cpp -o ir_generator.o  $(LLVM_OPTION)
 blawn_context.o: ../compiler/blawn_context/blawn_context.cpp ../compiler/blawn_context/blawn_context.hpp
@@ -39,9 +42,13 @@ clean:
 	rm *.o
 	rm *.ll
 	-fsanitize=address
-
+cridge_debug:
+	cd ../blawn && ./blawn ../tools/test1.bridge
+cridge:
+	cd ../tools && python3 cridge.py
+	cd ../blawn && ./blawn ../tools/test1.bridge
 test:
-	cd ../blawn && ./blawn test1.blawn
+	cd ../test/blawn && ./blawn test1.blawn
 lli: 
 	cd ../blawn && lli result.ll
 format:

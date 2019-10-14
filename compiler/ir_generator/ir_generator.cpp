@@ -24,7 +24,6 @@
 #include "../utils/utils.hpp"
 #include "ir_generator.hpp"
 
-
 bool check_parameter(llvm::Function* func, std::vector<llvm::Type*> passed) {
     return func->arg_size() == passed.size();
 }
@@ -138,23 +137,28 @@ llvm::Value* NullIRGenerator::generate(Node& node_) {
                                                "__C_USHORT__"};
 
     std::vector<std::string> builtin_C_types = {
-        "__C_BOOL__",     "__C_CHAR__",  "__C_CHAR__",      "__C_DOUBLE__",
-        "__C_FLOAT__",    "__C_INT__",   "__C_LONG__",      "__C_LONGDOUBLE__",
-        "__C_LONGLONG__", "__C_SCHAR__", "__C_SHORT__",     "__C_UCHAR__",
-        "__C_UINT__",     "__C_ULONG__", "__C_ULONGLONG__", "__C_USHORT__",
-        "__C_WCHAR__"};
+        "__C_BOOL__",     "__C_CHAR__",   "__C_CHAR__",      "__C_DOUBLE__",
+        "__C_FLOAT__",    "__C_INT__",    "__C_LONG__",      "__C_LONGDOUBLE__",
+        "__C_LONGLONG__", "__C_SCHAR__",  "__C_SHORT__",     "__C_UCHAR__",
+        "__C_UINT__",     "__C_ULONG__",  "__C_ULONGLONG__", "__C_USHORT__",
+        "__C_WCHAR__",    "__C_UNKNOWN__"};
     std::vector<std::string> parsed;
     utils::split(node.type_name, "__PTR__ ", parsed);
     std::string type_name = parsed.back();
+    utils::replace(type_name, " ", "");
     std::vector<std::string> res;
     utils::split(type_name, std::string("SIZE_"), res);
-    if ((res.back() == "" or res.size() <= 1) && node.class_node == nullptr)
+    if (type_name == "__C_VOID__") {
+        return nullptr;
+    }
+    if ((res.back() == "" or res.size() <= 1) && node.class_node == nullptr) {
         logger.unknown_identifier_error("type name or variable",
                                         node.type_name);
+    }
     parsed.pop_back();
 
     if (node.class_node == nullptr) {
-        unsigned int type_size = std::stoi(res.back().c_str()) * 4;
+        unsigned int type_size = std::stoi(res.back().c_str()) * 8;
         type_name = res.front();
         utils::replace(type_name, " ", "");
         bool is_real_num_type = utils::exist(real_num_types, type_name);
@@ -216,14 +220,15 @@ llvm::Value* FloatIRGenerator::generate(Node& node) {
 
 llvm::Value* StringIRGenerator::generate(Node& node) {
     std::string str = node.string;
-    auto ptr = ir_builder.CreateGlobalStringPtr(str);
+    auto ptr = ir_builder.CreateGlobalStringPtr(str,str);
     auto length =
-        llvm::ConstantInt::get(context, llvm::APInt(64, str.size(), true));
+        llvm::ConstantInt::get(context, llvm::APInt(64, str.size()));
     std::vector<llvm::Value*> args;
     args.push_back(ptr);
     args.push_back(length);
-    return ir_builder.CreateCall(module.getFunction("string_constructor"),
+    auto string = ir_builder.CreateCall(module.getFunction("string_constructor"),
                                  args);
+    return string;
 }
 
 llvm::Value* VariableIRGenerator::generate(Node& node_) {
@@ -299,13 +304,12 @@ llvm::Value* AssigmentIRGenerator::generate(Node& node_) {
     auto right_value = node.get_right_node()->generate();
     if (right_value == nullptr) logger.invalid_right_value_error();
 
-    if (right_value->getType()->isPointerTy() && left_node->self_scope.is_longer(right_node->self_scope))
-        {
-            logger.assignment_different_scope_error(
+    if (right_value->getType()->isPointerTy() &&
+        left_node->self_scope.is_longer(right_node->self_scope)) {
+        logger.assignment_different_scope_error(
             utils::to_string(left_node->self_scope),
-            utils::to_string(right_node->self_scope)
-            );
-        }
+            utils::to_string(right_node->self_scope));
+    }
 
     auto to_store = right_value;
     if (pointer->getType()->getPointerElementType()->isIntegerTy() &&
@@ -330,140 +334,134 @@ llvm::Value* AssigmentIRGenerator::generate(Node& node_) {
 }
 
 void walk(llvm::Type* type,
-        std::vector<std::pair<llvm::Value*,llvm::Value*>>& res,
-        StoreNode& node,
-        llvm::LLVMContext& context,
-        llvm::Module& module,
-        llvm::IRBuilder<>& ir_builder,
-        StoreIRGenerator& store_generator
-        )
-{
-    if (type->isPointerTy() && type->getPointerElementType()->isStructTy())
-    {
-        std::string struct_name = type->getPointerElementType()->getStructName();
+          std::vector<std::pair<llvm::Value*, llvm::Value*>>& res,
+          StoreNode& node, llvm::LLVMContext& context, llvm::Module& module,
+          llvm::IRBuilder<>& ir_builder, StoreIRGenerator& store_generator) {
+    if (type->isPointerTy() && type->getPointerElementType()->isStructTy()) {
+        std::string struct_name =
+            type->getPointerElementType()->getStructName();
         auto field = get_blawn_context().get_elements(struct_name);
-        
-        auto gen = AccessIRGenerator(context,module,ir_builder);
+
+        auto gen = AccessIRGenerator(context, module, ir_builder);
         NodeCollector<FunctionNode> empty;
         std::shared_ptr<Node> p_node;
         std::shared_ptr<Node> o_node;
-        
-        for (auto& element:field)
-        {
+
+        for (auto& element : field) {
             auto element_name = element.first;
-            utils::replace(element_name,"@","");
+            utils::replace(element_name, "@", "");
             p_node = std::shared_ptr<Node>(
-                new AccessNode(node.line_number,node.self_scope,gen,node.pointer,element_name,empty)
-                );
+                new AccessNode(node.line_number, node.self_scope, gen,
+                               node.pointer, element_name, empty));
             o_node = std::shared_ptr<Node>(
-                new AccessNode(node.line_number,node.self_scope,gen,node.object,element_name,empty)
-                );
-            if (p_node->generate()->getType()->isPointerTy())
-            {
-                auto store_node = StoreNode(node.line_number,node.self_scope,store_generator,p_node,o_node);
-                walk(p_node->generate()->getType(),res,store_node,context,module,ir_builder,store_generator);
-            }
-            else
-            {
+                new AccessNode(node.line_number, node.self_scope, gen,
+                               node.object, element_name, empty));
+            if (p_node->generate()->getType()->isPointerTy() &&
+                p_node->generate()
+                    ->getType()
+                    ->getPointerElementType()
+                    ->isStructTy()) {
+                auto store_node = StoreNode(node.line_number, node.self_scope,
+                                            store_generator, p_node, o_node);
+                walk(p_node->generate()->getType(), res, store_node, context,
+                     module, ir_builder, store_generator);
+            } else {
                 p_node->generate();
                 auto element_object = o_node->generate();
-                if (p_node->is_accessing()) 
-                {
-                    llvm::Value* element_pointer = static_cast<AccessNode*>(p_node.get())->get_pointer();
-                    res.push_back(std::make_pair(
-                        element_pointer,
-                        element_object
-                    ));
-                    std::cout << "store to " << struct_name << "." << element_name << std::endl;
+                if (p_node->is_accessing()) {
+                    llvm::Value* element_pointer =
+                        static_cast<AccessNode*>(p_node.get())->get_pointer();
+                    res.push_back(
+                        std::make_pair(element_pointer, element_object));
                 }
             }
         }
     }
 }
 
-void store(
-        StoreNode& node,
-        llvm::Value* pointer,
-        llvm::Value* object,
-        llvm::LLVMContext& context,
-        llvm::Module& module,
-        llvm::IRBuilder<>& ir_builder
-        )
-{
+void store(StoreNode& node, llvm::Value* pointer, llvm::Value* object,
+           llvm::LLVMContext& context, llvm::Module& module,
+           llvm::IRBuilder<>& ir_builder) {
     BlawnLogger logger;
     logger.set_line_number(node.line_number);
-    if (object->getType()->isPointerTy()) object = ir_builder.CreateLoad(object);
-    if (!pointer->getType()->isPointerTy() || pointer->getType()->getPointerElementType() != object->getType()) 
-    {
-        logger.invalid_store_error(
-            utils::to_string(pointer->getType()),
-            utils::to_string(object->getType())
-            );
+    /*if object-type is pointer,should load that ptr.
+      but maybe object-type is ptr but that's not result of access(last
+      element). in than case, pointer is ptr of ptr;
+    */
+    if (object->getType()->isPointerTy() &&
+        !pointer->getType()->getPointerElementType()->isPointerTy())
+        object = ir_builder.CreateLoad(object);
+    if (!pointer->getType()->isPointerTy() ||
+        pointer->getType()->getPointerElementType() != object->getType()) {
+        // cannot store error
+        logger.invalid_store_error(utils::to_string(pointer->getType()),
+                                   utils::to_string(object->getType()));
     }
-    auto s = ir_builder.CreateStore(object,pointer);
-    std::cout << utils::to_string(s) << std::endl;
+    ir_builder.CreateStore(object, pointer);
 }
 
-llvm::Value* StoreIRGenerator::generate(Node& node_)
-{
+llvm::Value* StoreIRGenerator::generate(Node& node_) {
     auto& node = *static_cast<StoreNode*>(&node_);
     BlawnLogger logger;
     logger.set_line_number(node.line_number);
     auto pointer = node.pointer->generate();
     auto object = node.object->generate();
-    if (object->getType()->isPointerTy()) object = ir_builder.CreateLoad(object);
-    if (node.pointer->is_accessing())
-    {
-        pointer = (*static_cast<AccessNode*>(node.pointer.get())).get_pointer();   
-        if (pointer->getType()->getPointerElementType()->isPointerTy())
-        {
-            pointer = ir_builder.CreateLoad(pointer);
+    if (object->getType()->isPointerTy())
+        object = ir_builder.CreateLoad(object);
+    if (node.pointer->is_accessing() && !pointer->getType()->isStructTy()) {
+        pointer = (*static_cast<AccessNode*>(node.pointer.get())).get_pointer();
+        bool is_break = false;
+        if (pointer->getType()->getPointerElementType()->isPointerTy()) {
+            pointer =
+                node.pointer->generate();  // ir_builder.CreateLoad(pointer);
+            is_break = true;
         }
-        if (!pointer->getType()->isPointerTy() || pointer->getType()->getPointerElementType() != object->getType()) 
-        {
-            logger.invalid_store_error(
-                utils::to_string(pointer->getType()),
-                utils::to_string(object->getType())
-                );
+        if (!pointer->getType()->getPointerElementType()->isPointerTy() &&
+                !pointer->getType()->isPointerTy() ||
+            pointer->getType()->getPointerElementType() != object->getType()) {
+            logger.invalid_store_error(utils::to_string(pointer->getType()),
+                                       utils::to_string(object->getType()));
         }
-        ir_builder.CreateStore(object,pointer);
+        if (!is_break) ir_builder.CreateStore(object, pointer);
     }
-    std::vector<std::pair<llvm::Value*,llvm::Value*>> res;
-    walk(pointer->getType(),res,node,context,module,ir_builder,*this);
+    std::vector<std::pair<llvm::Value*, llvm::Value*>> res;
+    walk(pointer->getType(), res, node, context, module, ir_builder, *this);
 
-    for (auto& pair:res)
-    {
+    for (auto& pair : res) {
         auto ptr = pair.first;
         auto obj = pair.second;
-        store(node,ptr,obj,context,module,ir_builder);
+        store(node, ptr, obj, context, module, ir_builder);
     }
 
     /*
     if (pointer->getType()->getPointerElementType()->isStructTy())
     {
-        std::string struct_name = pointer->getType()->getPointerElementType()->getStructName();
-        auto field = get_blawn_context().get_elements(struct_name);
-        
+        std::string struct_name =
+    pointer->getType()->getPointerElementType()->getStructName(); auto field =
+    get_blawn_context().get_elements(struct_name);
+
         auto gen = AccessIRGenerator(context,module,ir_builder);
         NodeCollector<FunctionNode> empty;
         std::shared_ptr<Node> p_node;
         std::shared_ptr<Node> o_node;
-        
+
         for (auto& element:field)
         {
             auto element_name = element.first;
             utils::replace(element_name,"@","");
-            std::cout << "store to " << struct_name << "." << element_name << std::endl;
-            p_node = std::shared_ptr<Node>(
-                new AccessNode(node.line_number,node.self_scope,gen,node.pointer,element_name,empty)
+            std::cout << "store to " << struct_name << "." << element_name <<
+    std::endl; p_node = std::shared_ptr<Node>( new
+    AccessNode(node.line_number,node.self_scope,gen,node.pointer,element_name,empty)
                 );
             o_node = std::shared_ptr<Node>(
-                new AccessNode(node.line_number,node.self_scope,gen,node.object,element_name,empty)
+                new
+    AccessNode(node.line_number,node.self_scope,gen,node.object,element_name,empty)
                 );
             if (p_node->generate()->getType()->isPointerTy())
-            {auto re = StoreNode(node.line_number,node.self_scope,*this,p_node,o_node);
+            {auto re =
+    StoreNode(node.line_number,node.self_scope,*this,p_node,o_node);
             generate(re);}
-            
+
 
         }
     }
@@ -475,7 +473,6 @@ llvm::Value* StoreIRGenerator::generate(Node& node_)
 llvm::Value* ArgumentIRGenerator::generate(Node& node_) {
     auto& node = *static_cast<ArgumentNode*>(&node_);
     return ir_builder.CreateLoad(node.alloca_inst);
-    // return node.get_right_value();
 }
 
 llvm::Value* BinaryExpressionIRGenerator::generate(Node& node_) {
@@ -596,12 +593,29 @@ llvm::Function* FunctionIRGenerator::generate(Node& node_) {
 
 llvm::Value* DeclareCIRGenerator::generate(Node& node_) {
     auto& node = *static_cast<DeclareCNode*>(&node_);
+    BlawnLogger logger;
+    logger.set_line_number(node.line_number);
     std::vector<llvm::Type*> arguments_type;
     for (auto& v : node.arguments_type()) {
-        arguments_type.push_back(v->generate()->getType());
+        auto value = v->generate();
+        if (value == nullptr) {
+            logger.invalid_paramater_error(
+                node.name + "(invalide declaration of argument)");
+        }
+        arguments_type.push_back(value->getType());
     }
-    llvm::Type* return_type = node.return_type()->generate()->getType();
-    auto ft = llvm::FunctionType::get(return_type, arguments_type, false);
+    auto return_value = node.return_type()->generate();
+    llvm::Type* return_type;
+    if (return_value == nullptr) {
+        return_type = ir_builder.getVoidTy();
+    } else {
+        return_type = return_value->getType();
+    }
+    llvm::FunctionType* ft = nullptr;
+    if (arguments_type.size() == 0)
+        ft = llvm::FunctionType::get(return_type, false);
+    else
+        ft = llvm::FunctionType::get(return_type, arguments_type, false);
     auto C_function = llvm::Function::Create(
         ft, llvm::Function::ExternalLinkage, node.name, &module);
     get_blawn_context().add_C_function(node.name, C_function);
@@ -650,8 +664,7 @@ llvm::Value* CallFunctionIRGenerator::generate(Node& node_) {
     // call C function
     if (node.is_C) {
         if (!get_blawn_context().exist_C_function(node.name)) {
-            std::cout << "function '" << node.name << "' is not defined";
-            exit(1);
+            logger.unknown_identifier_error("function", node.name);
         }
         auto cfunc = get_blawn_context().get_C_function(node.name);
         for (auto& arg : node.passed_arguments) {
@@ -665,7 +678,7 @@ llvm::Value* CallFunctionIRGenerator::generate(Node& node_) {
         }
         std::vector<llvm::Value*> args;
         if (cfunc->arg_size() != node.passed_arguments.size()) {
-            logger.invalid_paramater_error("function");
+            logger.invalid_paramater_error(node.name);
         }
 
         int count = 0;
@@ -673,7 +686,7 @@ llvm::Value* CallFunctionIRGenerator::generate(Node& node_) {
             auto& arg = node.passed_arguments[count];
             auto value = arg->generate();
             if (value->getType() != c_arg.getType()) {
-                logger.invalid_paramater_error("function");
+                logger.invalid_paramater_error(node.name);
             }
             args.push_back(value);
             count += 1;
@@ -862,9 +875,23 @@ llvm::Value* CallConstructorIRGenerator::generate(Node& node_) {
         auto local = node.get_class()->get_self_namespace();
         auto empty_node = node.argument_collector.get(name, local);
         empty_node->alloca_inst =
+                ir_builder.CreateAlloca(tmp_constructor_arg.getType(), 0, 0);
+        ir_builder.CreateStore(&tmp_constructor_arg, empty_node->alloca_inst);
+        /*
+        empty_node->alloca_inst =
+            ir_builder.CreateAlloca(tmp_func_arg.getType(), 0, 0);
+        ir_builder.CreateStore(&tmp_func_arg, empty_node->alloca_inst);
+        empty_node->set_right_value(
+            ir_builder.CreateLoad(empty_node->alloca_inst));
+        empty_node->alloca_inst;
+        */
+        empty_node->set_right_value(&tmp_constructor_arg);
+
+        /*empty_node->alloca_inst =
             ir_builder.CreateAlloca(tmp_constructor_arg.getType(), 0, 0);
         ir_builder.CreateStore(&tmp_constructor_arg, empty_node->alloca_inst);
         empty_node->set_right_value(&tmp_constructor_arg);
+        */
         count += 1;
     }
 
@@ -1065,8 +1092,8 @@ llvm::Value* AccessIRGenerator::generate(Node& node_) {
             auto call_node = node.get_call_node();
             CallFunctionIRGenerator gen(context, module, ir_builder);
             auto method_call = CallFunctionNode(
-                node.line_number, node.self_scope,gen, call_node->passed_arguments,
-                call_node->argument_collector, bm);
+                node.line_number, node.self_scope, gen,
+                call_node->passed_arguments, call_node->argument_collector, bm);
             if (node.get_generated() != nullptr) {
                 return node.get_generated();
             }
@@ -1156,8 +1183,7 @@ IRGenerators::IRGenerators(llvm::LLVMContext& context, llvm::Module& module,
       for_generator(context, module, ir_builder),
       access_generator(context, module, ir_builder),
       list_generator(context, module, ir_builder),
-      block_end_generator(context, module, ir_builder) 
-    {}
+      block_end_generator(context, module, ir_builder) {}
 /*
 llvm::Value* access(llvm::Value* left,llvm::StructType* struct_type,std::string
 right_name,llvm::IRBuilder<> ir_builder)

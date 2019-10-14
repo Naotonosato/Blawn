@@ -19,8 +19,9 @@ class BlawnLogger {
     void set_line_number(int line_number);
     void different_type_error(std::string first, std::string second);
     void multiple_definition_error(std::string kind, std::string name);
-    void assignment_different_scope_error(std::string scope,std::string scope2);
-    void invalid_store_error(std::string type,std::string type2);
+    void assignment_different_scope_error(std::string scope,
+                                          std::string scope2);
+    void invalid_store_error(std::string type, std::string type2);
     void invalid_dot_error();
     void invalid_right_value_error();
     void invalid_paramater_error(std::string func_name);

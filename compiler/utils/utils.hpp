@@ -10,6 +10,7 @@ class Type;
 }  // namespace llvm
 
 namespace utils {
+std::string get_filename(std::string name);
 std::string to_string(Scope&);
 std::string to_string(llvm::Type*);
 std::string to_string(llvm::Value*);

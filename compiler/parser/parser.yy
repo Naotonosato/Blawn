@@ -92,12 +92,13 @@
         IN
         WHILE
         GLOBAL
+        IMPORT
         C_FUNCTION_ARGUMENT
         C_FUNCTION_RETURN
         EOL
+%token <std::string> STRING_LITERAL
 %token <long long> INT_LITERAL
 %token <double> FLOAT_LITERAL
-%token <std::string> STRING_LITERAL
 %type <std::vector<std::shared_ptr<Node>>> block
 %type <std::vector<std::shared_ptr<Node>>> lines
 %type <std::shared_ptr<Node>> line
@@ -127,7 +128,6 @@
 %type <std::shared_ptr<Node>> expression
 %type <std::vector<std::shared_ptr<Node>>> for_start
 %type <std::shared_ptr<Node>> list
-
 %type <std::shared_ptr<AccessNode>> access
 %type <std::shared_ptr<Node>> call
 %type <std::shared_ptr<Node>> monomial
@@ -171,7 +171,13 @@ line:
     |definition
     {
         $$ = $1;
+    }
+    |import
+    {
+        $$ = driver.ast_generator->no_value_node;
     };
+import:
+    IMPORT STRING_LITERAL EOL;
 line_content:
     expression
     {
@@ -354,7 +360,6 @@ definition_arguments:
 globals_definition:
     global_start EOL LEFT_PARENTHESIS EOL globals_variables EOL RIGHT_PARENTHESIS EOL
     {
-        //driver.ast_generator->add_global_variables($5);
         is_global = NOT_GLOBAL;
         $$ = driver.ast_generator->no_value_node;
     };
@@ -551,7 +556,7 @@ monomial:
 call:
     IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
     {
-        $$ = driver.ast_generator->create_call($1,std::move($3));
+        $$ = driver.ast_generator->create_call($1,$3);
     }
     |IDENTIFIER LEFT_PARENTHESIS RIGHT_PARENTHESIS
     {

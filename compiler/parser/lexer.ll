@@ -17,7 +17,7 @@
 %option c++
 
 COMMENT             \/\/.*\n
-STRING_LITERAL      \".*\"
+STRING_LITERAL      \"[^\"]*\"
 INT_LITERAL         [0-9]+
 FLOAT_LITERAL       [0-9]+\.[0-9]*
 USE                 use
@@ -47,6 +47,7 @@ FOR         for
 IN          in
 WHILE       while
 GLOBAL      global
+IMPORT      import
 C_FUNCTION_DECLARATION  \[Cfunction[ \t]+[a-zA-Z_][0-9a-zA-Z_]*\]
 C_FUNCTION_ARGUMENT     arguments:
 C_FUNCTION_RETURN       return:
@@ -183,6 +184,9 @@ EOL                 \n|\r\n
 }
 {GLOBAL} {
     return Blawn::Parser::token::GLOBAL;
+}
+{IMPORT} {
+    return Blawn::Parser::token::IMPORT;
 }
 {METHOD_DEFINITION} {
     std::string definition = yytext;

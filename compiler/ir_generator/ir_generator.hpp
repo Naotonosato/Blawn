@@ -113,16 +113,13 @@ class AssigmentIRGenerator : public IRGenerator {
     llvm::Value *generate(Node &) override;
 };
 
-
-class StoreIRGenerator: public IRGenerator
-{
+class StoreIRGenerator : public IRGenerator {
     public:
     StoreIRGenerator(llvm::LLVMContext &context, llvm::Module &module,
-                         llvm::IRBuilder<> &ir_builder)
+                     llvm::IRBuilder<> &ir_builder)
         : IRGenerator(context, module, ir_builder) {}
     llvm::Value *generate(Node &) override;
 };
-
 
 class BinaryExpressionIRGenerator : public IRGenerator {
     public:
@@ -239,5 +236,5 @@ class IRGenerators {
     ListIRGenerator list_generator;
     BlockEndIRGenerator block_end_generator;
     IRGenerators(llvm::LLVMContext &, llvm::Module &, llvm::IRBuilder<> &);
-    IRGenerators& get_generators();
+    IRGenerators &get_generators();
 };

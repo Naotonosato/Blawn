@@ -430,12 +430,13 @@ namespace Blawn {
         IN = 295,
         WHILE = 296,
         GLOBAL = 297,
-        C_FUNCTION_ARGUMENT = 298,
-        C_FUNCTION_RETURN = 299,
-        EOL = 300,
-        INT_LITERAL = 301,
-        FLOAT_LITERAL = 302,
-        STRING_LITERAL = 303
+        IMPORT = 298,
+        C_FUNCTION_ARGUMENT = 299,
+        C_FUNCTION_RETURN = 300,
+        EOL = 301,
+        STRING_LITERAL = 302,
+        INT_LITERAL = 303,
+        FLOAT_LITERAL = 304
       };
     };
 
@@ -724,6 +725,10 @@ namespace Blawn {
 
     static inline
     symbol_type
+    make_IMPORT (const location_type& l);
+
+    static inline
+    symbol_type
     make_C_FUNCTION_ARGUMENT (const location_type& l);
 
     static inline
@@ -736,15 +741,15 @@ namespace Blawn {
 
     static inline
     symbol_type
+    make_STRING_LITERAL (const std::string& v, const location_type& l);
+
+    static inline
+    symbol_type
     make_INT_LITERAL (const long long& v, const location_type& l);
 
     static inline
     symbol_type
     make_FLOAT_LITERAL (const double& v, const location_type& l);
-
-    static inline
-    symbol_type
-    make_STRING_LITERAL (const std::string& v, const location_type& l);
 
 
     /// Build a parser object.
@@ -948,12 +953,12 @@ namespace Blawn {
     enum
     {
       yyeof_ = 0,
-      yylast_ = 317,     ///< Last index in yytable_.
-      yynnts_ = 38,  ///< Number of nonterminal symbols.
-      yyfinal_ = 46, ///< Termination state number.
+      yylast_ = 308,     ///< Last index in yytable_.
+      yynnts_ = 39,  ///< Number of nonterminal symbols.
+      yyfinal_ = 49, ///< Termination state number.
       yyterror_ = 1,
       yyerrcode_ = 256,
-      yyntokens_ = 49  ///< Number of tokens.
+      yyntokens_ = 50  ///< Number of tokens.
     };
 
 
@@ -965,7 +970,7 @@ namespace Blawn {
 
 #line 5 "parser.yy" // lalr1.cc:377
 } // Blawn
-#line 969 "parser.tab.hh" // lalr1.cc:377
+#line 974 "parser.tab.hh" // lalr1.cc:377
 
 
 

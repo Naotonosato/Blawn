@@ -12,17 +12,18 @@ void BlawnLogger::different_type_error(std::string first, std::string second) {
     exit(1);
 }
 
-void BlawnLogger::assignment_different_scope_error(std::string scope,std::string scope2)
-{
-    std::cerr << "Error: can't assign value in scope '" << scope2 << "' to object in scope '" << scope
-              << "' at line " << line_number << std::endl;
+void BlawnLogger::assignment_different_scope_error(std::string scope,
+                                                   std::string scope2) {
+    std::cerr << "Error: can't assign value in scope '" << scope2
+              << "' to object in scope '" << scope << "' at line "
+              << line_number << std::endl;
     exit(1);
 }
 
-void BlawnLogger::invalid_store_error(std::string type,std::string type2)
-{
-    std::cerr << "Error: can't store value typed '" << type2 << "' to value typed '" << type
-              << "' at line " << line_number << std::endl;
+void BlawnLogger::invalid_store_error(std::string type, std::string type2) {
+    std::cerr << "Error: can't store value typed '" << type2
+              << "' to value typed '" << type << "' at line " << line_number
+              << std::endl;
     exit(1);
 }
 
