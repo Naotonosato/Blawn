@@ -1,0 +1,4922 @@
+Ctype __fsid_t
+    @__NOT_SUPPORTED__1 = __C_UNKNOWN__SIZE_8
+Ctype __sigset_t
+    @__NOT_SUPPORTED__2 = __C_UNKNOWN__SIZE_128
+Ctype timeval
+    @tv_sec = __C_LONG__SIZE_8
+    @tv_usec = __C_LONG__SIZE_8
+Ctype timespec
+    @tv_sec = __C_LONG__SIZE_8
+    @tv_nsec = __C_LONG__SIZE_8
+Ctype fd_set
+    @__NOT_SUPPORTED__3 = __C_UNKNOWN__SIZE_128
+Ctype __pthread_rwlock_arch_t
+    @__readers = __C_UINT__SIZE_4
+    @__writers = __C_UINT__SIZE_4
+    @__wrphase_futex = __C_UINT__SIZE_4
+    @__writers_futex = __C_UINT__SIZE_4
+    @__pad3 = __C_UINT__SIZE_4
+    @__pad4 = __C_UINT__SIZE_4
+    @__cur_writer = __C_INT__SIZE_4
+    @__shared = __C_INT__SIZE_4
+    @__rwelision = __C_SCHAR__SIZE_1
+    @__NOT_SUPPORTED__4 = __C_UNKNOWN__SIZE_7
+    @__pad2 = __C_ULONG__SIZE_8
+    @__flags = __C_UINT__SIZE_4
+Ctype __pthread_internal_list
+    @__NOT_SUPPORTED__5 = __C_UNKNOWN__SIZE_8
+    @__NOT_SUPPORTED__6 = __C_UNKNOWN__SIZE_8
+Ctype __pthread_mutex_s
+    @__lock = __C_INT__SIZE_4
+    @__count = __C_UINT__SIZE_4
+    @__owner = __C_INT__SIZE_4
+    @__nusers = __C_UINT__SIZE_4
+    @__kind = __C_INT__SIZE_4
+    @__spins = __C_SHORT__SIZE_2
+    @__elision = __C_SHORT__SIZE_2
+    @__list = __pthread_internal_list
+Ctype __pthread_cond_s
+    @__NOT_SUPPORTED__7 = __C_UNKNOWN__SIZE_8
+    @__NOT_SUPPORTED__8 = __C_UNKNOWN__SIZE_8
+    @__NOT_SUPPORTED__9 = __C_UNKNOWN__SIZE_8
+    @__NOT_SUPPORTED__10 = __C_UNKNOWN__SIZE_8
+    @__g1_orig_size = __C_UINT__SIZE_4
+    @__wrefs = __C_UINT__SIZE_4
+    @__NOT_SUPPORTED__11 = __C_UNKNOWN__SIZE_8
+Ctype pthread_mutexattr_t
+    @__NOT_SUPPORTED__12 = __C_UNKNOWN__SIZE_4
+    @__align = __C_INT__SIZE_4
+Ctype pthread_condattr_t
+    @__NOT_SUPPORTED__13 = __C_UNKNOWN__SIZE_4
+    @__align = __C_INT__SIZE_4
+Ctype pthread_mutex_t
+    @__data = __pthread_mutex_s
+    @__NOT_SUPPORTED__14 = __C_UNKNOWN__SIZE_40
+    @__align = __C_LONG__SIZE_8
+Ctype pthread_cond_t
+    @__data = __pthread_cond_s
+    @__NOT_SUPPORTED__15 = __C_UNKNOWN__SIZE_48
+    @__align = __C_LONGLONG__SIZE_8
+Ctype pthread_rwlock_t
+    @__data = __pthread_rwlock_arch_t
+    @__NOT_SUPPORTED__16 = __C_UNKNOWN__SIZE_56
+    @__align = __C_LONG__SIZE_8
+Ctype pthread_rwlockattr_t
+    @__NOT_SUPPORTED__17 = __C_UNKNOWN__SIZE_8
+    @__align = __C_LONG__SIZE_8
+Ctype pthread_barrier_t
+    @__NOT_SUPPORTED__18 = __C_UNKNOWN__SIZE_32
+    @__align = __C_LONG__SIZE_8
+Ctype pthread_barrierattr_t
+    @__NOT_SUPPORTED__19 = __C_UNKNOWN__SIZE_4
+    @__align = __C_INT__SIZE_4
+Ctype _IO_FILE
+    @__NOT_SUPPORTED__20 = __C_UNKNOWN__SIZE_1
+Ctype __mbstate_t
+    @__count = __C_INT__SIZE_4
+    @__NOT_SUPPORTED__21 = __C_UNKNOWN__SIZE_4
+Ctype _G_fpos_t
+    @__pos = __C_LONG__SIZE_8
+    @__state = __mbstate_t
+Ctype _G_fpos64_t
+    @__pos = __C_LONG__SIZE_8
+    @__state = __mbstate_t
+Ctype _IO_marker
+    @__NOT_SUPPORTED__22 = __C_UNKNOWN__SIZE_8
+    @_sbuf = __PTR__ _IO_FILE
+    @_pos = __C_INT__SIZE_4
+Ctype div_t
+    @quot = __C_INT__SIZE_4
+    @rem = __C_INT__SIZE_4
+Ctype ldiv_t
+    @quot = __C_LONG__SIZE_8
+    @rem = __C_LONG__SIZE_8
+Ctype lldiv_t
+    @quot = __C_LONGLONG__SIZE_8
+    @rem = __C_LONGLONG__SIZE_8
+Ctype random_data
+    @fptr = __PTR__ __C_INT__SIZE_4
+    @rptr = __PTR__ __C_INT__SIZE_4
+    @state = __PTR__ __C_INT__SIZE_4
+    @rand_type = __C_INT__SIZE_4
+    @rand_deg = __C_INT__SIZE_4
+    @rand_sep = __C_INT__SIZE_4
+    @end_ptr = __PTR__ __C_INT__SIZE_4
+Ctype drand48_data
+    @__NOT_SUPPORTED__23 = __C_UNKNOWN__SIZE_6
+    @__NOT_SUPPORTED__24 = __C_UNKNOWN__SIZE_6
+    @__c = __C_USHORT__SIZE_2
+    @__init = __C_USHORT__SIZE_2
+    @__a = __C_ULONGLONG__SIZE_8
+Ctype __locale_struct
+    @__NOT_SUPPORTED__25 = __C_UNKNOWN__SIZE_104
+    @__ctype_b = __PTR__ __C_USHORT__SIZE_2
+    @__ctype_tolower = __PTR__ __C_INT__SIZE_4
+    @__ctype_toupper = __PTR__ __C_INT__SIZE_4
+    @__NOT_SUPPORTED__26 = __C_UNKNOWN__SIZE_104
+Ctype imaxdiv_t
+    @quot = __C_LONG__SIZE_8
+    @rem = __C_LONG__SIZE_8
+Ctype SDL_AssertData
+    @always_ignore = __C_INT__SIZE_4
+    @trigger_count = __C_UINT__SIZE_4
+    @condition = __PTR__ __C_CHAR__SIZE_1
+    @filename = __PTR__ __C_CHAR__SIZE_1
+    @linenum = __C_INT__SIZE_4
+    @function = __PTR__ __C_CHAR__SIZE_1
+    @__NOT_SUPPORTED__27 = __C_UNKNOWN__SIZE_8
+Ctype SDL_atomic_t
+    @value = __C_INT__SIZE_4
+Ctype SDL_RWops
+    @__NOT_SUPPORTED__28 = __C_UNKNOWN__SIZE_1
+Ctype SDL_AudioSpec
+    @freq = __C_INT__SIZE_4
+    @format = __C_USHORT__SIZE_2
+    @channels = __C_UCHAR__SIZE_1
+    @silence = __C_UCHAR__SIZE_1
+    @samples = __C_USHORT__SIZE_2
+    @padding = __C_USHORT__SIZE_2
+    @size = __C_UINT__SIZE_4
+    @callback = __PTR__ __C_UNKNOWN__SIZE_1
+    @userdata = __PTR__ __C_INT__SIZE_8
+Ctype SDL_AudioCVT
+    @needed = __C_INT__SIZE_4
+    @src_format = __C_USHORT__SIZE_2
+    @dst_format = __C_USHORT__SIZE_2
+    @rate_incr = __C_DOUBLE__SIZE_8
+    @buf = __PTR__ __C_UCHAR__SIZE_1
+    @len = __C_INT__SIZE_4
+    @len_cvt = __C_INT__SIZE_4
+    @len_mult = __C_INT__SIZE_4
+    @len_ratio = __C_DOUBLE__SIZE_8
+    @__NOT_SUPPORTED__29 = __C_UNKNOWN__SIZE_80
+    @filter_index = __C_INT__SIZE_4
+Ctype SDL_Color
+    @r = __C_UCHAR__SIZE_1
+    @g = __C_UCHAR__SIZE_1
+    @b = __C_UCHAR__SIZE_1
+    @a = __C_UCHAR__SIZE_1
+Ctype SDL_Palette
+    @ncolors = __C_INT__SIZE_4
+    @colors = __PTR__ SDL_Color
+    @version = __C_UINT__SIZE_4
+    @refcount = __C_INT__SIZE_4
+Ctype SDL_PixelFormat
+    @format = __C_UINT__SIZE_4
+    @palette = __PTR__ SDL_Palette
+    @BitsPerPixel = __C_UCHAR__SIZE_1
+    @BytesPerPixel = __C_UCHAR__SIZE_1
+    @__NOT_SUPPORTED__30 = __C_UNKNOWN__SIZE_2
+    @Rmask = __C_UINT__SIZE_4
+    @Gmask = __C_UINT__SIZE_4
+    @Bmask = __C_UINT__SIZE_4
+    @Amask = __C_UINT__SIZE_4
+    @Rloss = __C_UCHAR__SIZE_1
+    @Gloss = __C_UCHAR__SIZE_1
+    @Bloss = __C_UCHAR__SIZE_1
+    @Aloss = __C_UCHAR__SIZE_1
+    @Rshift = __C_UCHAR__SIZE_1
+    @Gshift = __C_UCHAR__SIZE_1
+    @Bshift = __C_UCHAR__SIZE_1
+    @Ashift = __C_UCHAR__SIZE_1
+    @refcount = __C_INT__SIZE_4
+    @__NOT_SUPPORTED__31 = __C_UNKNOWN__SIZE_8
+Ctype SDL_Point
+    @x = __C_INT__SIZE_4
+    @y = __C_INT__SIZE_4
+Ctype SDL_Rect
+    @x = __C_INT__SIZE_4
+    @y = __C_INT__SIZE_4
+    @w = __C_INT__SIZE_4
+    @h = __C_INT__SIZE_4
+Ctype SDL_Surface
+    @flags = __C_UINT__SIZE_4
+    @format = __PTR__ SDL_PixelFormat
+    @w = __C_INT__SIZE_4
+    @h = __C_INT__SIZE_4
+    @pitch = __C_INT__SIZE_4
+    @pixels = __PTR__ __C_INT__SIZE_8
+    @userdata = __PTR__ __C_INT__SIZE_8
+    @locked = __C_INT__SIZE_4
+    @lock_data = __PTR__ __C_INT__SIZE_8
+    @clip_rect = SDL_Rect
+    @map = __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    @refcount = __C_INT__SIZE_4
+Ctype SDL_DisplayMode
+    @format = __C_UINT__SIZE_4
+    @w = __C_INT__SIZE_4
+    @h = __C_INT__SIZE_4
+    @refresh_rate = __C_INT__SIZE_4
+    @driverdata = __PTR__ __C_INT__SIZE_8
+Ctype SDL_Keysym
+    @scancode = __C_INT__SIZE_4
+    @sym = __C_INT__SIZE_4
+    @mod = __C_USHORT__SIZE_2
+    @unused = __C_UINT__SIZE_4
+Ctype SDL_JoystickGUID
+    @__NOT_SUPPORTED__32 = __C_UNKNOWN__SIZE_16
+Ctype SDL_GameControllerButtonBind
+    @bindType = __C_INT__SIZE_4
+    @__NOT_SUPPORTED__33 = __C_UNKNOWN__SIZE_8
+Ctype SDL_Finger
+    @id = __C_LONG__SIZE_8
+    @x = __C_FLOAT__SIZE_4
+    @y = __C_FLOAT__SIZE_4
+    @pressure = __C_FLOAT__SIZE_4
+Ctype SDL_CommonEvent
+    @type = __C_UINT__SIZE_4
+    @timestamp = __C_UINT__SIZE_4
+Ctype SDL_WindowEvent
+    @type = __C_UINT__SIZE_4
+    @timestamp = __C_UINT__SIZE_4
+    @windowID = __C_UINT__SIZE_4
+    @event = __C_UCHAR__SIZE_1
+    @padding1 = __C_UCHAR__SIZE_1
+    @padding2 = __C_UCHAR__SIZE_1
+    @padding3 = __C_UCHAR__SIZE_1
+    @data1 = __C_INT__SIZE_4
+    @data2 = __C_INT__SIZE_4
+Ctype SDL_KeyboardEvent
+    @type = __C_UINT__SIZE_4
+    @timestamp = __C_UINT__SIZE_4
+    @windowID = __C_UINT__SIZE_4
+    @state = __C_UCHAR__SIZE_1
+    @repeat = __C_UCHAR__SIZE_1
+    @padding2 = __C_UCHAR__SIZE_1
+    @padding3 = __C_UCHAR__SIZE_1
+    @keysym = SDL_Keysym
+Ctype SDL_TextEditingEvent
+    @type = __C_UINT__SIZE_4
+    @timestamp = __C_UINT__SIZE_4
+    @windowID = __C_UINT__SIZE_4
+    @__NOT_SUPPORTED__34 = __C_UNKNOWN__SIZE_32
+    @start = __C_INT__SIZE_4
+    @length = __C_INT__SIZE_4
+Ctype SDL_TextInputEvent
+    @type = __C_UINT__SIZE_4
+    @timestamp = __C_UINT__SIZE_4
+    @windowID = __C_UINT__SIZE_4
+    @__NOT_SUPPORTED__35 = __C_UNKNOWN__SIZE_32
+Ctype SDL_MouseMotionEvent
+    @type = __C_UINT__SIZE_4
+    @timestamp = __C_UINT__SIZE_4
+    @windowID = __C_UINT__SIZE_4
+    @which = __C_UINT__SIZE_4
+    @state = __C_UINT__SIZE_4
+    @x = __C_INT__SIZE_4
+    @y = __C_INT__SIZE_4
+    @xrel = __C_INT__SIZE_4
+    @yrel = __C_INT__SIZE_4
+Ctype SDL_MouseButtonEvent
+    @type = __C_UINT__SIZE_4
+    @timestamp = __C_UINT__SIZE_4
+    @windowID = __C_UINT__SIZE_4
+    @which = __C_UINT__SIZE_4
+    @button = __C_UCHAR__SIZE_1
+    @state = __C_UCHAR__SIZE_1
+    @clicks = __C_UCHAR__SIZE_1
+    @padding1 = __C_UCHAR__SIZE_1
+    @x = __C_INT__SIZE_4
+    @y = __C_INT__SIZE_4
+Ctype SDL_MouseWheelEvent
+    @type = __C_UINT__SIZE_4
+    @timestamp = __C_UINT__SIZE_4
+    @windowID = __C_UINT__SIZE_4
+    @which = __C_UINT__SIZE_4
+    @x = __C_INT__SIZE_4
+    @y = __C_INT__SIZE_4
+    @direction = __C_UINT__SIZE_4
+Ctype SDL_JoyAxisEvent
+    @type = __C_UINT__SIZE_4
+    @timestamp = __C_UINT__SIZE_4
+    @which = __C_INT__SIZE_4
+    @axis = __C_UCHAR__SIZE_1
+    @padding1 = __C_UCHAR__SIZE_1
+    @padding2 = __C_UCHAR__SIZE_1
+    @padding3 = __C_UCHAR__SIZE_1
+    @value = __C_SHORT__SIZE_2
+    @padding4 = __C_USHORT__SIZE_2
+Ctype SDL_JoyBallEvent
+    @type = __C_UINT__SIZE_4
+    @timestamp = __C_UINT__SIZE_4
+    @which = __C_INT__SIZE_4
+    @ball = __C_UCHAR__SIZE_1
+    @padding1 = __C_UCHAR__SIZE_1
+    @padding2 = __C_UCHAR__SIZE_1
+    @padding3 = __C_UCHAR__SIZE_1
+    @xrel = __C_SHORT__SIZE_2
+    @yrel = __C_SHORT__SIZE_2
+Ctype SDL_JoyHatEvent
+    @type = __C_UINT__SIZE_4
+    @timestamp = __C_UINT__SIZE_4
+    @which = __C_INT__SIZE_4
+    @hat = __C_UCHAR__SIZE_1
+    @value = __C_UCHAR__SIZE_1
+    @padding1 = __C_UCHAR__SIZE_1
+    @padding2 = __C_UCHAR__SIZE_1
+Ctype SDL_JoyButtonEvent
+    @type = __C_UINT__SIZE_4
+    @timestamp = __C_UINT__SIZE_4
+    @which = __C_INT__SIZE_4
+    @button = __C_UCHAR__SIZE_1
+    @state = __C_UCHAR__SIZE_1
+    @padding1 = __C_UCHAR__SIZE_1
+    @padding2 = __C_UCHAR__SIZE_1
+Ctype SDL_JoyDeviceEvent
+    @type = __C_UINT__SIZE_4
+    @timestamp = __C_UINT__SIZE_4
+    @which = __C_INT__SIZE_4
+Ctype SDL_ControllerAxisEvent
+    @type = __C_UINT__SIZE_4
+    @timestamp = __C_UINT__SIZE_4
+    @which = __C_INT__SIZE_4
+    @axis = __C_UCHAR__SIZE_1
+    @padding1 = __C_UCHAR__SIZE_1
+    @padding2 = __C_UCHAR__SIZE_1
+    @padding3 = __C_UCHAR__SIZE_1
+    @value = __C_SHORT__SIZE_2
+    @padding4 = __C_USHORT__SIZE_2
+Ctype SDL_ControllerButtonEvent
+    @type = __C_UINT__SIZE_4
+    @timestamp = __C_UINT__SIZE_4
+    @which = __C_INT__SIZE_4
+    @button = __C_UCHAR__SIZE_1
+    @state = __C_UCHAR__SIZE_1
+    @padding1 = __C_UCHAR__SIZE_1
+    @padding2 = __C_UCHAR__SIZE_1
+Ctype SDL_ControllerDeviceEvent
+    @type = __C_UINT__SIZE_4
+    @timestamp = __C_UINT__SIZE_4
+    @which = __C_INT__SIZE_4
+Ctype SDL_AudioDeviceEvent
+    @type = __C_UINT__SIZE_4
+    @timestamp = __C_UINT__SIZE_4
+    @which = __C_UINT__SIZE_4
+    @iscapture = __C_UCHAR__SIZE_1
+    @padding1 = __C_UCHAR__SIZE_1
+    @padding2 = __C_UCHAR__SIZE_1
+    @padding3 = __C_UCHAR__SIZE_1
+Ctype SDL_TouchFingerEvent
+    @type = __C_UINT__SIZE_4
+    @timestamp = __C_UINT__SIZE_4
+    @touchId = __C_LONG__SIZE_8
+    @fingerId = __C_LONG__SIZE_8
+    @x = __C_FLOAT__SIZE_4
+    @y = __C_FLOAT__SIZE_4
+    @dx = __C_FLOAT__SIZE_4
+    @dy = __C_FLOAT__SIZE_4
+    @pressure = __C_FLOAT__SIZE_4
+Ctype SDL_MultiGestureEvent
+    @type = __C_UINT__SIZE_4
+    @timestamp = __C_UINT__SIZE_4
+    @touchId = __C_LONG__SIZE_8
+    @dTheta = __C_FLOAT__SIZE_4
+    @dDist = __C_FLOAT__SIZE_4
+    @x = __C_FLOAT__SIZE_4
+    @y = __C_FLOAT__SIZE_4
+    @numFingers = __C_USHORT__SIZE_2
+    @padding = __C_USHORT__SIZE_2
+Ctype SDL_DollarGestureEvent
+    @type = __C_UINT__SIZE_4
+    @timestamp = __C_UINT__SIZE_4
+    @touchId = __C_LONG__SIZE_8
+    @gestureId = __C_LONG__SIZE_8
+    @numFingers = __C_UINT__SIZE_4
+    @error = __C_FLOAT__SIZE_4
+    @x = __C_FLOAT__SIZE_4
+    @y = __C_FLOAT__SIZE_4
+Ctype SDL_DropEvent
+    @type = __C_UINT__SIZE_4
+    @timestamp = __C_UINT__SIZE_4
+    @file = __PTR__ __C_CHAR__SIZE_1
+    @windowID = __C_UINT__SIZE_4
+Ctype SDL_QuitEvent
+    @type = __C_UINT__SIZE_4
+    @timestamp = __C_UINT__SIZE_4
+Ctype SDL_OSEvent
+    @type = __C_UINT__SIZE_4
+    @timestamp = __C_UINT__SIZE_4
+Ctype SDL_UserEvent
+    @type = __C_UINT__SIZE_4
+    @timestamp = __C_UINT__SIZE_4
+    @windowID = __C_UINT__SIZE_4
+    @code = __C_INT__SIZE_4
+    @data1 = __PTR__ __C_INT__SIZE_8
+    @data2 = __PTR__ __C_INT__SIZE_8
+Ctype SDL_SysWMEvent
+    @type = __C_UINT__SIZE_4
+    @timestamp = __C_UINT__SIZE_4
+    @msg = __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+Ctype SDL_HapticDirection
+    @type = __C_UCHAR__SIZE_1
+    @__NOT_SUPPORTED__36 = __C_UNKNOWN__SIZE_12
+Ctype SDL_HapticConstant
+    @type = __C_USHORT__SIZE_2
+    @direction = SDL_HapticDirection
+    @length = __C_UINT__SIZE_4
+    @delay = __C_USHORT__SIZE_2
+    @button = __C_USHORT__SIZE_2
+    @interval = __C_USHORT__SIZE_2
+    @level = __C_SHORT__SIZE_2
+    @attack_length = __C_USHORT__SIZE_2
+    @attack_level = __C_USHORT__SIZE_2
+    @fade_length = __C_USHORT__SIZE_2
+    @fade_level = __C_USHORT__SIZE_2
+Ctype SDL_HapticPeriodic
+    @type = __C_USHORT__SIZE_2
+    @direction = SDL_HapticDirection
+    @length = __C_UINT__SIZE_4
+    @delay = __C_USHORT__SIZE_2
+    @button = __C_USHORT__SIZE_2
+    @interval = __C_USHORT__SIZE_2
+    @period = __C_USHORT__SIZE_2
+    @magnitude = __C_SHORT__SIZE_2
+    @offset = __C_SHORT__SIZE_2
+    @phase = __C_USHORT__SIZE_2
+    @attack_length = __C_USHORT__SIZE_2
+    @attack_level = __C_USHORT__SIZE_2
+    @fade_length = __C_USHORT__SIZE_2
+    @fade_level = __C_USHORT__SIZE_2
+Ctype SDL_HapticCondition
+    @type = __C_USHORT__SIZE_2
+    @direction = SDL_HapticDirection
+    @length = __C_UINT__SIZE_4
+    @delay = __C_USHORT__SIZE_2
+    @button = __C_USHORT__SIZE_2
+    @interval = __C_USHORT__SIZE_2
+    @__NOT_SUPPORTED__37 = __C_UNKNOWN__SIZE_6
+    @__NOT_SUPPORTED__38 = __C_UNKNOWN__SIZE_6
+    @__NOT_SUPPORTED__39 = __C_UNKNOWN__SIZE_6
+    @__NOT_SUPPORTED__40 = __C_UNKNOWN__SIZE_6
+    @__NOT_SUPPORTED__41 = __C_UNKNOWN__SIZE_6
+    @__NOT_SUPPORTED__42 = __C_UNKNOWN__SIZE_6
+Ctype SDL_HapticRamp
+    @type = __C_USHORT__SIZE_2
+    @direction = SDL_HapticDirection
+    @length = __C_UINT__SIZE_4
+    @delay = __C_USHORT__SIZE_2
+    @button = __C_USHORT__SIZE_2
+    @interval = __C_USHORT__SIZE_2
+    @start = __C_SHORT__SIZE_2
+    @end = __C_SHORT__SIZE_2
+    @attack_length = __C_USHORT__SIZE_2
+    @attack_level = __C_USHORT__SIZE_2
+    @fade_length = __C_USHORT__SIZE_2
+    @fade_level = __C_USHORT__SIZE_2
+Ctype SDL_HapticLeftRight
+    @type = __C_USHORT__SIZE_2
+    @length = __C_UINT__SIZE_4
+    @large_magnitude = __C_USHORT__SIZE_2
+    @small_magnitude = __C_USHORT__SIZE_2
+Ctype SDL_HapticCustom
+    @type = __C_USHORT__SIZE_2
+    @direction = SDL_HapticDirection
+    @length = __C_UINT__SIZE_4
+    @delay = __C_USHORT__SIZE_2
+    @button = __C_USHORT__SIZE_2
+    @interval = __C_USHORT__SIZE_2
+    @channels = __C_UCHAR__SIZE_1
+    @period = __C_USHORT__SIZE_2
+    @samples = __C_USHORT__SIZE_2
+    @data = __PTR__ __C_USHORT__SIZE_2
+    @attack_length = __C_USHORT__SIZE_2
+    @attack_level = __C_USHORT__SIZE_2
+    @fade_length = __C_USHORT__SIZE_2
+    @fade_level = __C_USHORT__SIZE_2
+Ctype SDL_MessageBoxButtonData
+    @flags = __C_UINT__SIZE_4
+    @buttonid = __C_INT__SIZE_4
+    @text = __PTR__ __C_CHAR__SIZE_1
+Ctype SDL_MessageBoxColor
+    @r = __C_UCHAR__SIZE_1
+    @g = __C_UCHAR__SIZE_1
+    @b = __C_UCHAR__SIZE_1
+Ctype SDL_MessageBoxColorScheme
+    @__NOT_SUPPORTED__43 = __C_UNKNOWN__SIZE_15
+Ctype SDL_MessageBoxData
+    @flags = __C_UINT__SIZE_4
+    @window = __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    @title = __PTR__ __C_CHAR__SIZE_1
+    @message = __PTR__ __C_CHAR__SIZE_1
+    @numbuttons = __C_INT__SIZE_4
+    @buttons = __PTR__ SDL_MessageBoxButtonData
+    @colorScheme = __PTR__ SDL_MessageBoxColorScheme
+Ctype SDL_RendererInfo
+    @name = __PTR__ __C_CHAR__SIZE_1
+    @flags = __C_UINT__SIZE_4
+    @num_texture_formats = __C_UINT__SIZE_4
+    @__NOT_SUPPORTED__44 = __C_UNKNOWN__SIZE_64
+    @max_texture_width = __C_INT__SIZE_4
+    @max_texture_height = __C_INT__SIZE_4
+Ctype SDL_WindowShapeParams
+    @binarizationCutoff = __C_UCHAR__SIZE_1
+    @colorKey = SDL_Color
+Ctype SDL_WindowShapeMode
+    @mode = __C_INT__SIZE_4
+    @parameters = SDL_WindowShapeParams
+Ctype SDL_version
+    @major = __C_UCHAR__SIZE_1
+    @minor = __C_UCHAR__SIZE_1
+    @patch = __C_UCHAR__SIZE_1
+Ctype Struct
+    @member = __C_INT__SIZE_4
+    @member2 = __C_INT__SIZE_4
+Ctype NestStruct
+    @member = __C_INT__SIZE_4
+    @member2 = __C_INT__SIZE_4
+    @s = __PTR__ __PTR__ __PTR__ __PTR__ Struct
+[Cfunction SDL_GetPlatform]
+    arguments: 
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction __uint16_identity]
+    arguments: __C_USHORT__SIZE_2
+    return: __C_USHORT__SIZE_2
+[Cfunction __uint32_identity]
+    arguments: __C_UINT__SIZE_4
+    return: __C_UINT__SIZE_4
+[Cfunction __uint64_identity]
+    arguments: __C_ULONG__SIZE_8
+    return: __C_ULONG__SIZE_8
+[Cfunction select]
+    arguments: __C_INT__SIZE_4,__PTR__ fd_set,__PTR__ fd_set,__PTR__ fd_set,__PTR__ timeval
+    return: __C_INT__SIZE_4
+[Cfunction pselect]
+    arguments: __C_INT__SIZE_4,__PTR__ fd_set,__PTR__ fd_set,__PTR__ fd_set,__PTR__ timespec,__PTR__ __sigset_t
+    return: __C_INT__SIZE_4
+[Cfunction gnu_dev_major]
+    arguments: __C_ULONG__SIZE_8
+    return: __C_UINT__SIZE_4
+[Cfunction gnu_dev_minor]
+    arguments: __C_ULONG__SIZE_8
+    return: __C_UINT__SIZE_4
+[Cfunction gnu_dev_makedev]
+    arguments: __C_UINT__SIZE_4,__C_UINT__SIZE_4
+    return: __C_ULONG__SIZE_8
+[Cfunction __underflow]
+    arguments: __PTR__ _IO_FILE
+    return: __C_INT__SIZE_4
+[Cfunction __uflow]
+    arguments: __PTR__ _IO_FILE
+    return: __C_INT__SIZE_4
+[Cfunction __overflow]
+    arguments: __PTR__ _IO_FILE,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction _IO_getc]
+    arguments: __PTR__ _IO_FILE
+    return: __C_INT__SIZE_4
+[Cfunction _IO_putc]
+    arguments: __C_INT__SIZE_4,__PTR__ _IO_FILE
+    return: __C_INT__SIZE_4
+[Cfunction _IO_feof]
+    arguments: __PTR__ _IO_FILE
+    return: __C_INT__SIZE_4
+[Cfunction _IO_ferror]
+    arguments: __PTR__ _IO_FILE
+    return: __C_INT__SIZE_4
+[Cfunction _IO_peekc_locked]
+    arguments: __PTR__ _IO_FILE
+    return: __C_INT__SIZE_4
+[Cfunction _IO_flockfile]
+    arguments: __PTR__ _IO_FILE
+    return: __C_VOID__
+[Cfunction _IO_funlockfile]
+    arguments: __PTR__ _IO_FILE
+    return: __C_VOID__
+[Cfunction _IO_ftrylockfile]
+    arguments: __PTR__ _IO_FILE
+    return: __C_INT__SIZE_4
+[Cfunction _IO_vfscanf]
+    arguments: __PTR__ _IO_FILE,__PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction _IO_vfprintf]
+    arguments: __PTR__ _IO_FILE,__PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction _IO_padn]
+    arguments: __PTR__ _IO_FILE,__C_INT__SIZE_4,__C_LONG__SIZE_8
+    return: __C_LONG__SIZE_8
+[Cfunction _IO_sgetn]
+    arguments: __PTR__ _IO_FILE,__PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction _IO_seekoff]
+    arguments: __PTR__ _IO_FILE,__C_LONG__SIZE_8,__C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __C_LONG__SIZE_8
+[Cfunction _IO_seekpos]
+    arguments: __PTR__ _IO_FILE,__C_LONG__SIZE_8,__C_INT__SIZE_4
+    return: __C_LONG__SIZE_8
+[Cfunction _IO_free_backup_area]
+    arguments: __PTR__ _IO_FILE
+    return: __C_VOID__
+[Cfunction remove]
+    arguments: __PTR__ __C_CHAR__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction rename]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction renameat]
+    arguments: __C_INT__SIZE_4,__PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4,__PTR__ __C_CHAR__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction tmpfile]
+    arguments: 
+    return: __PTR__ _IO_FILE
+[Cfunction tmpnam]
+    arguments: __PTR__ __C_CHAR__SIZE_1
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction tmpnam_r]
+    arguments: __PTR__ __C_CHAR__SIZE_1
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction tempnam]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction fclose]
+    arguments: __PTR__ _IO_FILE
+    return: __C_INT__SIZE_4
+[Cfunction fflush]
+    arguments: __PTR__ _IO_FILE
+    return: __C_INT__SIZE_4
+[Cfunction fflush_unlocked]
+    arguments: __PTR__ _IO_FILE
+    return: __C_INT__SIZE_4
+[Cfunction fopen]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1
+    return: __PTR__ _IO_FILE
+[Cfunction freopen]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1,__PTR__ _IO_FILE
+    return: __PTR__ _IO_FILE
+[Cfunction fdopen]
+    arguments: __C_INT__SIZE_4,__PTR__ __C_CHAR__SIZE_1
+    return: __PTR__ _IO_FILE
+[Cfunction fmemopen]
+    arguments: __PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4,__PTR__ __C_CHAR__SIZE_1
+    return: __PTR__ _IO_FILE
+[Cfunction open_memstream]
+    arguments: __PTR__ __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_INT__SIZE_4
+    return: __PTR__ _IO_FILE
+[Cfunction setbuf]
+    arguments: __PTR__ _IO_FILE,__PTR__ __C_CHAR__SIZE_1
+    return: __C_VOID__
+[Cfunction setvbuf]
+    arguments: __PTR__ _IO_FILE,__PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction setbuffer]
+    arguments: __PTR__ _IO_FILE,__PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __C_VOID__
+[Cfunction setlinebuf]
+    arguments: __PTR__ _IO_FILE
+    return: __C_VOID__
+[Cfunction fprintf]
+    arguments: __PTR__ _IO_FILE,__PTR__ __C_CHAR__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction printf]
+    arguments: __PTR__ __C_CHAR__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction sprintf]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction vfprintf]
+    arguments: __PTR__ _IO_FILE,__PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction vprintf]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction vsprintf]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction snprintf]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4,__PTR__ __C_CHAR__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction vsnprintf]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4,__PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction vdprintf]
+    arguments: __C_INT__SIZE_4,__PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction dprintf]
+    arguments: __C_INT__SIZE_4,__PTR__ __C_CHAR__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction fscanf]
+    arguments: __PTR__ _IO_FILE,__PTR__ __C_CHAR__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction scanf]
+    arguments: __PTR__ __C_CHAR__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction sscanf]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction vfscanf]
+    arguments: __PTR__ _IO_FILE,__PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction vscanf]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction vsscanf]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction fgetc]
+    arguments: __PTR__ _IO_FILE
+    return: __C_INT__SIZE_4
+[Cfunction getc]
+    arguments: __PTR__ _IO_FILE
+    return: __C_INT__SIZE_4
+[Cfunction getchar]
+    arguments: 
+    return: __C_INT__SIZE_4
+[Cfunction getc_unlocked]
+    arguments: __PTR__ _IO_FILE
+    return: __C_INT__SIZE_4
+[Cfunction getchar_unlocked]
+    arguments: 
+    return: __C_INT__SIZE_4
+[Cfunction fgetc_unlocked]
+    arguments: __PTR__ _IO_FILE
+    return: __C_INT__SIZE_4
+[Cfunction fputc]
+    arguments: __C_INT__SIZE_4,__PTR__ _IO_FILE
+    return: __C_INT__SIZE_4
+[Cfunction putc]
+    arguments: __C_INT__SIZE_4,__PTR__ _IO_FILE
+    return: __C_INT__SIZE_4
+[Cfunction putchar]
+    arguments: __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction fputc_unlocked]
+    arguments: __C_INT__SIZE_4,__PTR__ _IO_FILE
+    return: __C_INT__SIZE_4
+[Cfunction putc_unlocked]
+    arguments: __C_INT__SIZE_4,__PTR__ _IO_FILE
+    return: __C_INT__SIZE_4
+[Cfunction putchar_unlocked]
+    arguments: __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction getw]
+    arguments: __PTR__ _IO_FILE
+    return: __C_INT__SIZE_4
+[Cfunction putw]
+    arguments: __C_INT__SIZE_4,__PTR__ _IO_FILE
+    return: __C_INT__SIZE_4
+[Cfunction fgets]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4,__PTR__ _IO_FILE
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction __getdelim]
+    arguments: __PTR__ __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_INT__SIZE_4,__C_INT__SIZE_4,__PTR__ _IO_FILE
+    return: __C_LONG__SIZE_8
+[Cfunction getdelim]
+    arguments: __PTR__ __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_INT__SIZE_4,__C_INT__SIZE_4,__PTR__ _IO_FILE
+    return: __C_LONG__SIZE_8
+[Cfunction getline]
+    arguments: __PTR__ __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_INT__SIZE_4,__PTR__ _IO_FILE
+    return: __C_LONG__SIZE_8
+[Cfunction fputs]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ _IO_FILE
+    return: __C_INT__SIZE_4
+[Cfunction puts]
+    arguments: __PTR__ __C_CHAR__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction ungetc]
+    arguments: __C_INT__SIZE_4,__PTR__ _IO_FILE
+    return: __C_INT__SIZE_4
+[Cfunction fread]
+    arguments: __PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4,__C_INT__SIZE_4,__PTR__ _IO_FILE
+    return: __C_INT__SIZE_4
+[Cfunction fwrite]
+    arguments: __PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4,__C_INT__SIZE_4,__PTR__ _IO_FILE
+    return: __C_INT__SIZE_4
+[Cfunction fread_unlocked]
+    arguments: __PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4,__C_INT__SIZE_4,__PTR__ _IO_FILE
+    return: __C_INT__SIZE_4
+[Cfunction fwrite_unlocked]
+    arguments: __PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4,__C_INT__SIZE_4,__PTR__ _IO_FILE
+    return: __C_INT__SIZE_4
+[Cfunction fseek]
+    arguments: __PTR__ _IO_FILE,__C_LONG__SIZE_8,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction ftell]
+    arguments: __PTR__ _IO_FILE
+    return: __C_LONG__SIZE_8
+[Cfunction rewind]
+    arguments: __PTR__ _IO_FILE
+    return: __C_VOID__
+[Cfunction fseeko]
+    arguments: __PTR__ _IO_FILE,__C_LONG__SIZE_8,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction ftello]
+    arguments: __PTR__ _IO_FILE
+    return: __C_LONG__SIZE_8
+[Cfunction fgetpos]
+    arguments: __PTR__ _IO_FILE,__PTR__ _G_fpos_t
+    return: __C_INT__SIZE_4
+[Cfunction fsetpos]
+    arguments: __PTR__ _IO_FILE,__PTR__ _G_fpos_t
+    return: __C_INT__SIZE_4
+[Cfunction clearerr]
+    arguments: __PTR__ _IO_FILE
+    return: __C_VOID__
+[Cfunction feof]
+    arguments: __PTR__ _IO_FILE
+    return: __C_INT__SIZE_4
+[Cfunction ferror]
+    arguments: __PTR__ _IO_FILE
+    return: __C_INT__SIZE_4
+[Cfunction clearerr_unlocked]
+    arguments: __PTR__ _IO_FILE
+    return: __C_VOID__
+[Cfunction feof_unlocked]
+    arguments: __PTR__ _IO_FILE
+    return: __C_INT__SIZE_4
+[Cfunction ferror_unlocked]
+    arguments: __PTR__ _IO_FILE
+    return: __C_INT__SIZE_4
+[Cfunction perror]
+    arguments: __PTR__ __C_CHAR__SIZE_1
+    return: __C_VOID__
+[Cfunction fileno]
+    arguments: __PTR__ _IO_FILE
+    return: __C_INT__SIZE_4
+[Cfunction fileno_unlocked]
+    arguments: __PTR__ _IO_FILE
+    return: __C_INT__SIZE_4
+[Cfunction popen]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1
+    return: __PTR__ _IO_FILE
+[Cfunction pclose]
+    arguments: __PTR__ _IO_FILE
+    return: __C_INT__SIZE_4
+[Cfunction ctermid]
+    arguments: __PTR__ __C_CHAR__SIZE_1
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction flockfile]
+    arguments: __PTR__ _IO_FILE
+    return: __C_VOID__
+[Cfunction ftrylockfile]
+    arguments: __PTR__ _IO_FILE
+    return: __C_INT__SIZE_4
+[Cfunction funlockfile]
+    arguments: __PTR__ _IO_FILE
+    return: __C_VOID__
+[Cfunction __ctype_get_mb_cur_max]
+    arguments: 
+    return: __C_INT__SIZE_4
+[Cfunction atof]
+    arguments: __PTR__ __C_CHAR__SIZE_1
+    return: __C_DOUBLE__SIZE_8
+[Cfunction atoi]
+    arguments: __PTR__ __C_CHAR__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction atol]
+    arguments: __PTR__ __C_CHAR__SIZE_1
+    return: __C_LONG__SIZE_8
+[Cfunction atoll]
+    arguments: __PTR__ __C_CHAR__SIZE_1
+    return: __C_LONGLONG__SIZE_8
+[Cfunction strtod]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __PTR__ __C_CHAR__SIZE_1
+    return: __C_DOUBLE__SIZE_8
+[Cfunction strtof]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __PTR__ __C_CHAR__SIZE_1
+    return: __C_FLOAT__SIZE_4
+[Cfunction strtold]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __PTR__ __C_CHAR__SIZE_1
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction strtol]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __C_LONG__SIZE_8
+[Cfunction strtoul]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __C_ULONG__SIZE_8
+[Cfunction strtoq]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __C_LONGLONG__SIZE_8
+[Cfunction strtouq]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __C_ULONGLONG__SIZE_8
+[Cfunction strtoll]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __C_LONGLONG__SIZE_8
+[Cfunction strtoull]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __C_ULONGLONG__SIZE_8
+[Cfunction l64a]
+    arguments: __C_LONG__SIZE_8
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction a64l]
+    arguments: __PTR__ __C_CHAR__SIZE_1
+    return: __C_LONG__SIZE_8
+[Cfunction random]
+    arguments: 
+    return: __C_LONG__SIZE_8
+[Cfunction srandom]
+    arguments: __C_UINT__SIZE_4
+    return: __C_VOID__
+[Cfunction initstate]
+    arguments: __C_UINT__SIZE_4,__PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction setstate]
+    arguments: __PTR__ __C_CHAR__SIZE_1
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction random_r]
+    arguments: __PTR__ random_data,__PTR__ __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction srandom_r]
+    arguments: __C_UINT__SIZE_4,__PTR__ random_data
+    return: __C_INT__SIZE_4
+[Cfunction initstate_r]
+    arguments: __C_UINT__SIZE_4,__PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4,__PTR__ random_data
+    return: __C_INT__SIZE_4
+[Cfunction setstate_r]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ random_data
+    return: __C_INT__SIZE_4
+[Cfunction rand]
+    arguments: 
+    return: __C_INT__SIZE_4
+[Cfunction srand]
+    arguments: __C_UINT__SIZE_4
+    return: __C_VOID__
+[Cfunction rand_r]
+    arguments: __PTR__ __C_UINT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction drand48]
+    arguments: 
+    return: __C_DOUBLE__SIZE_8
+[Cfunction erand48]
+    arguments: __C_UNKNOWN__SIZE_6
+    return: __C_DOUBLE__SIZE_8
+[Cfunction lrand48]
+    arguments: 
+    return: __C_LONG__SIZE_8
+[Cfunction nrand48]
+    arguments: __C_UNKNOWN__SIZE_6
+    return: __C_LONG__SIZE_8
+[Cfunction mrand48]
+    arguments: 
+    return: __C_LONG__SIZE_8
+[Cfunction jrand48]
+    arguments: __C_UNKNOWN__SIZE_6
+    return: __C_LONG__SIZE_8
+[Cfunction srand48]
+    arguments: __C_LONG__SIZE_8
+    return: __C_VOID__
+[Cfunction seed48]
+    arguments: __C_UNKNOWN__SIZE_6
+    return: __PTR__ __C_USHORT__SIZE_2
+[Cfunction lcong48]
+    arguments: __C_UNKNOWN__SIZE_14
+    return: __C_VOID__
+[Cfunction drand48_r]
+    arguments: __PTR__ drand48_data,__PTR__ __C_DOUBLE__SIZE_8
+    return: __C_INT__SIZE_4
+[Cfunction erand48_r]
+    arguments: __C_UNKNOWN__SIZE_6,__PTR__ drand48_data,__PTR__ __C_DOUBLE__SIZE_8
+    return: __C_INT__SIZE_4
+[Cfunction lrand48_r]
+    arguments: __PTR__ drand48_data,__PTR__ __C_LONG__SIZE_8
+    return: __C_INT__SIZE_4
+[Cfunction nrand48_r]
+    arguments: __C_UNKNOWN__SIZE_6,__PTR__ drand48_data,__PTR__ __C_LONG__SIZE_8
+    return: __C_INT__SIZE_4
+[Cfunction mrand48_r]
+    arguments: __PTR__ drand48_data,__PTR__ __C_LONG__SIZE_8
+    return: __C_INT__SIZE_4
+[Cfunction jrand48_r]
+    arguments: __C_UNKNOWN__SIZE_6,__PTR__ drand48_data,__PTR__ __C_LONG__SIZE_8
+    return: __C_INT__SIZE_4
+[Cfunction srand48_r]
+    arguments: __C_LONG__SIZE_8,__PTR__ drand48_data
+    return: __C_INT__SIZE_4
+[Cfunction seed48_r]
+    arguments: __C_UNKNOWN__SIZE_6,__PTR__ drand48_data
+    return: __C_INT__SIZE_4
+[Cfunction lcong48_r]
+    arguments: __C_UNKNOWN__SIZE_14,__PTR__ drand48_data
+    return: __C_INT__SIZE_4
+[Cfunction malloc]
+    arguments: __C_INT__SIZE_4
+    return: __PTR__ __C_INT__SIZE_8
+[Cfunction calloc]
+    arguments: __C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __PTR__ __C_INT__SIZE_8
+[Cfunction realloc]
+    arguments: __PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4
+    return: __PTR__ __C_INT__SIZE_8
+[Cfunction free]
+    arguments: __PTR__ __C_INT__SIZE_8
+    return: __C_VOID__
+[Cfunction alloca]
+    arguments: __C_INT__SIZE_4
+    return: __PTR__ __C_INT__SIZE_8
+[Cfunction valloc]
+    arguments: __C_INT__SIZE_4
+    return: __PTR__ __C_INT__SIZE_8
+[Cfunction posix_memalign]
+    arguments: __PTR__ __PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction aligned_alloc]
+    arguments: __C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __PTR__ __C_INT__SIZE_8
+[Cfunction abort]
+    arguments: 
+    return: __C_VOID__
+[Cfunction atexit]
+    arguments: __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction at_quick_exit]
+    arguments: __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction on_exit]
+    arguments: __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_INT__SIZE_8
+    return: __C_INT__SIZE_4
+[Cfunction exit]
+    arguments: __C_INT__SIZE_4
+    return: __C_VOID__
+[Cfunction quick_exit]
+    arguments: __C_INT__SIZE_4
+    return: __C_VOID__
+[Cfunction _Exit]
+    arguments: __C_INT__SIZE_4
+    return: __C_VOID__
+[Cfunction getenv]
+    arguments: __PTR__ __C_CHAR__SIZE_1
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction putenv]
+    arguments: __PTR__ __C_CHAR__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction setenv]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction unsetenv]
+    arguments: __PTR__ __C_CHAR__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction clearenv]
+    arguments: 
+    return: __C_INT__SIZE_4
+[Cfunction mktemp]
+    arguments: __PTR__ __C_CHAR__SIZE_1
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction mkstemp]
+    arguments: __PTR__ __C_CHAR__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction mkstemps]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction mkdtemp]
+    arguments: __PTR__ __C_CHAR__SIZE_1
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction system]
+    arguments: __PTR__ __C_CHAR__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction realpath]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction bsearch]
+    arguments: __PTR__ __C_INT__SIZE_8,__PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4,__C_INT__SIZE_4,__PTR__ __C_UNKNOWN__SIZE_1
+    return: __PTR__ __C_INT__SIZE_8
+[Cfunction qsort]
+    arguments: __PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4,__C_INT__SIZE_4,__PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_VOID__
+[Cfunction abs]
+    arguments: __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction labs]
+    arguments: __C_LONG__SIZE_8
+    return: __C_LONG__SIZE_8
+[Cfunction llabs]
+    arguments: __C_LONGLONG__SIZE_8
+    return: __C_LONGLONG__SIZE_8
+[Cfunction div]
+    arguments: __C_INT__SIZE_4,__C_INT__SIZE_4
+    return: div_t
+[Cfunction ldiv]
+    arguments: __C_LONG__SIZE_8,__C_LONG__SIZE_8
+    return: ldiv_t
+[Cfunction lldiv]
+    arguments: __C_LONGLONG__SIZE_8,__C_LONGLONG__SIZE_8
+    return: lldiv_t
+[Cfunction ecvt]
+    arguments: __C_DOUBLE__SIZE_8,__C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction fcvt]
+    arguments: __C_DOUBLE__SIZE_8,__C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction gcvt]
+    arguments: __C_DOUBLE__SIZE_8,__C_INT__SIZE_4,__PTR__ __C_CHAR__SIZE_1
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction qecvt]
+    arguments: __C_LONGDOUBLE__SIZE_16,__C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction qfcvt]
+    arguments: __C_LONGDOUBLE__SIZE_16,__C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction qgcvt]
+    arguments: __C_LONGDOUBLE__SIZE_16,__C_INT__SIZE_4,__PTR__ __C_CHAR__SIZE_1
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction ecvt_r]
+    arguments: __C_DOUBLE__SIZE_8,__C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4,__PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction fcvt_r]
+    arguments: __C_DOUBLE__SIZE_8,__C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4,__PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction qecvt_r]
+    arguments: __C_LONGDOUBLE__SIZE_16,__C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4,__PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction qfcvt_r]
+    arguments: __C_LONGDOUBLE__SIZE_16,__C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4,__PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction mblen]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction mbtowc]
+    arguments: __PTR__ __C_INT__SIZE_4,__PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction wctomb]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction mbstowcs]
+    arguments: __PTR__ __C_INT__SIZE_4,__PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction wcstombs]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction rpmatch]
+    arguments: __PTR__ __C_CHAR__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction getsubopt]
+    arguments: __PTR__ __PTR__ __C_CHAR__SIZE_1,__PTR__ __PTR__ __C_CHAR__SIZE_1,__PTR__ __PTR__ __C_CHAR__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction getloadavg]
+    arguments: __PTR__ __C_UNKNOWN__SIZE_1,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction memcpy]
+    arguments: __PTR__ __C_INT__SIZE_8,__PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4
+    return: __PTR__ __C_INT__SIZE_8
+[Cfunction memmove]
+    arguments: __PTR__ __C_INT__SIZE_8,__PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4
+    return: __PTR__ __C_INT__SIZE_8
+[Cfunction memccpy]
+    arguments: __PTR__ __C_INT__SIZE_8,__PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __PTR__ __C_INT__SIZE_8
+[Cfunction memset]
+    arguments: __PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __PTR__ __C_INT__SIZE_8
+[Cfunction memcmp]
+    arguments: __PTR__ __C_INT__SIZE_8,__PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction memchr]
+    arguments: __PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __PTR__ __C_INT__SIZE_8
+[Cfunction strcpy]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction strncpy]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction strcat]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction strncat]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction strcmp]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction strncmp]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction strcoll]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction strxfrm]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction strcoll_l]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1,__PTR__ __locale_struct
+    return: __C_INT__SIZE_4
+[Cfunction strxfrm_l]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4,__PTR__ __locale_struct
+    return: __C_INT__SIZE_4
+[Cfunction strdup]
+    arguments: __PTR__ __C_CHAR__SIZE_1
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction strndup]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction strchr]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction strrchr]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction strcspn]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction strspn]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction strpbrk]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction strstr]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction strtok]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction __strtok_r]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1,__PTR__ __PTR__ __C_CHAR__SIZE_1
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction strtok_r]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1,__PTR__ __PTR__ __C_CHAR__SIZE_1
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction strlen]
+    arguments: __PTR__ __C_CHAR__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction strnlen]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction strerror]
+    arguments: __C_INT__SIZE_4
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction strerror_r]
+    arguments: __C_INT__SIZE_4,__PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction strerror_l]
+    arguments: __C_INT__SIZE_4,__PTR__ __locale_struct
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction bcmp]
+    arguments: __PTR__ __C_INT__SIZE_8,__PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction bcopy]
+    arguments: __PTR__ __C_INT__SIZE_8,__PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4
+    return: __C_VOID__
+[Cfunction bzero]
+    arguments: __PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4
+    return: __C_VOID__
+[Cfunction index]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction rindex]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction ffs]
+    arguments: __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction ffsl]
+    arguments: __C_LONG__SIZE_8
+    return: __C_INT__SIZE_4
+[Cfunction ffsll]
+    arguments: __C_LONGLONG__SIZE_8
+    return: __C_INT__SIZE_4
+[Cfunction strcasecmp]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction strncasecmp]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction strcasecmp_l]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1,__PTR__ __locale_struct
+    return: __C_INT__SIZE_4
+[Cfunction strncasecmp_l]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4,__PTR__ __locale_struct
+    return: __C_INT__SIZE_4
+[Cfunction explicit_bzero]
+    arguments: __PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4
+    return: __C_VOID__
+[Cfunction strsep]
+    arguments: __PTR__ __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction strsignal]
+    arguments: __C_INT__SIZE_4
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction __stpcpy]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction stpcpy]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction __stpncpy]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction stpncpy]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction wcscpy]
+    arguments: __PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4
+    return: __PTR__ __C_INT__SIZE_4
+[Cfunction wcsncpy]
+    arguments: __PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __PTR__ __C_INT__SIZE_4
+[Cfunction wcscat]
+    arguments: __PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4
+    return: __PTR__ __C_INT__SIZE_4
+[Cfunction wcsncat]
+    arguments: __PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __PTR__ __C_INT__SIZE_4
+[Cfunction wcscmp]
+    arguments: __PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction wcsncmp]
+    arguments: __PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction wcscasecmp]
+    arguments: __PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction wcsncasecmp]
+    arguments: __PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction wcscasecmp_l]
+    arguments: __PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4,__PTR__ __locale_struct
+    return: __C_INT__SIZE_4
+[Cfunction wcsncasecmp_l]
+    arguments: __PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4,__C_INT__SIZE_4,__PTR__ __locale_struct
+    return: __C_INT__SIZE_4
+[Cfunction wcscoll]
+    arguments: __PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction wcsxfrm]
+    arguments: __PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction wcscoll_l]
+    arguments: __PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4,__PTR__ __locale_struct
+    return: __C_INT__SIZE_4
+[Cfunction wcsxfrm_l]
+    arguments: __PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4,__C_INT__SIZE_4,__PTR__ __locale_struct
+    return: __C_INT__SIZE_4
+[Cfunction wcsdup]
+    arguments: __PTR__ __C_INT__SIZE_4
+    return: __PTR__ __C_INT__SIZE_4
+[Cfunction wcschr]
+    arguments: __PTR__ __C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __PTR__ __C_INT__SIZE_4
+[Cfunction wcsrchr]
+    arguments: __PTR__ __C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __PTR__ __C_INT__SIZE_4
+[Cfunction wcscspn]
+    arguments: __PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction wcsspn]
+    arguments: __PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction wcspbrk]
+    arguments: __PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4
+    return: __PTR__ __C_INT__SIZE_4
+[Cfunction wcsstr]
+    arguments: __PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4
+    return: __PTR__ __C_INT__SIZE_4
+[Cfunction wcstok]
+    arguments: __PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4,__PTR__ __PTR__ __C_INT__SIZE_4
+    return: __PTR__ __C_INT__SIZE_4
+[Cfunction wcslen]
+    arguments: __PTR__ __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction wcsnlen]
+    arguments: __PTR__ __C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction wmemchr]
+    arguments: __PTR__ __C_INT__SIZE_4,__C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __PTR__ __C_INT__SIZE_4
+[Cfunction wmemcmp]
+    arguments: __PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction wmemcpy]
+    arguments: __PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __PTR__ __C_INT__SIZE_4
+[Cfunction wmemmove]
+    arguments: __PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __PTR__ __C_INT__SIZE_4
+[Cfunction wmemset]
+    arguments: __PTR__ __C_INT__SIZE_4,__C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __PTR__ __C_INT__SIZE_4
+[Cfunction btowc]
+    arguments: __C_INT__SIZE_4
+    return: __C_UINT__SIZE_4
+[Cfunction wctob]
+    arguments: __C_UINT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction mbsinit]
+    arguments: __PTR__ __mbstate_t
+    return: __C_INT__SIZE_4
+[Cfunction mbrtowc]
+    arguments: __PTR__ __C_INT__SIZE_4,__PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4,__PTR__ __mbstate_t
+    return: __C_INT__SIZE_4
+[Cfunction wcrtomb]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4,__PTR__ __mbstate_t
+    return: __C_INT__SIZE_4
+[Cfunction __mbrlen]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4,__PTR__ __mbstate_t
+    return: __C_INT__SIZE_4
+[Cfunction mbrlen]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4,__PTR__ __mbstate_t
+    return: __C_INT__SIZE_4
+[Cfunction mbsrtowcs]
+    arguments: __PTR__ __C_INT__SIZE_4,__PTR__ __PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4,__PTR__ __mbstate_t
+    return: __C_INT__SIZE_4
+[Cfunction wcsrtombs]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __PTR__ __C_INT__SIZE_4,__C_INT__SIZE_4,__PTR__ __mbstate_t
+    return: __C_INT__SIZE_4
+[Cfunction mbsnrtowcs]
+    arguments: __PTR__ __C_INT__SIZE_4,__PTR__ __PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4,__C_INT__SIZE_4,__PTR__ __mbstate_t
+    return: __C_INT__SIZE_4
+[Cfunction wcsnrtombs]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __PTR__ __C_INT__SIZE_4,__C_INT__SIZE_4,__C_INT__SIZE_4,__PTR__ __mbstate_t
+    return: __C_INT__SIZE_4
+[Cfunction wcstod]
+    arguments: __PTR__ __C_INT__SIZE_4,__PTR__ __PTR__ __C_INT__SIZE_4
+    return: __C_DOUBLE__SIZE_8
+[Cfunction wcstof]
+    arguments: __PTR__ __C_INT__SIZE_4,__PTR__ __PTR__ __C_INT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction wcstold]
+    arguments: __PTR__ __C_INT__SIZE_4,__PTR__ __PTR__ __C_INT__SIZE_4
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction wcstol]
+    arguments: __PTR__ __C_INT__SIZE_4,__PTR__ __PTR__ __C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __C_LONG__SIZE_8
+[Cfunction wcstoul]
+    arguments: __PTR__ __C_INT__SIZE_4,__PTR__ __PTR__ __C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __C_ULONG__SIZE_8
+[Cfunction wcstoll]
+    arguments: __PTR__ __C_INT__SIZE_4,__PTR__ __PTR__ __C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __C_LONGLONG__SIZE_8
+[Cfunction wcstoull]
+    arguments: __PTR__ __C_INT__SIZE_4,__PTR__ __PTR__ __C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __C_ULONGLONG__SIZE_8
+[Cfunction wcpcpy]
+    arguments: __PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4
+    return: __PTR__ __C_INT__SIZE_4
+[Cfunction wcpncpy]
+    arguments: __PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __PTR__ __C_INT__SIZE_4
+[Cfunction open_wmemstream]
+    arguments: __PTR__ __PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4
+    return: __PTR__ _IO_FILE
+[Cfunction fwide]
+    arguments: __PTR__ _IO_FILE,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction fwprintf]
+    arguments: __PTR__ _IO_FILE,__PTR__ __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction wprintf]
+    arguments: __PTR__ __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction swprintf]
+    arguments: __PTR__ __C_INT__SIZE_4,__C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction vfwprintf]
+    arguments: __PTR__ _IO_FILE,__PTR__ __C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction vwprintf]
+    arguments: __PTR__ __C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction vswprintf]
+    arguments: __PTR__ __C_INT__SIZE_4,__C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction fwscanf]
+    arguments: __PTR__ _IO_FILE,__PTR__ __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction wscanf]
+    arguments: __PTR__ __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction swscanf]
+    arguments: __PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction vfwscanf]
+    arguments: __PTR__ _IO_FILE,__PTR__ __C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction vwscanf]
+    arguments: __PTR__ __C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction vswscanf]
+    arguments: __PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction fgetwc]
+    arguments: __PTR__ _IO_FILE
+    return: __C_UINT__SIZE_4
+[Cfunction getwc]
+    arguments: __PTR__ _IO_FILE
+    return: __C_UINT__SIZE_4
+[Cfunction getwchar]
+    arguments: 
+    return: __C_UINT__SIZE_4
+[Cfunction fputwc]
+    arguments: __C_INT__SIZE_4,__PTR__ _IO_FILE
+    return: __C_UINT__SIZE_4
+[Cfunction putwc]
+    arguments: __C_INT__SIZE_4,__PTR__ _IO_FILE
+    return: __C_UINT__SIZE_4
+[Cfunction putwchar]
+    arguments: __C_INT__SIZE_4
+    return: __C_UINT__SIZE_4
+[Cfunction fgetws]
+    arguments: __PTR__ __C_INT__SIZE_4,__C_INT__SIZE_4,__PTR__ _IO_FILE
+    return: __PTR__ __C_INT__SIZE_4
+[Cfunction fputws]
+    arguments: __PTR__ __C_INT__SIZE_4,__PTR__ _IO_FILE
+    return: __C_INT__SIZE_4
+[Cfunction ungetwc]
+    arguments: __C_UINT__SIZE_4,__PTR__ _IO_FILE
+    return: __C_UINT__SIZE_4
+[Cfunction wcsftime]
+    arguments: __PTR__ __C_INT__SIZE_4,__C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4,__PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction imaxabs]
+    arguments: __C_LONG__SIZE_8
+    return: __C_LONG__SIZE_8
+[Cfunction imaxdiv]
+    arguments: __C_LONG__SIZE_8,__C_LONG__SIZE_8
+    return: imaxdiv_t
+[Cfunction strtoimax]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __C_LONG__SIZE_8
+[Cfunction strtoumax]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __C_ULONG__SIZE_8
+[Cfunction wcstoimax]
+    arguments: __PTR__ __C_INT__SIZE_4,__PTR__ __PTR__ __C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __C_LONG__SIZE_8
+[Cfunction wcstoumax]
+    arguments: __PTR__ __C_INT__SIZE_4,__PTR__ __PTR__ __C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __C_ULONG__SIZE_8
+[Cfunction __ctype_b_loc]
+    arguments: 
+    return: __PTR__ __PTR__ __C_USHORT__SIZE_2
+[Cfunction __ctype_tolower_loc]
+    arguments: 
+    return: __PTR__ __PTR__ __C_INT__SIZE_4
+[Cfunction __ctype_toupper_loc]
+    arguments: 
+    return: __PTR__ __PTR__ __C_INT__SIZE_4
+[Cfunction isalnum]
+    arguments: __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction isalpha]
+    arguments: __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction iscntrl]
+    arguments: __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction isdigit]
+    arguments: __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction islower]
+    arguments: __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction isgraph]
+    arguments: __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction isprint]
+    arguments: __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction ispunct]
+    arguments: __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction isspace]
+    arguments: __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction isupper]
+    arguments: __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction isxdigit]
+    arguments: __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction tolower]
+    arguments: __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction toupper]
+    arguments: __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction isblank]
+    arguments: __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction isascii]
+    arguments: __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction toascii]
+    arguments: __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction _toupper]
+    arguments: __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction _tolower]
+    arguments: __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction isalnum_l]
+    arguments: __C_INT__SIZE_4,__PTR__ __locale_struct
+    return: __C_INT__SIZE_4
+[Cfunction isalpha_l]
+    arguments: __C_INT__SIZE_4,__PTR__ __locale_struct
+    return: __C_INT__SIZE_4
+[Cfunction iscntrl_l]
+    arguments: __C_INT__SIZE_4,__PTR__ __locale_struct
+    return: __C_INT__SIZE_4
+[Cfunction isdigit_l]
+    arguments: __C_INT__SIZE_4,__PTR__ __locale_struct
+    return: __C_INT__SIZE_4
+[Cfunction islower_l]
+    arguments: __C_INT__SIZE_4,__PTR__ __locale_struct
+    return: __C_INT__SIZE_4
+[Cfunction isgraph_l]
+    arguments: __C_INT__SIZE_4,__PTR__ __locale_struct
+    return: __C_INT__SIZE_4
+[Cfunction isprint_l]
+    arguments: __C_INT__SIZE_4,__PTR__ __locale_struct
+    return: __C_INT__SIZE_4
+[Cfunction ispunct_l]
+    arguments: __C_INT__SIZE_4,__PTR__ __locale_struct
+    return: __C_INT__SIZE_4
+[Cfunction isspace_l]
+    arguments: __C_INT__SIZE_4,__PTR__ __locale_struct
+    return: __C_INT__SIZE_4
+[Cfunction isupper_l]
+    arguments: __C_INT__SIZE_4,__PTR__ __locale_struct
+    return: __C_INT__SIZE_4
+[Cfunction isxdigit_l]
+    arguments: __C_INT__SIZE_4,__PTR__ __locale_struct
+    return: __C_INT__SIZE_4
+[Cfunction isblank_l]
+    arguments: __C_INT__SIZE_4,__PTR__ __locale_struct
+    return: __C_INT__SIZE_4
+[Cfunction __tolower_l]
+    arguments: __C_INT__SIZE_4,__PTR__ __locale_struct
+    return: __C_INT__SIZE_4
+[Cfunction tolower_l]
+    arguments: __C_INT__SIZE_4,__PTR__ __locale_struct
+    return: __C_INT__SIZE_4
+[Cfunction __toupper_l]
+    arguments: __C_INT__SIZE_4,__PTR__ __locale_struct
+    return: __C_INT__SIZE_4
+[Cfunction toupper_l]
+    arguments: __C_INT__SIZE_4,__PTR__ __locale_struct
+    return: __C_INT__SIZE_4
+[Cfunction __fpclassify]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_INT__SIZE_4
+[Cfunction __signbit]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_INT__SIZE_4
+[Cfunction __isinf]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_INT__SIZE_4
+[Cfunction __finite]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_INT__SIZE_4
+[Cfunction __isnan]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_INT__SIZE_4
+[Cfunction __iseqsig]
+    arguments: __C_DOUBLE__SIZE_8,__C_DOUBLE__SIZE_8
+    return: __C_INT__SIZE_4
+[Cfunction __issignaling]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_INT__SIZE_4
+[Cfunction acos]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction __acos]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction asin]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction __asin]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction atan]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction __atan]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction atan2]
+    arguments: __C_DOUBLE__SIZE_8,__C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction __atan2]
+    arguments: __C_DOUBLE__SIZE_8,__C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction cos]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction __cos]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction sin]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction __sin]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction tan]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction __tan]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction cosh]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction __cosh]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction sinh]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction __sinh]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction tanh]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction __tanh]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction acosh]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction __acosh]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction asinh]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction __asinh]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction atanh]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction __atanh]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction exp]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction __exp]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction frexp]
+    arguments: __C_DOUBLE__SIZE_8,__PTR__ __C_INT__SIZE_4
+    return: __C_DOUBLE__SIZE_8
+[Cfunction __frexp]
+    arguments: __C_DOUBLE__SIZE_8,__PTR__ __C_INT__SIZE_4
+    return: __C_DOUBLE__SIZE_8
+[Cfunction ldexp]
+    arguments: __C_DOUBLE__SIZE_8,__C_INT__SIZE_4
+    return: __C_DOUBLE__SIZE_8
+[Cfunction __ldexp]
+    arguments: __C_DOUBLE__SIZE_8,__C_INT__SIZE_4
+    return: __C_DOUBLE__SIZE_8
+[Cfunction log]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction __log]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction log10]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction __log10]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction modf]
+    arguments: __C_DOUBLE__SIZE_8,__PTR__ __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction __modf]
+    arguments: __C_DOUBLE__SIZE_8,__PTR__ __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction expm1]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction __expm1]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction log1p]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction __log1p]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction logb]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction __logb]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction exp2]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction __exp2]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction log2]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction __log2]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction pow]
+    arguments: __C_DOUBLE__SIZE_8,__C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction __pow]
+    arguments: __C_DOUBLE__SIZE_8,__C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction sqrt]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction __sqrt]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction hypot]
+    arguments: __C_DOUBLE__SIZE_8,__C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction __hypot]
+    arguments: __C_DOUBLE__SIZE_8,__C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction cbrt]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction __cbrt]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction ceil]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction __ceil]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction fabs]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction __fabs]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction floor]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction __floor]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction fmod]
+    arguments: __C_DOUBLE__SIZE_8,__C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction __fmod]
+    arguments: __C_DOUBLE__SIZE_8,__C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction isinf]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_INT__SIZE_4
+[Cfunction finite]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_INT__SIZE_4
+[Cfunction drem]
+    arguments: __C_DOUBLE__SIZE_8,__C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction __drem]
+    arguments: __C_DOUBLE__SIZE_8,__C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction significand]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction __significand]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction copysign]
+    arguments: __C_DOUBLE__SIZE_8,__C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction __copysign]
+    arguments: __C_DOUBLE__SIZE_8,__C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction nan]
+    arguments: __PTR__ __C_CHAR__SIZE_1
+    return: __C_DOUBLE__SIZE_8
+[Cfunction __nan]
+    arguments: __PTR__ __C_CHAR__SIZE_1
+    return: __C_DOUBLE__SIZE_8
+[Cfunction isnan]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_INT__SIZE_4
+[Cfunction j0]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction __j0]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction j1]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction __j1]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction jn]
+    arguments: __C_INT__SIZE_4,__C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction __jn]
+    arguments: __C_INT__SIZE_4,__C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction y0]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction __y0]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction y1]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction __y1]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction yn]
+    arguments: __C_INT__SIZE_4,__C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction __yn]
+    arguments: __C_INT__SIZE_4,__C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction erf]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction __erf]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction erfc]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction __erfc]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction lgamma]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction __lgamma]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction tgamma]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction __tgamma]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction gamma]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction __gamma]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction lgamma_r]
+    arguments: __C_DOUBLE__SIZE_8,__PTR__ __C_INT__SIZE_4
+    return: __C_DOUBLE__SIZE_8
+[Cfunction __lgamma_r]
+    arguments: __C_DOUBLE__SIZE_8,__PTR__ __C_INT__SIZE_4
+    return: __C_DOUBLE__SIZE_8
+[Cfunction rint]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction __rint]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction nextafter]
+    arguments: __C_DOUBLE__SIZE_8,__C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction __nextafter]
+    arguments: __C_DOUBLE__SIZE_8,__C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction nexttoward]
+    arguments: __C_DOUBLE__SIZE_8,__C_LONGDOUBLE__SIZE_16
+    return: __C_DOUBLE__SIZE_8
+[Cfunction __nexttoward]
+    arguments: __C_DOUBLE__SIZE_8,__C_LONGDOUBLE__SIZE_16
+    return: __C_DOUBLE__SIZE_8
+[Cfunction remainder]
+    arguments: __C_DOUBLE__SIZE_8,__C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction __remainder]
+    arguments: __C_DOUBLE__SIZE_8,__C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction scalbn]
+    arguments: __C_DOUBLE__SIZE_8,__C_INT__SIZE_4
+    return: __C_DOUBLE__SIZE_8
+[Cfunction __scalbn]
+    arguments: __C_DOUBLE__SIZE_8,__C_INT__SIZE_4
+    return: __C_DOUBLE__SIZE_8
+[Cfunction ilogb]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_INT__SIZE_4
+[Cfunction __ilogb]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_INT__SIZE_4
+[Cfunction scalbln]
+    arguments: __C_DOUBLE__SIZE_8,__C_LONG__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction __scalbln]
+    arguments: __C_DOUBLE__SIZE_8,__C_LONG__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction nearbyint]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction __nearbyint]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction round]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction __round]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction trunc]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction __trunc]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction remquo]
+    arguments: __C_DOUBLE__SIZE_8,__C_DOUBLE__SIZE_8,__PTR__ __C_INT__SIZE_4
+    return: __C_DOUBLE__SIZE_8
+[Cfunction __remquo]
+    arguments: __C_DOUBLE__SIZE_8,__C_DOUBLE__SIZE_8,__PTR__ __C_INT__SIZE_4
+    return: __C_DOUBLE__SIZE_8
+[Cfunction lrint]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_LONG__SIZE_8
+[Cfunction __lrint]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_LONG__SIZE_8
+[Cfunction llrint]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_LONGLONG__SIZE_8
+[Cfunction __llrint]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_LONGLONG__SIZE_8
+[Cfunction lround]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_LONG__SIZE_8
+[Cfunction __lround]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_LONG__SIZE_8
+[Cfunction llround]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_LONGLONG__SIZE_8
+[Cfunction __llround]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_LONGLONG__SIZE_8
+[Cfunction fdim]
+    arguments: __C_DOUBLE__SIZE_8,__C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction __fdim]
+    arguments: __C_DOUBLE__SIZE_8,__C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction fmax]
+    arguments: __C_DOUBLE__SIZE_8,__C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction __fmax]
+    arguments: __C_DOUBLE__SIZE_8,__C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction fmin]
+    arguments: __C_DOUBLE__SIZE_8,__C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction __fmin]
+    arguments: __C_DOUBLE__SIZE_8,__C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction fma]
+    arguments: __C_DOUBLE__SIZE_8,__C_DOUBLE__SIZE_8,__C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction __fma]
+    arguments: __C_DOUBLE__SIZE_8,__C_DOUBLE__SIZE_8,__C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction scalb]
+    arguments: __C_DOUBLE__SIZE_8,__C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction __scalb]
+    arguments: __C_DOUBLE__SIZE_8,__C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction __fpclassifyf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction __signbitf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction __isinff]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction __finitef]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction __isnanf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction __iseqsigf]
+    arguments: __C_FLOAT__SIZE_4,__C_FLOAT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction __issignalingf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction acosf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction __acosf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction asinf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction __asinf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction atanf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction __atanf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction atan2f]
+    arguments: __C_FLOAT__SIZE_4,__C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction __atan2f]
+    arguments: __C_FLOAT__SIZE_4,__C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction cosf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction __cosf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction sinf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction __sinf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction tanf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction __tanf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction coshf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction __coshf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction sinhf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction __sinhf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction tanhf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction __tanhf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction acoshf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction __acoshf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction asinhf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction __asinhf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction atanhf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction __atanhf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction expf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction __expf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction frexpf]
+    arguments: __C_FLOAT__SIZE_4,__PTR__ __C_INT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction __frexpf]
+    arguments: __C_FLOAT__SIZE_4,__PTR__ __C_INT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction ldexpf]
+    arguments: __C_FLOAT__SIZE_4,__C_INT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction __ldexpf]
+    arguments: __C_FLOAT__SIZE_4,__C_INT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction logf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction __logf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction log10f]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction __log10f]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction modff]
+    arguments: __C_FLOAT__SIZE_4,__PTR__ __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction __modff]
+    arguments: __C_FLOAT__SIZE_4,__PTR__ __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction expm1f]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction __expm1f]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction log1pf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction __log1pf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction logbf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction __logbf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction exp2f]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction __exp2f]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction log2f]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction __log2f]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction powf]
+    arguments: __C_FLOAT__SIZE_4,__C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction __powf]
+    arguments: __C_FLOAT__SIZE_4,__C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction sqrtf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction __sqrtf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction hypotf]
+    arguments: __C_FLOAT__SIZE_4,__C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction __hypotf]
+    arguments: __C_FLOAT__SIZE_4,__C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction cbrtf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction __cbrtf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction ceilf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction __ceilf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction fabsf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction __fabsf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction floorf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction __floorf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction fmodf]
+    arguments: __C_FLOAT__SIZE_4,__C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction __fmodf]
+    arguments: __C_FLOAT__SIZE_4,__C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction isinff]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction finitef]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction dremf]
+    arguments: __C_FLOAT__SIZE_4,__C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction __dremf]
+    arguments: __C_FLOAT__SIZE_4,__C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction significandf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction __significandf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction copysignf]
+    arguments: __C_FLOAT__SIZE_4,__C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction __copysignf]
+    arguments: __C_FLOAT__SIZE_4,__C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction nanf]
+    arguments: __PTR__ __C_CHAR__SIZE_1
+    return: __C_FLOAT__SIZE_4
+[Cfunction __nanf]
+    arguments: __PTR__ __C_CHAR__SIZE_1
+    return: __C_FLOAT__SIZE_4
+[Cfunction isnanf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction j0f]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction __j0f]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction j1f]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction __j1f]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction jnf]
+    arguments: __C_INT__SIZE_4,__C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction __jnf]
+    arguments: __C_INT__SIZE_4,__C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction y0f]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction __y0f]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction y1f]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction __y1f]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction ynf]
+    arguments: __C_INT__SIZE_4,__C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction __ynf]
+    arguments: __C_INT__SIZE_4,__C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction erff]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction __erff]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction erfcf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction __erfcf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction lgammaf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction __lgammaf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction tgammaf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction __tgammaf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction gammaf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction __gammaf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction lgammaf_r]
+    arguments: __C_FLOAT__SIZE_4,__PTR__ __C_INT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction __lgammaf_r]
+    arguments: __C_FLOAT__SIZE_4,__PTR__ __C_INT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction rintf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction __rintf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction nextafterf]
+    arguments: __C_FLOAT__SIZE_4,__C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction __nextafterf]
+    arguments: __C_FLOAT__SIZE_4,__C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction nexttowardf]
+    arguments: __C_FLOAT__SIZE_4,__C_LONGDOUBLE__SIZE_16
+    return: __C_FLOAT__SIZE_4
+[Cfunction __nexttowardf]
+    arguments: __C_FLOAT__SIZE_4,__C_LONGDOUBLE__SIZE_16
+    return: __C_FLOAT__SIZE_4
+[Cfunction remainderf]
+    arguments: __C_FLOAT__SIZE_4,__C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction __remainderf]
+    arguments: __C_FLOAT__SIZE_4,__C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction scalbnf]
+    arguments: __C_FLOAT__SIZE_4,__C_INT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction __scalbnf]
+    arguments: __C_FLOAT__SIZE_4,__C_INT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction ilogbf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction __ilogbf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction scalblnf]
+    arguments: __C_FLOAT__SIZE_4,__C_LONG__SIZE_8
+    return: __C_FLOAT__SIZE_4
+[Cfunction __scalblnf]
+    arguments: __C_FLOAT__SIZE_4,__C_LONG__SIZE_8
+    return: __C_FLOAT__SIZE_4
+[Cfunction nearbyintf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction __nearbyintf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction roundf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction __roundf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction truncf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction __truncf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction remquof]
+    arguments: __C_FLOAT__SIZE_4,__C_FLOAT__SIZE_4,__PTR__ __C_INT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction __remquof]
+    arguments: __C_FLOAT__SIZE_4,__C_FLOAT__SIZE_4,__PTR__ __C_INT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction lrintf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_LONG__SIZE_8
+[Cfunction __lrintf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_LONG__SIZE_8
+[Cfunction llrintf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_LONGLONG__SIZE_8
+[Cfunction __llrintf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_LONGLONG__SIZE_8
+[Cfunction lroundf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_LONG__SIZE_8
+[Cfunction __lroundf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_LONG__SIZE_8
+[Cfunction llroundf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_LONGLONG__SIZE_8
+[Cfunction __llroundf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_LONGLONG__SIZE_8
+[Cfunction fdimf]
+    arguments: __C_FLOAT__SIZE_4,__C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction __fdimf]
+    arguments: __C_FLOAT__SIZE_4,__C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction fmaxf]
+    arguments: __C_FLOAT__SIZE_4,__C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction __fmaxf]
+    arguments: __C_FLOAT__SIZE_4,__C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction fminf]
+    arguments: __C_FLOAT__SIZE_4,__C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction __fminf]
+    arguments: __C_FLOAT__SIZE_4,__C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction fmaf]
+    arguments: __C_FLOAT__SIZE_4,__C_FLOAT__SIZE_4,__C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction __fmaf]
+    arguments: __C_FLOAT__SIZE_4,__C_FLOAT__SIZE_4,__C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction scalbf]
+    arguments: __C_FLOAT__SIZE_4,__C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction __scalbf]
+    arguments: __C_FLOAT__SIZE_4,__C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction __fpclassifyl]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_INT__SIZE_4
+[Cfunction __signbitl]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_INT__SIZE_4
+[Cfunction __isinfl]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_INT__SIZE_4
+[Cfunction __finitel]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_INT__SIZE_4
+[Cfunction __isnanl]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_INT__SIZE_4
+[Cfunction __iseqsigl]
+    arguments: __C_LONGDOUBLE__SIZE_16,__C_LONGDOUBLE__SIZE_16
+    return: __C_INT__SIZE_4
+[Cfunction __issignalingl]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_INT__SIZE_4
+[Cfunction acosl]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction __acosl]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction asinl]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction __asinl]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction atanl]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction __atanl]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction atan2l]
+    arguments: __C_LONGDOUBLE__SIZE_16,__C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction __atan2l]
+    arguments: __C_LONGDOUBLE__SIZE_16,__C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction cosl]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction __cosl]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction sinl]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction __sinl]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction tanl]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction __tanl]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction coshl]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction __coshl]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction sinhl]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction __sinhl]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction tanhl]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction __tanhl]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction acoshl]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction __acoshl]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction asinhl]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction __asinhl]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction atanhl]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction __atanhl]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction expl]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction __expl]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction frexpl]
+    arguments: __C_LONGDOUBLE__SIZE_16,__PTR__ __C_INT__SIZE_4
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction __frexpl]
+    arguments: __C_LONGDOUBLE__SIZE_16,__PTR__ __C_INT__SIZE_4
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction ldexpl]
+    arguments: __C_LONGDOUBLE__SIZE_16,__C_INT__SIZE_4
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction __ldexpl]
+    arguments: __C_LONGDOUBLE__SIZE_16,__C_INT__SIZE_4
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction logl]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction __logl]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction log10l]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction __log10l]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction modfl]
+    arguments: __C_LONGDOUBLE__SIZE_16,__PTR__ __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction __modfl]
+    arguments: __C_LONGDOUBLE__SIZE_16,__PTR__ __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction expm1l]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction __expm1l]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction log1pl]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction __log1pl]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction logbl]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction __logbl]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction exp2l]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction __exp2l]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction log2l]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction __log2l]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction powl]
+    arguments: __C_LONGDOUBLE__SIZE_16,__C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction __powl]
+    arguments: __C_LONGDOUBLE__SIZE_16,__C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction sqrtl]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction __sqrtl]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction hypotl]
+    arguments: __C_LONGDOUBLE__SIZE_16,__C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction __hypotl]
+    arguments: __C_LONGDOUBLE__SIZE_16,__C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction cbrtl]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction __cbrtl]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction ceill]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction __ceill]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction fabsl]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction __fabsl]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction floorl]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction __floorl]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction fmodl]
+    arguments: __C_LONGDOUBLE__SIZE_16,__C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction __fmodl]
+    arguments: __C_LONGDOUBLE__SIZE_16,__C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction isinfl]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_INT__SIZE_4
+[Cfunction finitel]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_INT__SIZE_4
+[Cfunction dreml]
+    arguments: __C_LONGDOUBLE__SIZE_16,__C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction __dreml]
+    arguments: __C_LONGDOUBLE__SIZE_16,__C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction significandl]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction __significandl]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction copysignl]
+    arguments: __C_LONGDOUBLE__SIZE_16,__C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction __copysignl]
+    arguments: __C_LONGDOUBLE__SIZE_16,__C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction nanl]
+    arguments: __PTR__ __C_CHAR__SIZE_1
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction __nanl]
+    arguments: __PTR__ __C_CHAR__SIZE_1
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction isnanl]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_INT__SIZE_4
+[Cfunction j0l]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction __j0l]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction j1l]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction __j1l]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction jnl]
+    arguments: __C_INT__SIZE_4,__C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction __jnl]
+    arguments: __C_INT__SIZE_4,__C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction y0l]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction __y0l]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction y1l]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction __y1l]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction ynl]
+    arguments: __C_INT__SIZE_4,__C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction __ynl]
+    arguments: __C_INT__SIZE_4,__C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction erfl]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction __erfl]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction erfcl]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction __erfcl]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction lgammal]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction __lgammal]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction tgammal]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction __tgammal]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction gammal]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction __gammal]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction lgammal_r]
+    arguments: __C_LONGDOUBLE__SIZE_16,__PTR__ __C_INT__SIZE_4
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction __lgammal_r]
+    arguments: __C_LONGDOUBLE__SIZE_16,__PTR__ __C_INT__SIZE_4
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction rintl]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction __rintl]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction nextafterl]
+    arguments: __C_LONGDOUBLE__SIZE_16,__C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction __nextafterl]
+    arguments: __C_LONGDOUBLE__SIZE_16,__C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction nexttowardl]
+    arguments: __C_LONGDOUBLE__SIZE_16,__C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction __nexttowardl]
+    arguments: __C_LONGDOUBLE__SIZE_16,__C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction remainderl]
+    arguments: __C_LONGDOUBLE__SIZE_16,__C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction __remainderl]
+    arguments: __C_LONGDOUBLE__SIZE_16,__C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction scalbnl]
+    arguments: __C_LONGDOUBLE__SIZE_16,__C_INT__SIZE_4
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction __scalbnl]
+    arguments: __C_LONGDOUBLE__SIZE_16,__C_INT__SIZE_4
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction ilogbl]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_INT__SIZE_4
+[Cfunction __ilogbl]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_INT__SIZE_4
+[Cfunction scalblnl]
+    arguments: __C_LONGDOUBLE__SIZE_16,__C_LONG__SIZE_8
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction __scalblnl]
+    arguments: __C_LONGDOUBLE__SIZE_16,__C_LONG__SIZE_8
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction nearbyintl]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction __nearbyintl]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction roundl]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction __roundl]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction truncl]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction __truncl]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction remquol]
+    arguments: __C_LONGDOUBLE__SIZE_16,__C_LONGDOUBLE__SIZE_16,__PTR__ __C_INT__SIZE_4
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction __remquol]
+    arguments: __C_LONGDOUBLE__SIZE_16,__C_LONGDOUBLE__SIZE_16,__PTR__ __C_INT__SIZE_4
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction lrintl]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONG__SIZE_8
+[Cfunction __lrintl]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONG__SIZE_8
+[Cfunction llrintl]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGLONG__SIZE_8
+[Cfunction __llrintl]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGLONG__SIZE_8
+[Cfunction lroundl]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONG__SIZE_8
+[Cfunction __lroundl]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONG__SIZE_8
+[Cfunction llroundl]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGLONG__SIZE_8
+[Cfunction __llroundl]
+    arguments: __C_LONGDOUBLE__SIZE_16
+    return: __C_LONGLONG__SIZE_8
+[Cfunction fdiml]
+    arguments: __C_LONGDOUBLE__SIZE_16,__C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction __fdiml]
+    arguments: __C_LONGDOUBLE__SIZE_16,__C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction fmaxl]
+    arguments: __C_LONGDOUBLE__SIZE_16,__C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction __fmaxl]
+    arguments: __C_LONGDOUBLE__SIZE_16,__C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction fminl]
+    arguments: __C_LONGDOUBLE__SIZE_16,__C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction __fminl]
+    arguments: __C_LONGDOUBLE__SIZE_16,__C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction fmal]
+    arguments: __C_LONGDOUBLE__SIZE_16,__C_LONGDOUBLE__SIZE_16,__C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction __fmal]
+    arguments: __C_LONGDOUBLE__SIZE_16,__C_LONGDOUBLE__SIZE_16,__C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction scalbl]
+    arguments: __C_LONGDOUBLE__SIZE_16,__C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction __scalbl]
+    arguments: __C_LONGDOUBLE__SIZE_16,__C_LONGDOUBLE__SIZE_16
+    return: __C_LONGDOUBLE__SIZE_16
+[Cfunction SDL_malloc]
+    arguments: __C_INT__SIZE_4
+    return: __PTR__ __C_INT__SIZE_8
+[Cfunction SDL_calloc]
+    arguments: __C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __PTR__ __C_INT__SIZE_8
+[Cfunction SDL_realloc]
+    arguments: __PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4
+    return: __PTR__ __C_INT__SIZE_8
+[Cfunction SDL_free]
+    arguments: __PTR__ __C_INT__SIZE_8
+    return: __C_VOID__
+[Cfunction SDL_GetMemoryFunctions]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_VOID__
+[Cfunction SDL_SetMemoryFunctions]
+    arguments: __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GetNumAllocations]
+    arguments: 
+    return: __C_INT__SIZE_4
+[Cfunction SDL_getenv]
+    arguments: __PTR__ __C_CHAR__SIZE_1
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction SDL_setenv]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_qsort]
+    arguments: __PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4,__C_INT__SIZE_4,__PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_VOID__
+[Cfunction SDL_abs]
+    arguments: __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_isdigit]
+    arguments: __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_isspace]
+    arguments: __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_toupper]
+    arguments: __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_tolower]
+    arguments: __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_memset]
+    arguments: __PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __PTR__ __C_INT__SIZE_8
+[Cfunction SDL_memset4]
+    arguments: __PTR__ __C_INT__SIZE_8,__C_UINT__SIZE_4,__C_INT__SIZE_4
+    return: __C_VOID__
+[Cfunction SDL_memcpy]
+    arguments: __PTR__ __C_INT__SIZE_8,__PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4
+    return: __PTR__ __C_INT__SIZE_8
+[Cfunction SDL_memmove]
+    arguments: __PTR__ __C_INT__SIZE_8,__PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4
+    return: __PTR__ __C_INT__SIZE_8
+[Cfunction SDL_memcmp]
+    arguments: __PTR__ __C_INT__SIZE_8,__PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_wcslen]
+    arguments: __PTR__ __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_wcslcpy]
+    arguments: __PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_wcslcat]
+    arguments: __PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_wcscmp]
+    arguments: __PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_strlen]
+    arguments: __PTR__ __C_CHAR__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_strlcpy]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_utf8strlcpy]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_strlcat]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_strdup]
+    arguments: __PTR__ __C_CHAR__SIZE_1
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction SDL_strrev]
+    arguments: __PTR__ __C_CHAR__SIZE_1
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction SDL_strupr]
+    arguments: __PTR__ __C_CHAR__SIZE_1
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction SDL_strlwr]
+    arguments: __PTR__ __C_CHAR__SIZE_1
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction SDL_strchr]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction SDL_strrchr]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction SDL_strstr]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction SDL_utf8strlen]
+    arguments: __PTR__ __C_CHAR__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_itoa]
+    arguments: __C_INT__SIZE_4,__PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction SDL_uitoa]
+    arguments: __C_UINT__SIZE_4,__PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction SDL_ltoa]
+    arguments: __C_LONG__SIZE_8,__PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction SDL_ultoa]
+    arguments: __C_ULONG__SIZE_8,__PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction SDL_lltoa]
+    arguments: __C_LONG__SIZE_8,__PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction SDL_ulltoa]
+    arguments: __C_ULONG__SIZE_8,__PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction SDL_atoi]
+    arguments: __PTR__ __C_CHAR__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_atof]
+    arguments: __PTR__ __C_CHAR__SIZE_1
+    return: __C_DOUBLE__SIZE_8
+[Cfunction SDL_strtol]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __C_LONG__SIZE_8
+[Cfunction SDL_strtoul]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __C_ULONG__SIZE_8
+[Cfunction SDL_strtoll]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __C_LONG__SIZE_8
+[Cfunction SDL_strtoull]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __C_ULONG__SIZE_8
+[Cfunction SDL_strtod]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __PTR__ __C_CHAR__SIZE_1
+    return: __C_DOUBLE__SIZE_8
+[Cfunction SDL_strcmp]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_strncmp]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_strcasecmp]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_strncasecmp]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_sscanf]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_vsscanf]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_snprintf]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4,__PTR__ __C_CHAR__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_vsnprintf]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4,__PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_acos]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction SDL_acosf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction SDL_asin]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction SDL_asinf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction SDL_atan]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction SDL_atanf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction SDL_atan2]
+    arguments: __C_DOUBLE__SIZE_8,__C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction SDL_atan2f]
+    arguments: __C_FLOAT__SIZE_4,__C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction SDL_ceil]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction SDL_ceilf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction SDL_copysign]
+    arguments: __C_DOUBLE__SIZE_8,__C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction SDL_copysignf]
+    arguments: __C_FLOAT__SIZE_4,__C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction SDL_cos]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction SDL_cosf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction SDL_fabs]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction SDL_fabsf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction SDL_floor]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction SDL_floorf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction SDL_fmod]
+    arguments: __C_DOUBLE__SIZE_8,__C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction SDL_fmodf]
+    arguments: __C_FLOAT__SIZE_4,__C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction SDL_log]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction SDL_logf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction SDL_log10]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction SDL_log10f]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction SDL_pow]
+    arguments: __C_DOUBLE__SIZE_8,__C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction SDL_powf]
+    arguments: __C_FLOAT__SIZE_4,__C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction SDL_scalbn]
+    arguments: __C_DOUBLE__SIZE_8,__C_INT__SIZE_4
+    return: __C_DOUBLE__SIZE_8
+[Cfunction SDL_scalbnf]
+    arguments: __C_FLOAT__SIZE_4,__C_INT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction SDL_sin]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction SDL_sinf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction SDL_sqrt]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction SDL_sqrtf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction SDL_tan]
+    arguments: __C_DOUBLE__SIZE_8
+    return: __C_DOUBLE__SIZE_8
+[Cfunction SDL_tanf]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction SDL_iconv_open]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1
+    return: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+[Cfunction SDL_iconv_close]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_iconv]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_INT__SIZE_4,__PTR__ __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_iconv_string]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction SDL_memcpy4]
+    arguments: __PTR__ __C_INT__SIZE_8,__PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4
+    return: __PTR__ __C_INT__SIZE_8
+[Cfunction SDL_main]
+    arguments: __C_INT__SIZE_4,__PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_SetMainReady]
+    arguments: 
+    return: __C_VOID__
+[Cfunction SDL_ReportAssertion]
+    arguments: __PTR__ SDL_AssertData,__PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_SetAssertionHandler]
+    arguments: __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_INT__SIZE_8
+    return: __C_VOID__
+[Cfunction SDL_GetDefaultAssertionHandler]
+    arguments: 
+    return: __PTR__ __C_UNKNOWN__SIZE_1
+[Cfunction SDL_GetAssertionHandler]
+    arguments: __PTR__ __PTR__ __C_INT__SIZE_8
+    return: __PTR__ __C_UNKNOWN__SIZE_1
+[Cfunction SDL_GetAssertionReport]
+    arguments: 
+    return: __PTR__ SDL_AssertData
+[Cfunction SDL_ResetAssertionReport]
+    arguments: 
+    return: __C_VOID__
+[Cfunction SDL_AtomicTryLock]
+    arguments: __PTR__ __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_AtomicLock]
+    arguments: __PTR__ __C_INT__SIZE_4
+    return: __C_VOID__
+[Cfunction SDL_AtomicUnlock]
+    arguments: __PTR__ __C_INT__SIZE_4
+    return: __C_VOID__
+[Cfunction SDL_MemoryBarrierReleaseFunction]
+    arguments: 
+    return: __C_VOID__
+[Cfunction SDL_MemoryBarrierAcquireFunction]
+    arguments: 
+    return: __C_VOID__
+[Cfunction SDL_AtomicCAS]
+    arguments: __PTR__ SDL_atomic_t,__C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_AtomicSet]
+    arguments: __PTR__ SDL_atomic_t,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_AtomicGet]
+    arguments: __PTR__ SDL_atomic_t
+    return: __C_INT__SIZE_4
+[Cfunction SDL_AtomicAdd]
+    arguments: __PTR__ SDL_atomic_t,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_AtomicCASPtr]
+    arguments: __PTR__ __PTR__ __C_INT__SIZE_8,__PTR__ __C_INT__SIZE_8,__PTR__ __C_INT__SIZE_8
+    return: __C_INT__SIZE_4
+[Cfunction SDL_AtomicSetPtr]
+    arguments: __PTR__ __PTR__ __C_INT__SIZE_8,__PTR__ __C_INT__SIZE_8
+    return: __PTR__ __C_INT__SIZE_8
+[Cfunction SDL_AtomicGetPtr]
+    arguments: __PTR__ __PTR__ __C_INT__SIZE_8
+    return: __PTR__ __C_INT__SIZE_8
+[Cfunction SDL_SetError]
+    arguments: __PTR__ __C_CHAR__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GetError]
+    arguments: 
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction SDL_ClearError]
+    arguments: 
+    return: __C_VOID__
+[Cfunction SDL_Error]
+    arguments: __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_Swap16]
+    arguments: __C_USHORT__SIZE_2
+    return: __C_USHORT__SIZE_2
+[Cfunction SDL_Swap32]
+    arguments: __C_UINT__SIZE_4
+    return: __C_UINT__SIZE_4
+[Cfunction SDL_Swap64]
+    arguments: __C_ULONG__SIZE_8
+    return: __C_ULONG__SIZE_8
+[Cfunction SDL_SwapFloat]
+    arguments: __C_FLOAT__SIZE_4
+    return: __C_FLOAT__SIZE_4
+[Cfunction SDL_CreateMutex]
+    arguments: 
+    return: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+[Cfunction SDL_LockMutex]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_TryLockMutex]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_UnlockMutex]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_DestroyMutex]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_VOID__
+[Cfunction SDL_CreateSemaphore]
+    arguments: __C_UINT__SIZE_4
+    return: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+[Cfunction SDL_DestroySemaphore]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_VOID__
+[Cfunction SDL_SemWait]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_SemTryWait]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_SemWaitTimeout]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_UINT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_SemPost]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_SemValue]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_UINT__SIZE_4
+[Cfunction SDL_CreateCond]
+    arguments: 
+    return: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+[Cfunction SDL_DestroyCond]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_VOID__
+[Cfunction SDL_CondSignal]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_CondBroadcast]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_CondWait]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_CondWaitTimeout]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_UINT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_CreateThread]
+    arguments: __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_CHAR__SIZE_1,__PTR__ __C_INT__SIZE_8
+    return: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+[Cfunction SDL_GetThreadName]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction SDL_ThreadID]
+    arguments: 
+    return: __C_ULONG__SIZE_8
+[Cfunction SDL_GetThreadID]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_ULONG__SIZE_8
+[Cfunction SDL_SetThreadPriority]
+    arguments: __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_WaitThread]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_INT__SIZE_4
+    return: __C_VOID__
+[Cfunction SDL_DetachThread]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_VOID__
+[Cfunction SDL_TLSCreate]
+    arguments: 
+    return: __C_UINT__SIZE_4
+[Cfunction SDL_TLSGet]
+    arguments: __C_UINT__SIZE_4
+    return: __PTR__ __C_INT__SIZE_8
+[Cfunction SDL_TLSSet]
+    arguments: __C_UINT__SIZE_4,__PTR__ __C_INT__SIZE_8,__PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_RWFromFile]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1
+    return: __PTR__ SDL_RWops
+[Cfunction SDL_RWFromFP]
+    arguments: __PTR__ _IO_FILE,__C_INT__SIZE_4
+    return: __PTR__ SDL_RWops
+[Cfunction SDL_RWFromMem]
+    arguments: __PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4
+    return: __PTR__ SDL_RWops
+[Cfunction SDL_RWFromConstMem]
+    arguments: __PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4
+    return: __PTR__ SDL_RWops
+[Cfunction SDL_AllocRW]
+    arguments: 
+    return: __PTR__ SDL_RWops
+[Cfunction SDL_FreeRW]
+    arguments: __PTR__ SDL_RWops
+    return: __C_VOID__
+[Cfunction SDL_LoadFile_RW]
+    arguments: __PTR__ SDL_RWops,__PTR__ __C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __PTR__ __C_INT__SIZE_8
+[Cfunction SDL_ReadU8]
+    arguments: __PTR__ SDL_RWops
+    return: __C_UCHAR__SIZE_1
+[Cfunction SDL_ReadLE16]
+    arguments: __PTR__ SDL_RWops
+    return: __C_USHORT__SIZE_2
+[Cfunction SDL_ReadBE16]
+    arguments: __PTR__ SDL_RWops
+    return: __C_USHORT__SIZE_2
+[Cfunction SDL_ReadLE32]
+    arguments: __PTR__ SDL_RWops
+    return: __C_UINT__SIZE_4
+[Cfunction SDL_ReadBE32]
+    arguments: __PTR__ SDL_RWops
+    return: __C_UINT__SIZE_4
+[Cfunction SDL_ReadLE64]
+    arguments: __PTR__ SDL_RWops
+    return: __C_ULONG__SIZE_8
+[Cfunction SDL_ReadBE64]
+    arguments: __PTR__ SDL_RWops
+    return: __C_ULONG__SIZE_8
+[Cfunction SDL_WriteU8]
+    arguments: __PTR__ SDL_RWops,__C_UCHAR__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_WriteLE16]
+    arguments: __PTR__ SDL_RWops,__C_USHORT__SIZE_2
+    return: __C_INT__SIZE_4
+[Cfunction SDL_WriteBE16]
+    arguments: __PTR__ SDL_RWops,__C_USHORT__SIZE_2
+    return: __C_INT__SIZE_4
+[Cfunction SDL_WriteLE32]
+    arguments: __PTR__ SDL_RWops,__C_UINT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_WriteBE32]
+    arguments: __PTR__ SDL_RWops,__C_UINT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_WriteLE64]
+    arguments: __PTR__ SDL_RWops,__C_ULONG__SIZE_8
+    return: __C_INT__SIZE_4
+[Cfunction SDL_WriteBE64]
+    arguments: __PTR__ SDL_RWops,__C_ULONG__SIZE_8
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GetNumAudioDrivers]
+    arguments: 
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GetAudioDriver]
+    arguments: __C_INT__SIZE_4
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction SDL_AudioInit]
+    arguments: __PTR__ __C_CHAR__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_AudioQuit]
+    arguments: 
+    return: __C_VOID__
+[Cfunction SDL_GetCurrentAudioDriver]
+    arguments: 
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction SDL_OpenAudio]
+    arguments: __PTR__ SDL_AudioSpec,__PTR__ SDL_AudioSpec
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GetNumAudioDevices]
+    arguments: __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GetAudioDeviceName]
+    arguments: __C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction SDL_OpenAudioDevice]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4,__PTR__ SDL_AudioSpec,__PTR__ SDL_AudioSpec,__C_INT__SIZE_4
+    return: __C_UINT__SIZE_4
+[Cfunction SDL_GetAudioStatus]
+    arguments: 
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GetAudioDeviceStatus]
+    arguments: __C_UINT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_PauseAudio]
+    arguments: __C_INT__SIZE_4
+    return: __C_VOID__
+[Cfunction SDL_PauseAudioDevice]
+    arguments: __C_UINT__SIZE_4,__C_INT__SIZE_4
+    return: __C_VOID__
+[Cfunction SDL_LoadWAV_RW]
+    arguments: __PTR__ SDL_RWops,__C_INT__SIZE_4,__PTR__ SDL_AudioSpec,__PTR__ __PTR__ __C_UCHAR__SIZE_1,__PTR__ __C_UINT__SIZE_4
+    return: __PTR__ SDL_AudioSpec
+[Cfunction SDL_FreeWAV]
+    arguments: __PTR__ __C_UCHAR__SIZE_1
+    return: __C_VOID__
+[Cfunction SDL_BuildAudioCVT]
+    arguments: __PTR__ SDL_AudioCVT,__C_USHORT__SIZE_2,__C_UCHAR__SIZE_1,__C_INT__SIZE_4,__C_USHORT__SIZE_2,__C_UCHAR__SIZE_1,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_ConvertAudio]
+    arguments: __PTR__ SDL_AudioCVT
+    return: __C_INT__SIZE_4
+[Cfunction SDL_NewAudioStream]
+    arguments: __C_USHORT__SIZE_2,__C_UCHAR__SIZE_1,__C_INT__SIZE_4,__C_USHORT__SIZE_2,__C_UCHAR__SIZE_1,__C_INT__SIZE_4
+    return: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+[Cfunction SDL_AudioStreamPut]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_AudioStreamGet]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_AudioStreamAvailable]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_AudioStreamFlush]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_AudioStreamClear]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_VOID__
+[Cfunction SDL_FreeAudioStream]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_VOID__
+[Cfunction SDL_MixAudio]
+    arguments: __PTR__ __C_UCHAR__SIZE_1,__PTR__ __C_UCHAR__SIZE_1,__C_UINT__SIZE_4,__C_INT__SIZE_4
+    return: __C_VOID__
+[Cfunction SDL_MixAudioFormat]
+    arguments: __PTR__ __C_UCHAR__SIZE_1,__PTR__ __C_UCHAR__SIZE_1,__C_USHORT__SIZE_2,__C_UINT__SIZE_4,__C_INT__SIZE_4
+    return: __C_VOID__
+[Cfunction SDL_QueueAudio]
+    arguments: __C_UINT__SIZE_4,__PTR__ __C_INT__SIZE_8,__C_UINT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_DequeueAudio]
+    arguments: __C_UINT__SIZE_4,__PTR__ __C_INT__SIZE_8,__C_UINT__SIZE_4
+    return: __C_UINT__SIZE_4
+[Cfunction SDL_GetQueuedAudioSize]
+    arguments: __C_UINT__SIZE_4
+    return: __C_UINT__SIZE_4
+[Cfunction SDL_ClearQueuedAudio]
+    arguments: __C_UINT__SIZE_4
+    return: __C_VOID__
+[Cfunction SDL_LockAudio]
+    arguments: 
+    return: __C_VOID__
+[Cfunction SDL_LockAudioDevice]
+    arguments: __C_UINT__SIZE_4
+    return: __C_VOID__
+[Cfunction SDL_UnlockAudio]
+    arguments: 
+    return: __C_VOID__
+[Cfunction SDL_UnlockAudioDevice]
+    arguments: __C_UINT__SIZE_4
+    return: __C_VOID__
+[Cfunction SDL_CloseAudio]
+    arguments: 
+    return: __C_VOID__
+[Cfunction SDL_CloseAudioDevice]
+    arguments: __C_UINT__SIZE_4
+    return: __C_VOID__
+[Cfunction SDL_SetClipboardText]
+    arguments: __PTR__ __C_CHAR__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GetClipboardText]
+    arguments: 
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction SDL_HasClipboardText]
+    arguments: 
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GetCPUCount]
+    arguments: 
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GetCPUCacheLineSize]
+    arguments: 
+    return: __C_INT__SIZE_4
+[Cfunction SDL_HasRDTSC]
+    arguments: 
+    return: __C_INT__SIZE_4
+[Cfunction SDL_HasAltiVec]
+    arguments: 
+    return: __C_INT__SIZE_4
+[Cfunction SDL_HasMMX]
+    arguments: 
+    return: __C_INT__SIZE_4
+[Cfunction SDL_Has3DNow]
+    arguments: 
+    return: __C_INT__SIZE_4
+[Cfunction SDL_HasSSE]
+    arguments: 
+    return: __C_INT__SIZE_4
+[Cfunction SDL_HasSSE2]
+    arguments: 
+    return: __C_INT__SIZE_4
+[Cfunction SDL_HasSSE3]
+    arguments: 
+    return: __C_INT__SIZE_4
+[Cfunction SDL_HasSSE41]
+    arguments: 
+    return: __C_INT__SIZE_4
+[Cfunction SDL_HasSSE42]
+    arguments: 
+    return: __C_INT__SIZE_4
+[Cfunction SDL_HasAVX]
+    arguments: 
+    return: __C_INT__SIZE_4
+[Cfunction SDL_HasAVX2]
+    arguments: 
+    return: __C_INT__SIZE_4
+[Cfunction SDL_HasNEON]
+    arguments: 
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GetSystemRAM]
+    arguments: 
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GetPixelFormatName]
+    arguments: __C_UINT__SIZE_4
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction SDL_PixelFormatEnumToMasks]
+    arguments: __C_UINT__SIZE_4,__PTR__ __C_INT__SIZE_4,__PTR__ __C_UINT__SIZE_4,__PTR__ __C_UINT__SIZE_4,__PTR__ __C_UINT__SIZE_4,__PTR__ __C_UINT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_MasksToPixelFormatEnum]
+    arguments: __C_INT__SIZE_4,__C_UINT__SIZE_4,__C_UINT__SIZE_4,__C_UINT__SIZE_4,__C_UINT__SIZE_4
+    return: __C_UINT__SIZE_4
+[Cfunction SDL_AllocFormat]
+    arguments: __C_UINT__SIZE_4
+    return: __PTR__ SDL_PixelFormat
+[Cfunction SDL_FreeFormat]
+    arguments: __PTR__ SDL_PixelFormat
+    return: __C_VOID__
+[Cfunction SDL_AllocPalette]
+    arguments: __C_INT__SIZE_4
+    return: __PTR__ SDL_Palette
+[Cfunction SDL_SetPixelFormatPalette]
+    arguments: __PTR__ SDL_PixelFormat,__PTR__ SDL_Palette
+    return: __C_INT__SIZE_4
+[Cfunction SDL_SetPaletteColors]
+    arguments: __PTR__ SDL_Palette,__PTR__ SDL_Color,__C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_FreePalette]
+    arguments: __PTR__ SDL_Palette
+    return: __C_VOID__
+[Cfunction SDL_MapRGB]
+    arguments: __PTR__ SDL_PixelFormat,__C_UCHAR__SIZE_1,__C_UCHAR__SIZE_1,__C_UCHAR__SIZE_1
+    return: __C_UINT__SIZE_4
+[Cfunction SDL_MapRGBA]
+    arguments: __PTR__ SDL_PixelFormat,__C_UCHAR__SIZE_1,__C_UCHAR__SIZE_1,__C_UCHAR__SIZE_1,__C_UCHAR__SIZE_1
+    return: __C_UINT__SIZE_4
+[Cfunction SDL_GetRGB]
+    arguments: __C_UINT__SIZE_4,__PTR__ SDL_PixelFormat,__PTR__ __C_UCHAR__SIZE_1,__PTR__ __C_UCHAR__SIZE_1,__PTR__ __C_UCHAR__SIZE_1
+    return: __C_VOID__
+[Cfunction SDL_GetRGBA]
+    arguments: __C_UINT__SIZE_4,__PTR__ SDL_PixelFormat,__PTR__ __C_UCHAR__SIZE_1,__PTR__ __C_UCHAR__SIZE_1,__PTR__ __C_UCHAR__SIZE_1,__PTR__ __C_UCHAR__SIZE_1
+    return: __C_VOID__
+[Cfunction SDL_CalculateGammaRamp]
+    arguments: __C_FLOAT__SIZE_4,__PTR__ __C_USHORT__SIZE_2
+    return: __C_VOID__
+[Cfunction SDL_PointInRect]
+    arguments: __PTR__ SDL_Point,__PTR__ SDL_Rect
+    return: __C_INT__SIZE_4
+[Cfunction SDL_RectEmpty]
+    arguments: __PTR__ SDL_Rect
+    return: __C_INT__SIZE_4
+[Cfunction SDL_RectEquals]
+    arguments: __PTR__ SDL_Rect,__PTR__ SDL_Rect
+    return: __C_INT__SIZE_4
+[Cfunction SDL_HasIntersection]
+    arguments: __PTR__ SDL_Rect,__PTR__ SDL_Rect
+    return: __C_INT__SIZE_4
+[Cfunction SDL_IntersectRect]
+    arguments: __PTR__ SDL_Rect,__PTR__ SDL_Rect,__PTR__ SDL_Rect
+    return: __C_INT__SIZE_4
+[Cfunction SDL_UnionRect]
+    arguments: __PTR__ SDL_Rect,__PTR__ SDL_Rect,__PTR__ SDL_Rect
+    return: __C_VOID__
+[Cfunction SDL_EnclosePoints]
+    arguments: __PTR__ SDL_Point,__C_INT__SIZE_4,__PTR__ SDL_Rect,__PTR__ SDL_Rect
+    return: __C_INT__SIZE_4
+[Cfunction SDL_IntersectRectAndLine]
+    arguments: __PTR__ SDL_Rect,__PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_ComposeCustomBlendMode]
+    arguments: __C_INT__SIZE_4,__C_INT__SIZE_4,__C_INT__SIZE_4,__C_INT__SIZE_4,__C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_CreateRGBSurface]
+    arguments: __C_UINT__SIZE_4,__C_INT__SIZE_4,__C_INT__SIZE_4,__C_INT__SIZE_4,__C_UINT__SIZE_4,__C_UINT__SIZE_4,__C_UINT__SIZE_4,__C_UINT__SIZE_4
+    return: __PTR__ SDL_Surface
+[Cfunction SDL_CreateRGBSurfaceWithFormat]
+    arguments: __C_UINT__SIZE_4,__C_INT__SIZE_4,__C_INT__SIZE_4,__C_INT__SIZE_4,__C_UINT__SIZE_4
+    return: __PTR__ SDL_Surface
+[Cfunction SDL_CreateRGBSurfaceFrom]
+    arguments: __PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4,__C_INT__SIZE_4,__C_INT__SIZE_4,__C_INT__SIZE_4,__C_UINT__SIZE_4,__C_UINT__SIZE_4,__C_UINT__SIZE_4,__C_UINT__SIZE_4
+    return: __PTR__ SDL_Surface
+[Cfunction SDL_CreateRGBSurfaceWithFormatFrom]
+    arguments: __PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4,__C_INT__SIZE_4,__C_INT__SIZE_4,__C_INT__SIZE_4,__C_UINT__SIZE_4
+    return: __PTR__ SDL_Surface
+[Cfunction SDL_FreeSurface]
+    arguments: __PTR__ SDL_Surface
+    return: __C_VOID__
+[Cfunction SDL_SetSurfacePalette]
+    arguments: __PTR__ SDL_Surface,__PTR__ SDL_Palette
+    return: __C_INT__SIZE_4
+[Cfunction SDL_LockSurface]
+    arguments: __PTR__ SDL_Surface
+    return: __C_INT__SIZE_4
+[Cfunction SDL_UnlockSurface]
+    arguments: __PTR__ SDL_Surface
+    return: __C_VOID__
+[Cfunction SDL_LoadBMP_RW]
+    arguments: __PTR__ SDL_RWops,__C_INT__SIZE_4
+    return: __PTR__ SDL_Surface
+[Cfunction SDL_SaveBMP_RW]
+    arguments: __PTR__ SDL_Surface,__PTR__ SDL_RWops,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_SetSurfaceRLE]
+    arguments: __PTR__ SDL_Surface,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_SetColorKey]
+    arguments: __PTR__ SDL_Surface,__C_INT__SIZE_4,__C_UINT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GetColorKey]
+    arguments: __PTR__ SDL_Surface,__PTR__ __C_UINT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_SetSurfaceColorMod]
+    arguments: __PTR__ SDL_Surface,__C_UCHAR__SIZE_1,__C_UCHAR__SIZE_1,__C_UCHAR__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GetSurfaceColorMod]
+    arguments: __PTR__ SDL_Surface,__PTR__ __C_UCHAR__SIZE_1,__PTR__ __C_UCHAR__SIZE_1,__PTR__ __C_UCHAR__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_SetSurfaceAlphaMod]
+    arguments: __PTR__ SDL_Surface,__C_UCHAR__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GetSurfaceAlphaMod]
+    arguments: __PTR__ SDL_Surface,__PTR__ __C_UCHAR__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_SetSurfaceBlendMode]
+    arguments: __PTR__ SDL_Surface,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GetSurfaceBlendMode]
+    arguments: __PTR__ SDL_Surface,__PTR__ __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_SetClipRect]
+    arguments: __PTR__ SDL_Surface,__PTR__ SDL_Rect
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GetClipRect]
+    arguments: __PTR__ SDL_Surface,__PTR__ SDL_Rect
+    return: __C_VOID__
+[Cfunction SDL_DuplicateSurface]
+    arguments: __PTR__ SDL_Surface
+    return: __PTR__ SDL_Surface
+[Cfunction SDL_ConvertSurface]
+    arguments: __PTR__ SDL_Surface,__PTR__ SDL_PixelFormat,__C_UINT__SIZE_4
+    return: __PTR__ SDL_Surface
+[Cfunction SDL_ConvertSurfaceFormat]
+    arguments: __PTR__ SDL_Surface,__C_UINT__SIZE_4,__C_UINT__SIZE_4
+    return: __PTR__ SDL_Surface
+[Cfunction SDL_ConvertPixels]
+    arguments: __C_INT__SIZE_4,__C_INT__SIZE_4,__C_UINT__SIZE_4,__PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4,__C_UINT__SIZE_4,__PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_FillRect]
+    arguments: __PTR__ SDL_Surface,__PTR__ SDL_Rect,__C_UINT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_FillRects]
+    arguments: __PTR__ SDL_Surface,__PTR__ SDL_Rect,__C_INT__SIZE_4,__C_UINT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_UpperBlit]
+    arguments: __PTR__ SDL_Surface,__PTR__ SDL_Rect,__PTR__ SDL_Surface,__PTR__ SDL_Rect
+    return: __C_INT__SIZE_4
+[Cfunction SDL_LowerBlit]
+    arguments: __PTR__ SDL_Surface,__PTR__ SDL_Rect,__PTR__ SDL_Surface,__PTR__ SDL_Rect
+    return: __C_INT__SIZE_4
+[Cfunction SDL_SoftStretch]
+    arguments: __PTR__ SDL_Surface,__PTR__ SDL_Rect,__PTR__ SDL_Surface,__PTR__ SDL_Rect
+    return: __C_INT__SIZE_4
+[Cfunction SDL_UpperBlitScaled]
+    arguments: __PTR__ SDL_Surface,__PTR__ SDL_Rect,__PTR__ SDL_Surface,__PTR__ SDL_Rect
+    return: __C_INT__SIZE_4
+[Cfunction SDL_LowerBlitScaled]
+    arguments: __PTR__ SDL_Surface,__PTR__ SDL_Rect,__PTR__ SDL_Surface,__PTR__ SDL_Rect
+    return: __C_INT__SIZE_4
+[Cfunction SDL_SetYUVConversionMode]
+    arguments: __C_INT__SIZE_4
+    return: __C_VOID__
+[Cfunction SDL_GetYUVConversionMode]
+    arguments: 
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GetYUVConversionModeForResolution]
+    arguments: __C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GetNumVideoDrivers]
+    arguments: 
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GetVideoDriver]
+    arguments: __C_INT__SIZE_4
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction SDL_VideoInit]
+    arguments: __PTR__ __C_CHAR__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_VideoQuit]
+    arguments: 
+    return: __C_VOID__
+[Cfunction SDL_GetCurrentVideoDriver]
+    arguments: 
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction SDL_GetNumVideoDisplays]
+    arguments: 
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GetDisplayName]
+    arguments: __C_INT__SIZE_4
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction SDL_GetDisplayBounds]
+    arguments: __C_INT__SIZE_4,__PTR__ SDL_Rect
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GetDisplayDPI]
+    arguments: __C_INT__SIZE_4,__PTR__ __C_FLOAT__SIZE_4,__PTR__ __C_FLOAT__SIZE_4,__PTR__ __C_FLOAT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GetDisplayUsableBounds]
+    arguments: __C_INT__SIZE_4,__PTR__ SDL_Rect
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GetNumDisplayModes]
+    arguments: __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GetDisplayMode]
+    arguments: __C_INT__SIZE_4,__C_INT__SIZE_4,__PTR__ SDL_DisplayMode
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GetDesktopDisplayMode]
+    arguments: __C_INT__SIZE_4,__PTR__ SDL_DisplayMode
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GetCurrentDisplayMode]
+    arguments: __C_INT__SIZE_4,__PTR__ SDL_DisplayMode
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GetClosestDisplayMode]
+    arguments: __C_INT__SIZE_4,__PTR__ SDL_DisplayMode,__PTR__ SDL_DisplayMode
+    return: __PTR__ SDL_DisplayMode
+[Cfunction SDL_GetWindowDisplayIndex]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_SetWindowDisplayMode]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ SDL_DisplayMode
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GetWindowDisplayMode]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ SDL_DisplayMode
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GetWindowPixelFormat]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_UINT__SIZE_4
+[Cfunction SDL_CreateWindow]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4,__C_INT__SIZE_4,__C_INT__SIZE_4,__C_INT__SIZE_4,__C_UINT__SIZE_4
+    return: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+[Cfunction SDL_CreateWindowFrom]
+    arguments: __PTR__ __C_INT__SIZE_8
+    return: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+[Cfunction SDL_GetWindowID]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_UINT__SIZE_4
+[Cfunction SDL_GetWindowFromID]
+    arguments: __C_UINT__SIZE_4
+    return: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+[Cfunction SDL_GetWindowFlags]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_UINT__SIZE_4
+[Cfunction SDL_SetWindowTitle]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_CHAR__SIZE_1
+    return: __C_VOID__
+[Cfunction SDL_GetWindowTitle]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction SDL_SetWindowIcon]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ SDL_Surface
+    return: __C_VOID__
+[Cfunction SDL_SetWindowData]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_CHAR__SIZE_1,__PTR__ __C_INT__SIZE_8
+    return: __PTR__ __C_INT__SIZE_8
+[Cfunction SDL_GetWindowData]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_CHAR__SIZE_1
+    return: __PTR__ __C_INT__SIZE_8
+[Cfunction SDL_SetWindowPosition]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __C_VOID__
+[Cfunction SDL_GetWindowPosition]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4
+    return: __C_VOID__
+[Cfunction SDL_SetWindowSize]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __C_VOID__
+[Cfunction SDL_GetWindowSize]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4
+    return: __C_VOID__
+[Cfunction SDL_GetWindowBordersSize]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_SetWindowMinimumSize]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __C_VOID__
+[Cfunction SDL_GetWindowMinimumSize]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4
+    return: __C_VOID__
+[Cfunction SDL_SetWindowMaximumSize]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __C_VOID__
+[Cfunction SDL_GetWindowMaximumSize]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4
+    return: __C_VOID__
+[Cfunction SDL_SetWindowBordered]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_INT__SIZE_4
+    return: __C_VOID__
+[Cfunction SDL_SetWindowResizable]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_INT__SIZE_4
+    return: __C_VOID__
+[Cfunction SDL_ShowWindow]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_VOID__
+[Cfunction SDL_HideWindow]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_VOID__
+[Cfunction SDL_RaiseWindow]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_VOID__
+[Cfunction SDL_MaximizeWindow]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_VOID__
+[Cfunction SDL_MinimizeWindow]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_VOID__
+[Cfunction SDL_RestoreWindow]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_VOID__
+[Cfunction SDL_SetWindowFullscreen]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_UINT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GetWindowSurface]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __PTR__ SDL_Surface
+[Cfunction SDL_UpdateWindowSurface]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_UpdateWindowSurfaceRects]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ SDL_Rect,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_SetWindowGrab]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_INT__SIZE_4
+    return: __C_VOID__
+[Cfunction SDL_GetWindowGrab]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GetGrabbedWindow]
+    arguments: 
+    return: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+[Cfunction SDL_SetWindowBrightness]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_FLOAT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GetWindowBrightness]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_FLOAT__SIZE_4
+[Cfunction SDL_SetWindowOpacity]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_FLOAT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GetWindowOpacity]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_FLOAT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_SetWindowModalFor]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_SetWindowInputFocus]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_SetWindowGammaRamp]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_USHORT__SIZE_2,__PTR__ __C_USHORT__SIZE_2,__PTR__ __C_USHORT__SIZE_2
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GetWindowGammaRamp]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_USHORT__SIZE_2,__PTR__ __C_USHORT__SIZE_2,__PTR__ __C_USHORT__SIZE_2
+    return: __C_INT__SIZE_4
+[Cfunction SDL_SetWindowHitTest]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_INT__SIZE_8
+    return: __C_INT__SIZE_4
+[Cfunction SDL_DestroyWindow]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_VOID__
+[Cfunction SDL_IsScreenSaverEnabled]
+    arguments: 
+    return: __C_INT__SIZE_4
+[Cfunction SDL_EnableScreenSaver]
+    arguments: 
+    return: __C_VOID__
+[Cfunction SDL_DisableScreenSaver]
+    arguments: 
+    return: __C_VOID__
+[Cfunction SDL_GL_LoadLibrary]
+    arguments: __PTR__ __C_CHAR__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GL_GetProcAddress]
+    arguments: __PTR__ __C_CHAR__SIZE_1
+    return: __PTR__ __C_INT__SIZE_8
+[Cfunction SDL_GL_UnloadLibrary]
+    arguments: 
+    return: __C_VOID__
+[Cfunction SDL_GL_ExtensionSupported]
+    arguments: __PTR__ __C_CHAR__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GL_ResetAttributes]
+    arguments: 
+    return: __C_VOID__
+[Cfunction SDL_GL_SetAttribute]
+    arguments: __C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GL_GetAttribute]
+    arguments: __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GL_CreateContext]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __PTR__ __C_INT__SIZE_8
+[Cfunction SDL_GL_MakeCurrent]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_INT__SIZE_8
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GL_GetCurrentWindow]
+    arguments: 
+    return: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+[Cfunction SDL_GL_GetCurrentContext]
+    arguments: 
+    return: __PTR__ __C_INT__SIZE_8
+[Cfunction SDL_GL_GetDrawableSize]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4
+    return: __C_VOID__
+[Cfunction SDL_GL_SetSwapInterval]
+    arguments: __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GL_GetSwapInterval]
+    arguments: 
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GL_SwapWindow]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_VOID__
+[Cfunction SDL_GL_DeleteContext]
+    arguments: __PTR__ __C_INT__SIZE_8
+    return: __C_VOID__
+[Cfunction SDL_GetKeyboardFocus]
+    arguments: 
+    return: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+[Cfunction SDL_GetKeyboardState]
+    arguments: __PTR__ __C_INT__SIZE_4
+    return: __PTR__ __C_UCHAR__SIZE_1
+[Cfunction SDL_GetModState]
+    arguments: 
+    return: __C_INT__SIZE_4
+[Cfunction SDL_SetModState]
+    arguments: __C_INT__SIZE_4
+    return: __C_VOID__
+[Cfunction SDL_GetKeyFromScancode]
+    arguments: __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GetScancodeFromKey]
+    arguments: __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GetScancodeName]
+    arguments: __C_INT__SIZE_4
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction SDL_GetScancodeFromName]
+    arguments: __PTR__ __C_CHAR__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GetKeyName]
+    arguments: __C_INT__SIZE_4
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction SDL_GetKeyFromName]
+    arguments: __PTR__ __C_CHAR__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_StartTextInput]
+    arguments: 
+    return: __C_VOID__
+[Cfunction SDL_IsTextInputActive]
+    arguments: 
+    return: __C_INT__SIZE_4
+[Cfunction SDL_StopTextInput]
+    arguments: 
+    return: __C_VOID__
+[Cfunction SDL_SetTextInputRect]
+    arguments: __PTR__ SDL_Rect
+    return: __C_VOID__
+[Cfunction SDL_HasScreenKeyboardSupport]
+    arguments: 
+    return: __C_INT__SIZE_4
+[Cfunction SDL_IsScreenKeyboardShown]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GetMouseFocus]
+    arguments: 
+    return: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+[Cfunction SDL_GetMouseState]
+    arguments: __PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4
+    return: __C_UINT__SIZE_4
+[Cfunction SDL_GetGlobalMouseState]
+    arguments: __PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4
+    return: __C_UINT__SIZE_4
+[Cfunction SDL_GetRelativeMouseState]
+    arguments: __PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4
+    return: __C_UINT__SIZE_4
+[Cfunction SDL_WarpMouseInWindow]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __C_VOID__
+[Cfunction SDL_WarpMouseGlobal]
+    arguments: __C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_SetRelativeMouseMode]
+    arguments: __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_CaptureMouse]
+    arguments: __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GetRelativeMouseMode]
+    arguments: 
+    return: __C_INT__SIZE_4
+[Cfunction SDL_CreateCursor]
+    arguments: __PTR__ __C_UCHAR__SIZE_1,__PTR__ __C_UCHAR__SIZE_1,__C_INT__SIZE_4,__C_INT__SIZE_4,__C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+[Cfunction SDL_CreateColorCursor]
+    arguments: __PTR__ SDL_Surface,__C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+[Cfunction SDL_CreateSystemCursor]
+    arguments: __C_INT__SIZE_4
+    return: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+[Cfunction SDL_SetCursor]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_VOID__
+[Cfunction SDL_GetCursor]
+    arguments: 
+    return: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+[Cfunction SDL_GetDefaultCursor]
+    arguments: 
+    return: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+[Cfunction SDL_FreeCursor]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_VOID__
+[Cfunction SDL_ShowCursor]
+    arguments: __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_LockJoysticks]
+    arguments: 
+    return: __C_VOID__
+[Cfunction SDL_UnlockJoysticks]
+    arguments: 
+    return: __C_VOID__
+[Cfunction SDL_NumJoysticks]
+    arguments: 
+    return: __C_INT__SIZE_4
+[Cfunction SDL_JoystickNameForIndex]
+    arguments: __C_INT__SIZE_4
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction SDL_JoystickGetDeviceGUID]
+    arguments: __C_INT__SIZE_4
+    return: SDL_JoystickGUID
+[Cfunction SDL_JoystickGetDeviceVendor]
+    arguments: __C_INT__SIZE_4
+    return: __C_USHORT__SIZE_2
+[Cfunction SDL_JoystickGetDeviceProduct]
+    arguments: __C_INT__SIZE_4
+    return: __C_USHORT__SIZE_2
+[Cfunction SDL_JoystickGetDeviceProductVersion]
+    arguments: __C_INT__SIZE_4
+    return: __C_USHORT__SIZE_2
+[Cfunction SDL_JoystickGetDeviceType]
+    arguments: __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_JoystickGetDeviceInstanceID]
+    arguments: __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_JoystickOpen]
+    arguments: __C_INT__SIZE_4
+    return: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+[Cfunction SDL_JoystickFromInstanceID]
+    arguments: __C_INT__SIZE_4
+    return: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+[Cfunction SDL_JoystickName]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction SDL_JoystickGetGUID]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: SDL_JoystickGUID
+[Cfunction SDL_JoystickGetVendor]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_USHORT__SIZE_2
+[Cfunction SDL_JoystickGetProduct]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_USHORT__SIZE_2
+[Cfunction SDL_JoystickGetProductVersion]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_USHORT__SIZE_2
+[Cfunction SDL_JoystickGetType]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_JoystickGetGUIDString]
+    arguments: SDL_JoystickGUID,__PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __C_VOID__
+[Cfunction SDL_JoystickGetGUIDFromString]
+    arguments: __PTR__ __C_CHAR__SIZE_1
+    return: SDL_JoystickGUID
+[Cfunction SDL_JoystickGetAttached]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_JoystickInstanceID]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_JoystickNumAxes]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_JoystickNumBalls]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_JoystickNumHats]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_JoystickNumButtons]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_JoystickUpdate]
+    arguments: 
+    return: __C_VOID__
+[Cfunction SDL_JoystickEventState]
+    arguments: __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_JoystickGetAxis]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_INT__SIZE_4
+    return: __C_SHORT__SIZE_2
+[Cfunction SDL_JoystickGetAxisInitialState]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_INT__SIZE_4,__PTR__ __C_SHORT__SIZE_2
+    return: __C_INT__SIZE_4
+[Cfunction SDL_JoystickGetHat]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_INT__SIZE_4
+    return: __C_UCHAR__SIZE_1
+[Cfunction SDL_JoystickGetBall]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_JoystickGetButton]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_INT__SIZE_4
+    return: __C_UCHAR__SIZE_1
+[Cfunction SDL_JoystickClose]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_VOID__
+[Cfunction SDL_JoystickCurrentPowerLevel]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GameControllerAddMappingsFromRW]
+    arguments: __PTR__ SDL_RWops,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GameControllerAddMapping]
+    arguments: __PTR__ __C_CHAR__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GameControllerNumMappings]
+    arguments: 
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GameControllerMappingForIndex]
+    arguments: __C_INT__SIZE_4
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction SDL_GameControllerMappingForGUID]
+    arguments: SDL_JoystickGUID
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction SDL_GameControllerMapping]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction SDL_IsGameController]
+    arguments: __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GameControllerNameForIndex]
+    arguments: __C_INT__SIZE_4
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction SDL_GameControllerOpen]
+    arguments: __C_INT__SIZE_4
+    return: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+[Cfunction SDL_GameControllerFromInstanceID]
+    arguments: __C_INT__SIZE_4
+    return: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+[Cfunction SDL_GameControllerName]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction SDL_GameControllerGetVendor]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_USHORT__SIZE_2
+[Cfunction SDL_GameControllerGetProduct]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_USHORT__SIZE_2
+[Cfunction SDL_GameControllerGetProductVersion]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_USHORT__SIZE_2
+[Cfunction SDL_GameControllerGetAttached]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GameControllerGetJoystick]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+[Cfunction SDL_GameControllerEventState]
+    arguments: __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GameControllerUpdate]
+    arguments: 
+    return: __C_VOID__
+[Cfunction SDL_GameControllerGetAxisFromString]
+    arguments: __PTR__ __C_CHAR__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GameControllerGetStringForAxis]
+    arguments: __C_INT__SIZE_4
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction SDL_GameControllerGetBindForAxis]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_INT__SIZE_4
+    return: SDL_GameControllerButtonBind
+[Cfunction SDL_GameControllerGetAxis]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_INT__SIZE_4
+    return: __C_SHORT__SIZE_2
+[Cfunction SDL_GameControllerGetButtonFromString]
+    arguments: __PTR__ __C_CHAR__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GameControllerGetStringForButton]
+    arguments: __C_INT__SIZE_4
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction SDL_GameControllerGetBindForButton]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_INT__SIZE_4
+    return: SDL_GameControllerButtonBind
+[Cfunction SDL_GameControllerGetButton]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_INT__SIZE_4
+    return: __C_UCHAR__SIZE_1
+[Cfunction SDL_GameControllerClose]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_VOID__
+[Cfunction SDL_GetNumTouchDevices]
+    arguments: 
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GetTouchDevice]
+    arguments: __C_INT__SIZE_4
+    return: __C_LONG__SIZE_8
+[Cfunction SDL_GetNumTouchFingers]
+    arguments: __C_LONG__SIZE_8
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GetTouchFinger]
+    arguments: __C_LONG__SIZE_8,__C_INT__SIZE_4
+    return: __PTR__ SDL_Finger
+[Cfunction SDL_RecordGesture]
+    arguments: __C_LONG__SIZE_8
+    return: __C_INT__SIZE_4
+[Cfunction SDL_SaveAllDollarTemplates]
+    arguments: __PTR__ SDL_RWops
+    return: __C_INT__SIZE_4
+[Cfunction SDL_SaveDollarTemplate]
+    arguments: __C_LONG__SIZE_8,__PTR__ SDL_RWops
+    return: __C_INT__SIZE_4
+[Cfunction SDL_LoadDollarTemplates]
+    arguments: __C_LONG__SIZE_8,__PTR__ SDL_RWops
+    return: __C_INT__SIZE_4
+[Cfunction SDL_PumpEvents]
+    arguments: 
+    return: __C_VOID__
+[Cfunction SDL_PeepEvents]
+    arguments: __PTR__ __C_UNKNOWN__SIZE_56,__C_INT__SIZE_4,__C_INT__SIZE_4,__C_UINT__SIZE_4,__C_UINT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_HasEvent]
+    arguments: __C_UINT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_HasEvents]
+    arguments: __C_UINT__SIZE_4,__C_UINT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_FlushEvent]
+    arguments: __C_UINT__SIZE_4
+    return: __C_VOID__
+[Cfunction SDL_FlushEvents]
+    arguments: __C_UINT__SIZE_4,__C_UINT__SIZE_4
+    return: __C_VOID__
+[Cfunction SDL_PollEvent]
+    arguments: __PTR__ __C_UNKNOWN__SIZE_56
+    return: __C_INT__SIZE_4
+[Cfunction SDL_WaitEvent]
+    arguments: __PTR__ __C_UNKNOWN__SIZE_56
+    return: __C_INT__SIZE_4
+[Cfunction SDL_WaitEventTimeout]
+    arguments: __PTR__ __C_UNKNOWN__SIZE_56,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_PushEvent]
+    arguments: __PTR__ __C_UNKNOWN__SIZE_56
+    return: __C_INT__SIZE_4
+[Cfunction SDL_SetEventFilter]
+    arguments: __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_INT__SIZE_8
+    return: __C_VOID__
+[Cfunction SDL_GetEventFilter]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __PTR__ __C_INT__SIZE_8
+    return: __C_INT__SIZE_4
+[Cfunction SDL_AddEventWatch]
+    arguments: __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_INT__SIZE_8
+    return: __C_VOID__
+[Cfunction SDL_DelEventWatch]
+    arguments: __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_INT__SIZE_8
+    return: __C_VOID__
+[Cfunction SDL_FilterEvents]
+    arguments: __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_INT__SIZE_8
+    return: __C_VOID__
+[Cfunction SDL_EventState]
+    arguments: __C_UINT__SIZE_4,__C_INT__SIZE_4
+    return: __C_UCHAR__SIZE_1
+[Cfunction SDL_RegisterEvents]
+    arguments: __C_INT__SIZE_4
+    return: __C_UINT__SIZE_4
+[Cfunction SDL_GetBasePath]
+    arguments: 
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction SDL_GetPrefPath]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction SDL_NumHaptics]
+    arguments: 
+    return: __C_INT__SIZE_4
+[Cfunction SDL_HapticName]
+    arguments: __C_INT__SIZE_4
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction SDL_HapticOpen]
+    arguments: __C_INT__SIZE_4
+    return: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+[Cfunction SDL_HapticOpened]
+    arguments: __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_HapticIndex]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_MouseIsHaptic]
+    arguments: 
+    return: __C_INT__SIZE_4
+[Cfunction SDL_HapticOpenFromMouse]
+    arguments: 
+    return: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+[Cfunction SDL_JoystickIsHaptic]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_HapticOpenFromJoystick]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+[Cfunction SDL_HapticClose]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_VOID__
+[Cfunction SDL_HapticNumEffects]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_HapticNumEffectsPlaying]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_HapticQuery]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_UINT__SIZE_4
+[Cfunction SDL_HapticNumAxes]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_HapticEffectSupported]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_UNKNOWN__SIZE_72
+    return: __C_INT__SIZE_4
+[Cfunction SDL_HapticNewEffect]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_UNKNOWN__SIZE_72
+    return: __C_INT__SIZE_4
+[Cfunction SDL_HapticUpdateEffect]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_INT__SIZE_4,__PTR__ __C_UNKNOWN__SIZE_72
+    return: __C_INT__SIZE_4
+[Cfunction SDL_HapticRunEffect]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_INT__SIZE_4,__C_UINT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_HapticStopEffect]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_HapticDestroyEffect]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_INT__SIZE_4
+    return: __C_VOID__
+[Cfunction SDL_HapticGetEffectStatus]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_HapticSetGain]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_HapticSetAutocenter]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_HapticPause]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_HapticUnpause]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_HapticStopAll]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_HapticRumbleSupported]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_HapticRumbleInit]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_HapticRumblePlay]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_FLOAT__SIZE_4,__C_UINT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_HapticRumbleStop]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_SetHintWithPriority]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_SetHint]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GetHint]
+    arguments: __PTR__ __C_CHAR__SIZE_1
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction SDL_GetHintBoolean]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_AddHintCallback]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_INT__SIZE_8
+    return: __C_VOID__
+[Cfunction SDL_DelHintCallback]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_INT__SIZE_8
+    return: __C_VOID__
+[Cfunction SDL_ClearHints]
+    arguments: 
+    return: __C_VOID__
+[Cfunction SDL_LoadObject]
+    arguments: __PTR__ __C_CHAR__SIZE_1
+    return: __PTR__ __C_INT__SIZE_8
+[Cfunction SDL_LoadFunction]
+    arguments: __PTR__ __C_INT__SIZE_8,__PTR__ __C_CHAR__SIZE_1
+    return: __PTR__ __C_INT__SIZE_8
+[Cfunction SDL_UnloadObject]
+    arguments: __PTR__ __C_INT__SIZE_8
+    return: __C_VOID__
+[Cfunction SDL_LogSetAllPriority]
+    arguments: __C_INT__SIZE_4
+    return: __C_VOID__
+[Cfunction SDL_LogSetPriority]
+    arguments: __C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __C_VOID__
+[Cfunction SDL_LogGetPriority]
+    arguments: __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_LogResetPriorities]
+    arguments: 
+    return: __C_VOID__
+[Cfunction SDL_Log]
+    arguments: __PTR__ __C_CHAR__SIZE_1
+    return: __C_VOID__
+[Cfunction SDL_LogVerbose]
+    arguments: __C_INT__SIZE_4,__PTR__ __C_CHAR__SIZE_1
+    return: __C_VOID__
+[Cfunction SDL_LogDebug]
+    arguments: __C_INT__SIZE_4,__PTR__ __C_CHAR__SIZE_1
+    return: __C_VOID__
+[Cfunction SDL_LogInfo]
+    arguments: __C_INT__SIZE_4,__PTR__ __C_CHAR__SIZE_1
+    return: __C_VOID__
+[Cfunction SDL_LogWarn]
+    arguments: __C_INT__SIZE_4,__PTR__ __C_CHAR__SIZE_1
+    return: __C_VOID__
+[Cfunction SDL_LogError]
+    arguments: __C_INT__SIZE_4,__PTR__ __C_CHAR__SIZE_1
+    return: __C_VOID__
+[Cfunction SDL_LogCritical]
+    arguments: __C_INT__SIZE_4,__PTR__ __C_CHAR__SIZE_1
+    return: __C_VOID__
+[Cfunction SDL_LogMessage]
+    arguments: __C_INT__SIZE_4,__C_INT__SIZE_4,__PTR__ __C_CHAR__SIZE_1
+    return: __C_VOID__
+[Cfunction SDL_LogMessageV]
+    arguments: __C_INT__SIZE_4,__C_INT__SIZE_4,__PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __C_VOID__
+[Cfunction SDL_LogGetOutputFunction]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __PTR__ __C_INT__SIZE_8
+    return: __C_VOID__
+[Cfunction SDL_LogSetOutputFunction]
+    arguments: __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_INT__SIZE_8
+    return: __C_VOID__
+[Cfunction SDL_ShowMessageBox]
+    arguments: __PTR__ SDL_MessageBoxData,__PTR__ __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_ShowSimpleMessageBox]
+    arguments: __C_UINT__SIZE_4,__PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1,__PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GetPowerInfo]
+    arguments: __PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GetNumRenderDrivers]
+    arguments: 
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GetRenderDriverInfo]
+    arguments: __C_INT__SIZE_4,__PTR__ SDL_RendererInfo
+    return: __C_INT__SIZE_4
+[Cfunction SDL_CreateWindowAndRenderer]
+    arguments: __C_INT__SIZE_4,__C_INT__SIZE_4,__C_UINT__SIZE_4,__PTR__ __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_CreateRenderer]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_INT__SIZE_4,__C_UINT__SIZE_4
+    return: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+[Cfunction SDL_CreateSoftwareRenderer]
+    arguments: __PTR__ SDL_Surface
+    return: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+[Cfunction SDL_GetRenderer]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+[Cfunction SDL_GetRendererInfo]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ SDL_RendererInfo
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GetRendererOutputSize]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_CreateTexture]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_UINT__SIZE_4,__C_INT__SIZE_4,__C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+[Cfunction SDL_CreateTextureFromSurface]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ SDL_Surface
+    return: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+[Cfunction SDL_QueryTexture]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_UINT__SIZE_4,__PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_SetTextureColorMod]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_UCHAR__SIZE_1,__C_UCHAR__SIZE_1,__C_UCHAR__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GetTextureColorMod]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_UCHAR__SIZE_1,__PTR__ __C_UCHAR__SIZE_1,__PTR__ __C_UCHAR__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_SetTextureAlphaMod]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_UCHAR__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GetTextureAlphaMod]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_UCHAR__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_SetTextureBlendMode]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GetTextureBlendMode]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_UpdateTexture]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ SDL_Rect,__PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_UpdateYUVTexture]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ SDL_Rect,__PTR__ __C_UCHAR__SIZE_1,__C_INT__SIZE_4,__PTR__ __C_UCHAR__SIZE_1,__C_INT__SIZE_4,__PTR__ __C_UCHAR__SIZE_1,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_LockTexture]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ SDL_Rect,__PTR__ __PTR__ __C_INT__SIZE_8,__PTR__ __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_UnlockTexture]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_VOID__
+[Cfunction SDL_RenderTargetSupported]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_SetRenderTarget]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GetRenderTarget]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+[Cfunction SDL_RenderSetLogicalSize]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_RenderGetLogicalSize]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4
+    return: __C_VOID__
+[Cfunction SDL_RenderSetIntegerScale]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_RenderGetIntegerScale]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_RenderSetViewport]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ SDL_Rect
+    return: __C_INT__SIZE_4
+[Cfunction SDL_RenderGetViewport]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ SDL_Rect
+    return: __C_VOID__
+[Cfunction SDL_RenderSetClipRect]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ SDL_Rect
+    return: __C_INT__SIZE_4
+[Cfunction SDL_RenderGetClipRect]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ SDL_Rect
+    return: __C_VOID__
+[Cfunction SDL_RenderIsClipEnabled]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_RenderSetScale]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_FLOAT__SIZE_4,__C_FLOAT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_RenderGetScale]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_FLOAT__SIZE_4,__PTR__ __C_FLOAT__SIZE_4
+    return: __C_VOID__
+[Cfunction SDL_SetRenderDrawColor]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_UCHAR__SIZE_1,__C_UCHAR__SIZE_1,__C_UCHAR__SIZE_1,__C_UCHAR__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GetRenderDrawColor]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_UCHAR__SIZE_1,__PTR__ __C_UCHAR__SIZE_1,__PTR__ __C_UCHAR__SIZE_1,__PTR__ __C_UCHAR__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_SetRenderDrawBlendMode]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GetRenderDrawBlendMode]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_RenderClear]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_RenderDrawPoint]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_RenderDrawPoints]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ SDL_Point,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_RenderDrawLine]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__C_INT__SIZE_4,__C_INT__SIZE_4,__C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_RenderDrawLines]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ SDL_Point,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_RenderDrawRect]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ SDL_Rect
+    return: __C_INT__SIZE_4
+[Cfunction SDL_RenderDrawRects]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ SDL_Rect,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_RenderFillRect]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ SDL_Rect
+    return: __C_INT__SIZE_4
+[Cfunction SDL_RenderFillRects]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ SDL_Rect,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_RenderCopy]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ SDL_Rect,__PTR__ SDL_Rect
+    return: __C_INT__SIZE_4
+[Cfunction SDL_RenderCopyEx]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ SDL_Rect,__PTR__ SDL_Rect,__C_DOUBLE__SIZE_8,__PTR__ SDL_Point,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_RenderReadPixels]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ SDL_Rect,__C_UINT__SIZE_4,__PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_RenderPresent]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_VOID__
+[Cfunction SDL_DestroyTexture]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_VOID__
+[Cfunction SDL_DestroyRenderer]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_VOID__
+[Cfunction SDL_GL_BindTexture]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_FLOAT__SIZE_4,__PTR__ __C_FLOAT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GL_UnbindTexture]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_RenderGetMetalLayer]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __PTR__ __C_INT__SIZE_8
+[Cfunction SDL_RenderGetMetalCommandEncoder]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __PTR__ __C_INT__SIZE_8
+[Cfunction SDL_CreateShapedWindow]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__C_UINT__SIZE_4,__C_UINT__SIZE_4,__C_UINT__SIZE_4,__C_UINT__SIZE_4,__C_UINT__SIZE_4
+    return: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+[Cfunction SDL_IsShapedWindow]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction SDL_SetWindowShape]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ SDL_Surface,__PTR__ SDL_WindowShapeMode
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GetShapedWindowMode]
+    arguments: __PTR__ __PTR__ __C_UNKNOWN__SIZE_1,__PTR__ SDL_WindowShapeMode
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GetTicks]
+    arguments: 
+    return: __C_UINT__SIZE_4
+[Cfunction SDL_GetPerformanceCounter]
+    arguments: 
+    return: __C_ULONG__SIZE_8
+[Cfunction SDL_GetPerformanceFrequency]
+    arguments: 
+    return: __C_ULONG__SIZE_8
+[Cfunction SDL_Delay]
+    arguments: __C_UINT__SIZE_4
+    return: __C_VOID__
+[Cfunction SDL_AddTimer]
+    arguments: __C_UINT__SIZE_4,__PTR__ __C_UNKNOWN__SIZE_1,__PTR__ __C_INT__SIZE_8
+    return: __C_INT__SIZE_4
+[Cfunction SDL_RemoveTimer]
+    arguments: __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_GetVersion]
+    arguments: __PTR__ SDL_version
+    return: __C_VOID__
+[Cfunction SDL_GetRevision]
+    arguments: 
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction SDL_GetRevisionNumber]
+    arguments: 
+    return: __C_INT__SIZE_4
+[Cfunction SDL_Init]
+    arguments: __C_UINT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_InitSubSystem]
+    arguments: __C_UINT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction SDL_QuitSubSystem]
+    arguments: __C_UINT__SIZE_4
+    return: __C_VOID__
+[Cfunction SDL_WasInit]
+    arguments: __C_UINT__SIZE_4
+    return: __C_UINT__SIZE_4
+[Cfunction SDL_Quit]
+    arguments: 
+    return: __C_VOID__
+[Cfunction main]
+    arguments: 
+    return: __C_INT__SIZE_4
+[Cfunction f]
+    arguments: __C_UNKNOWN__SIZE_400
+    return: __C_INT__SIZE_4
+[Cfunction TEST_no_arg_func]
+    arguments: 
+    return: __C_INT__SIZE_4
+[Cfunction TEST_arg_func]
+    arguments: __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction TEST_struct_arg_func]
+    arguments: __PTR__ Struct
+    return: __C_INT__SIZE_4
+[Cfunction TEST_return_struct_func]
+    arguments: 
+    return: __PTR__ Struct
+[Cfunction TEST_arg_nest_struct]
+    arguments: __PTR__ NestStruct
+    return: __C_INT__SIZE_4
+[Cfunction TEST_return_nest_struct]
+    arguments: 
+    return: __PTR__ NestStruct
+import "../tools/test1.bridge"
+
+class List(element)
+    @size = 0
+    @allocated_size = 1
+    @_element = element
+    @element_size = sizeof(element)
+    @element_typeid = typeid(element)
+    @array = {}
+    @function resize()
+        self.allocated_size = self.allocated_size * 2
+        self.array = __blawn_realloc__(self.array,self.element_size,self.allocated_size)
+        return
+    @function append(new_element)
+        if typeid(new_element) != self.element_typeid
+        (
+            print("Error: append invalid type element to list.")
+        )
+        if self.size + 1 >= self.allocated_size
+        (   
+            self.resize()
+        )
+        __blawn_memcpy__(self.array,self.size,self.element_size,new_element)
+        self.size = self.size + 1
+        return
+    @function get(index)
+        if self.size == 0
+        (
+            print("err")
+        )
+        data = __blawn_index__(self.array,self.size,self.element_size,index)
+        res = __blawn_cast__(typeid(self._element),data)
+        return res
+    @function set(value,index)
+        __blawn_set_element__(self.array,self.size,self.element_size,value,index)
+        return
+
+class Person(name)
+    @name = name
+    @function hello(s)
+        text = "Hello! I'm "
+        text.append(self.name)
+        print(text)
+        print(s)
+        return
+    @function m()
+        print("call m")
+        return
+    @function mm()
+        print("call mm")
+        print(self.i.s)
+        return
+
+function t()
+    0 + 9
+    return 900
+a = 0
+print("TESTES")
+[Cfunction show]
+    arguments:
+    return: __C_INT__SIZE_4
+//SDL_Quit()
+res = i32_to_i64(show())
+//show()
+window = SDL_CreateWindow(to_char_ptr("winddow"),i64_to_i32(500),i64_to_i32(500),i64_to_i32(640),i64_to_i32(480),i64_to_i32(2))
+print("is succeeded:")
+print(int_to_str(res))
+print(int_to_str(i8_to_i64(i64_to_i8(7))))
+print("aa")

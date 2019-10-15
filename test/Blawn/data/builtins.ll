@@ -3,14 +3,24 @@ source_filename = "../compiler/builtins/builtins.c"
 target datalayout = "e-m:e-i64:64-f80:128-n8:16:32:64-S128"
 target triple = "x86_64-pc-linux-gnu"
 
-%struct.List = type { i64, i64, i64, i8* }
 %struct.String = type { i8*, i64 }
+%struct.List = type { i64, i64, i64, i8* }
 
 @.str = private unnamed_addr constant [73 x i8] c"\1B[31mCRITICAL ERROR:\1B[39m failed to realloc at appending element to list\00", align 1
 @.str.1 = private unnamed_addr constant [31 x i8] c"Error: list index out of range\00", align 1
 @.str.2 = private unnamed_addr constant [4 x i8] c"%s\0A\00", align 1
 @.str.3 = private unnamed_addr constant [5 x i8] c"%lld\00", align 1
 @.str.4 = private unnamed_addr constant [4 x i8] c"%lf\00", align 1
+
+; Function Attrs: noinline nounwind optnone uwtable
+define i8* @to_char_ptr(%struct.String*) #0 {
+  %2 = alloca %struct.String*, align 8
+  store %struct.String* %0, %struct.String** %2, align 8
+  %3 = load %struct.String*, %struct.String** %2, align 8
+  %4 = getelementptr inbounds %struct.String, %struct.String* %3, i32 0, i32 0
+  %5 = load i8*, i8** %4, align 8
+  ret i8* %5
+}
 
 ; Function Attrs: noinline nounwind optnone uwtable
 define %struct.List* @list_constructor(i64) #0 {

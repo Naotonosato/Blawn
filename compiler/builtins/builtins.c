@@ -2,23 +2,29 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define i64 long long
+#define i64_t long long
 
 struct String;
 
 typedef struct String {
     char* string;
-    i64 size;
+    i64_t size;
 } String;
 
 typedef struct List {
-    i64 size;
-    i64 allocated_size;
-    i64 element_size;
+    i64_t size;
+    i64_t allocated_size;
+    i64_t element_size;
     void* elements;
 } List;
 
-List* list_constructor(i64 element_size) {
+
+char* to_char_ptr(String* string)
+{
+    return string->string;
+}
+
+List* list_constructor(i64_t element_size) {
     List* self = (List*)malloc(sizeof(List));
     self->elements = NULL;
     self->element_size = element_size;
@@ -27,7 +33,7 @@ List* list_constructor(i64 element_size) {
     return self;
 }
 
-void* blawn_realloc(void* array, i64 element_size, i64 allocated_size) {
+void* blawn_realloc(void* array, i64_t element_size, i64_t allocated_size) {
     void* ptr = realloc(array, element_size * allocated_size);
     if (ptr == NULL) {
         puts(
@@ -38,11 +44,11 @@ void* blawn_realloc(void* array, i64 element_size, i64 allocated_size) {
     return ptr;
 }
 
-void blawn_memcpy(void* array, i64 size, i64 element_size, void* element) {
+void blawn_memcpy(void* array, i64_t size, i64_t element_size, void* element) {
     memcpy(array + (size * element_size), &element, element_size);
 }
 
-void* blawn_index(void* array, i64 size, i64 element_size, i64 index) {
+void* blawn_index(void* array, i64_t size, i64_t element_size, i64_t index) {
     if (0 <= index && index < size) {
         return (char*)array + element_size * index;
     } else {
@@ -51,8 +57,8 @@ void* blawn_index(void* array, i64 size, i64 element_size, i64 index) {
     }
 }
 
-void blawn_set_element(void* array, i64 size, i64 element_size, void* element,
-                       i64 index) {
+void blawn_set_element(void* array, i64_t size, i64_t element_size, void* element,
+                       i64_t index) {
     if (0 <= index && index < size) {
         *((char**)((char*)array + element_size * index)) = (char*)element;
     } else {
@@ -63,7 +69,7 @@ void blawn_set_element(void* array, i64 size, i64 element_size, void* element,
 
 void print(String* string) { printf("%s\n", string->string); }
 
-String* string_constructor(char* str, i64 size) {
+String* string_constructor(char* str, i64_t size) {
     String* string = (String*)malloc(sizeof(String));
     string->string = str;
     string->size = size;
@@ -80,9 +86,9 @@ void append_string(String* string, String* to_add) {
     string->string = new_str;
 }
 
-String* int_to_str(i64 n) {
-    i64 n_copy = n;
-    i64 size;
+String* int_to_str(i64_t n) {
+    i64_t n_copy = n;
+    i64_t size;
     if (n >= 0) {
         size = 1;
         while (n) {

@@ -6,6 +6,8 @@ blawn: builtins.o errors.o main.o compiler.o driver.o node.o parser.o lexer.o as
 	./node.o builtins.o ir_generator.o utils.o errors.o blawn_context.o -ll $(LLVM_OPTION)
 	cp blawn ../blawn/blawn
 	cp -r ../blawn ../test
+	cp -r ../tools ../blawn
+	cp -r ../tools ../test/blawn
 driver.o: ../compiler/parser/driver.cpp ../compiler/ir_generator/ir_generator.hpp
 	$(CC) -g -c -o driver.o ../compiler/parser/driver.cpp $(LLVM_OPTION) 
 parser.o: ../compiler/parser/parser.tab.cc ../compiler/parser/parser.tab.hh
@@ -28,8 +30,7 @@ utils.o: ../compiler/utils/utils.cpp
 	$(CC) -g -c ../compiler/utils/utils.cpp -o utils.o $(LLVM_OPTION)
 builtins.o: ../compiler/builtins/builtins.cpp ../compiler/builtins/builtins.hpp ../compiler/builtins/builtins.c
 	$(CC) -g -c ../compiler/builtins/builtins.cpp -o builtins.o $(LLVM_OPTION)
-	clang -c -S -emit-llvm ../compiler/builtins/builtins.c -o builtins.ll
-	cp builtins.ll ../blawn/data/builtins.ll
+	clang -c ../compiler/builtins/builtins.c -o ../blawn/data/builtins.o
 ast_generator.o: ../compiler/ast_generator/ast_generator.cpp ../compiler/ast_generator/ast_generator.hpp ../compiler/ast_generator/node_collector.hpp
 	$(CC) -g -c ../compiler/ast_generator/ast_generator.cpp -o ast_generator.o $(LLVM_OPTION)
 node.o: ../compiler/ast/node.cpp ../compiler/ast/node.hpp ../compiler/ir_generator/ir_generator.hpp

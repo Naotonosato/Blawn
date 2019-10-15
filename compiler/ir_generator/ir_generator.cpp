@@ -46,7 +46,7 @@ void initialize(llvm::LLVMContext& context, llvm::Module& module,
     // create builtin string type
     builtins::create_string_type(context, module, ir_builder);
     // load builtins
-    builtins::load_builtin_functions(module, ir_builder);
+    builtins::load_builtin_functions(context,module, ir_builder);
     // builtins::load_builtins(context,module);
     // create main function
     std::vector<llvm::Type*> main_types;

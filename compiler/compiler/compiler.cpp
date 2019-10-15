@@ -40,18 +40,21 @@ std::vector<std::string> get_compile_commands(int argc, char** argv) {
     bool is_link = false;
     std::string to_link;
     std::string output_filename = utils::get_filename(filename) + ".out";
-    const char* opstring = "l:o:";
+    std::string arguments;
+    const char* opstring = "l:o:a:";
     int opt;
     while ((opt = getopt(argc, argv, opstring)) != -1) {
         switch (opt) {
             case 'l':
                 is_link = true;
                 to_link = optarg;
-                break;
+                continue;
             case 'o':
-                std::cout << "output filename" << std::endl;
                 output_filename = optarg;
-                break;
+                continue;
+            case 'a':
+                arguments = optarg;
+                continue;
             default:
                 std::cerr << "invalid command." << std::endl;
                 exit(1);
@@ -64,10 +67,10 @@ std::vector<std::string> get_compile_commands(int argc, char** argv) {
     if (is_link) {
         commands.push_back("gcc -c " + abs("tmp/result.s") + " -o "+ abs("tmp/obj.o")+" -no-pie");
         std::string cmd =
-            ("gcc -no-pie "+abs("tmp/obj.o") +" "+ abs("data/builtins.o") + abs(to_link) + " -o " + output_filename);
+            ("gcc -no-pie " + abs("tmp/obj.o") +" "+ abs("data/builtins.o") + " " +  to_link + " -o " + output_filename + " " + arguments);
         commands.push_back(cmd.c_str());
     } else {
-        std::string cmd = "gcc "+abs("tmp/result.s")+" "+abs("data/builtins.o") + " -no-pie -o " + output_filename;
+        std::string cmd = "gcc "+ arguments + " " +abs("tmp/result.s")+" "+abs("data/builtins.o") + " -no-pie -o " + output_filename;
         commands.push_back(cmd.c_str());
     }
     std::string cmd = ("./" + output_filename);
@@ -75,6 +78,8 @@ std::vector<std::string> get_compile_commands(int argc, char** argv) {
     //commands.push_back("rm tmp/*.ll");
     commands.push_back("rm " + abs("tmp") + "/*.s");
     commands.push_back("rm " + abs("tmp") + "/*.blawn");
+    commands.push_back("rm " + abs("tmp") + "/*.ll");
+    commands.push_back("rm " + abs("tmp") + "/*.o");
     return commands;
 }
 
@@ -134,8 +139,12 @@ int compile(int argc, char** argv) {
         std::ifstream file(abs(name));
         if (!file)
         {
-            std::cerr << "cannot open file " << name << std::endl;
-            exit(1);
+            file = std::ifstream(name);
+            if (!file)
+            {
+                std::cerr << "cannot open file " << name << std::endl;
+                exit(1);
+            }
         }
         std::string source_code;
         while (getline(file,source_code)) 
@@ -177,6 +186,10 @@ int compile(int argc, char** argv) {
         bool is_failed = system(command.c_str());
         if (is_failed) {
             std::cout << "compilation failed.\n....Don't mind!" << std::endl;
+            commands.push_back("rm " + abs("tmp") + "/*.s");
+            commands.push_back("rm " + abs("tmp") + "/*.blawn");
+            commands.push_back("rm " + abs("tmp") + "/*.ll");
+            commands.push_back("rm " + abs("tmp") + "/*.o");
             return 1;
         }
     }
