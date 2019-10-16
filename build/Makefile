@@ -39,6 +39,8 @@ errors.o: ../compiler/errors/errors.cpp ../compiler/errors/errors.hpp
 	$(CC) -g -c ../compiler/errors/errors.cpp -o errors.o
 
 
+set_path:
+	alias cridge="python3 /mnt/c/users/pcnaoto/desktop/blawn/blawn/tools/cridge.py"
 clean:
 	rm *.o
 	rm *.ll

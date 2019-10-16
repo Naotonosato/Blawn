@@ -79,7 +79,7 @@ std::vector<std::string> get_compile_commands(int argc, char** argv) {
     commands.push_back("rm " + abs("tmp") + "/*.s");
     commands.push_back("rm " + abs("tmp") + "/*.blawn");
     commands.push_back("rm " + abs("tmp") + "/*.ll");
-    commands.push_back("rm " + abs("tmp") + "/*.o");
+    if (is_link) commands.push_back("rm " + abs("tmp") + "/*.o");
     return commands;
 }
 

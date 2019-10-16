@@ -220,7 +220,7 @@ llvm::Value* FloatIRGenerator::generate(Node& node) {
 
 llvm::Value* StringIRGenerator::generate(Node& node) {
     std::string str = node.string;
-    auto ptr = ir_builder.CreateGlobalStringPtr(str,str);
+    auto ptr = ir_builder.CreateGlobalStringPtr(str);
     auto length =
         llvm::ConstantInt::get(context, llvm::APInt(64, str.size()));
     std::vector<llvm::Value*> args;
