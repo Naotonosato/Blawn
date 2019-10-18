@@ -153,6 +153,7 @@ int compile(int argc, char** argv) {
             imported_line += 1;
         }
     }
+    
     std::ifstream source_file(filename);
     std::string source_code;
     while(getline(source_file,source_code))
@@ -174,7 +175,6 @@ int compile(int argc, char** argv) {
 
     auto zero = llvm::ConstantInt::get(*context, llvm::APInt(8, 0));
     ir_builder->CreateRet(zero);
-    //builtins::load_builtins(*context, *module, "./data/builtins.ll");
 
     std::string output_filename = abs("tmp/" + utils::get_filename(filename) + ".ll");
     std::error_code error;

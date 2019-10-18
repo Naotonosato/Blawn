@@ -52,8 +52,8 @@ class BlawnContext {
     llvm::Type* get_type_with_id(llvm::ConstantInt* id);
     std::vector<std::pair<llvm::Function*, llvm::Value*>> get_destructors(
         llvm::BasicBlock*);
-    void add_heap_user(Scope, llvm::Value*);
-    std::vector<llvm::Value*> get_heap_users(Scope);
+    unsigned int add_heap_user(Scope, llvm::Value*);
+    std::vector<llvm::Value*>& get_heap_users(Scope);
     void set_destructor(llvm::BasicBlock*,
                         std::pair<llvm::Function*, llvm::Value*>);
 };

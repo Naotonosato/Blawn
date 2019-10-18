@@ -76,7 +76,8 @@
 			"set": "cpp",
 			"numeric": "cpp",
 			"filesystem": "cpp",
-			"sdl.h": "c"
+			"sdl.h": "c",
+			"codecvt": "cpp"
 		},
 		"C_Cpp.intelliSenseEngineFallback": "Disabled",
 		"C_Cpp.default.cppStandard": "c++14"

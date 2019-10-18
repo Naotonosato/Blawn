@@ -9,9 +9,11 @@ class Person(name)
 john = Person("john")
 
 function rename(person)
-    bob = Person("Bob")
-    person = bob
-    return
+    bobif = Person("Bob")
+    c = bobif
+    person <- bobif
+    return c
 
-rename(john)
+b = rename(john)
+print(b.name)
 john.hello()

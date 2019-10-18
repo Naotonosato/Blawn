@@ -5,9 +5,7 @@ blawn: builtins.o errors.o main.o compiler.o driver.o node.o parser.o lexer.o as
 	$(CC) -g -o blawn main.o compiler.o driver.o parser.o lexer.o ast_generator.o \
 	./node.o builtins.o ir_generator.o utils.o errors.o blawn_context.o -ll $(LLVM_OPTION)
 	cp blawn ../blawn/blawn
-	cp -r ../blawn ../test
-	cp -r ../tools ../blawn
-	cp -r ../tools ../test/blawn
+	cp -r ../tools ../blawn/tools
 driver.o: ../compiler/parser/driver.cpp ../compiler/ir_generator/ir_generator.hpp
 	$(CC) -g -c -o driver.o ../compiler/parser/driver.cpp $(LLVM_OPTION) 
 parser.o: ../compiler/parser/parser.tab.cc ../compiler/parser/parser.tab.hh
@@ -43,7 +41,6 @@ set_path:
 	alias cridge="python3 /mnt/c/users/pcnaoto/desktop/blawn/blawn/tools/cridge.py"
 clean:
 	rm *.o
-	rm *.ll
 	-fsanitize=address
 cridge_debug:
 	cd ../blawn && ./blawn ../tools/test1.bridge
