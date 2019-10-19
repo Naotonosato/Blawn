@@ -707,7 +707,11 @@ llvm::Value* CallFunctionIRGenerator::generate(Node& node_) {
         }
     }
 
-    for (auto& line : node.function->body) {
+    auto body = node.function->body;
+    auto func_end = body.back();
+    body.pop_back();
+
+    for (auto& line : body) {
         line->initialize();
         line->generate();
     }
@@ -728,12 +732,8 @@ llvm::Value* CallFunctionIRGenerator::generate(Node& node_) {
     } else {
         return_type = ir_builder.getVoidTy();
     }
-    auto heap_users =
-        get_blawn_context().get_heap_users(node.function->get_self_namespace());
-    for (int i = heap_users.size() - 1; i != -1; i -= 1) {
-        utils::free_value(heap_users[i], module, ir_builder);
-    }
 
+    func_end->generate();
     if (return_value != nullptr)
         ir_builder.CreateRet(return_value);
     else
@@ -1089,13 +1089,12 @@ llvm::Value* ListIRGenerator::generate(Node& node_) {
 }
 
 llvm::Value* BlockEndIRGenerator::generate(Node& node_) {
-    /*
     auto& node = *static_cast<BlockEndNode*>(&node_);
     auto heap_users = get_blawn_context().get_heap_users(node.block_scope);
     for (int i = heap_users.size() - 1; i != -1; i -= 1) {
         utils::free_value(heap_users[i], module, ir_builder);
     }
-    */
+    
     return nullptr;
 }
 
