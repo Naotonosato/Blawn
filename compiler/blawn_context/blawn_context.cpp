@@ -127,7 +127,8 @@ BlawnContext::get_destructors(llvm::BasicBlock* block) {
     return destructors[block];
 }
 
-unsigned int BlawnContext::add_heap_user(Scope belong_scope, llvm::Value* user) {
+unsigned int BlawnContext::add_heap_user(Scope belong_scope,
+                                         llvm::Value* user) {
     heap_users[belong_scope].push_back(user);
     return heap_users[belong_scope].size() - 1;
 }

@@ -33,7 +33,7 @@ void Blawn::Driver::parse(std::istream &stream) {
 
 void Blawn::Driver::parse_helper(std::istream &stream) {
     // delete (scanner);
-    auto new_scanner = new Blawn::Scanner(&stream,this);
+    auto new_scanner = new Blawn::Scanner(&stream, this);
     // delete (parser);
     auto new_parser = new Blawn::Parser(*new_scanner, *this);
     const int accept(0);

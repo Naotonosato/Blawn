@@ -25,10 +25,7 @@ using namespace std::experimental;
 
 std::string self_app_path;
 
-std::string abs(std::string path)
-{
-    return self_app_path + "/" +  path;
-}
+std::string abs(std::string path) { return self_app_path + "/" + path; }
 
 std::vector<std::string> get_compile_commands(int argc, char** argv) {
     if (argc == 1) {
@@ -36,7 +33,8 @@ std::vector<std::string> get_compile_commands(int argc, char** argv) {
         exit(1);
     }
     std::string filename = abs(argv[1]);
-    std::string ir_filename = abs("tmp/" + utils::get_filename(argv[1]) + ".ll");
+    std::string ir_filename =
+        abs("tmp/" + utils::get_filename(argv[1]) + ".ll");
     bool is_link = false;
     std::string to_link;
     std::string output_filename = utils::get_filename(filename) + ".out";
@@ -61,21 +59,25 @@ std::vector<std::string> get_compile_commands(int argc, char** argv) {
         }
     }
     std::vector<std::string> commands;
-    std::string cmd1 = 
-        abs("./data/llc") +" -O3 " + ir_filename + " -o " + abs("tmp/result.s");
+    std::string cmd1 = abs("./data/llc") + " -O3 " + ir_filename + " -o " +
+                       abs("tmp/result.s");
     commands.push_back(cmd1.c_str());
     if (is_link) {
-        commands.push_back("gcc -c " + abs("tmp/result.s") + " -o "+ abs("tmp/obj.o")+" -no-pie");
+        commands.push_back("gcc -c " + abs("tmp/result.s") + " -o " +
+                           abs("tmp/obj.o") + " -no-pie");
         std::string cmd =
-            ("gcc -no-pie " + abs("tmp/obj.o") +" "+ abs("data/builtins.o") + " " +  to_link + " -o " + output_filename + " " + arguments);
+            ("gcc -no-pie " + abs("tmp/obj.o") + " " + abs("data/builtins.o") +
+             " " + to_link + " -o " + output_filename + " " + arguments);
         commands.push_back(cmd.c_str());
     } else {
-        std::string cmd = "gcc "+ arguments + " " +abs("tmp/result.s")+" "+abs("data/builtins.o") + " -no-pie -o " + output_filename;
+        std::string cmd = "gcc " + arguments + " " + abs("tmp/result.s") + " " +
+                          abs("data/builtins.o") + " -no-pie -o " +
+                          output_filename;
         commands.push_back(cmd.c_str());
     }
     std::string cmd = ("./" + output_filename);
     commands.push_back(cmd.c_str());
-    //commands.push_back("rm tmp/*.ll");
+    // commands.push_back("rm tmp/*.ll");
     commands.push_back("rm " + abs("tmp") + "/*.s");
     commands.push_back("rm " + abs("tmp") + "/*.blawn");
     commands.push_back("rm " + abs("tmp") + "/*.ll");
@@ -83,18 +85,15 @@ std::vector<std::string> get_compile_commands(int argc, char** argv) {
     return commands;
 }
 
-std::vector<std::string> get_imports(std::string filename)
-{
+std::vector<std::string> get_imports(std::string filename) {
     std::ifstream file(filename);
     std::string line;
     std::string source_code;
-    while(getline(file,line)) source_code += line + "\n";
+    while (getline(file, line)) source_code += line + "\n";
     std::string current_token;
     std::vector<std::string> tokens;
-    for (auto& c:source_code)
-    {
-        if (c == ' ' || c == '\n' || c == '\r')
-        {
+    for (auto& c : source_code) {
+        if (c == ' ' || c == '\n' || c == '\r') {
             tokens.push_back(current_token);
             current_token = "";
             continue;
@@ -103,12 +102,11 @@ std::vector<std::string> get_imports(std::string filename)
     }
     std::string last_token;
     std::vector<std::string> imports;
-    for (auto& token:tokens)
-    {
+    for (auto& token : tokens) {
         if (token == "") continue;
-        if (last_token == "import" && token.front() == '"' && token.back() == '"')
-        {
-            imports.push_back(token.substr(1,token.size()-2));
+        if (last_token == "import" && token.front() == '"' &&
+            token.back() == '"') {
+            imports.push_back(token.substr(1, token.size() - 2));
         }
         last_token = token;
     }
@@ -116,59 +114,52 @@ std::vector<std::string> get_imports(std::string filename)
 }
 
 int compile(int argc, char** argv) {
-    if (argc == 1)
-    {
+    if (argc == 1) {
         std::cerr << "no input file!" << std::endl;
         exit(1);
     }
     std::string filename = argv[1];
     char buf[1000];
-    readlink("/proc/self/exe",buf,1000);
+    readlink("/proc/self/exe", buf, 1000);
     self_app_path = filesystem::absolute(buf).parent_path().string();
-    std::string expanded_filename = abs("tmp/" + utils::get_filename(filename) + ".blawn");
+    std::string expanded_filename =
+        abs("tmp/" + utils::get_filename(filename) + ".blawn");
     std::ofstream expand_file(expanded_filename);
-    if (!expand_file)
-    {
+    if (!expand_file) {
         std::cerr << "cannot open file " << expanded_filename << std::endl;
         exit(1);
     }
     auto imports = get_imports(filename);
     int imported_line = 0;
-    for (auto& name:imports)
-    {
+    for (auto& name : imports) {
         std::ifstream file(abs(name));
-        if (!file)
-        {
+        if (!file) {
             file = std::ifstream(name);
-            if (!file)
-            {
+            if (!file) {
                 std::cerr << "cannot open file " << name << std::endl;
                 exit(1);
             }
         }
         std::string source_code;
-        while (getline(file,source_code)) 
-        {
+        while (getline(file, source_code)) {
             expand_file << source_code << std::endl;
             imported_line += 1;
         }
     }
-    
+
     std::ifstream source_file(filename);
     std::string source_code;
-    while(getline(source_file,source_code))
-    {
-        expand_file << source_code << std::endl;;
+    while (getline(source_file, source_code)) {
+        expand_file << source_code << std::endl;
+        ;
     }
 
     auto context = std::shared_ptr<llvm::LLVMContext>(new llvm::LLVMContext);
     std::shared_ptr<llvm::Module> module(new llvm::Module("Blawn", *context));
     auto ir_builder =
         std::shared_ptr<llvm::IRBuilder<>>(new llvm::IRBuilder<>(*context));
-    auto ast_generator =
-        std::shared_ptr<ASTGenerator>(
-            new ASTGenerator(*module, *ir_builder, *context,-imported_line)
-            );
+    auto ast_generator = std::shared_ptr<ASTGenerator>(
+        new ASTGenerator(*module, *ir_builder, *context, -imported_line));
     Blawn::Driver* driver = new Blawn::Driver(std::move(ast_generator));
 
     driver->parse(expanded_filename.c_str());
@@ -176,7 +167,8 @@ int compile(int argc, char** argv) {
     auto zero = llvm::ConstantInt::get(*context, llvm::APInt(8, 0));
     ir_builder->CreateRet(zero);
 
-    std::string output_filename = abs("tmp/" + utils::get_filename(filename) + ".ll");
+    std::string output_filename =
+        abs("tmp/" + utils::get_filename(filename) + ".ll");
     std::error_code error;
     llvm::raw_fd_ostream stream(output_filename.c_str(), error,
                                 llvm::sys::fs::OpenFlags::F_None);

@@ -46,7 +46,7 @@ void initialize(llvm::LLVMContext& context, llvm::Module& module,
     // create builtin string type
     builtins::create_string_type(context, module, ir_builder);
     // load builtins
-    builtins::load_builtin_functions(context,module, ir_builder);
+    builtins::load_builtin_functions(context, module, ir_builder);
     // builtins::load_builtins(context,module);
     // create main function
     std::vector<llvm::Type*> main_types;
@@ -123,8 +123,6 @@ llvm::Value* CastIRGenerator::generate(Node& node_) {
         return 0;
     }
 }
-
-llvm::Type* _get_C_type();
 
 llvm::Value* NullIRGenerator::generate(Node& node_) {
     auto& node = *static_cast<NullNode*>(&node_);
@@ -221,13 +219,12 @@ llvm::Value* FloatIRGenerator::generate(Node& node) {
 llvm::Value* StringIRGenerator::generate(Node& node) {
     std::string str = node.string;
     auto ptr = ir_builder.CreateGlobalStringPtr(str);
-    auto length =
-        llvm::ConstantInt::get(context, llvm::APInt(64, str.size()));
+    auto length = llvm::ConstantInt::get(context, llvm::APInt(64, str.size()));
     std::vector<llvm::Value*> args;
     args.push_back(ptr);
     args.push_back(length);
-    auto string = ir_builder.CreateCall(module.getFunction("string_constructor"),
-                                 args);
+    auto string =
+        ir_builder.CreateCall(module.getFunction("string_constructor"), args);
     return string;
 }
 
@@ -239,11 +236,9 @@ llvm::Value* VariableIRGenerator::generate(Node& node_) {
         llvm::Value* right;
         if (node.generated_right_values.count(node.right_node)) {
             right = node.generated_right_values[node.right_node];
-        } else
-        {   
+        } else {
             right = node.right_node->generate();
-            if (node.right_node->is_heap_user()) 
-            {
+            if (node.right_node->is_heap_user()) {
                 node._is_heap_user = true;
                 node._heap_id = node.right_node->get_heap_id();
             }
@@ -259,16 +254,7 @@ llvm::Value* VariableIRGenerator::generate(Node& node_) {
             node.generated();
             return ir_builder.CreateLoad(node.global_ptr);
         }
-        /*
-        if (right->getType()->isPointerTy())
-        {
-            auto load = ir_builder.CreateLoad(right);
-            node.alloca_inst =
-        ir_builder.CreateAlloca(load->getType(),0,node.name); auto s =
-        ir_builder.CreateStore(load,node.alloca_inst); node.generated();
-            std::cout << utils::to_string(s) << std::endl;
-        }
-        else*/
+
         {
             node.alloca_inst =
                 ir_builder.CreateAlloca(right->getType(), 0, node.name);
@@ -440,40 +426,6 @@ llvm::Value* StoreIRGenerator::generate(Node& node_) {
         store(node, ptr, obj, context, module, ir_builder);
     }
 
-    /*
-    if (pointer->getType()->getPointerElementType()->isStructTy())
-    {
-        std::string struct_name =
-    pointer->getType()->getPointerElementType()->getStructName(); auto field =
-    get_blawn_context().get_elements(struct_name);
-
-        auto gen = AccessIRGenerator(context,module,ir_builder);
-        NodeCollector<FunctionNode> empty;
-        std::shared_ptr<Node> p_node;
-        std::shared_ptr<Node> o_node;
-
-        for (auto& element:field)
-        {
-            auto element_name = element.first;
-            utils::replace(element_name,"@","");
-            std::cout << "store to " << struct_name << "." << element_name <<
-    std::endl; p_node = std::shared_ptr<Node>( new
-    AccessNode(node.line_number,node.self_scope,gen,node.pointer,element_name,empty)
-                );
-            o_node = std::shared_ptr<Node>(
-                new
-    AccessNode(node.line_number,node.self_scope,gen,node.object,element_name,empty)
-                );
-            if (p_node->generate()->getType()->isPointerTy())
-            {auto re =
-    StoreNode(node.line_number,node.self_scope,*this,p_node,o_node);
-            generate(re);}
-
-
-        }
-    }
-    //ir_builder.CreateStore(object,pointer);
-    */
     return pointer;
 }
 
@@ -754,38 +706,38 @@ llvm::Value* CallFunctionIRGenerator::generate(Node& node_) {
             count += 1;
         }
     }
-    // auto destruction_block = llvm::BasicBlock::Create(context,"destruction");
-    // auto merge = llvm::BasicBlock::Create(context,"merge");
+
     for (auto& line : node.function->body) {
         line->initialize();
         line->generate();
     }
 
-    
     llvm::Value* return_value = nullptr;
     llvm::Type* return_type;
     if (node.function->return_value != nullptr) {
         return_value = node.function->return_value->generate();
-        if (node.function->return_value->is_heap_user())
-        {
+        if (node.function->return_value->is_heap_user()) {
             int heap_id = node.function->return_value->get_heap_id();
             Scope func_scope = node.function->get_self_namespace();
             auto& users = get_blawn_context().get_heap_users(func_scope);
             auto heap_user = users[heap_id];
-            get_blawn_context().add_heap_user(node.self_scope,heap_user);
+            get_blawn_context().add_heap_user(node.self_scope, heap_user);
             users.erase(users.begin() + heap_id);
         }
         return_type = return_value->getType();
     } else {
         return_type = ir_builder.getVoidTy();
     }
-    auto heap_users = get_blawn_context().get_heap_users(node.function->get_self_namespace());
+    auto heap_users =
+        get_blawn_context().get_heap_users(node.function->get_self_namespace());
     for (int i = heap_users.size() - 1; i != -1; i -= 1) {
         utils::free_value(heap_users[i], module, ir_builder);
     }
 
-    if (return_value != nullptr) ir_builder.CreateRet(return_value);
-    else ir_builder.CreateRetVoid();
+    if (return_value != nullptr)
+        ir_builder.CreateRet(return_value);
+    else
+        ir_builder.CreateRetVoid();
 
     auto new_function_type = llvm::FunctionType::get(return_type, types, false);
     auto new_function = llvm::Function::Create(new_function_type,
@@ -805,7 +757,6 @@ llvm::Value* CallFunctionIRGenerator::generate(Node& node_) {
     llvm::CloneFunctionInto(new_function, base_function, vmap, false, returns);
 
     node.function->register_function(types, new_function);
-    // node.function->get_temporary_function()->replaceAllUsesWith(new_function);
 
     ir_builder.SetInsertPoint(callee_block);
     return ir_builder.CreateCall(new_function, argument_values);
@@ -854,7 +805,8 @@ llvm::Value* CallConstructorIRGenerator::generate(Node& node_) {
             logger.invalid_paramater_error("function");
         }
         instance = ir_builder.CreateCall(f, argument_values);
-        node._heap_id = get_blawn_context().add_heap_user(node.belong_to, instance);
+        node._heap_id =
+            get_blawn_context().add_heap_user(node.belong_to, instance);
         return instance;
     }
     auto base_constructor_type =
@@ -874,23 +826,10 @@ llvm::Value* CallConstructorIRGenerator::generate(Node& node_) {
         auto local = node.get_class()->get_self_namespace();
         auto empty_node = node.argument_collector.get(name, local);
         empty_node->alloca_inst =
-                ir_builder.CreateAlloca(tmp_constructor_arg.getType(), 0, 0);
-        ir_builder.CreateStore(&tmp_constructor_arg, empty_node->alloca_inst);
-        /*
-        empty_node->alloca_inst =
-            ir_builder.CreateAlloca(tmp_func_arg.getType(), 0, 0);
-        ir_builder.CreateStore(&tmp_func_arg, empty_node->alloca_inst);
-        empty_node->set_right_value(
-            ir_builder.CreateLoad(empty_node->alloca_inst));
-        empty_node->alloca_inst;
-        */
-        empty_node->set_right_value(&tmp_constructor_arg);
-
-        /*empty_node->alloca_inst =
             ir_builder.CreateAlloca(tmp_constructor_arg.getType(), 0, 0);
         ir_builder.CreateStore(&tmp_constructor_arg, empty_node->alloca_inst);
         empty_node->set_right_value(&tmp_constructor_arg);
-        */
+
         count += 1;
     }
 
@@ -1185,47 +1124,3 @@ IRGenerators::IRGenerators(llvm::LLVMContext& context, llvm::Module& module,
       access_generator(context, module, ir_builder),
       list_generator(context, module, ir_builder),
       block_end_generator(context, module, ir_builder) {}
-/*
-llvm::Value* access(llvm::Value* left,llvm::StructType* struct_type,std::string
-right_name,llvm::IRBuilder<> ir_builder)
-{
-    BlawnLogger logger;logger.set_line_number(node.line_number);
-    std::string type_name = struct_type->getStructName();
-    int index = get_blawn_context().get_element_index(type_name,"@"+right_name);
-    if (index != -1)
-    {
-        auto pointer = ir_builder.CreateStructGEP(nullptr,left,index);
-        node.set_pointer(pointer);
-        auto value = ir_builder.CreateLoad(pointer);
-        node.set_generated(value);
-        return value;
-    }
-    else
-    {
-        auto class_node = get_blawn_context().get_class(type_name);
-        if (class_node == nullptr)
-        {
-            logger.has_no_member_error(type_name,node.get_right_name());
-            return 0;
-        }
-        for (auto& m:class_node->get_methods())
-        {
-            if (m->name == node.get_right_name())
-            {
-
-                if (node.get_generated() != nullptr)
-                {
-                    return node.get_generated();
-                }
-
-                node.get_call_node()->function = m;
-                auto value = node.get_call_node()->generate();
-                node.set_generated(value);
-                return value;
-            }
-        }
-        logger.has_no_member_error(type_name,node.get_right_name());
-        return 0;
-    }
-}
-*/

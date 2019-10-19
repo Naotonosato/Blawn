@@ -18,11 +18,7 @@ typedef struct List {
     void* elements;
 } List;
 
-
-char* to_char_ptr(String* string)
-{
-    return string->string;
-}
+char* to_char_ptr(String* string) { return string->string; }
 
 List* list_constructor(i64_t element_size) {
     List* self = (List*)malloc(sizeof(List));
@@ -57,8 +53,8 @@ void* blawn_index(void* array, i64_t size, i64_t element_size, i64_t index) {
     }
 }
 
-void blawn_set_element(void* array, i64_t size, i64_t element_size, void* element,
-                       i64_t index) {
+void blawn_set_element(void* array, i64_t size, i64_t element_size,
+                       void* element, i64_t index) {
     if (0 <= index && index < size) {
         *((char**)((char*)array + element_size * index)) = (char*)element;
     } else {

@@ -40,7 +40,7 @@ class ASTGenerator {
     std::shared_ptr<Node> no_value_node;
     BlawnLogger logger;
     ASTGenerator(llvm::Module &module, llvm::IRBuilder<> &ir_builder,
-                 llvm::LLVMContext &context,int line_number=1);
+                 llvm::LLVMContext &context, int line_number = 1);
     void into_namespace(std::string name);
     void into_namespace();
     void break_out_of_namespace();

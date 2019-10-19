@@ -1,5 +1,5 @@
-#include <GL/glut.h>
+#include <stdio.h>
 int c_function()
 {
-    puts("this is c function");
+    puts("function 'puts' called from C");
 }

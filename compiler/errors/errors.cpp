@@ -14,8 +14,8 @@ void BlawnLogger::different_type_error(std::string first, std::string second) {
 
 void BlawnLogger::assignment_different_scope_error(std::string scope,
                                                    std::string scope2) {
-    std::cerr << "Error: can't assign value in scope '" << scope2
-              << "' to object in scope '" << scope << "' at line "
+    std::cerr << "Error: can't assign reference value in scope '" << scope2
+              << "' to reference value in scope '" << scope << "' at line "
               << line_number << std::endl;
     exit(1);
 }

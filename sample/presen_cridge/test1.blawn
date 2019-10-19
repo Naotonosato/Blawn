@@ -1,3 +1,4 @@
 import "test1.bridge"
 
 c_function()
+puts("function 'puts' called from blawn".string)

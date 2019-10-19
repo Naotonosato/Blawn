@@ -31,6 +31,7 @@ class Node {
     private:
     llvm::Type* type;
     bool _is_argument;
+
     public:
     int line_number;
     Scope self_scope;
@@ -48,13 +49,13 @@ class Node {
           name(name) {}
     virtual llvm::ConstantInt* get_id() { return nullptr; }
     virtual bool is_argument() { return _is_argument; }
-    virtual bool is_variable() {return false;}
+    virtual bool is_variable() { return false; }
     virtual bool is_typeid() { return false; }
     virtual bool is_function() { return false; }
     virtual bool is_calling_constructor() { return false; }
     virtual bool is_accessing() { return false; }
-    virtual bool is_heap_user() {return false;}
-    virtual int get_heap_id() {return -1;}
+    virtual bool is_heap_user() { return false; }
+    virtual int get_heap_id() { return -1; }
     virtual std::shared_ptr<Node> get_typeid_value() { return nullptr; }
     virtual llvm::Value* generate();
     virtual void initialize() {}
@@ -137,6 +138,7 @@ class VariableNode : public Node {
     private:
     bool _is_generated;
     bool _is_global;
+
     public:
     bool _is_heap_user;
     int _heap_id;
@@ -154,9 +156,9 @@ class VariableNode : public Node {
           _heap_id(-1),
           right_node(right_node),
           alloca_inst(nullptr) {}
-    bool is_variable() override {return true;}
-    bool is_heap_user() override {return _is_heap_user;}
-    int get_heap_id() override {return _heap_id;}
+    bool is_variable() override { return true; }
+    bool is_heap_user() override { return _is_heap_user; }
+    int get_heap_id() override { return _heap_id; }
     void assign(std::shared_ptr<Node>);
     bool is_generated();
     bool is_global() { return _is_global; }
@@ -450,7 +452,8 @@ class CallConstructorNode : public Node {
           class_node(class_node),
           passed_arguments(passed_arguments),
           belong_to(belong_to),
-          argument_collector(argument_collector),_heap_id(-1) {}
+          argument_collector(argument_collector),
+          _heap_id(-1) {}
     std::shared_ptr<ClassNode> get_class() { return class_node; }
     std::vector<std::shared_ptr<Node>> get_passed_arguments() {
         return passed_arguments;
@@ -462,8 +465,8 @@ class CallConstructorNode : public Node {
         return destructor;
     }
     bool is_calling_constructor() override { return true; }
-    bool is_heap_user() override {return true;}
-    int get_heap_id() override {return _heap_id;}
+    bool is_heap_user() override { return true; }
+    int get_heap_id() override { return _heap_id; }
 };
 
 class IfNode : public Node {

@@ -18,7 +18,7 @@ std::string get_unique_name() {
 }
 
 ASTGenerator::ASTGenerator(llvm::Module& module, llvm::IRBuilder<>& ir_builder,
-                           llvm::LLVMContext& context,int line_number)
+                           llvm::LLVMContext& context, int line_number)
     : module(module),
       ir_builder(ir_builder),
       context(context),
@@ -31,7 +31,7 @@ ASTGenerator::ASTGenerator(llvm::Module& module, llvm::IRBuilder<>& ir_builder,
       line_number(line_number),
       no_value_node(new Node(0, {}, ir_generators.ir_generator)),
       logger() {
-    //into_namespace("main");
+    // into_namespace("main");
 }
 
 void ASTGenerator::generate(std::vector<std::shared_ptr<Node>> program) {
