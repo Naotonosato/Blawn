@@ -5,7 +5,7 @@ all: blawn
 blawn: builtins.o errors.o main.o compiler.o driver.o node.o parser.o lexer.o ast_generator.o node.o ir_generator.o utils.o blawn_context.o errors.o
 	$(CC) -g -o blawn main.o compiler.o driver.o parser.o lexer.o ast_generator.o \
 	./node.o builtins.o ir_generator.o utils.o errors.o blawn_context.o -ll $(LLVM_LINK_OPTION)
-	cp blawn ../blawn/blawn
+	cp blawn ../../blawn/blawn
 	cp -r ../tools ../blawn/tools
 driver.o: ../compiler/parser/driver.cpp ../compiler/ir_generator/ir_generator.hpp
 	$(CC) -g -c -o driver.o ../compiler/parser/driver.cpp $(LLVM_OPTION) 
