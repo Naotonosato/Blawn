@@ -1,3 +1,0 @@
-gcc gl.c -c -lglfw -lGLEW -lGL -lm
-
-blawn test1.blawn -l gl.o -o test1.out -a "-lglfw -lGLEW -lGL -lm"
