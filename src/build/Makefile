@@ -5,8 +5,11 @@ all: blawn
 blawn: builtins.o errors.o main.o compiler.o driver.o node.o parser.o lexer.o ast_generator.o node.o ir_generator.o utils.o blawn_context.o errors.o
 	$(CC) -g -o blawn main.o compiler.o driver.o parser.o lexer.o ast_generator.o \
 	./node.o builtins.o ir_generator.o utils.o errors.o blawn_context.o -ll $(LLVM_LINK_OPTION)
-	cp blawn ../../blawn/blawn
-	cp -r ../tools ../blawn/tools
+	mkdir -p bin
+	mkdir -p bin/data
+	mkdir -p bin/tmp
+	cp blawn bin/blawn
+	cp ../data/builtins.o bin/data/builtins.o
 driver.o: ../compiler/parser/driver.cpp ../compiler/ir_generator/ir_generator.hpp
 	$(CC) -g -c -o driver.o ../compiler/parser/driver.cpp $(LLVM_OPTION) 
 parser.o: ../compiler/parser/parser.tab.cc ../compiler/parser/parser.tab.hh
@@ -29,7 +32,8 @@ utils.o: ../compiler/utils/utils.cpp
 	$(CC) -g -c ../compiler/utils/utils.cpp -o utils.o $(LLVM_OPTION)
 builtins.o: ../compiler/builtins/builtins.cpp ../compiler/builtins/builtins.hpp ../compiler/builtins/builtins.c
 	$(CC) -g -c ../compiler/builtins/builtins.cpp -o builtins.o $(LLVM_OPTION)
-	clang -c ../compiler/builtins/builtins.c -o ../blawn/data/builtins.o
+	mkdir -p ../data
+	clang -c ../compiler/builtins/builtins.c -o ../data/builtins.o
 ast_generator.o: ../compiler/ast_generator/ast_generator.cpp ../compiler/ast_generator/ast_generator.hpp ../compiler/ast_generator/node_collector.hpp
 	$(CC) -g -c ../compiler/ast_generator/ast_generator.cpp -o ast_generator.o $(LLVM_OPTION)
 node.o: ../compiler/ast/node.cpp ../compiler/ast/node.hpp ../compiler/ir_generator/ir_generator.hpp
@@ -41,7 +45,10 @@ errors.o: ../compiler/errors/errors.cpp ../compiler/errors/errors.hpp
 set_path:
 	alias cridge="python3 /mnt/c/users/pcnaoto/desktop/blawn/blawn/tools/cridge.py"
 clean:
-	rm *.o
+	rm -rf blawn
+	rm -rf *.o
+	rm -rf bin
+	rm -rf ../data
 	-fsanitize=address
 cridge_debug:
 	cd ../blawn && ./blawn ../tools/test1.bridge

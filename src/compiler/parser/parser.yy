@@ -126,6 +126,7 @@
 %type <std::shared_ptr<Node>> return_value
 %type <std::vector<std::shared_ptr<Node>>> expressions
 %type <std::shared_ptr<Node>> expression
+%type <std::vector<std::shared_ptr<Node>>> while_start
 %type <std::vector<std::shared_ptr<Node>>> for_start
 %type <std::shared_ptr<Node>> list
 %type <std::shared_ptr<AccessNode>> access
@@ -282,7 +283,11 @@ members_definition:
     {
         $$ = std::move($1);
         $$.push_back(driver.ast_generator->create_assign($2,std::move($4),false));
-    };
+    }
+    |EOL
+    {
+    }
+    ;
 C_members_definition:
     MEMBER_IDENTIFIER EQUAL C_type_identifier EOL
     {
@@ -356,7 +361,11 @@ definition_arguments:
         $$ = std::move($1);
         $$.push_back($3);
         driver.ast_generator->add_argument($3);
-    };
+    }
+    |
+    {
+    }
+    ;
 globals_definition:
     global_start EOL LEFT_PARENTHESIS EOL globals_variables EOL RIGHT_PARENTHESIS EOL
     {
@@ -415,6 +424,12 @@ for_start:
         $$.push_back($4);
         $$.push_back($6);
     };
+while_start:
+    WHILE expression
+    {
+        driver.ast_generator->into_namespace();
+        $$.push_back($2);
+    };
 expression:
     if_start expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
     {
@@ -436,6 +451,16 @@ expression:
     |for_start EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
     {
         $$ = driver.ast_generator->create_for($1[0],$1[1],$1[2],$5);
+        driver.ast_generator->break_out_of_namespace();
+    }
+    |while_start EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+    {
+        $$ = driver.ast_generator->create_for(
+          driver.ast_generator->create_integer(0),
+          $1[0],
+          driver.ast_generator->create_integer(0),
+          $5
+        );
         driver.ast_generator->break_out_of_namespace();
     }
     |assign_variable

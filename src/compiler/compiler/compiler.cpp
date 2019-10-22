@@ -59,7 +59,7 @@ std::vector<std::string> get_compile_commands(int argc, char** argv) {
         }
     }
     std::vector<std::string> commands;
-    std::string cmd1 = abs("./data/llc") + " -O3 " + ir_filename + " -o " +
+    std::string cmd1 = "llc -O3 " + ir_filename + " -o " +
                        abs("tmp/result.s");
     commands.push_back(cmd1.c_str());
     if (is_link) {

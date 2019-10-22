@@ -361,6 +361,7 @@ namespace Blawn {
       // globals_variables
       // expressions
       // for_start
+      // while_start
       char dummy8[sizeof(std::vector<std::shared_ptr<Node>>)];
 
       // C_type_identifier
@@ -953,9 +954,9 @@ namespace Blawn {
     enum
     {
       yyeof_ = 0,
-      yylast_ = 308,     ///< Last index in yytable_.
-      yynnts_ = 39,  ///< Number of nonterminal symbols.
-      yyfinal_ = 49, ///< Termination state number.
+      yylast_ = 336,     ///< Last index in yytable_.
+      yynnts_ = 40,  ///< Number of nonterminal symbols.
+      yyfinal_ = 52, ///< Termination state number.
       yyterror_ = 1,
       yyerrcode_ = 256,
       yyntokens_ = 50  ///< Number of tokens.
@@ -970,7 +971,7 @@ namespace Blawn {
 
 #line 5 "parser.yy" // lalr1.cc:377
 } // Blawn
-#line 974 "parser.tab.hh" // lalr1.cc:377
+#line 975 "parser.tab.hh" // lalr1.cc:377
 
 
 
