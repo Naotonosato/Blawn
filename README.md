@@ -10,6 +10,9 @@ Blawnの使用によっていかなる損害が出たとしても一切の責任
 # Documentation
 そのうち書きまーす
 
+Linux向けにビルド済みのコンパイラのバイナリが Blawn/blawn にあります。
+
+
 # Usage
 ## Installing
 GitHub使い方よくわかんないので実行ファイルも全部アップされちゃってます。
