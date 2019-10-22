@@ -1,6 +1,6 @@
 # Blawn
 Pleasant Programming Language.
-
+...Do you feel Blawn is "Blue"?
 # Warning
 まだ開発途上なんでほんとに自己責任で使ってください。
 Blawnの使用によっていかなる損害が出たとしても一切の責任を認めません。
