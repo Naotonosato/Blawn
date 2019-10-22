@@ -1,7 +1,7 @@
 # Blawn
 Pleasant Programming Language.
 
-...Do you feel Blawn is "Blue"?
+...Do you feel "Blue" from Blawn?
 
 # Warning
 まだ開発途上なんでほんとに自己責任で使ってください。
