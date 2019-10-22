@@ -1,0 +1,5 @@
+*.o
+*.out
+*.log
+blawn
+src/build/blawn

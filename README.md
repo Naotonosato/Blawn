@@ -1,4 +1,5 @@
 # Blawn
+
 Pleasant Programming Language.
 
 ...Do you feel "Blue" from Blawn?
@@ -24,16 +25,36 @@ buildディレクトリで"make"してください。"make -j8"とかにする�
 ⚠️動的配列の実装はまだアップロードされていなかったので
 近いうちにcommitします
 
-…19/5: create repo
-i didn't know what to do
+# Build 
 
-19/7 
-Blawn is programing lang
-i'll learn about lang!
+## Requirement
 
-19/8
-implement!
+- Ubuntu Linux 18.04 (or later?)
+- llvm (6.0 or later)
+  - `$ sudo apt install llvm`
+- clang (6.0 or later)
+  - `$ sudo apt install clang`
+- GNU flex
+  - `$ sudo apt install flex`
+- GNU bison
+  - `$ sudo apt install bison`
+- GNU make
+  - `$ sudo apt install make`
+- gcc (g++)
+  - `$ sudo apt install g++`
 
-19/10/20
+## Instructions
 
-presentation about Blawn(and add these explaination)
+```
+$ cd src/build
+$ make
+$ cd bin
+```
+
+# Run
+
+```
+$ cd src/build/bin
+$ echo 'print("Hello")' > hello.blawn
+$ ./blawn hello.blawn
+```
