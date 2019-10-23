@@ -558,7 +558,7 @@ llvm::Value* DeclareCIRGenerator::generate(Node& node_) {
     for (auto& v : node.arguments_type()) {
         auto value = v->generate();
         if (value == nullptr) {
-            logger.invalid_paramater_error(
+            logger.invalid_parameter_error(
                 node.name + "(invalide declaration of argument)");
         }
         arguments_type.push_back(value->getType());
@@ -598,7 +598,7 @@ llvm::Value* CallFunctionIRGenerator::generate(Node& node_) {
         }
         std::vector<llvm::Value*> args;
         if (node.builtin_function->arg_size() != node.passed_arguments.size()) {
-            logger.invalid_paramater_error("function");
+            logger.invalid_parameter_error("function");
         }
 
         int count = 0;
@@ -611,7 +611,7 @@ llvm::Value* CallFunctionIRGenerator::generate(Node& node_) {
                 args.push_back(casted);
             } else {
                 if (value->getType() != b_arg.getType()) {
-                    logger.invalid_paramater_error("function");
+                    logger.invalid_parameter_error("function");
                 }
                 args.push_back(value);
             }
@@ -637,7 +637,7 @@ llvm::Value* CallFunctionIRGenerator::generate(Node& node_) {
         }
         std::vector<llvm::Value*> args;
         if (cfunc->arg_size() != node.passed_arguments.size()) {
-            logger.invalid_paramater_error(node.name);
+            logger.invalid_parameter_error(node.name);
         }
 
         int count = 0;
@@ -645,7 +645,7 @@ llvm::Value* CallFunctionIRGenerator::generate(Node& node_) {
             auto& arg = node.passed_arguments[count];
             auto value = arg->generate();
             if (value->getType() != c_arg.getType()) {
-                logger.invalid_paramater_error(node.name);
+                logger.invalid_parameter_error(node.name);
             }
             args.push_back(value);
             count += 1;
@@ -665,7 +665,7 @@ llvm::Value* CallFunctionIRGenerator::generate(Node& node_) {
         }
     }
     if (node.passed_arguments.size() != node.function->arguments_names.size()) {
-        logger.invalid_paramater_error("function");
+        logger.invalid_parameter_error("function");
     }
     auto callee_block = ir_builder.GetInsertBlock();
     std::vector<llvm::Type*> types;
@@ -802,7 +802,7 @@ llvm::Value* CallConstructorIRGenerator::generate(Node& node_) {
     // constructor is already generated
     {
         if (argument_values.size() != f->arg_size()) {
-            logger.invalid_paramater_error("function");
+            logger.invalid_parameter_error("function");
         }
         instance = ir_builder.CreateCall(f, argument_values);
         node._heap_id =
