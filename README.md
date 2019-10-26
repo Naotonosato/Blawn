@@ -24,6 +24,29 @@ buildディレクトリで"make"してください。"make -j8"とかにする�
 ⚠️動的配列の実装はまだアップロードされていなかったので
 近いうちにcommitします
 
+/
+
+# Warning
+Please use it at your own risk because it is still under development.
+We do not accept any responsibility for any damage caused by using Blawn.
+
+# Documentation
+I will write
+
+# Usage
+## Installing
+Since I don't know how to use GitHub, all the executable files have been uploaded.
+So if you download it, you can easily use it.
+## compile from source
+You should stop it. If you really want to do it, install LLVM6.0, bison, flex
+Do "make" in the build directory. "make -j8" makes compilation faster.
+# Introduction To Blawn
+Please wait for what you should write.
+
+
+⚠️ Because the dynamic array implementation was not yet uploaded
+Commit in the near future
+
 …19/5: create repo
 i didn't know what to do
 
