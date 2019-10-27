@@ -348,6 +348,7 @@ namespace Blawn {
       // function_start
       // class_start
       // c_type_start
+      // method_start
       char dummy6[sizeof(std::string)];
 
       // methods
@@ -836,7 +837,7 @@ namespace Blawn {
   // number is the opposite.  If YYTABLE_NINF, syntax error.
   static const short int yytable_[];
 
-  static const short int yycheck_[];
+  static const unsigned char yycheck_[];
 
   // YYSTOS[STATE-NUM] -- The (internal number of the) accessing
   // symbol of state STATE-NUM.
@@ -953,8 +954,8 @@ namespace Blawn {
     enum
     {
       yyeof_ = 0,
-      yylast_ = 308,     ///< Last index in yytable_.
-      yynnts_ = 39,  ///< Number of nonterminal symbols.
+      yylast_ = 307,     ///< Last index in yytable_.
+      yynnts_ = 40,  ///< Number of nonterminal symbols.
       yyfinal_ = 49, ///< Termination state number.
       yyterror_ = 1,
       yyerrcode_ = 256,
@@ -970,7 +971,7 @@ namespace Blawn {
 
 #line 5 "parser.yy" // lalr1.cc:377
 } // Blawn
-#line 974 "parser.tab.hh" // lalr1.cc:377
+#line 975 "parser.tab.hh" // lalr1.cc:377
 
 
 

@@ -173,6 +173,7 @@ int compile(int argc, char** argv) {
     llvm::raw_fd_ostream stream(output_filename.c_str(), error,
                                 llvm::sys::fs::OpenFlags::F_None);
     module->print(stream, nullptr);
+
     auto commands = get_compile_commands(argc, argv);
     for (auto& command : commands) {
         bool is_failed = system(command.c_str());

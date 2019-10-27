@@ -1,12 +1,12 @@
-LLVM_LINK_OPTION := `llvm-config --cxxflags --system-libs --ldflags --libs core` -fexceptions -O3 -std=gnu++17 -std=c++17 -lstdc++fs
+LLVM_LINK_OPTION := `llvm-config --cxxflags --system-libs --ldflags --libs core` -fexceptions -O0 -std=gnu++17 -std=c++17 -lstdc++fs
 LLVM_OPTION := -I/usr/lib/llvm-6.0/include
-CC := g++ -std=gnu++17 -std=c++17 -lstdc++fs -O3
+CC := g++ -std=gnu++17 -std=c++17 -lstdc++fs -O0
 all: blawn
 blawn: builtins.o errors.o main.o compiler.o driver.o node.o parser.o lexer.o ast_generator.o node.o ir_generator.o utils.o blawn_context.o errors.o
 	$(CC) -g -o blawn main.o compiler.o driver.o parser.o lexer.o ast_generator.o \
 	./node.o builtins.o ir_generator.o utils.o errors.o blawn_context.o -ll $(LLVM_LINK_OPTION)
 	cp blawn ../../blawn/blawn
-	cp -r ../tools ../blawn/tools
+	cp -r ../tools ../../blawn/tools
 driver.o: ../compiler/parser/driver.cpp ../compiler/ir_generator/ir_generator.hpp
 	$(CC) -g -c -o driver.o ../compiler/parser/driver.cpp $(LLVM_OPTION) 
 parser.o: ../compiler/parser/parser.tab.cc ../compiler/parser/parser.tab.hh
@@ -29,7 +29,7 @@ utils.o: ../compiler/utils/utils.cpp
 	$(CC) -g -c ../compiler/utils/utils.cpp -o utils.o $(LLVM_OPTION)
 builtins.o: ../compiler/builtins/builtins.cpp ../compiler/builtins/builtins.hpp ../compiler/builtins/builtins.c
 	$(CC) -g -c ../compiler/builtins/builtins.cpp -o builtins.o $(LLVM_OPTION)
-	clang -c ../compiler/builtins/builtins.c -o ../blawn/data/builtins.o
+	clang -c ../compiler/builtins/builtins.c -o ../../blawn/data/builtins.o
 ast_generator.o: ../compiler/ast_generator/ast_generator.cpp ../compiler/ast_generator/ast_generator.hpp ../compiler/ast_generator/node_collector.hpp
 	$(CC) -g -c ../compiler/ast_generator/ast_generator.cpp -o ast_generator.o $(LLVM_OPTION)
 node.o: ../compiler/ast/node.cpp ../compiler/ast/node.hpp ../compiler/ir_generator/ir_generator.hpp

@@ -114,6 +114,7 @@
 %type <std::shared_ptr<Node>> c_function_declaration
 %type <std::vector<std::shared_ptr<FunctionNode>>> methods
 %type <std::shared_ptr<FunctionNode>> method_definition
+%type <std::string> method_start
 %type <std::vector<std::shared_ptr<Node>>> C_members_definition
 %type <std::vector<std::string>> C_type_identifier
 %type <std::vector<std::shared_ptr<Node>>> C_arguments
@@ -265,12 +266,25 @@ methods:
         $$ = std::move($1);
         $$.push_back($2);
     };
+method_start:
+    METHOD_DEFINITION
+    {
+        $$ = $1;
+        driver.ast_generator->into_namespace($1);
+    };
 method_definition:
-    METHOD_DEFINITION arguments EOL block return_value
+    method_start arguments EOL block return_value
     {
         auto args = std::move($2);
         args.insert(args.begin(),"self");
         $$ = driver.ast_generator->add_function($1,std::move(args),std::move($4),std::move($5));
+        driver.ast_generator->break_out_of_namespace();
+    }
+    |method_start arguments EOL return_value
+    {
+        auto args = std::move($2);
+        args.insert(args.begin(),"self");
+        $$ = driver.ast_generator->add_function($1,std::move(args),{driver.ast_generator->create_block_end()},std::move($4));
         driver.ast_generator->break_out_of_namespace();
     };  
 members_definition:
@@ -426,7 +440,7 @@ expression:
     {
         if (blawn_state != EXIST_IF)
         {
-            std::cerr << "Error: else block without if block is valid." << std::endl;
+            std::cerr << "Error: else block without if block is invalid." << std::endl;
             exit(1);
         }
         $$ = driver.ast_generator->add_else($5);
