@@ -29,7 +29,6 @@ class ASTGenerator {
     NodeCollector<ArgumentNode> argument_collector;
     NodeCollector<ClassNode> class_collector;
     NodeCollector<ClassNode> C_type_collector;
-    std::shared_ptr<IfNode> previous_if_node;
     std::map<std::string, std::shared_ptr<VariableNode> &> access_namespace(
         std::vector<std::string>);
     Scope current_scope;
@@ -85,13 +84,14 @@ class ASTGenerator {
     std::shared_ptr<ClassNode> create_C_type(
         std::string name,
         std::vector<std::shared_ptr<Node>> members_definition);
-    std::shared_ptr<Node> create_if(std::shared_ptr<Node>,
-                                    std::vector<std::shared_ptr<Node>>);
+    std::shared_ptr<Node> create_if(std::shared_ptr<Node> cond,
+                                    std::vector<std::shared_ptr<Node>> if_body,
+                                    std::vector<std::shared_ptr<Node>> else_body
+                                    );
     std::shared_ptr<Node> create_for(std::shared_ptr<Node>,
                                      std::shared_ptr<Node>,
                                      std::shared_ptr<Node>,
                                      std::vector<std::shared_ptr<Node>> body);
-    std::shared_ptr<Node> add_else(std::vector<std::shared_ptr<Node>>);
     std::shared_ptr<AccessNode> create_access(std::string left,
                                               std::string right);
     std::shared_ptr<AccessNode> create_access(std::shared_ptr<Node> left,

@@ -352,12 +352,10 @@ std::unique_ptr<BinaryExpressionNode> ASTGenerator::attach_operator(
 }
 
 std::shared_ptr<Node> ASTGenerator::create_if(
-    std::shared_ptr<Node> conditions, std::vector<std::shared_ptr<Node>> body) {
-    std::vector<std::shared_ptr<Node>> empty;
+    std::shared_ptr<Node> conditions, std::vector<std::shared_ptr<Node>> if_body,std::vector<std::shared_ptr<Node>> else_body) {
     auto if_node = std::shared_ptr<IfNode>(
         new IfNode(line_number, current_scope, ir_generators.if_generator,
-                   conditions, body, empty));
-    previous_if_node = if_node;
+                   conditions, if_body, else_body));
     return if_node;
 }
 std::shared_ptr<Node> ASTGenerator::create_for(
@@ -369,13 +367,6 @@ std::shared_ptr<Node> ASTGenerator::create_for(
     return for_node;
 }
 
-std::shared_ptr<Node> ASTGenerator::add_else(
-    std::vector<std::shared_ptr<Node>> body) {
-    previous_if_node->set_else_body(body);
-    auto res = std::make_shared<Node>(line_number, current_scope,
-                                      ir_generators.ir_generator);
-    return res;
-}
 
 std::shared_ptr<AccessNode> ASTGenerator::create_access(std::string left,
                                                         std::string right) {

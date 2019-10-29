@@ -126,6 +126,7 @@
 %type <std::vector<std::shared_ptr<Node>>> globals_variables
 %type <std::shared_ptr<Node>> return_value
 %type <std::vector<std::shared_ptr<Node>>> expressions
+%type <std::vector<std::shared_ptr<Node>>> else_body
 %type <std::shared_ptr<Node>> expression
 %type <std::vector<std::shared_ptr<Node>>> for_start
 %type <std::shared_ptr<Node>> list
@@ -429,22 +430,21 @@ for_start:
         $$.push_back($4);
         $$.push_back($6);
     };
+
+else_body:
+    else_start EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+    {
+        $$ = $5;
+    };
 expression:
     if_start expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
     {
-        blawn_state = EXIST_IF;
-        $$ = driver.ast_generator->create_if($2,$6);
+        $$ = driver.ast_generator->create_if($2,$6,{});
         driver.ast_generator->break_out_of_namespace();
     }
-    |else_start EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
+    |if_start expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS else_body
     {
-        if (blawn_state != EXIST_IF)
-        {
-            std::cerr << "Error: else block without if block is invalid." << std::endl;
-            exit(1);
-        }
-        $$ = driver.ast_generator->add_else($5);
-        blawn_state = NO_IF;
+        $$ = driver.ast_generator->create_if($2,$6,$8);
         driver.ast_generator->break_out_of_namespace();
     }
     |for_start EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
