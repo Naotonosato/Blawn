@@ -415,30 +415,31 @@ namespace Blawn {
         MINUS = 278,
         ASTERISK = 279,
         SLASH = 280,
-        DOT_IDENTIFIER = 281,
-        USE = 282,
-        COLON = 283,
-        SEMICOLON = 284,
-        COMMA = 285,
-        LEFT_PARENTHESIS = 286,
-        RIGHT_PARENTHESIS = 287,
-        LEFT_CURLY_BRACE = 288,
-        RIGHT_CURLY_BRACE = 289,
-        LEFT_BRACKET = 290,
-        RIGHT_BRACKET = 291,
-        IF = 292,
-        ELSE = 293,
-        FOR = 294,
-        IN = 295,
-        WHILE = 296,
-        GLOBAL = 297,
-        IMPORT = 298,
-        C_FUNCTION_ARGUMENT = 299,
-        C_FUNCTION_RETURN = 300,
-        EOL = 301,
-        STRING_LITERAL = 302,
-        INT_LITERAL = 303,
-        FLOAT_LITERAL = 304
+        UMINUS = 281,
+        DOT_IDENTIFIER = 282,
+        USE = 283,
+        COLON = 284,
+        SEMICOLON = 285,
+        COMMA = 286,
+        LEFT_PARENTHESIS = 287,
+        RIGHT_PARENTHESIS = 288,
+        LEFT_CURLY_BRACE = 289,
+        RIGHT_CURLY_BRACE = 290,
+        LEFT_BRACKET = 291,
+        RIGHT_BRACKET = 292,
+        IF = 293,
+        ELSE = 294,
+        FOR = 295,
+        IN = 296,
+        WHILE = 297,
+        GLOBAL = 298,
+        IMPORT = 299,
+        C_FUNCTION_ARGUMENT = 300,
+        C_FUNCTION_RETURN = 301,
+        EOL = 302,
+        STRING_LITERAL = 303,
+        INT_LITERAL = 304,
+        FLOAT_LITERAL = 305
       };
     };
 
@@ -656,6 +657,10 @@ namespace Blawn {
     static inline
     symbol_type
     make_SLASH (const location_type& l);
+
+    static inline
+    symbol_type
+    make_UMINUS (const location_type& l);
 
     static inline
     symbol_type
@@ -955,12 +960,12 @@ namespace Blawn {
     enum
     {
       yyeof_ = 0,
-      yylast_ = 314,     ///< Last index in yytable_.
+      yylast_ = 376,     ///< Last index in yytable_.
       yynnts_ = 41,  ///< Number of nonterminal symbols.
-      yyfinal_ = 47, ///< Termination state number.
+      yyfinal_ = 51, ///< Termination state number.
       yyterror_ = 1,
       yyerrcode_ = 256,
-      yyntokens_ = 50  ///< Number of tokens.
+      yyntokens_ = 51  ///< Number of tokens.
     };
 
 
@@ -972,7 +977,7 @@ namespace Blawn {
 
 #line 5 "parser.yy" // lalr1.cc:377
 } // Blawn
-#line 976 "parser.tab.hh" // lalr1.cc:377
+#line 981 "parser.tab.hh" // lalr1.cc:377
 
 
 

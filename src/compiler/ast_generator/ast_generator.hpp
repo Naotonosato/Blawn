@@ -66,6 +66,7 @@ class ASTGenerator {
     void add_argument(std::string);
     std::unique_ptr<IntegerNode> create_integer(int num);
     std::unique_ptr<FloatNode> create_float(double num);
+    std::shared_ptr<Node> create_minus(std::shared_ptr<Node> expr);
     std::shared_ptr<StringNode> create_string(std::string str);
     void book_function(std::string name);
     std::shared_ptr<FunctionNode> add_function(

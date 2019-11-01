@@ -332,6 +332,13 @@ std::unique_ptr<FloatNode> ASTGenerator::create_float(double num) {
     return std::move(float_);
 }
 
+std::shared_ptr<Node> ASTGenerator::create_minus(std::shared_ptr<Node> expr)
+{
+    auto zero = std::shared_ptr<Node>(create_integer(0));
+    auto minus = attach_operator(zero,expr,"-");
+    return minus;
+}
+
 std::shared_ptr<StringNode> ASTGenerator::create_string(std::string str) {
     auto string = std::make_shared<StringNode>(line_number, current_scope,
                                                ir_generators.string_generator);

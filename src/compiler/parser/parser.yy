@@ -74,6 +74,7 @@
 %left OP_EQUAL OP_NOT_EQUAL OP_MORE_EQUAL OP_LESS_EQUAL OP_MORE OP_LESS
 %left PLUS MINUS
 %left ASTERISK SLASH
+%left UMINUS
 %left <std::string> DOT_IDENTIFIER
 
 %token  USE
@@ -519,6 +520,14 @@ expression:
     |access
     {
         $$ = std::move($1);
+    }
+    | MINUS expression %prec UMINUS
+    {
+        $$ = driver.ast_generator->create_minus($2);
+    }
+    |LEFT_PARENTHESIS expression RIGHT_PARENTHESIS
+    {
+        $$ = std::move($2);
     };
 list:
     LEFT_CURLY_BRACE expressions RIGHT_CURLY_BRACE
