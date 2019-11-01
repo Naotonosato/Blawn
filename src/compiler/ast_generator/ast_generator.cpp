@@ -332,10 +332,9 @@ std::unique_ptr<FloatNode> ASTGenerator::create_float(double num) {
     return std::move(float_);
 }
 
-std::shared_ptr<Node> ASTGenerator::create_minus(std::shared_ptr<Node> expr)
-{
+std::shared_ptr<Node> ASTGenerator::create_minus(std::shared_ptr<Node> expr) {
     auto zero = std::shared_ptr<Node>(create_integer(0));
-    auto minus = attach_operator(zero,expr,"-");
+    auto minus = attach_operator(zero, expr, "-");
     return minus;
 }
 
@@ -359,7 +358,9 @@ std::unique_ptr<BinaryExpressionNode> ASTGenerator::attach_operator(
 }
 
 std::shared_ptr<Node> ASTGenerator::create_if(
-    std::shared_ptr<Node> conditions, std::vector<std::shared_ptr<Node>> if_body,std::vector<std::shared_ptr<Node>> else_body) {
+    std::shared_ptr<Node> conditions,
+    std::vector<std::shared_ptr<Node>> if_body,
+    std::vector<std::shared_ptr<Node>> else_body) {
     auto if_node = std::shared_ptr<IfNode>(
         new IfNode(line_number, current_scope, ir_generators.if_generator,
                    conditions, if_body, else_body));
@@ -373,7 +374,6 @@ std::shared_ptr<Node> ASTGenerator::create_for(
                     left, center, right, body));
     return for_node;
 }
-
 
 std::shared_ptr<AccessNode> ASTGenerator::create_access(std::string left,
                                                         std::string right) {

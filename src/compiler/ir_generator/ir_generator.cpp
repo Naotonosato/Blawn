@@ -68,9 +68,7 @@ IRGenerator::IRGenerator(llvm::LLVMContext& context, llvm::Module& module,
     }
 }
 
-llvm::Value* IRGenerator::generate(Node& node) {
-    return 0;
-}
+llvm::Value* IRGenerator::generate(Node& node) { return 0; }
 
 llvm::Value* SizeofGenerator::generate(Node& node_) {
     auto& node = *static_cast<SizeofNode*>(&node_);
@@ -318,10 +316,10 @@ llvm::Value* AssigmentIRGenerator::generate(Node& node_) {
     return ir_builder.CreateLoad(pointer);
 }
 
-void StoreIRGenerator::walk(llvm::Type* type,
-          std::vector<std::pair<llvm::Value*, llvm::Value*>>& res,
-          StoreNode& node, llvm::LLVMContext& context, llvm::Module& module,
-          llvm::IRBuilder<>& ir_builder, StoreIRGenerator& store_generator) {
+void StoreIRGenerator::walk(
+    llvm::Type* type, std::vector<std::pair<llvm::Value*, llvm::Value*>>& res,
+    StoreNode& node, llvm::LLVMContext& context, llvm::Module& module,
+    llvm::IRBuilder<>& ir_builder, StoreIRGenerator& store_generator) {
     if (type->isPointerTy() && type->getPointerElementType()->isStructTy()) {
         std::string struct_name =
             type->getPointerElementType()->getStructName();
@@ -364,9 +362,10 @@ void StoreIRGenerator::walk(llvm::Type* type,
     }
 }
 
-void StoreIRGenerator::store(StoreNode& node, llvm::Value* pointer, llvm::Value* object,
-           llvm::LLVMContext& context, llvm::Module& module,
-           llvm::IRBuilder<>& ir_builder) {
+void StoreIRGenerator::store(StoreNode& node, llvm::Value* pointer,
+                             llvm::Value* object, llvm::LLVMContext& context,
+                             llvm::Module& module,
+                             llvm::IRBuilder<>& ir_builder) {
     BlawnLogger logger;
     logger.set_line_number(node.line_number);
     /*if object-type is pointer,should load that ptr.
@@ -701,8 +700,7 @@ llvm::Value* CallFunctionIRGenerator::generate(Node& node_) {
 
     auto body = node.function->body;
     std::shared_ptr<Node> func_end = nullptr;
-    if (body.size())
-    {
+    if (body.size()) {
         auto func_end = body.back();
         body.pop_back();
     }
@@ -815,10 +813,10 @@ llvm::Value* CallConstructorIRGenerator::generate(Node& node_) {
     auto block = llvm::BasicBlock::Create(context, "entry", base_constructor);
     ir_builder.SetInsertPoint(block);
 
-    //int count = 0;
+    // int count = 0;
     /*
     for (auto& tmp_constructor_arg : base_constructor->args()) {
-        
+
         std::string name = node.get_class()->get_arguments_names()[count];
         tmp_constructor_arg.setName(name);
         auto local = node.get_class()->get_self_namespace();
@@ -834,9 +832,8 @@ llvm::Value* CallConstructorIRGenerator::generate(Node& node_) {
     count = 0;*/
     int count = 0;
     llvm::Argument* tmp_constructor_arg = nullptr;
-    for (auto& name: node.get_class()->get_arguments_names()) {
-        
-        tmp_constructor_arg = base_constructor->arg_begin()+count;
+    for (auto& name : node.get_class()->get_arguments_names()) {
+        tmp_constructor_arg = base_constructor->arg_begin() + count;
         tmp_constructor_arg->setName(name);
         auto local = node.get_class()->get_self_namespace();
         auto empty_node = node.argument_collector.get(name, local);
@@ -867,14 +864,14 @@ llvm::Value* CallConstructorIRGenerator::generate(Node& node_) {
     get_blawn_context().add_class(type_name, node.get_class());
     get_blawn_context().add_user_type(node.get_class()->name, instance_type);
 
-    if (fields.size())
-    {   
+    if (fields.size()) {
         for (unsigned int idx = 0; idx <= fields.size() - 1; idx++) {
             // initialize member variables
-            get_blawn_context().register_element_name(type_name, names[idx], idx);
-            ir_builder.CreateStore(
-                initial_values[idx],
-                ir_builder.CreateStructGEP(instance_type, instance_alloca, idx));
+            get_blawn_context().register_element_name(type_name, names[idx],
+                                                      idx);
+            ir_builder.CreateStore(initial_values[idx],
+                                   ir_builder.CreateStructGEP(
+                                       instance_type, instance_alloca, idx));
         }
     }
     ir_builder.CreateRet(instance_alloca);
@@ -927,7 +924,6 @@ llvm::Value* CallConstructorIRGenerator::generate(Node& node_) {
 }
 
 llvm::Value* IfIRGenerator::generate(Node& node_) {
-
     auto& node = *static_cast<IfNode*>(&node_);
     std::set<llvm::Value*> false_values;
     false_values.insert(
@@ -985,7 +981,6 @@ llvm::Value* IfIRGenerator::generate(Node& node_) {
 }
 
 llvm::Value* ForIRGenerator::generate(Node& node_) {
-
     auto& node = *static_cast<ForNode*>(&node_);
     auto func = ir_builder.GetInsertBlock()->getParent();
     auto body_block = llvm::BasicBlock::Create(context, "for", func);
@@ -994,7 +989,7 @@ llvm::Value* ForIRGenerator::generate(Node& node_) {
     node.get_left_expression()->generate();  // left
     ir_builder.CreateBr(body_block);
     ir_builder.SetInsertPoint(body_block);
-    
+
     for (auto& line : node.get_body()) {
         line->initialize();
         line->generate();
@@ -1003,7 +998,7 @@ llvm::Value* ForIRGenerator::generate(Node& node_) {
     auto cond = node.get_center_expression()->generate();
     auto is_break = ir_builder.CreateICmpEQ(ir_builder.getInt1(false), cond);
     node.get_right_expression()->generate();  // proc
-   // body_block = ir_builder.GetInsertBlock();
+    // body_block = ir_builder.GetInsertBlock();
     func->getBasicBlockList().push_back(merge_block);
     ir_builder.CreateCondBr(is_break, merge_block, body_block);
     ir_builder.SetInsertPoint(merge_block);
@@ -1117,7 +1112,7 @@ llvm::Value* BlockEndIRGenerator::generate(Node& node_) {
     for (int i = heap_users.size() - 1; i != -1; i -= 1) {
         utils::free_value(heap_users[i], module, ir_builder);
     }
-    
+
     return nullptr;
 }
 

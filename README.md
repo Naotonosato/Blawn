@@ -3,6 +3,10 @@ Pleasant Programming Language.
 
 ...Do you feel "Blue" from Blawn?
 
+# Please Wait...
+Blawn so far is like a prototype.
+I'll make many changes and make blawn more practical.
+
 # Warning
 まだ開発途上なんでほんとに自己責任で使ってください。
 Blawnの使用によっていかなる損害が出たとしても一切の責任を認めません。

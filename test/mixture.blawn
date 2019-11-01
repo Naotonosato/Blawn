@@ -19,4 +19,4 @@ if 1 > 0
 )
 
 John = Person("John")
-    John.hello()
+John.hello()

@@ -85,10 +85,9 @@ class ASTGenerator {
     std::shared_ptr<ClassNode> create_C_type(
         std::string name,
         std::vector<std::shared_ptr<Node>> members_definition);
-    std::shared_ptr<Node> create_if(std::shared_ptr<Node> cond,
-                                    std::vector<std::shared_ptr<Node>> if_body,
-                                    std::vector<std::shared_ptr<Node>> else_body
-                                    );
+    std::shared_ptr<Node> create_if(
+        std::shared_ptr<Node> cond, std::vector<std::shared_ptr<Node>> if_body,
+        std::vector<std::shared_ptr<Node>> else_body);
     std::shared_ptr<Node> create_for(std::shared_ptr<Node>,
                                      std::shared_ptr<Node>,
                                      std::shared_ptr<Node>,

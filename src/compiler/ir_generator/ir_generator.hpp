@@ -115,13 +115,15 @@ class AssigmentIRGenerator : public IRGenerator {
 };
 
 class StoreIRGenerator : public IRGenerator {
-    static void walk(llvm::Type* type,
-          std::vector<std::pair<llvm::Value*, llvm::Value*>>& res,
-          StoreNode& node, llvm::LLVMContext& context, llvm::Module& module,
-          llvm::IRBuilder<>& ir_builder, StoreIRGenerator& store_generator);
-    static void store(StoreNode& node, llvm::Value* pointer, llvm::Value* object,
-           llvm::LLVMContext& context, llvm::Module& module,
-           llvm::IRBuilder<>& ir_builder);
+    static void walk(llvm::Type *type,
+                     std::vector<std::pair<llvm::Value *, llvm::Value *>> &res,
+                     StoreNode &node, llvm::LLVMContext &context,
+                     llvm::Module &module, llvm::IRBuilder<> &ir_builder,
+                     StoreIRGenerator &store_generator);
+    static void store(StoreNode &node, llvm::Value *pointer,
+                      llvm::Value *object, llvm::LLVMContext &context,
+                      llvm::Module &module, llvm::IRBuilder<> &ir_builder);
+
     public:
     StoreIRGenerator(llvm::LLVMContext &context, llvm::Module &module,
                      llvm::IRBuilder<> &ir_builder)
