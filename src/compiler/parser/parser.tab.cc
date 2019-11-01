@@ -1994,25 +1994,25 @@ namespace Blawn {
   case 57:
 #line 437 "parser.yy" // lalr1.cc:859
     {
-        yylhs.value.as< std::vector<std::shared_ptr<Node>> > () = yystack_[1].value.as< std::vector<std::shared_ptr<Node>> > ();
+        yylhs.value.as< std::vector<std::shared_ptr<Node>> > () = std::move(yystack_[1].value.as< std::vector<std::shared_ptr<Node>> > ());
+        driver.ast_generator->break_out_of_namespace();
     }
-#line 2000 "parser.tab.cc" // lalr1.cc:859
+#line 2001 "parser.tab.cc" // lalr1.cc:859
     break;
 
   case 58:
-#line 442 "parser.yy" // lalr1.cc:859
+#line 443 "parser.yy" // lalr1.cc:859
     {
         yylhs.value.as< std::shared_ptr<Node> > () = driver.ast_generator->create_if(yystack_[5].value.as< std::shared_ptr<Node> > (),yystack_[1].value.as< std::vector<std::shared_ptr<Node>> > (),{});
         driver.ast_generator->break_out_of_namespace();
     }
-#line 2009 "parser.tab.cc" // lalr1.cc:859
+#line 2010 "parser.tab.cc" // lalr1.cc:859
     break;
 
   case 59:
-#line 447 "parser.yy" // lalr1.cc:859
+#line 448 "parser.yy" // lalr1.cc:859
     {
         yylhs.value.as< std::shared_ptr<Node> > () = driver.ast_generator->create_if(yystack_[6].value.as< std::shared_ptr<Node> > (),yystack_[2].value.as< std::vector<std::shared_ptr<Node>> > (),yystack_[0].value.as< std::vector<std::shared_ptr<Node>> > ());
-        driver.ast_generator->break_out_of_namespace();
     }
 #line 2018 "parser.tab.cc" // lalr1.cc:859
     break;
@@ -2721,7 +2721,7 @@ namespace Blawn {
      228,   233,   238,   244,   250,   256,   262,   266,   272,   278,
      285,   293,   297,   303,   309,   317,   321,   327,   333,   341,
      347,   351,   356,   360,   365,   370,   377,   383,   388,   392,
-     398,   402,   407,   411,   417,   422,   427,   436,   441,   446,
+     398,   402,   407,   411,   417,   422,   427,   436,   442,   447,
      451,   456,   460,   464,   468,   472,   476,   480,   484,   488,
      492,   496,   500,   504,   508,   512,   516,   520,   524,   528,
      533,   537,   542,   547,   554,   559,   563,   567,   571,   575,

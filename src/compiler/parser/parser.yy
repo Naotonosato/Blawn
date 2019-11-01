@@ -435,7 +435,8 @@ for_start:
 else_body:
     else_start EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
     {
-        $$ = $5;
+        $$ = std::move($5);
+        driver.ast_generator->break_out_of_namespace();
     };
 expression:
     if_start expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
@@ -446,7 +447,6 @@ expression:
     |if_start expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS else_body
     {
         $$ = driver.ast_generator->create_if($2,$6,$8);
-        driver.ast_generator->break_out_of_namespace();
     }
     |for_start EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
     {
