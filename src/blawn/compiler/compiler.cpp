@@ -59,7 +59,7 @@ std::vector<std::string> get_compile_commands(int argc, char** argv) {
         }
     }
     std::vector<std::string> commands;
-    std::string cmd1 = abs("./data/llc") + " -O3 " + ir_filename + " -o " +
+    std::string cmd1 = "llc -O3 " + ir_filename + " -o " +
                        abs("tmp/result.s");
     commands.push_back(cmd1.c_str());
     if (is_link) {
@@ -126,7 +126,7 @@ int compile(int argc, char** argv) {
         abs("tmp/" + utils::get_filename(filename) + ".blawn");
     std::ofstream expand_file(expanded_filename);
     if (!expand_file) {
-        std::cerr << "cannot open file " << expanded_filename << std::endl;
+        std::cerr << "cannot open temporary file " << expanded_filename << std::endl;
         exit(1);
     }
     auto imports = get_imports(filename);
