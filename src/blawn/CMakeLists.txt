@@ -22,7 +22,7 @@ list(APPEND SOURCES ${C_SOURCES})
 file(GLOB_RECURSE LLVM /usr/lib*/llvm?.0/lib/libLLVM*.so)
 
 add_library(lib-blawn ${SOURCES})
-message(STATUS "LINK ${PROJECT_NAME} ${LLVM}")
+message(STATUS "Found LLVM Libraries : ${LLVM}")
 target_link_libraries(lib-blawn PUBLIC ${LLVM} stdc++fs)
 target_include_directories(lib-blawn PUBLIC ${PROJECT_SOURCE_DIR}/src)
 target_include_directories(lib-blawn PUBLIC ${CMAKE_BINARY_DIR}/src)
