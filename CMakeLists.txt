@@ -43,18 +43,7 @@ if(ENABLE_SANITIZERS)
 		endif()
 endif()
 
-find_package(LLVM)
-add_definitions(${LLVM_DEFINITIONS})
-include_directories(${LLVM_ICLUDE_DIRS})
-
-# LLVM LINK OPTIONの解決
-set(LLVM "/usr/bin/llvm-config-6.0-64 --cxxflags --system-libs --ldflags --libs core")
-execute_process(COMMAND "echo AAAA"
-		OUTPUT_VARIABLE LLVM_LINK_OPTION)
-message(STATUS "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa ${LLVM}")
-message(STATUS "${LLVM_LINK_OPTION}")
 
 include_directories(${PROJECT_SOURCE_DIR}/src)
-include_directories(/usr/lib64/llvm6.0/include)
 
 add_subdirectory(src)
