@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.13)
 
-project(blawn CXX)
+project(blawn C CXX)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
 
@@ -10,8 +10,8 @@ set(CMAKE_DISABLE_SOURCE_CHANGES  ON)
 
 # Set default build type
 if(NOT CMAKE_BUILD_TYPE)
-		  set(CMAKE_BUILD_TYPE Release)
-	endif()
+		set(CMAKE_BUILD_TYPE Release)
+endif()
 	message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
 
 # Set compiler flags
@@ -22,7 +22,7 @@ set(CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_FLAGS         "${CMAKE_CXX_FLAGS}         -Wall -Wextra -pedantic")
 set(CMAKE_CXX_FLAGS_DEBUG   "${CMAKE_CXX_FLAGS_DEBUG}   -g -DDEBUG")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O2 -march=native -DNDEBUG")
-set(CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS}  -Wl,-O1,--sort-common,--as-needed,-z,relro,-lstdc++fs")
+set(CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS}  -Wl,-O1,--sort-common,--as-needed,-z,relro")
 
 if(CMAKE_GENERATOR STREQUAL "Ninja")
 		if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
