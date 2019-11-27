@@ -4,6 +4,13 @@ project(blawn C CXX)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
 
+# LLVM-Config.cmakeを探すためのやつ
+file(GLOB_RECURSE LLVM_CMAKE /usr/lib*/llvm?.0/lib/cmake/llvm/LLVM-Config.cmake)
+foreach(CMAKE IN LISTS LLVM_CMAKE)
+		include(${CMAKE})
+endforeach()
+message(STATUS "LLVM module found on ${LLVM_CMAKE}")
+
 # Disable in-source build
 set(CMAKE_DISABLE_IN_SOURCE_BUILD ON)
 set(CMAKE_DISABLE_SOURCE_CHANGES  ON)
@@ -48,5 +55,6 @@ include_directories(${PROJECT_SOURCE_DIR}/src)
 
 find_package(BISON REQUIRED)
 find_package(FLEX REQUIRED)
+find_package(LLVM)
 
 add_subdirectory(src)
