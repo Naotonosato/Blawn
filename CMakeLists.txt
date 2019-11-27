@@ -46,4 +46,7 @@ endif()
 
 include_directories(${PROJECT_SOURCE_DIR}/src)
 
+find_package(BISON REQUIRED)
+find_package(FLEX REQUIRED)
+
 add_subdirectory(src)
