@@ -1,11 +1,8 @@
 # Blawn
+
 Pleasant Programming Language.
 
 ...Do you feel "Blue" from Blawn?
-
-# Please Wait...
-Blawn so far is like a prototype.
-I'll make many changes and make blawn more practical.
 
 # Warning
 まだ開発途上なんでほんとに自己責任で使ってください。
@@ -28,16 +25,64 @@ buildディレクトリで"make"してください。"make -j8"とかにする�
 ⚠️動的配列の実装はまだアップロードされていなかったので
 近いうちにcommitします
 
-…19/5: create repo
-i didn't know what to do
+# Build 
 
-19/7 
-Blawn is programing lang
-i'll learn about lang!
+## Requirement
 
-19/8
-implement!
+### Ubuntu Linux 18.04 (or later?)
+- llvm (6.0 or later)
+  - `$ sudo apt install llvm`
+- clang (6.0 or later)
+  - `$ sudo apt install clang`
+- GNU flex
+  - `$ sudo apt install flex`
+- GNU bison
+  - `$ sudo apt install bison`
+- GNU make
+  - `$ sudo apt install make`
+- gcc (g++)
+  - `$ sudo apt install g++`
+- cmake
+  - `$ sudo apt install cmake`
 
-19/10/20
+### Fedora 29
+- llvm(6.0 or later)
+  - `$ sudo dnf install llvm llvm-devel`
+- clang(6.0 or later)
+  - `$ sudo dnf install clang`
+- GNU flex
+  - `$ sudo dnf install flex`
+- GNU bison
+  - `$ sudo dnf install bison`
+- GNU make
+  - `$ sudo dnf install make`
+- gcc(g++)
+  - `$ sudo dnf install g++`
+- cmake(3.10 or later)
+  - `$ sudo dnf install cmake`
+- Ninja(optional)
+  - `$ sudo dnf install ninja-build`
 
-presentation about Blawn(and add these explaination)
+
+## Code formatting
+```
+$ cd <toplevel of git repository>
+$ tools/formatAll.sh  <-- c|cpp|c|hpp files that followed by git is formatted
+```
+
+## Instructions
+
+```
+$ mkdir build
+$ cd build
+$ cmake .. (optional arguments -> -G Ninja -DCMAKE_CXX_COMPILER=clang++)
+$ make (alternative command -> ninja)
+```
+
+# Run
+
+```
+$ cd build/bin
+$ echo 'print("Hello")' > hello.blawn
+$ ./blawn hello.blawn
+```

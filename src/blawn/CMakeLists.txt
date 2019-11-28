@@ -1,0 +1,30 @@
+file(GLOB_RECURSE SOURCES ./*.cpp)
+file(GLOB_RECURSE HEADERS ./*.hpp)
+file(GLOB_RECURSE YY_FILES ./*.yy)
+file(GLOB_RECURSE HH_FILES ./*.hh)
+file(GLOB_RECURSE LL_FILES ./*.ll)
+file(GLOB_RECURSE C_SOURCES ./*.c)
+
+set(BISON "bison -r all --report-file=log.log -d ")
+set(FLEX "flex++ -d ")
+
+foreach(yy in LISTS YY_FILES)
+		execute_process(COMMAND ${BISON} ${yy})
+endforeach()
+foreach(ll in LISTS LL_FILES)
+		execute_process(COMMAND ${FLEX} ${ll})
+endforeach()
+
+file(GLOB_RECURSE CC_FILES ./*.cc)
+list(APPEND SOURCES ${CC_FILES})
+list(APPEND SOURCES ${C_SOURCES})
+
+file(GLOB_RECURSE LLVM /usr/lib*/llvm?.0/lib/libLLVM*.so)
+
+add_library(lib-blawn ${SOURCES})
+message(STATUS "Found LLVM Libraries : ${LLVM}")
+target_link_libraries(lib-blawn PUBLIC ${LLVM} stdc++fs)
+target_include_directories(lib-blawn PUBLIC ${PROJECT_SOURCE_DIR}/src)
+target_include_directories(lib-blawn PUBLIC ${CMAKE_BINARY_DIR}/src)
+target_include_directories(lib-blawn PUBLIC  /usr/lib64/llvm6.0/include)
+set_target_properties(lib-blawn PROPERTIES OUTPUT_NAME blawn)
