@@ -74,6 +74,7 @@ $ tools/formatAll.sh  <-- c|cpp|c|hpp files that followed by git is formatted
 
 ```
 $ mkdir build
+$ cd build
 $ cmake .. (optional arguments -> -G Ninja -DCMAKE_CXX_COMPILER=clang++)
 $ make (alternative command -> ninja)
 ```
