@@ -1,0 +1,11 @@
+Language: Cpp
+BasedOnStyle: Google
+AccessModifierOffset: -2
+AlignConsecutiveAssignments: true
+AllowShortFunctionsOnASingleLine: Empty
+ColumnLimit: 96
+Cpp11BracedListStyle: true
+DerivePointerAlignment: false
+SortIncludes: false
+SpacesBeforeTrailingComments: 1
+Standard: Cpp11

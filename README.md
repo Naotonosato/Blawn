@@ -29,7 +29,7 @@ buildディレクトリで"make"してください。"make -j8"とかにする�
 
 ## Requirement
 
-- Ubuntu Linux 18.04 (or later?)
+### Ubuntu Linux 18.04 (or later?)
 - llvm (6.0 or later)
   - `$ sudo apt install llvm`
 - clang (6.0 or later)
@@ -45,7 +45,7 @@ buildディレクトリで"make"してください。"make -j8"とかにする�
 - cmake
   - `$ sudo apt install cmake`
 
-- Fedora 29
+### Fedora 29
 - llvm(6.0 or later)
   - `$ sudo dnf install llvm llvm-devel`
 - clang(6.0 or later)
@@ -63,6 +63,12 @@ buildディレクトリで"make"してください。"make -j8"とかにする�
 - Ninja(optional)
   - `$ sudo dnf install ninja-build`
 
+
+## Code formatting
+```
+$ cd <toplevel of git repository>
+$ tools/formatAll.sh  <-- c|cpp|c|hpp files that followed by git is formatted
+```
 
 ## Instructions
 

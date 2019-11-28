@@ -7,18 +7,17 @@
 namespace Blawn {
 
 class Driver {
-    public:
-    std::shared_ptr<ASTGenerator> ast_generator;
-    Driver(std::shared_ptr<ASTGenerator> ast_generator)
-        : ast_generator(ast_generator){};
-    virtual ~Driver();
-    void parse(const char *const filename);
-    void parse(std::istream &iss);
-    Blawn::Scanner *scanner = nullptr;
+public:
+  std::shared_ptr<ASTGenerator> ast_generator;
+  Driver(std::shared_ptr<ASTGenerator> ast_generator) : ast_generator(ast_generator){};
+  virtual ~Driver();
+  void parse(const char* const filename);
+  void parse(std::istream& iss);
+  Blawn::Scanner* scanner = nullptr;
 
-    private:
-    void parse_helper(std::istream &stream);
-    Blawn::Parser *parser = nullptr;
+private:
+  void parse_helper(std::istream& stream);
+  Blawn::Parser* parser = nullptr;
 };
 
-}  // namespace Blawn
+} // namespace Blawn
