@@ -1,0 +1,10 @@
+class Person(name)
+    @name = name
+    @function hello()
+        message = "Hello! I'm "
+        message.append(self.name)
+        print(message)
+        return
+
+John = Person("John")
+John.hello()
