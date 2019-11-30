@@ -1,0 +1,7 @@
+.vscode/
+build/
+tmp/
+*.code-workspace
+*.swp
+*.tmp
+*.s
