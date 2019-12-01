@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
 // tasks.json 形式の詳細についての資料は、
     // https://go.microsoft.com/fwlink/?LinkId=733558 をご覧ください
     "version": "2.0.0",
@@ -35,4 +36,33 @@
             "group": "build"
         }
     ]
+=======
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+          "type": "shell",
+          "label": "compile c/c++ on wsl",
+          "options": {
+            "shell": {
+              "executable": "C:\\Windows\\System32\\wsl.exe"
+            }
+          },
+          "command": "make&&./blawn&&exit",
+          "group": {
+            "kind": "build",
+            "isDefault": true
+          },
+          "presentation": {
+              "echo": true,
+              "reveal": "always",
+              "focus": true,
+              "panel": "dedicated",
+              "showReuseMessage":false,
+              "clear": false
+          }
+        },
+      ]
+>>>>>>> 919055abcabcf8e18121b227bb54abfa63c348ad
 }

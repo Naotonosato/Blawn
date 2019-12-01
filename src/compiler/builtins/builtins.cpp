@@ -12,14 +12,22 @@
 #include <string>
 #include "builtins.hpp"
 #include "../blawn_context/blawn_context.hpp"
+<<<<<<< HEAD
 /*
+=======
+
+>>>>>>> 919055abcabcf8e18121b227bb54abfa63c348ad
 void builtins::load_builtins(llvm::LLVMContext& context, llvm::Module& module,
                              std::string filename) {
     llvm::SMDiagnostic err;
     auto module_b = llvm::parseIRFile(filename, err, context);
     llvm::Linker::linkModules(module, std::move(module_b));
 }
+<<<<<<< HEAD
 */
+=======
+
+>>>>>>> 919055abcabcf8e18121b227bb54abfa63c348ad
 void builtins::load_builtin_functions(llvm::LLVMContext& context,
                                       llvm::Module& module,
                                       llvm::IRBuilder<>& ir_builder) {

@@ -114,9 +114,12 @@ std::vector<std::string> get_imports(std::string filename) {
 }
 
 int compile(int argc, char** argv) {
+<<<<<<< HEAD
 
     std::cout << "for debug: " << filesystem::current_path() << std::endl;
 
+=======
+>>>>>>> 919055abcabcf8e18121b227bb54abfa63c348ad
     if (argc == 1) {
         std::cerr << "no input file!" << std::endl;
         exit(1);

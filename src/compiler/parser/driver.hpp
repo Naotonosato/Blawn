@@ -1,7 +1,11 @@
 #pragma once
 #include <cstddef>
 #include <istream>
+<<<<<<< HEAD
 // #include "parser.tab.hh"
+=======
+#include "parser.tab.hh"
+>>>>>>> 919055abcabcf8e18121b227bb54abfa63c348ad
 #include "scanner.hpp"
 
 namespace Blawn {
