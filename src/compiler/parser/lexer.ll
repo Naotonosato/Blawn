@@ -1,13 +1,8 @@
 %{
 #include <string>
 #include <algorithm>
-<<<<<<< HEAD
 #include "parser.hpp"
 #include "../src/compiler/parser/scanner.hpp"
-=======
-#include "parser.tab.hh"
-#include "scanner.hpp"
->>>>>>> 919055abcabcf8e18121b227bb54abfa63c348ad
 #undef  YY_DECL
 #define YY_DECL int Blawn::Scanner::yylex( Blawn::Parser::semantic_type * const lval, Blawn::Parser::location_type *loc )
 #define yyterminate() return Blawn::Parser::token::END;

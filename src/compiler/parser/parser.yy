@@ -10,13 +10,8 @@
 %code requires{
     #include <memory>
     #include <llvm/IR/IRBuilder.h>
-<<<<<<< HEAD
     #include "../src/compiler/ast/node.hpp"
     #include "../src/compiler/ast_generator/ast_generator.hpp"
-=======
-    #include "../ast/node.hpp"
-    #include "../ast_generator/ast_generator.hpp"
->>>>>>> 919055abcabcf8e18121b227bb54abfa63c348ad
  
     namespace Blawn {
         class Driver;
@@ -41,11 +36,7 @@
     #include <cstdlib>
     #include <fstream>
     #include <memory>
-<<<<<<< HEAD
     #include "../src/compiler/parser/driver.hpp"
-=======
-    #include "driver.hpp"
->>>>>>> 919055abcabcf8e18121b227bb54abfa63c348ad
     #undef yylex
     #define yylex scanner.yylex
     enum BLAWN_STATE
