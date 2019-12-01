@@ -114,6 +114,9 @@ std::vector<std::string> get_imports(std::string filename) {
 }
 
 int compile(int argc, char** argv) {
+
+    std::cout << "for debug: " << filesystem::current_path() << std::endl;
+
     if (argc == 1) {
         std::cerr << "no input file!" << std::endl;
         exit(1);
@@ -122,6 +125,10 @@ int compile(int argc, char** argv) {
     char buf[1000];
     readlink("/proc/self/exe", buf, 1000);
     self_app_path = filesystem::absolute(buf).parent_path().string();
+
+    std::cout << self_app_path << std::endl;
+    
+
     std::string expanded_filename =
         abs("tmp/" + utils::get_filename(filename) + ".blawn");
     std::ofstream expand_file(expanded_filename);
