@@ -16,7 +16,6 @@ Blawnの使用によっていかなる損害が出たとしても一切の責任
 
 # Usage
 ## Installing
-<<<<<<< HEAD
 ### For WSL
 GitHub使い方よくわかんないので実行ファイルも全部アップされちゃってます。
 なのでそちらをダウンロードして頂ければ簡単に使えると思います。
@@ -53,4 +52,4 @@ implement!
 19/10/20
 
 presentation about Blawn(and add these explaination)
->>>>>>> 919055abcabcf8e18121b227bb54abfa63c348ad
+
