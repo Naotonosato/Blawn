@@ -1,0 +1,20 @@
+class Animal(name)
+    @name = name
+
+class Person(name)
+    @name = name
+    @function hello()
+        text = "Hello! I'm "
+        text.append(self.name)
+        print(text)
+        return
+        
+john = Person("John")
+dog = Animal("dog")
+
+function print_name(arg)
+    print(arg.name)
+    return
+    
+print_name(john)
+print_name(dog)

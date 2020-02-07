@@ -1,0 +1,10 @@
+function f(x)
+    return x * 2
+
+message = "f(5) = "
+message.append(int_to_str(f(5)))
+print(message)
+
+message2 = "f(0.5) = "
+message2.append(float_to_str(f(0.5)))
+print(message2)
