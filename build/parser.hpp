@@ -414,7 +414,7 @@ namespace Blawn {
       char dummy3[sizeof (std::shared_ptr<ast::AccessNode>)];
 
       // method_definition
-      char dummy4[sizeof (std::shared_ptr<ast::FunctionNode>)];
+      char dummy4[sizeof (std::shared_ptr<ast::GenericFunctionNode>)];
 
       // line
       // line_content
@@ -432,7 +432,7 @@ namespace Blawn {
       // monomial
       // call
       // variable
-      char dummy5[sizeof (std::shared_ptr<ast::Node>)];
+      char dummy5[sizeof (std::shared_ptr<ast::NodeBase>)];
 
       // FUNCTION_DEFINITION
       // METHOD_DEFINITION
@@ -451,7 +451,7 @@ namespace Blawn {
       char dummy6[sizeof (std::string)];
 
       // methods
-      char dummy7[sizeof (std::vector<std::shared_ptr<ast::FunctionNode>>)];
+      char dummy7[sizeof (std::vector<std::shared_ptr<ast::GenericFunctionNode>>)];
 
       // block
       // lines
@@ -462,7 +462,7 @@ namespace Blawn {
       // expressions
       // for_start
       // else_body
-      char dummy8[sizeof (std::vector<std::shared_ptr<ast::Node>>)];
+      char dummy8[sizeof (std::vector<std::shared_ptr<ast::NodeBase>>)];
 
       // C_type_identifier
       // arguments
@@ -657,7 +657,7 @@ namespace Blawn {
       {}
 #endif
 #if 201103L <= YY_CPLUSPLUS
-      basic_symbol (typename Base::kind_type t, std::shared_ptr<ast::FunctionNode>&& v, location_type&& l)
+      basic_symbol (typename Base::kind_type t, std::shared_ptr<ast::GenericFunctionNode>&& v, location_type&& l)
         : Base (t)
         , value (std::move (v))
         , location (std::move (l))
@@ -670,7 +670,7 @@ namespace Blawn {
       {}
 #endif
 #if 201103L <= YY_CPLUSPLUS
-      basic_symbol (typename Base::kind_type t, std::shared_ptr<ast::Node>&& v, location_type&& l)
+      basic_symbol (typename Base::kind_type t, std::shared_ptr<ast::NodeBase>&& v, location_type&& l)
         : Base (t)
         , value (std::move (v))
         , location (std::move (l))
@@ -696,7 +696,7 @@ namespace Blawn {
       {}
 #endif
 #if 201103L <= YY_CPLUSPLUS
-      basic_symbol (typename Base::kind_type t, std::vector<std::shared_ptr<ast::FunctionNode>>&& v, location_type&& l)
+      basic_symbol (typename Base::kind_type t, std::vector<std::shared_ptr<ast::GenericFunctionNode>>&& v, location_type&& l)
         : Base (t)
         , value (std::move (v))
         , location (std::move (l))
@@ -709,7 +709,7 @@ namespace Blawn {
       {}
 #endif
 #if 201103L <= YY_CPLUSPLUS
-      basic_symbol (typename Base::kind_type t, std::vector<std::shared_ptr<ast::Node>>&& v, location_type&& l)
+      basic_symbol (typename Base::kind_type t, std::vector<std::shared_ptr<ast::NodeBase>>&& v, location_type&& l)
         : Base (t)
         , value (std::move (v))
         , location (std::move (l))
@@ -770,7 +770,7 @@ switch (yytype)
         break;
 
       case 67: // method_definition
-        value.template destroy< std::shared_ptr<ast::FunctionNode> > ();
+        value.template destroy< std::shared_ptr<ast::GenericFunctionNode> > ();
         break;
 
       case 55: // line
@@ -789,7 +789,7 @@ switch (yytype)
       case 89: // monomial
       case 90: // call
       case 91: // variable
-        value.template destroy< std::shared_ptr<ast::Node> > ();
+        value.template destroy< std::shared_ptr<ast::NodeBase> > ();
         break;
 
       case 3: // FUNCTION_DEFINITION
@@ -810,7 +810,7 @@ switch (yytype)
         break;
 
       case 65: // methods
-        value.template destroy< std::vector<std::shared_ptr<ast::FunctionNode>> > ();
+        value.template destroy< std::vector<std::shared_ptr<ast::GenericFunctionNode>> > ();
         break;
 
       case 53: // block
@@ -822,7 +822,7 @@ switch (yytype)
       case 80: // expressions
       case 83: // for_start
       case 84: // else_body
-        value.template destroy< std::vector<std::shared_ptr<ast::Node>> > ();
+        value.template destroy< std::vector<std::shared_ptr<ast::NodeBase>> > ();
         break;
 
       case 70: // C_type_identifier

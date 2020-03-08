@@ -11,9 +11,9 @@ class ConstantInt;
 class BasicBlock;
 }  // namespace llvm
 namespace ast {
-class FunctionNode;
+class GenericFunctionNode;
 class CallConstructorNode;
-class ClassNode;
+class GenericClassNode;
 }  // namespace ast
 
 class BlawnContext {
@@ -21,7 +21,7 @@ class BlawnContext {
     std::map<std::string, std::map<std::string, unsigned int>> element_names;
     std::map<std::string, llvm::Function*> builtin_functions;
     std::map<std::string, llvm::Function*> C_functions;
-    std::map<std::string, std::shared_ptr<ast::ClassNode>> classes;
+    std::map<std::string, std::shared_ptr<ast::GenericClassNode>> classes;
     std::map<std::string, llvm::Type*> user_types;
     std::map<std::string, std::map<std::string, llvm::Function*>>
         class_with_methods;
@@ -46,8 +46,8 @@ class BlawnContext {
     llvm::Function* get_builtin_method(std::string type_name, std::string name);
     bool exist_builtin_function(std::string name);
     bool exist_C_function(std::string name);
-    void add_class(std::string, std::shared_ptr<ast::ClassNode>);
-    std::shared_ptr<ast::ClassNode> get_class(std::string);
+    void add_class(std::string, std::shared_ptr<ast::GenericClassNode>);
+    std::shared_ptr<ast::GenericClassNode> get_class(std::string);
     void add_user_type(std::string name_at_definition, llvm::Type* type);
     llvm::Type* get_user_type(std::string name_at_definition);
     llvm::ConstantInt* get_typeid(llvm::LLVMContext& context_, llvm::Type*);

@@ -1,104 +1,110 @@
+#pragma once
 #include <vector>
+#include <unordered_map>
 #include <memory>
+#include <variant>
+#include "../algorithm/union_find/union_find.hpp"
+#include "../type_solver/type_solver.hpp"
+#include "../module/module.hpp"
+#include "../../behaviors/has_variant_behavior.hpp"
+
 
 namespace mir {
-class Context;
-}
+
+class TypeVariable;
 // forward declarations
 
-namespace mir {
-
-class TypeKind;
-
-class HasTypeKind {
-    public:
-    virtual void receive_notification(TypeKind& from) = 0;
-};
-
-enum TypeKindEnum {
-    INTEGER,
-    FLOAT,
-    BOOLEAN,
-    POINTER,
-    ARRAY,
-    STRUCT,
-    FUNCTION,
-    LAZY
-};
-
-
-class TypeKind {
+class TypeBase
+{
     private:
-    TypeKindEnum type_kind;
-    HasTypeKind& _owner;
-
-    public:
-    TypeKind(TypeKindEnum type_kind, HasTypeKind& owner)
-        : type_kind(type_kind), _owner(owner) {}
-    void operator=(TypeKind&);
-    void operator=(TypeKindEnum);
-    bool operator==(TypeKind&);
-    bool operator==(const TypeKindEnum&);
-    bool operator!=(TypeKind&);
-    bool operator!=(const TypeKindEnum&);
-    void notify();
-};
-
-class Type : public HasTypeKind,public std::enable_shared_from_this<Type> {
-    private:
-    std::shared_ptr<Type> shared_this;
-    std::shared_ptr<Context> context;
-    std::unique_ptr<TypeKind> type_kind;
     bool is_constant;
-    long long size;
-    std::vector<std::shared_ptr<Type>> dependencies;
-    std::vector<std::shared_ptr<Type>> have_influence;
-    
-    Type()=delete;
-    Type(std::shared_ptr<Context> context, TypeKindEnum type_kind_enum);
-    Type(std::shared_ptr<Context> context);
+    public:
+    TypeBase():is_constant(false){}
+    TypeBase(const TypeBase&) = delete;
+    TypeBase(TypeBase&&) noexcept = default;
+    TypeBase& operator=(const TypeBase&) = delete;
+    TypeBase& operator=(TypeBase&&) noexcept = default;
+};
 
-    template<typename Base>
+
+class IntegerType : public TypeBase
+{
+    public:
+};
+
+
+class FloatType : public TypeBase
+{};
+
+
+class ArrayType : public TypeBase {
+    private:
+    std::shared_ptr<TypeBase> element_type;
+};
+
+
+class StringType : public TypeBase
+{};
+
+
+class StructType : public TypeBase {
+    private:
+    std::string name;
+    std::vector<std::shared_ptr<TypeVariable>> members;
+    public:
+    StructType(std::shared_ptr<Module> module,std::vector<std::shared_ptr<TypeVariable>> members);
+};
+
+class FunctionType : public TypeBase {
+    private:
+    std::vector<std::shared_ptr<mir::TypeBase>> argument_type;
+    std::shared_ptr<TypeBase> return_type;
+};
+
+class LazyType:public TypeBase
+{
+    private:
+    std::shared_ptr<TypeBase> dependency;
+    public:
+    void depend_on(std::shared_ptr<TypeBase> type);
+};
+
+class TypeVariable
+{
+    public:
+    using variant_type = std::variant<IntegerType,FloatType,StringType,ArrayType,StructType,FunctionType,LazyType>;
+    private:
+    std::shared_ptr<Module> module;
+    variant_type content;
+
+    template <typename Base>
     struct CreateHelper:Base
     {
         template<typename... Args>
-        explicit CreateHelper(Args&&... args):Base(std::forward<Args>(args)...){}
+        CreateHelper(Args&&... args):Base(std::forward<Args>(args)...){}
     };
 
+    template<class T> TypeVariable(std::shared_ptr<Module> module,T&& content)
+    :module(module),content(std::move(content)){}
+    
     public:
-    Type(const Type&) = delete;
-    static std::shared_ptr<Type> create(std::shared_ptr<Context> context, TypeKindEnum type_kind_enum);
-    static std::shared_ptr<Type> create(std::shared_ptr<Context> context);
-    Type& operator=(const Type&) = delete;
-    void receive_notification(TypeKind& new_type_kind) override;
-    virtual void receive_notification(Type& from);
-    virtual bool solve(Type& info);
-    virtual void notify();
-    virtual void fetch(std::shared_ptr<Type> new_type);
-    void depend(std::shared_ptr<Type> depend_on);
-    void accept(std::shared_ptr<Type> request);
-    bool is_array() const;
-    bool is_struct() const;
-    bool is_function() const;
-    TypeKind get_type_kind() const;
-    std::vector<std::shared_ptr<Type>> get_dependencies() const;
-    std::vector<std::shared_ptr<Type>> get_have_influence() const;
+    
+    template<class T=LazyType, typename... Args> static std::shared_ptr<TypeVariable> create(std::shared_ptr<Module> module,Args&&... args)
+    {
+        auto type_variable = std::make_shared<CreateHelper<TypeVariable>>(module,std::move(T(std::forward<Args>(args)...)));
+        module->get_type_solver().add_type_variable(type_variable);
+        return type_variable;
+    }
+
+    template <typename VisitorType> auto accept(VisitorType& visitor)
+    {
+        return std::visit(visitor,content);
+    }
+
+    template <typename Type> bool is_type()
+    {
+        return std::holds_alternative<Type>(content);
+    }
 };
 
-class ArrayType : public Type {
-
-};
-
-class StructType : public Type {
-    private:
-    std::vector<std::shared_ptr<Type>> members;
-
-};
-
-class FunctionType : public Type {
-    private:
-    std::vector<std::shared_ptr<mir::Type>> argument_type;
-    std::shared_ptr<Type> return_type;
-
-};
 }  // namespace mir

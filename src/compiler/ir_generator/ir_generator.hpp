@@ -3,12 +3,12 @@
 #include <memory>
 // forward declaration
 namespace ast {
-class Node;
+class NodeBase;
 class VariableNode;
 class ArgumentNode;
 class BinaryExpressionNode;
 class DeepCopyNode;
-class FunctionNode;
+class GenericFunctionNode;
 class CallFunctionNode;
 }  // namespace ast
 
@@ -32,7 +32,7 @@ class IRGenerator {
     IRGenerator(llvm::LLVMContext &context, llvm::Module &module,
                 llvm::IRBuilder<> &ir_builder);
     IRGenerator &operator=(const IRGenerator &) = default;
-    virtual llvm::Value *generate(ast::Node &node);
+    virtual llvm::Value *generate(ast::NodeBase &node);
 };
 
 class SizeofGenerator : public IRGenerator {
@@ -40,7 +40,7 @@ class SizeofGenerator : public IRGenerator {
     SizeofGenerator(llvm::LLVMContext &context, llvm::Module &module,
                     llvm::IRBuilder<> &ir_builder)
         : IRGenerator(context, module, ir_builder) {}
-    llvm::Value *generate(ast::Node &node) override;
+    llvm::Value *generate(ast::NodeBase &node) override;
 };
 
 class TypeIdGenerator : public IRGenerator {
@@ -48,7 +48,7 @@ class TypeIdGenerator : public IRGenerator {
     TypeIdGenerator(llvm::LLVMContext &context, llvm::Module &module,
                     llvm::IRBuilder<> &ir_builder)
         : IRGenerator(context, module, ir_builder) {}
-    llvm::Value *generate(ast::Node &node) override;
+    llvm::Value *generate(ast::NodeBase &node) override;
 };
 
 class CastIRGenerator : public IRGenerator {
@@ -56,7 +56,7 @@ class CastIRGenerator : public IRGenerator {
     CastIRGenerator(llvm::LLVMContext &context, llvm::Module &module,
                     llvm::IRBuilder<> &ir_builder)
         : IRGenerator(context, module, ir_builder) {}
-    llvm::Value *generate(ast::Node &node) override;
+    llvm::Value *generate(ast::NodeBase &node) override;
 };
 
 class NullIRGenerator : public IRGenerator {
@@ -64,7 +64,7 @@ class NullIRGenerator : public IRGenerator {
     NullIRGenerator(llvm::LLVMContext &context, llvm::Module &module,
                     llvm::IRBuilder<> &ir_builder)
         : IRGenerator(context, module, ir_builder) {}
-    llvm::Value *generate(ast::Node &node) override;
+    llvm::Value *generate(ast::NodeBase &node) override;
 };
 
 class IntegerIRGenerator : public IRGenerator {
@@ -73,7 +73,7 @@ class IntegerIRGenerator : public IRGenerator {
                        llvm::IRBuilder<> &ir_builder)
         : IRGenerator(context, module, ir_builder) {}
 
-    llvm::Value *generate(ast::Node &node) override;
+    llvm::Value *generate(ast::NodeBase &node) override;
 };
 
 class FloatIRGenerator : public IRGenerator {
@@ -81,7 +81,7 @@ class FloatIRGenerator : public IRGenerator {
     FloatIRGenerator(llvm::LLVMContext &context, llvm::Module &module,
                      llvm::IRBuilder<> &ir_builder)
         : IRGenerator(context, module, ir_builder) {}
-    llvm::Value *generate(ast::Node &node) override;
+    llvm::Value *generate(ast::NodeBase &node) override;
 };
 
 class StringIRGenerator : public IRGenerator {
@@ -89,7 +89,7 @@ class StringIRGenerator : public IRGenerator {
     StringIRGenerator(llvm::LLVMContext &context, llvm::Module &module,
                       llvm::IRBuilder<> &ir_builder)
         : IRGenerator(context, module, ir_builder) {}
-    llvm::Value *generate(ast::Node &node) override;
+    llvm::Value *generate(ast::NodeBase &node) override;
 };
 
 class ArgumentIRGenerator : public IRGenerator {
@@ -97,7 +97,7 @@ class ArgumentIRGenerator : public IRGenerator {
     ArgumentIRGenerator(llvm::LLVMContext &context, llvm::Module &module,
                         llvm::IRBuilder<> &ir_builder)
         : IRGenerator(context, module, ir_builder) {}
-    llvm::Value *generate(ast::Node &node) override;
+    llvm::Value *generate(ast::NodeBase &node) override;
 };
 
 class VariableIRGenerator : public IRGenerator {
@@ -105,7 +105,7 @@ class VariableIRGenerator : public IRGenerator {
     VariableIRGenerator(llvm::LLVMContext &context, llvm::Module &module,
                         llvm::IRBuilder<> &ir_builder)
         : IRGenerator(context, module, ir_builder) {}
-    llvm::Value *generate(ast::Node &) override;
+    llvm::Value *generate(ast::NodeBase &) override;
 };
 
 class AssigmentIRGenerator : public IRGenerator {
@@ -113,7 +113,7 @@ class AssigmentIRGenerator : public IRGenerator {
     AssigmentIRGenerator(llvm::LLVMContext &context, llvm::Module &module,
                          llvm::IRBuilder<> &ir_builder)
         : IRGenerator(context, module, ir_builder) {}
-    llvm::Value *generate(ast::Node &) override;
+    llvm::Value *generate(ast::NodeBase &) override;
 };
 
 class StoreIRGenerator : public IRGenerator {
@@ -130,7 +130,7 @@ class StoreIRGenerator : public IRGenerator {
     StoreIRGenerator(llvm::LLVMContext &context, llvm::Module &module,
                      llvm::IRBuilder<> &ir_builder)
         : IRGenerator(context, module, ir_builder) {}
-    llvm::Value *generate(ast::Node &) override;
+    llvm::Value *generate(ast::NodeBase &) override;
 };
 
 class BinaryExpressionIRGenerator : public IRGenerator {
@@ -139,7 +139,7 @@ class BinaryExpressionIRGenerator : public IRGenerator {
                                 llvm::Module &module,
                                 llvm::IRBuilder<> &ir_builder)
         : IRGenerator(context, module, ir_builder) {}
-    llvm::Value *generate(ast::Node &node) override;
+    llvm::Value *generate(ast::NodeBase &node) override;
 };
 
 class FunctionIRGenerator : public IRGenerator {
@@ -147,7 +147,7 @@ class FunctionIRGenerator : public IRGenerator {
     FunctionIRGenerator(llvm::LLVMContext &context, llvm::Module &module,
                         llvm::IRBuilder<> &ir_builder)
         : IRGenerator(context, module, ir_builder) {}
-    llvm::Function *generate(ast::Node &node) override;
+    llvm::Function *generate(ast::NodeBase &node) override;
 };
 
 class DeclareCIRGenerator : public IRGenerator {
@@ -155,7 +155,7 @@ class DeclareCIRGenerator : public IRGenerator {
     DeclareCIRGenerator(llvm::LLVMContext &context, llvm::Module &module,
                         llvm::IRBuilder<> &ir_builder)
         : IRGenerator(context, module, ir_builder) {}
-    llvm::Value *generate(ast::Node &node) override;
+    llvm::Value *generate(ast::NodeBase &node) override;
 };
 
 class CallFunctionIRGenerator : public IRGenerator {
@@ -163,7 +163,7 @@ class CallFunctionIRGenerator : public IRGenerator {
     CallFunctionIRGenerator(llvm::LLVMContext &context, llvm::Module &module,
                             llvm::IRBuilder<> &ir_builder)
         : IRGenerator(context, module, ir_builder) {}
-    llvm::Value *generate(ast::Node &node) override;
+    llvm::Value *generate(ast::NodeBase &node) override;
 };
 
 class ClassIRGenerator : public IRGenerator {
@@ -171,7 +171,7 @@ class ClassIRGenerator : public IRGenerator {
     ClassIRGenerator(llvm::LLVMContext &context, llvm::Module &module,
                      llvm::IRBuilder<> &ir_builder)
         : IRGenerator(context, module, ir_builder) {}
-    llvm::Value *generate(ast::Node &node) override;
+    llvm::Value *generate(ast::NodeBase &node) override;
 };
 
 class CallConstructorIRGenerator : public IRGenerator {
@@ -179,7 +179,7 @@ class CallConstructorIRGenerator : public IRGenerator {
     CallConstructorIRGenerator(llvm::LLVMContext &context, llvm::Module &module,
                                llvm::IRBuilder<> &ir_builder)
         : IRGenerator(context, module, ir_builder) {}
-    llvm::Value *generate(ast::Node &node) override;
+    llvm::Value *generate(ast::NodeBase &node) override;
 };
 
 class IfIRGenerator : public IRGenerator {
@@ -187,7 +187,7 @@ class IfIRGenerator : public IRGenerator {
     IfIRGenerator(llvm::LLVMContext &context, llvm::Module &module,
                   llvm::IRBuilder<> &ir_builder)
         : IRGenerator(context, module, ir_builder) {}
-    llvm::Value *generate(ast::Node &node) override;
+    llvm::Value *generate(ast::NodeBase &node) override;
 };
 
 class AccessIRGenerator : public IRGenerator {
@@ -195,7 +195,7 @@ class AccessIRGenerator : public IRGenerator {
     AccessIRGenerator(llvm::LLVMContext &context, llvm::Module &module,
                       llvm::IRBuilder<> &ir_builder)
         : IRGenerator(context, module, ir_builder) {}
-    llvm::Value *generate(ast::Node &node) override;
+    llvm::Value *generate(ast::NodeBase &node) override;
 };
 
 class ForIRGenerator : public IRGenerator {
@@ -203,7 +203,7 @@ class ForIRGenerator : public IRGenerator {
     ForIRGenerator(llvm::LLVMContext &context, llvm::Module &module,
                    llvm::IRBuilder<> &ir_builder)
         : IRGenerator(context, module, ir_builder) {}
-    llvm::Value *generate(ast::Node &node) override;
+    llvm::Value *generate(ast::NodeBase &node) override;
 };
 
 class ListIRGenerator : public IRGenerator {
@@ -211,7 +211,7 @@ class ListIRGenerator : public IRGenerator {
     ListIRGenerator(llvm::LLVMContext &context, llvm::Module &module,
                     llvm::IRBuilder<> &ir_builder)
         : IRGenerator(context, module, ir_builder) {}
-    llvm::Value *generate(ast::Node &node) override;
+    llvm::Value *generate(ast::NodeBase &node) override;
 };
 
 class BlockEndIRGenerator : public IRGenerator {
@@ -219,7 +219,7 @@ class BlockEndIRGenerator : public IRGenerator {
     BlockEndIRGenerator(llvm::LLVMContext &context, llvm::Module &module,
                         llvm::IRBuilder<> &ir_builder)
         : IRGenerator(context, module, ir_builder) {}
-    llvm::Value *generate(ast::Node &node) override;
+    llvm::Value *generate(ast::NodeBase &node) override;
 };
 
 class IRGenerators {

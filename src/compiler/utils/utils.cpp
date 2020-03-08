@@ -99,7 +99,7 @@ llvm::Value* utils::free_value(llvm::Value* to_delete_ptr, llvm::Module& module,
 }
 
 llvm::Type* utils::get_or_create_type(
-    llvm::LLVMContext& context, std::shared_ptr<ast::ClassNode> class_node,
+    llvm::LLVMContext& context, std::shared_ptr<ast::GenericClassNode> class_node,
     std::string name) {
     auto type = get_blawn_context().get_user_type(class_node->name);
     if (type == nullptr) {

@@ -3,11 +3,11 @@
 #include "../ast/node.hpp"
 namespace ast
 {
-    Node;
+    NodeBase;
 }
 
 namespace mir {
-class Context;
+class Module;
 class Module;
 class Builder;
 
@@ -18,10 +18,10 @@ namespace mir {
 
 class ExpressionGenerator {
     private:
-    Context& context;
+    Module& context;
     Module& module;
     public:
-    ExpressionGenerator(Context & context,Module& module):context(context),module(module){}
+    ExpressionGenerator(Module & context,Module& module):context(context),module(module){}
 
     std::unique_ptr<MIR> operator()(std::nullptr_t &node);
     std::unique_ptr<MIR> operator()(ast::IntegerNode &node);

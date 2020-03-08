@@ -10,7 +10,7 @@ class Type;
 }  // namespace llvm
 
 namespace ast {
-class ClassNode;
+class GenericClassNode;
 }
 
 namespace utils {
@@ -33,5 +33,5 @@ llvm::Value* malloc_value(llvm::Type* type, llvm::LLVMContext& context,
 llvm::Value* free_value(llvm::Value* to_delete_ptr, llvm::Module& module,
                         llvm::IRBuilder<>& ir_builder);
 llvm::Type* get_or_create_type(llvm::LLVMContext&,
-                               std::shared_ptr<ast::ClassNode>, std::string);
+                               std::shared_ptr<ast::GenericClassNode>, std::string);
 }  // namespace utils

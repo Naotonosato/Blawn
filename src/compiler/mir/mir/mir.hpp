@@ -7,7 +7,7 @@ class Value;
 }
 
 namespace mir {
-class Type;
+class TypeVariable;
 }
 // forward declarations
 
@@ -15,58 +15,62 @@ namespace mir {
 
 class MIR {
     private:
-    std::unique_ptr<Type> type;
-    long long line_number;
+    std::shared_ptr<TypeVariable> type;
+    uint64_t line_number;
 
     public:
-    MIR(std::unique_ptr<Type>&& type,long long line_number):type(std::move(type)),line_number(line_number){}
+    MIR(std::shared_ptr<TypeVariable>&& type,uint64_t line_number):type(std::move(type)),line_number(line_number){}
     std::string print();
-    void fetch_type(std::shared_ptr<Type> new_type);
-    void depend(std::shared_ptr<MIR>);
-    void depend(std::vector<std::shared_ptr<Block>>);
 };
 
-class Integer : public MIR {};
+class Integer{};
 
-class Float : public MIR {};
+class Float{};
 
-class String : public MIR {};
+class String{};
 
-class BinaryExpression : public MIR {};
+class BinaryExpression{};
 
-class Array : public MIR {};
+class Array{};
 
-class Store : public MIR {};
+class Store{};
 
-class Variable : public MIR {};
+class Variable{};
 
-class GlobalVariable : public MIR {};
+class GlobalVariable{};
 
-class AllocateHeap : public MIR {};
+class AllocateHeap{};
 
-class FreeHeap : public MIR {};
+class FreeHeap{};
 
-class Block : public MIR {
+class Block{
     private:
     std::vector<std::shared_ptr<MIR>> body;
     std::vector<std::shared_ptr<Block>> from_blocks;
     std::vector<std::shared_ptr<Block>> to_blocks;
 };
 
-class Jump : public MIR {
+class Jump{
     private:
     std::shared_ptr<Block> to;
     std::shared_ptr<Block> from;
 };
 
-class CallFunction : public MIR {
+class CallFunction{
     private:
     std::shared_ptr<Block> function;
     std::vector<std::shared_ptr<MIR>> arguments;
 };
 
-class Argument : public MIR {};
+class Argument{};
 
-class Cast : public MIR {};
+class Cast{};
 
 }  // namespace mir
+
+
+
+/*
+AST->MIR->solve type
+MIR->LLVM IR
+*/

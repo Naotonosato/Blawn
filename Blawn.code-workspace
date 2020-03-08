@@ -86,7 +86,9 @@
 			"__cxx_version": "cpp",
 			"version": "cpp",
 			"*.def": "cpp",
-			"variant": "cpp"
+			"variant": "cpp",
+			"unordered_set": "cpp",
+			"__memory": "cpp"
 		}
 	}
 }

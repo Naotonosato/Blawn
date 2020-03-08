@@ -68,15 +68,15 @@ IRGenerator::IRGenerator(llvm::LLVMContext& context, llvm::Module& module,
     }
 }
 
-llvm::Value* IRGenerator::generate(ast::Node& node) { return 0; }
+llvm::Value* IRGenerator::generate(ast::NodeBase& node) { return 0; }
 
-llvm::Value* SizeofGenerator::generate(ast::Node& node_) {
+llvm::Value* SizeofGenerator::generate(ast::NodeBase& node_) {
     auto& node = *static_cast<ast::SizeofNode*>(&node_);
     auto type = node.get_value()->generate()->getType();
     return ir_builder.getInt64(utils::get_sizeof(type, module));
 }
 
-llvm::Value* TypeIdGenerator::generate(ast::Node& node_) {
+llvm::Value* TypeIdGenerator::generate(ast::NodeBase& node_) {
     auto& node = *static_cast<ast::TypeIdNode*>(&node_);
     auto type = node.get_value()->generate()->getType();
     auto id = get_blawn_context().get_typeid(context, type);
@@ -84,7 +84,7 @@ llvm::Value* TypeIdGenerator::generate(ast::Node& node_) {
     return id;
 }
 
-llvm::Value* CastIRGenerator::generate(ast::Node& node_) {
+llvm::Value* CastIRGenerator::generate(ast::NodeBase& node_) {
     auto& node = *static_cast<ast::CastNode*>(&node_);
     BlawnLogger logger;
     logger.set_line_number(node.line_number);
@@ -114,7 +114,7 @@ llvm::Value* CastIRGenerator::generate(ast::Node& node_) {
     }
 }
 
-llvm::Value* NullIRGenerator::generate(ast::Node& node_) {
+llvm::Value* NullIRGenerator::generate(ast::NodeBase& node_) {
     auto& node = *static_cast<ast::NullNode*>(&node_);
     BlawnLogger logger;
     logger.set_line_number(node.line_number);
@@ -198,15 +198,15 @@ llvm::Value* NullIRGenerator::generate(ast::Node& node_) {
     }
 }
 
-llvm::Value* IntegerIRGenerator::generate(ast::Node& node) {
+llvm::Value* IntegerIRGenerator::generate(ast::NodeBase& node) {
     return llvm::ConstantInt::get(context, llvm::APInt(64, node.int_num, true));
 }
 
-llvm::Value* FloatIRGenerator::generate(ast::Node& node) {
+llvm::Value* FloatIRGenerator::generate(ast::NodeBase& node) {
     return llvm::ConstantFP::get(context, llvm::APFloat(node.float_num));
 }
 
-llvm::Value* StringIRGenerator::generate(ast::Node& node) {
+llvm::Value* StringIRGenerator::generate(ast::NodeBase& node) {
     std::string str = node.string;
     auto ptr = ir_builder.CreateGlobalStringPtr(str);
     auto length = llvm::ConstantInt::get(context, llvm::APInt(64, str.size()));
@@ -218,7 +218,7 @@ llvm::Value* StringIRGenerator::generate(ast::Node& node) {
     return string;
 }
 
-llvm::Value* VariableIRGenerator::generate(ast::Node& node_) {
+llvm::Value* VariableIRGenerator::generate(ast::NodeBase& node_) {
     auto& node = *static_cast<ast::VariableNode*>(&node_);
     BlawnLogger logger;
     logger.set_line_number(node.line_number);
@@ -261,12 +261,12 @@ llvm::Value* VariableIRGenerator::generate(ast::Node& node_) {
     }
 }
 
-llvm::Value* AssigmentIRGenerator::generate(ast::Node& node_) {
+llvm::Value* AssigmentIRGenerator::generate(ast::NodeBase& node_) {
     auto& node = *static_cast<ast::AssignmentNode*>(&node_);
     BlawnLogger logger;
     logger.set_line_number(node.line_number);
     llvm::Value* pointer;
-    std::shared_ptr<ast::Node> left_node;
+    std::shared_ptr<ast::NodeBase> left_node;
     auto right_node = node.get_right_node();
     if (node.get_target_var() != nullptr) {
         node.get_target_var()->generate();
@@ -326,17 +326,17 @@ void StoreIRGenerator::walk(
         auto field = get_blawn_context().get_elements(struct_name);
 
         auto gen = AccessIRGenerator(context, module, ir_builder);
-        NodeCollector<ast::FunctionNode> empty;
-        std::shared_ptr<ast::Node> p_node;
-        std::shared_ptr<ast::Node> o_node;
+        NodeCollector<ast::GenericFunctionNode> empty;
+        std::shared_ptr<ast::NodeBase> p_node;
+        std::shared_ptr<ast::NodeBase> o_node;
 
         for (auto& element : field) {
             auto element_name = element.first;
             utils::replace(element_name, "@", "");
-            p_node = std::shared_ptr<ast::Node>(
+            p_node = std::shared_ptr<ast::NodeBase>(
                 new ast::AccessNode(node.line_number, node.self_scope, gen,
                                     node.pointer, element_name, empty));
-            o_node = std::shared_ptr<ast::Node>(
+            o_node = std::shared_ptr<ast::NodeBase>(
                 new ast::AccessNode(node.line_number, node.self_scope, gen,
                                     node.object, element_name, empty));
             if (p_node->generate()->getType()->isPointerTy() &&
@@ -386,7 +386,7 @@ void StoreIRGenerator::store(ast::DeepCopyNode& node, llvm::Value* pointer,
     ir_builder.CreateStore(object, pointer);
 }
 
-llvm::Value* StoreIRGenerator::generate(ast::Node& node_) {
+llvm::Value* StoreIRGenerator::generate(ast::NodeBase& node_) {
     auto& node = *static_cast<ast::DeepCopyNode*>(&node_);
     BlawnLogger logger;
     logger.set_line_number(node.line_number);
@@ -423,12 +423,12 @@ llvm::Value* StoreIRGenerator::generate(ast::Node& node_) {
     return pointer;
 }
 
-llvm::Value* ArgumentIRGenerator::generate(ast::Node& node_) {
+llvm::Value* ArgumentIRGenerator::generate(ast::NodeBase& node_) {
     auto& node = *static_cast<ast::ArgumentNode*>(&node_);
     return ir_builder.CreateLoad(node.alloca_inst);
 }
 
-llvm::Value* BinaryExpressionIRGenerator::generate(ast::Node& node_) {
+llvm::Value* BinaryExpressionIRGenerator::generate(ast::NodeBase& node_) {
     auto& node = *static_cast<ast::BinaryExpressionNode*>(&node_);
 
     auto operator_kind = node.operator_kind;
@@ -533,8 +533,8 @@ llvm::Value* BinaryExpressionIRGenerator::generate(ast::Node& node_) {
     return 0;
 }
 
-llvm::Function* FunctionIRGenerator::generate(ast::Node& node_) {
-    auto& node = *static_cast<ast::FunctionNode*>(&node_);
+llvm::Function* FunctionIRGenerator::generate(ast::NodeBase& node_) {
+    auto& node = *static_cast<ast::GenericFunctionNode*>(&node_);
     std::vector<llvm::Type*> types;
     auto func_type =
         llvm::FunctionType::get(llvm::Type::getVoidTy(context), types, false);
@@ -544,7 +544,7 @@ llvm::Function* FunctionIRGenerator::generate(ast::Node& node_) {
     return function;
 }
 
-llvm::Value* DeclareCIRGenerator::generate(ast::Node& node_) {
+llvm::Value* DeclareCIRGenerator::generate(ast::NodeBase& node_) {
     auto& node = *static_cast<ast::DeclareCNode*>(&node_);
     BlawnLogger logger;
     logger.set_line_number(node.line_number);
@@ -575,7 +575,7 @@ llvm::Value* DeclareCIRGenerator::generate(ast::Node& node_) {
     return 0;
 }
 
-llvm::Value* CallFunctionIRGenerator::generate(ast::Node& node_) {
+llvm::Value* CallFunctionIRGenerator::generate(ast::NodeBase& node_) {
     auto& node = *static_cast<ast::CallFunctionNode*>(&node_);
     BlawnLogger logger;
     logger.set_line_number(node.line_number);
@@ -702,7 +702,7 @@ llvm::Value* CallFunctionIRGenerator::generate(ast::Node& node_) {
     }
 
     auto body = node.function->body;
-    std::shared_ptr<ast::Node> func_end = nullptr;
+    std::shared_ptr<ast::NodeBase> func_end = nullptr;
     if (body.size()) {
         auto func_end = body.back();
         body.pop_back();
@@ -759,8 +759,8 @@ llvm::Value* CallFunctionIRGenerator::generate(ast::Node& node_) {
     return ir_builder.CreateCall(new_function, argument_values);
 }
 
-llvm::Value* ClassIRGenerator::generate(ast::Node& node_) {
-    auto& node = *static_cast<ast::ClassNode*>(&node_);
+llvm::Value* ClassIRGenerator::generate(ast::NodeBase& node_) {
+    auto& node = *static_cast<ast::GenericClassNode*>(&node_);
     std::vector<llvm::Type*> types;
     auto type =
         llvm::FunctionType::get(llvm::Type::getVoidTy(context), types, false);
@@ -770,7 +770,7 @@ llvm::Value* ClassIRGenerator::generate(ast::Node& node_) {
     return constructor;
 }
 
-llvm::Value* CallConstructorIRGenerator::generate(ast::Node& node_) {
+llvm::Value* CallConstructorIRGenerator::generate(ast::NodeBase& node_) {
     auto& node = *static_cast<ast::CallConstructorNode*>(&node_);
     BlawnLogger logger;
     logger.set_line_number(node.line_number);
@@ -926,7 +926,7 @@ llvm::Value* CallConstructorIRGenerator::generate(ast::Node& node_) {
     return instance;
 }
 
-llvm::Value* IfIRGenerator::generate(ast::Node& node_) {
+llvm::Value* IfIRGenerator::generate(ast::NodeBase& node_) {
     auto& node = *static_cast<ast::IfNode*>(&node_);
     std::set<llvm::Value*> false_values;
     false_values.insert(
@@ -983,7 +983,7 @@ llvm::Value* IfIRGenerator::generate(ast::Node& node_) {
     return 0;
 }
 
-llvm::Value* ForIRGenerator::generate(ast::Node& node_) {
+llvm::Value* ForIRGenerator::generate(ast::NodeBase& node_) {
     auto& node = *static_cast<ast::ForNode*>(&node_);
     auto func = ir_builder.GetInsertBlock()->getParent();
     auto body_block = llvm::BasicBlock::Create(context, "for", func);
@@ -1009,7 +1009,7 @@ llvm::Value* ForIRGenerator::generate(ast::Node& node_) {
     return 0;
 }
 
-llvm::Value* AccessIRGenerator::generate(ast::Node& node_) {
+llvm::Value* AccessIRGenerator::generate(ast::NodeBase& node_) {
     auto& node = *static_cast<ast::AccessNode*>(&node_);
     BlawnLogger logger;
     logger.set_line_number(node.line_number);
@@ -1084,7 +1084,7 @@ llvm::Value* AccessIRGenerator::generate(ast::Node& node_) {
     }
 }
 
-llvm::Value* ListIRGenerator::generate(ast::Node& node_) {
+llvm::Value* ListIRGenerator::generate(ast::NodeBase& node_) {
     auto& node = *static_cast<ast::ArrayNode*>(&node_);
     if (node.is_null()) {
         return llvm::ConstantPointerNull::get(ir_builder.getInt8PtrTy());
@@ -1109,7 +1109,7 @@ llvm::Value* ListIRGenerator::generate(ast::Node& node_) {
     return first_element_ptr;
 }
 
-llvm::Value* BlockEndIRGenerator::generate(ast::Node& node_) {
+llvm::Value* BlockEndIRGenerator::generate(ast::NodeBase& node_) {
     auto& node = *static_cast<ast::BlockEndNode*>(&node_);
     auto heap_users = get_blawn_context().get_heap_users(node.block_scope);
     for (int i = heap_users.size() - 1; i != -1; i -= 1) {

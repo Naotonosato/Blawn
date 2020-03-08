@@ -1,544 +1,345 @@
 #pragma once
-#include <llvm/IR/IRBuilder.h>
 #include <map>
 #include <memory>
 #include <set>
 #include <string>
 #include <vector>
-#include "../ast_generator/node_collector.hpp"
-#include "../ir_generator/ir_generator.hpp"
+#include <optional>
+#include <variant>
 
-//------forward declaration------
-class Type;
-/*
-class IRGenerator;
-class IntegerIRGenerator;
-class FloatIRGenerator;
-class VariableIRGenerator;
-class BinaryExpressionIRGenerator;
-*/
-namespace llvm {
-class Value;
-class Type;
-class Function;
-class FunctionType;
-class Argument;
-}  // namespace llvm
-//------forward declaration------
+
 namespace ast {
-class Node {
-    private:
-    llvm::Type* type;
-    bool _is_argument;
 
+class Node;
+
+class NodeBase {
+    private:
+    uint64_t line_number;
     public:
-    int line_number;
-    Scope self_scope;
-    int int_num;
-    double float_num;
-    std::string string;
-    IRGenerator& ir_generator;
+    NodeBase(uint64_t line_number) : line_number(line_number){}
+    NodeBase()=delete;
+    NodeBase(const NodeBase&)=delete;
+    NodeBase(NodeBase&&)=default;
+};
+
+class IntegerNode:public NodeBase 
+{
+    private:
+    std::optional<uint64_t> initial_value;
+    public:
+    IntegerNode(uint64_t line_number,uint64_t initial_value):
+    NodeBase(line_number), initial_value(initial_value){}
+    const std::optional<uint64_t>& get_initial_value() const;
+};
+
+class FloatNode : public NodeBase 
+{
+    private:
+    std::optional<double> initial_value;
+    public:
+    FloatNode(uint64_t line_number,double initial_value):
+    NodeBase(line_number), initial_value(initial_value){}
+    const std::optional<double>& get_initial_value() const;
+};
+
+
+class ArrayNode : public NodeBase 
+{
+    private:
+    std::optional<std::vector<std::shared_ptr<Node>>> initial_values;
+    public:
+    ArrayNode(uint64_t line_number):NodeBase(line_number){}
+    ArrayNode(uint64_t line_number,std::vector<std::shared_ptr<Node>>)
+    :NodeBase(line_number),initial_values(std::move(initial_values)){}
+
+    const std::optional<std::vector<std::shared_ptr<Node>>> get_initial_values() const;
+};
+
+class StringNode : public NodeBase 
+{
+    private:
+    std::optional<std::string> initial_value;
+    public:
+    StringNode(uint64_t line_number,const std::string initial_value):
+    NodeBase(line_number), initial_value(initial_value){}
+    const std::optional<std::string>& get_initial_value() const;
+};
+
+class VariableNode : public NodeBase {
+    public:
+    VariableNode(uint64_t line_number):
+    NodeBase(line_number){}
+};
+
+class GlobalVariableNode : public NodeBase
+{
+    public:
+    GlobalVariableNode(uint64_t line_number):
+    NodeBase(line_number){}
+};
+
+class ArgumentNode : public NodeBase {
+    public:
+    ArgumentNode(uint64_t line_number):
+    NodeBase(line_number){}
+};
+
+class AssignmentNode : public NodeBase {
+    private:
+    std::shared_ptr<Node> left_hand_side;
+    std::shared_ptr<Node> right_hand_side;
+    public:
+    AssignmentNode(
+        uint64_t line_number,
+        const std::shared_ptr<Node> left_hand_side,
+        std::shared_ptr<Node> right_hand_side
+        )
+        :   NodeBase(line_number), 
+            left_hand_side(left_hand_side), 
+            right_hand_side(right_hand_side){}
+    std::shared_ptr<Node> get_left_hand_side() const;
+    std::shared_ptr<Node> get_right_hand_side() const;
+};
+
+enum BinaryExpressionKind
+{
+    ADD,SUB,MUL,DIV
+};
+
+class BinaryExpressionNode : public NodeBase 
+{
+    private:
+    std::shared_ptr<Node> left_hand_side;
+    std::shared_ptr<Node> right_hand_side;
+    BinaryExpressionKind operator_kind;
+    public:
+    BinaryExpressionNode(
+        uint64_t line_number,
+        BinaryExpressionKind operator_kind,
+        std::shared_ptr<Node> left_hand_side,
+        std::shared_ptr<Node> right_hand_side
+        )
+        :   NodeBase(line_number), 
+            operator_kind(operator_kind),
+            left_hand_side(left_hand_side), 
+            right_hand_side(right_hand_side){}
+    const BinaryExpressionKind get_operator_kind() const;
+    std::shared_ptr<Node> get_left_hand_side() const;
+    std::shared_ptr<Node> get_right_hand_side() const;
+};
+
+class GenericFunctionNode;
+
+class CallFunctionNode : public NodeBase {
+    private:
+    std::shared_ptr<GenericFunctionNode> function;
+    std::vector<std::shared_ptr<Node>> arguments;
+    public:
+    CallFunctionNode(
+        uint64_t line_number,
+        std::shared_ptr<GenericFunctionNode> function,
+        std::vector<std::shared_ptr<Node>> arguments
+    ):NodeBase(line_number),function(function),arguments(std::move(arguments)){}
+    std::shared_ptr<Node> get_function() const;
+    std::vector<std::shared_ptr<Node>>& get_arguments() const;
+};
+
+class AccessElementNode: public NodeBase
+{
+    private:
+    std::shared_ptr<Node> left_hand_side;
+    std::string element_name;
+    public:
+    AccessElementNode(
+        uint64_t line_number,
+        std::shared_ptr<Node> left_hand_side,
+        std::string element_name
+    ):NodeBase(line_number),
+    left_hand_side(left_hand_side),
+    element_name(element_name){}
+    std::shared_ptr<Node> get_left_hand_side() const;
+    const std::string& get_element_name() const;
+};
+
+class DeepCopyNode : public NodeBase{
+    private:
+    std::shared_ptr<Node> left_hand_side;
+    std::shared_ptr<Node> right_hand_side;
+    public:
+    DeepCopyNode(
+        uint64_t line_number,
+        std::shared_ptr<Node> left_hand_side,
+        std::shared_ptr<Node> right_hand_side
+        )
+        :   NodeBase(line_number), 
+            left_hand_side(left_hand_side), 
+            right_hand_side(right_hand_side){}
+    std::shared_ptr<Node> get_left_hand_side() const;
+    std::shared_ptr<Node> get_right_hand_side() const;
+};
+
+class BlockNode : public NodeBase
+{
+    private:
+    std::vector<std::shared_ptr<Node>> expressions;
+    public:
+    BlockNode(uint64_t line_number,std::vector<std::shared_ptr<Node>>&& expressions)
+    :NodeBase(line_number),expressions(std::move(expressions)){}
+    std::vector<std::shared_ptr<Node>>& get_expressions() const;
+};
+
+class IfNode : public NodeBase {
+    private:
+    std::shared_ptr<Node> block;
+    std::shared_ptr<Node> condition;
+    public:
+    IfNode(uint64_t line_number,std::shared_ptr<Node> block,std::shared_ptr<Node> condition)
+    :NodeBase(line_number),block(block),condition(condition){}
+    std::shared_ptr<Node> get_block() const;
+    std::shared_ptr<Node> get_condition() const;
+};
+
+class ForNode : public NodeBase {
+    private:
+    std::shared_ptr<Node> block;
+    std::shared_ptr<Node> first_expression;
+    std::shared_ptr<Node> condition;
+    std::shared_ptr<Node> last_expression;
+    public:
+    ForNode(
+        uint64_t line_number,
+        std::shared_ptr<Node> block,
+        std::shared_ptr<Node> first_expression,
+        std::shared_ptr<Node> condition,
+        std::shared_ptr<Node> last_expression
+        ):NodeBase(line_number),
+        block(block),
+        first_expression(first_expression),
+        condition(condition),
+        last_expression(last_expression){}
+    std::shared_ptr<Node> get_block() const;
+    std::shared_ptr<Node> get_first_expression() const;
+    std::shared_ptr<Node> get_condition() const;
+    std::shared_ptr<Node> get_last_expression() const;
+};
+
+class GenericFunctionNode : public NodeBase 
+{
+    private:
     std::string name;
-    Node(int line_number, Scope self_scope, IRGenerator& ir_generator,
-         std::string name = "", bool is_argument = false)
-        : _is_argument(is_argument),
-          line_number(line_number),
-          self_scope(self_scope),
-          ir_generator(ir_generator),
-          name(name) {}
-    virtual llvm::ConstantInt* get_id() { return nullptr; }
-    virtual bool is_argument() { return _is_argument; }
-    virtual bool is_variable() { return false; }
-    virtual bool is_typeid() { return false; }
-    virtual bool is_function() { return false; }
-    virtual bool is_calling_constructor() { return false; }
-    virtual bool is_accessing() { return false; }
-    virtual bool is_heap_user() { return false; }
-    virtual int get_heap_id() { return -1; }
-    virtual std::shared_ptr<Node> get_typeid_value() { return nullptr; }
-    virtual llvm::Value* generate();
-    virtual void initialize() {}
+    std::vector<std::string> argument_names;
+    public:
+    GenericFunctionNode(
+        uint64_t line_number,
+        std::string name,
+        std::vector<std::string> argument_names
+    ):NodeBase(line_number),
+    name(name),
+    argument_names(std::move(argument_names)){}
+    const std::string& get_name() const;
+    const std::vector<std::string>& argument_names() const;
 };
 
-class SizeofNode : public Node {
+class GenericClassNode:public NodeBase
+{
     private:
-    std::shared_ptr<Node> value;
-
+    std::string name;
+    std::vector<std::shared_ptr<Node>> member_variables;
+    std::vector<std::shared_ptr<GenericFunctionNode>> methods;
     public:
-    SizeofNode(int line_number, Scope self_scope, SizeofGenerator& ir_generator,
-               std::shared_ptr<Node> value)
-        : Node(line_number, self_scope, ir_generator), value(value) {}
-    std::shared_ptr<Node> get_value() { return value; }
+    GenericClassNode(
+        uint64_t line_number,
+        std::string name,
+        std::vector<std::shared_ptr<Node>> member_variables,
+        std::vector<std::shared_ptr<GenericFunctionNode>> methods
+        ):NodeBase(line_number),
+        name(name),
+        member_variables(std::move(member_variables)),
+        methods(std::move(methods)){}
+    const std::string& get_name() const;
+    std::vector<std::shared_ptr<Node>> get_member_variables() const;
+    std::vector<std::shared_ptr<GenericFunctionNode>> get_methods() const;
 };
 
-class TypeIdNode : public Node {
+class TypeIdNode : public NodeBase {
     private:
-    std::shared_ptr<Node> value;
-    llvm::ConstantInt* id_;
-
+    std::shared_ptr<Node> node;
     public:
-    TypeIdNode(int line_number, Scope self_scope, TypeIdGenerator& ir_generator,
-               std::shared_ptr<Node> value)
-        : Node(line_number, self_scope, ir_generator),
-          value(value),
-          id_(nullptr) {}
-    std::shared_ptr<Node> get_value() { return value; }
-    void set_id(llvm::ConstantInt* id) { id_ = id; }
-    llvm::ConstantInt* get_id() { return id_; }
-    bool is_typeid() override { return true; }
-    std::shared_ptr<Node> get_typeid_value() override { return value; }
+    TypeIdNode(uint64_t line_number,std::shared_ptr<Node> node)
+    :NodeBase(line_number),node(node){}
+
+    std::shared_ptr<Node> get_node() const;
 };
 
-class CastNode : public Node {
+class CastNode : public NodeBase {
     private:
-    std::shared_ptr<Node> id;
-    std::shared_ptr<Node> value;
-
+    std::shared_ptr<TypeIdNode> target_type_id_node;
+    std::shared_ptr<Node> node;
     public:
-    CastNode(int line_number, Scope self_scope, CastIRGenerator& ir_generator,
-             std::shared_ptr<Node> id, std::shared_ptr<Node> value)
-        : Node(line_number, self_scope, ir_generator), id(id), value(value) {}
-    std::shared_ptr<Node> get_idnode() { return id; }
-    std::shared_ptr<Node> get_value() { return value; }
+    CastNode(
+        uint64_t line_number,
+        std::shared_ptr<TypeIdNode> target_type_id_node,
+        std::shared_ptr<Node> node
+        ):NodeBase(line_number),
+        target_type_id_node(target_type_id_node),
+        node(node){}
+    std::shared_ptr<TypeIdNode> get_target_type_id_node() const;
+    std::shared_ptr<Node> get_node() const;
 };
 
-class ClassNode;
-
-class NullNode : public Node {
+class Node
+{
     public:
-    std::string type_name;
-    std::shared_ptr<ClassNode> class_node;
-    NullNode(int line_number, Scope self_scope, NullIRGenerator& ir_generator,
-             std::string type_name, std::shared_ptr<ClassNode> class_node)
-        : Node(line_number, self_scope, ir_generator),
-          type_name(type_name),
-          class_node(class_node) {}
-};
-
-class IntegerNode : public Node {
-    public:
-    IntegerNode(int line_number, Scope self_scope,
-                IntegerIRGenerator& ir_generator)
-        : Node(line_number, self_scope, ir_generator) {}
-};
-
-class FloatNode : public Node {
-    public:
-    FloatNode(int line_number, Scope self_scope, FloatIRGenerator& ir_generator)
-        : Node(line_number, self_scope, ir_generator) {}
-};
-
-class StringNode : public Node {
-    public:
-    StringNode(int line_number, Scope self_scope,
-               StringIRGenerator& ir_generator)
-        : Node(line_number, self_scope, ir_generator) {}
-};
-
-class VariableNode : public Node {
+    using variant_type = std::variant<
+        IntegerNode,
+        FloatNode,
+        ArrayNode,
+        StringNode,
+        VariableNode,
+        AssignmentNode,
+        AssignmentNode,
+        BinaryExpressionNode,
+        CallFunctionNode,
+        AccessElementNode,
+        DeepCopyNode,
+        BlockNode,
+        IfNode,
+        ForNode,
+        GenericFunctionNode,
+        GenericClassNode,
+        TypeIdNode,
+        CastNode
+        >;
     private:
-    bool _is_generated;
-    bool _is_global;
+    variant_type content;
 
-    public:
-    bool _is_heap_user;
-    int _heap_id;
-    std::shared_ptr<Node> right_node;
-    llvm::AllocaInst* alloca_inst;
-    llvm::GlobalVariable* global_ptr;
-    std::map<std::shared_ptr<Node>, llvm::Value*> generated_right_values;
-    VariableNode(int line_number, Scope self_scope,
-                 VariableIRGenerator& ir_generator, bool is_global,
-                 std::shared_ptr<Node> right_node, std::string name = "")
-        : Node(line_number, self_scope, ir_generator, name),
-          _is_generated(false),
-          _is_global(is_global),
-          _is_heap_user(false),
-          _heap_id(-1),
-          right_node(right_node),
-          alloca_inst(nullptr) {}
-    bool is_variable() override { return true; }
-    bool is_heap_user() override { return _is_heap_user; }
-    int get_heap_id() override { return _heap_id; }
-    void assign(std::shared_ptr<Node>);
-    bool is_generated();
-    bool is_global() { return _is_global; }
-    void generated();
-    void initialize() override;
-};
-
-class AccessNode : public Node {
-    private:
-    std::shared_ptr<Node> left_node;
-    llvm::Value* left_value;
-    std::string right_name;
-    llvm::Value* pointer;
-
-    llvm::Value* generated;
-    bool _is_generated;
-
-    NodeCollector<FunctionNode>& function_collector;
-    std::shared_ptr<CallFunctionNode> call_node;
-
-    public:
-    AccessNode(int line_number, Scope self_scope,
-               AccessIRGenerator& ir_generator, std::shared_ptr<Node> left_node,
-               std::string right_name,
-               NodeCollector<FunctionNode>& function_collector)
-        : Node(line_number, self_scope, ir_generator),
-          left_node(left_node),
-          left_value(nullptr),
-          right_name(right_name),
-          pointer(nullptr),
-          generated(nullptr),
-          function_collector(function_collector) {}
-    llvm::Value* get_left_value();
-    std::shared_ptr<Node> get_left_node() { return left_node; }
-    std::string get_right_name() { return right_name; }
-    void set_pointer(llvm::Value* p) { pointer = p; }
-    std::string get_left_typename();
-    llvm::Value* get_pointer() { return pointer; }
-    void set_call_node(std::shared_ptr<CallFunctionNode> n) { call_node = n; }
-    std::shared_ptr<CallFunctionNode> get_call_node() { return call_node; }
-    void set_generated(llvm::Value* c) { generated = c; }
-    bool is_accessing() override { return true; }
-    llvm::Value* get_generated() { return generated; }
-};
-
-class AssignmentNode : public Node {
-    private:
-    std::shared_ptr<Node> right_node;
-
-    public:
-    std::shared_ptr<VariableNode> target_var;
-    std::shared_ptr<AccessNode> target_member;
-    std::shared_ptr<ArgumentNode> target_arg;
-
-    AssignmentNode(int line_number, Scope self_scope,
-                  AssigmentIRGenerator& ir_generator,
-                  std::shared_ptr<Node> right_node,
-                  std::shared_ptr<VariableNode> target_var = nullptr,
-                  std::string name = "")
-        : Node(line_number, self_scope, ir_generator, name),
-          right_node(right_node),
-          target_var(target_var),
-          target_member(nullptr) {}
-    AssignmentNode(int line_number, Scope self_scope,
-                  AssigmentIRGenerator& ir_generator,
-                  std::shared_ptr<Node> right_node,
-                  std::shared_ptr<AccessNode> target_member = nullptr,
-                  std::string name = "")
-        : Node(line_number, self_scope, ir_generator, name),
-          right_node(right_node),
-          target_var(nullptr),
-          target_member(target_member) {}
-    AssignmentNode(int line_number, Scope self_scope,
-                  AssigmentIRGenerator& ir_generator,
-                  std::shared_ptr<Node> right_node,
-                  std::shared_ptr<ArgumentNode> target_arg,
-                  std::string name = "")
-        : Node(line_number, self_scope, ir_generator, name),
-          right_node(right_node),
-          target_var(nullptr),
-          target_member(nullptr),
-          target_arg(target_arg) {}
-    std::shared_ptr<VariableNode> get_target_var() const;
-    std::shared_ptr<AccessNode> get_target_member() const;
-    std::shared_ptr<Node> get_right_node() const;
-};
-
-class DeepCopyNode : public Node {
-    public:
-    std::shared_ptr<Node> pointer;
-    std::shared_ptr<Node> object;
-    DeepCopyNode(int line_number, Scope self_scope, StoreIRGenerator& ir_generator,
-              std::shared_ptr<Node> pointer, std::shared_ptr<Node> object)
-        : Node(line_number, self_scope, ir_generator),
-          pointer(pointer),
-          object(object) {}
-};
-
-class ArgumentNode : public Node {
-    private:
-    llvm::Value* right_value;
-
-    public:
-    std::shared_ptr<Node> right_node;
-    llvm::AllocaInst* alloca_inst;
-    ArgumentNode(int line_number, Scope self_scope,
-                 ArgumentIRGenerator& ir_generator, std::string name = "")
-        : Node(line_number, self_scope, ir_generator, name, true),
-          alloca_inst(nullptr) {}
-    void set_right_value(llvm::Value*);
-    void set_right_node(std::shared_ptr<Node>);
-    llvm::Value* get_right_value();
-};
-
-class BinaryExpressionNode : public Node {
-    public:
-    std::shared_ptr<Node> left_node;
-    std::shared_ptr<Node> right_node;
-    std::string operator_kind;
-    BinaryExpressionNode(int line_number, Scope self_scope,
-                         BinaryExpressionIRGenerator& ir_generator)
-        : Node(line_number, self_scope, ir_generator) {}
-};
-
-class FunctionNode : public Node {
-    private:
-    llvm::Function* temporary_function;
-    std::vector<llvm::Function*> base_functions;
-    std::map<std::vector<llvm::Type*>, llvm::Function*> functions;
-    Scope self_namespace;
-
-    public:
-    std::vector<std::string> arguments_names;
-    std::vector<std::shared_ptr<Node>> body;
-    std::shared_ptr<Node> return_value;
-    FunctionNode(int line_number, Scope self_scope,
-                 FunctionIRGenerator& ir_generator, std::string name,
-                 std::vector<std::string> arguments_names,
-                 std::vector<std::shared_ptr<Node>> body,
-                 std::shared_ptr<Node> return_value)
-        : Node(line_number, self_scope, ir_generator, name),
-          arguments_names(arguments_names),
-          body(std::make_move_iterator(body.begin()),
-               std::make_move_iterator(body.end())),
-          return_value(std::move(return_value)) {}
-    bool is_function() override { return true; };
-    void register_function(std::vector<llvm::Type*>, llvm::Function*);
-    void set_self_namespace(Scope);
-    Scope get_self_namespace();
-    void set_temporary_function(llvm::Function*);
-    llvm::Function* get_temporary_function();
-    void set_base_function(llvm::Function*);
-    std::vector<llvm::Function*> get_base_functions();
-    llvm::Function* get_function(std::vector<llvm::Type*>);
-    std::vector<llvm::Function*> get_functions();
-};
-
-class DeclareCNode : public Node {
-    private:
-    std::vector<std::shared_ptr<Node>> _arguments_type;
-    std::shared_ptr<Node> _return_type;
-
-    public:
-    DeclareCNode(int line_number, Scope self_scope,
-                 DeclareCIRGenerator& ir_generator, std::string name,
-                 std::vector<std::shared_ptr<Node>> arguments_type,
-                 std::shared_ptr<Node> return_type)
-        : Node(line_number, self_scope, ir_generator, name),
-          _arguments_type(arguments_type),
-          _return_type(return_type) {}
-    std::vector<std::shared_ptr<Node>> arguments_type() {
-        return _arguments_type;
-    }
-    std::shared_ptr<Node> return_type() { return _return_type; }
-};
-
-class CallFunctionNode : public Node {
-    public:
-    std::shared_ptr<FunctionNode> function;
-    std::vector<std::shared_ptr<Node>> passed_arguments;
-    NodeCollector<ArgumentNode>& argument_collector;
-    bool is_builtin;
-    llvm::Function* builtin_function;
-    bool is_C;
-    CallFunctionNode(int line_number, Scope self_scope,
-                     CallFunctionIRGenerator& ir_generator,
-                     std::shared_ptr<FunctionNode> function,
-                     std::vector<std::shared_ptr<Node>> passed_arguments,
-                     NodeCollector<ArgumentNode>& argument_collector)
-        : Node(line_number, self_scope, ir_generator),
-          function(function),
-          passed_arguments(std::make_move_iterator(passed_arguments.begin()),
-                           std::make_move_iterator(passed_arguments.end())),
-          argument_collector(argument_collector),
-          is_builtin(false),
-          is_C(false) {}
-    CallFunctionNode(int line_number, Scope self_scope,
-                     CallFunctionIRGenerator& ir_generator,
-                     std::vector<std::shared_ptr<Node>> passed_arguments,
-                     NodeCollector<ArgumentNode>& argument_collector,
-                     llvm::Function* builtin_function)
-        : Node(line_number, self_scope, ir_generator),
-          passed_arguments(std::make_move_iterator(passed_arguments.begin()),
-                           std::make_move_iterator(passed_arguments.end())),
-          argument_collector(argument_collector),
-          is_builtin(true),
-          builtin_function(builtin_function),
-          is_C(false) {}
-
-    CallFunctionNode(int line_number, Scope self_scope,
-                     CallFunctionIRGenerator& ir_generator,
-                     std::vector<std::shared_ptr<Node>> passed_arguments,
-                     NodeCollector<ArgumentNode>& argument_collector,
-                     std::string name)
-        : Node(line_number, self_scope, ir_generator, name),
-          passed_arguments(passed_arguments),
-          argument_collector(argument_collector),
-          is_builtin(false),
-          is_C(true) {}
-};
-
-class ClassNode : public Node {
-    private:
-    std::vector<std::shared_ptr<FunctionNode>> methods;
-    std::vector<std::shared_ptr<Node>> members_definition;
-    llvm::Function* temporary_constructor;
-    std::vector<llvm::Function*> base_constructors;
-    std::map<std::vector<llvm::Type*>, llvm::Function*> constructors;
-    std::map<std::vector<llvm::Type*>, llvm::Function*> destructors;
-    Scope self_namespace;
-    std::vector<std::string> arguments_names;
-    bool _is_C_type;
-
-    public:
-    ClassNode(int line_number, Scope self_scope, ClassIRGenerator& ir_generator,
-              std::vector<std::shared_ptr<FunctionNode>> methods,
-              std::vector<std::shared_ptr<Node>> members_definition,
-              std::vector<std::string> arguments_names, bool is_C_type,
-              std::string name = "")
-        : Node(line_number, self_scope, ir_generator, name),
-          methods(methods),
-          members_definition(members_definition),
-          arguments_names(arguments_names),
-          _is_C_type(is_C_type) {}
-    std::vector<std::string> get_arguments_names() { return arguments_names; }
-    std::vector<std::shared_ptr<Node>> get_members_definition() {
-        return members_definition;
+    template <typename Base>
+    struct CreateHelper:Base
+    {
+        template<typename... Args>
+        CreateHelper(Args&&... args):Base(std::forward<Args>(args)...){}
     };
-    std::vector<std::shared_ptr<FunctionNode>> get_methods() { return methods; }
 
-    void register_constructor(std::vector<llvm::Type*>, llvm::Function*);
-    llvm::Function* get_constructor(std::vector<llvm::Type*>);
-    void register_destructor(std::vector<llvm::Type*>, llvm::Function*);
-    llvm::Function* get_destructor(std::vector<llvm::Type*>);
-    void set_self_namespace(Scope n) { self_namespace = n; }
-    Scope get_self_namespace() { return self_namespace; }
-    void set_temporary_constructor(llvm::Function* c) {
-        temporary_constructor = c;
-    }
-    llvm::Function* get_temporary_constructor() {
-        return temporary_constructor;
-    }
-    void set_base_constructor(llvm::Function* base) {
-        base_constructors.push_back(base);
-    }
-    std::vector<llvm::Function*> get_base_constructors() {
-        return base_constructors;
-    }
-    bool is_C_type() { return _is_C_type; }
-};
-
-class CallConstructorNode : public Node {
-    private:
-    std::shared_ptr<ClassNode> class_node;
-    std::vector<std::shared_ptr<Node>> passed_arguments;
-    std::pair<llvm::Function*, llvm::Value*> destructor;
-
+    template<class T> 
+    Node(T&& content):content(std::move(content)){}
+    
     public:
-    Scope belong_to;
-    NodeCollector<ArgumentNode>& argument_collector;
-    int _heap_id;
-
-    CallConstructorNode(int line_number, Scope self_scope,
-                        CallConstructorIRGenerator& ir_generator,
-                        std::shared_ptr<ClassNode> class_node,
-                        std::vector<std::shared_ptr<Node>> passed_arguments,
-                        Scope belong_to,
-                        NodeCollector<ArgumentNode>& argument_collector,
-                        std::string name = "")
-        : Node(line_number, self_scope, ir_generator, name),
-          class_node(class_node),
-          passed_arguments(passed_arguments),
-          belong_to(belong_to),
-          argument_collector(argument_collector),
-          _heap_id(-1) {}
-    std::shared_ptr<ClassNode> get_class() { return class_node; }
-    std::vector<std::shared_ptr<Node>> get_passed_arguments() {
-        return passed_arguments;
+    
+    template<typename NodeType, typename... Args> static std::shared_ptr<Node> create(Args&&... args)
+    {
+        auto type_variable = std::make_shared<CreateHelper<Node>>(std::move(T(std::forward<Args>(args)...)));
+        return type_variable;
     }
-    void set_destructor(llvm::Function* destructor_, llvm::Value* instance) {
-        destructor = std::make_pair(destructor_, instance);
-    }
-    std::pair<llvm::Function*, llvm::Value*> get_destructor() {
-        return destructor;
-    }
-    bool is_calling_constructor() override { return true; }
-    bool is_heap_user() override { return true; }
-    int get_heap_id() override { return _heap_id; }
-};
 
-class IfNode : public Node {
-    private:
-    std::shared_ptr<Node> conditions;
-    std::vector<std::shared_ptr<Node>> if_body;
-    std::vector<std::shared_ptr<Node>> else_body;
+    template <typename VisitorType> auto accept(VisitorType& visitor)
+    {
+        return std::visit(visitor,content);
+    }
 
-    public:
-    IfNode(int line_number, Scope self_scope, IfIRGenerator& ir_generator,
-           std::shared_ptr<Node> conditions,
-           std::vector<std::shared_ptr<Node>> if_body,
-           std::vector<std::shared_ptr<Node>> else_body)
-        : Node(line_number, self_scope, ir_generator),
-          conditions(conditions),
-          if_body(if_body),
-          else_body(else_body) {}
-    std::shared_ptr<Node> get_conditions() { return conditions; }
-    std::vector<std::shared_ptr<Node>> get_if_body() { return if_body; }
-    std::vector<std::shared_ptr<Node>> get_else_body() { return else_body; }
-    void set_else_body(std::vector<std::shared_ptr<Node>> body) {
-        else_body = body;
+    template <typename Type> bool is_type()
+    {
+        return std::holds_alternative<Type>(content);
     }
 };
 
-class ForNode : public Node {
-    private:
-    std::shared_ptr<Node> left_expression;
-    std::shared_ptr<Node> center_expression;
-    std::shared_ptr<Node> right_expression;
-    std::vector<std::shared_ptr<Node>> body;
-
-    public:
-    ForNode(int line_number, Scope self_scope, ForIRGenerator& ir_generator,
-            std::shared_ptr<Node> left_expression,
-            std::shared_ptr<Node> center_expression,
-            std::shared_ptr<Node> right_expression,
-            std::vector<std::shared_ptr<Node>> body)
-        : Node(line_number, self_scope, ir_generator),
-          left_expression(right_expression),
-          center_expression(center_expression),
-          right_expression(right_expression),
-          body(body) {}
-    std::shared_ptr<Node> get_left_expression() { return left_expression; }
-    std::shared_ptr<Node> get_center_expression() { return center_expression; }
-    std::shared_ptr<Node> get_right_expression() { return right_expression; }
-    std::vector<std::shared_ptr<Node>>& get_body() { return body; }
-};
-
-class ArrayNode : public Node {
-    private:
-    std::vector<std::shared_ptr<Node>> elements;
-    bool _is_null;
-
-    public:
-    ArrayNode(int line_number, Scope self_scope, ListIRGenerator& ir_generator,
-             std::vector<std::shared_ptr<Node>> elements)
-        : Node(line_number, self_scope, ir_generator), elements(elements) {}
-    ArrayNode(int line_number, Scope self_scope, ListIRGenerator& ir_generator,
-             bool is_null)
-        : Node(line_number, self_scope, ir_generator), _is_null(is_null) {}
-    std::vector<std::shared_ptr<Node>> get_elements() { return elements; }
-    bool is_null() { return _is_null; }
-};
-
-class BlockEndNode : public Node {
-    public:
-    Scope block_scope;
-    BlockEndNode(int line_number, Scope self_scope,
-                 BlockEndIRGenerator& ir_generator, Scope block_scope)
-        : Node(line_number, self_scope, ir_generator),
-          block_scope(block_scope) {}
-};
 }  // namespace ast

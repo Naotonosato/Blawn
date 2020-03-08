@@ -8,8 +8,8 @@ namespace Blawn {
 
 class Driver {
     public:
-    std::shared_ptr<ASTGenerator> ast_generator;
-    Driver(std::shared_ptr<ASTGenerator> ast_generator)
+    std::shared_ptr<Builder> ast_generator;
+    Driver(std::shared_ptr<Builder> ast_generator)
         : ast_generator(ast_generator){};
     virtual ~Driver();
     void parse(const char *const filename);

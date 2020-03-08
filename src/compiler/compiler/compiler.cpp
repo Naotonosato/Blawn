@@ -17,7 +17,7 @@
 #include "llvm/Target/TargetOptions.h"
 #include "../builtins/builtins.hpp"
 #include "../parser/driver.hpp"
-#include "../ast_generator/ast_generator.hpp"
+#include "../ast/builder.hpp"
 #include "../utils/utils.hpp"
 #include "compiler.hpp"
 
@@ -168,8 +168,8 @@ int compile(int argc, char** argv) {
     std::shared_ptr<llvm::Module> module(new llvm::Module("Blawn", *context));
     auto ir_builder =
         std::shared_ptr<llvm::IRBuilder<>>(new llvm::IRBuilder<>(*context));
-    auto ast_generator = std::shared_ptr<ASTGenerator>(
-        new ASTGenerator(*module, *ir_builder, *context, -imported_line));
+    auto ast_generator = std::shared_ptr<Builder>(
+        new ast::Builder(*module, *ir_builder, *context, -imported_line));
     Blawn::Driver* driver = new Blawn::Driver(std::move(ast_generator));
 
     driver->parse(expanded_filename.c_str());

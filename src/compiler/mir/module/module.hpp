@@ -1,28 +1,21 @@
-#include <vector>
+#pragma once
 #include <string>
+#include <vector>
 #include <map>
+#include <set>
+#include "../type_solver/type_solver.hpp"
+
 
 namespace mir {
-class Context;
-
 class Type;
-class FunctionType;
-class StructType;
-
-class Variable;
-class GlobalVariable;
 }  // namespace mir
+// forward declarations
 
 namespace mir {
 class Module {
     private:
-    Context& context;
-    std::string name;
-    std::map<std::string, FunctionType&> functions;
-    std::map<std::string, StructType&> types;
-    std::map<std::string, GlobalVariable&> gloval_variables;
-
+    TypeSolver type_solver;
     public:
-    Module(Context& context) : context(context) {}
+    TypeSolver& get_type_solver();
 };
 }  // namespace mir
