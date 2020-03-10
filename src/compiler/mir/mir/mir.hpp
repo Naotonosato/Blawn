@@ -19,56 +19,55 @@ class MIR {
     uint64_t line_number;
 
     public:
-    MIR(std::shared_ptr<TypeVariable>&& type,uint64_t line_number):type(std::move(type)),line_number(line_number){}
+    MIR(std::shared_ptr<TypeVariable>&& type, uint64_t line_number)
+        : type(std::move(type)), line_number(line_number) {}
     std::string print();
 };
 
-class Integer{};
+class Integer {};
 
-class Float{};
+class Float {};
 
-class String{};
+class String {};
 
-class BinaryExpression{};
+class BinaryExpression {};
 
-class Array{};
+class Array {};
 
-class Store{};
+class Store {};
 
-class Variable{};
+class Variable {};
 
-class GlobalVariable{};
+class GlobalVariable {};
 
-class AllocateHeap{};
+class AllocateHeap {};
 
-class FreeHeap{};
+class FreeHeap {};
 
-class Block{
+class Block {
     private:
     std::vector<std::shared_ptr<MIR>> body;
     std::vector<std::shared_ptr<Block>> from_blocks;
     std::vector<std::shared_ptr<Block>> to_blocks;
 };
 
-class Jump{
+class Jump {
     private:
     std::shared_ptr<Block> to;
     std::shared_ptr<Block> from;
 };
 
-class CallFunction{
+class CallFunction {
     private:
     std::shared_ptr<Block> function;
     std::vector<std::shared_ptr<MIR>> arguments;
 };
 
-class Argument{};
+class Argument {};
 
-class Cast{};
+class Cast {};
 
 }  // namespace mir
-
-
 
 /*
 AST->MIR->solve type

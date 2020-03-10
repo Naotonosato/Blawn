@@ -5,7 +5,6 @@
 #include <set>
 #include "../type_solver/type_solver.hpp"
 
-
 namespace mir {
 class Type;
 }  // namespace mir
@@ -15,6 +14,7 @@ namespace mir {
 class Module {
     private:
     TypeSolver type_solver;
+
     public:
     TypeSolver& get_type_solver();
 };

@@ -216,6 +216,33 @@ parser.cpp.s:
 	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/parser.cpp.s
 .PHONY : parser.cpp.s
 
+src/compiler/ast/builder.o: src/compiler/ast/builder.cpp.o
+
+.PHONY : src/compiler/ast/builder.o
+
+# target to build an object file
+src/compiler/ast/builder.cpp.o:
+	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/compiler/ast/builder.cpp.o
+.PHONY : src/compiler/ast/builder.cpp.o
+
+src/compiler/ast/builder.i: src/compiler/ast/builder.cpp.i
+
+.PHONY : src/compiler/ast/builder.i
+
+# target to preprocess a source file
+src/compiler/ast/builder.cpp.i:
+	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/compiler/ast/builder.cpp.i
+.PHONY : src/compiler/ast/builder.cpp.i
+
+src/compiler/ast/builder.s: src/compiler/ast/builder.cpp.s
+
+.PHONY : src/compiler/ast/builder.s
+
+# target to generate assembly for a file
+src/compiler/ast/builder.cpp.s:
+	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/compiler/ast/builder.cpp.s
+.PHONY : src/compiler/ast/builder.cpp.s
+
 src/compiler/ast/node.o: src/compiler/ast/node.cpp.o
 
 .PHONY : src/compiler/ast/node.o
@@ -242,33 +269,6 @@ src/compiler/ast/node.s: src/compiler/ast/node.cpp.s
 src/compiler/ast/node.cpp.s:
 	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/compiler/ast/node.cpp.s
 .PHONY : src/compiler/ast/node.cpp.s
-
-src/compiler/ast_generator/ast_generator.o: src/compiler/ast_generator/ast_generator.cpp.o
-
-.PHONY : src/compiler/ast_generator/ast_generator.o
-
-# target to build an object file
-src/compiler/ast_generator/ast_generator.cpp.o:
-	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/compiler/ast_generator/ast_generator.cpp.o
-.PHONY : src/compiler/ast_generator/ast_generator.cpp.o
-
-src/compiler/ast_generator/ast_generator.i: src/compiler/ast_generator/ast_generator.cpp.i
-
-.PHONY : src/compiler/ast_generator/ast_generator.i
-
-# target to preprocess a source file
-src/compiler/ast_generator/ast_generator.cpp.i:
-	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/compiler/ast_generator/ast_generator.cpp.i
-.PHONY : src/compiler/ast_generator/ast_generator.cpp.i
-
-src/compiler/ast_generator/ast_generator.s: src/compiler/ast_generator/ast_generator.cpp.s
-
-.PHONY : src/compiler/ast_generator/ast_generator.s
-
-# target to generate assembly for a file
-src/compiler/ast_generator/ast_generator.cpp.s:
-	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/compiler/ast_generator/ast_generator.cpp.s
-.PHONY : src/compiler/ast_generator/ast_generator.cpp.s
 
 src/compiler/blawn_context/blawn_context.o: src/compiler/blawn_context/blawn_context.cpp.o
 
@@ -378,33 +378,6 @@ src/compiler/errors/errors.cpp.s:
 	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/compiler/errors/errors.cpp.s
 .PHONY : src/compiler/errors/errors.cpp.s
 
-src/compiler/global_configuration/global_configuration.o: src/compiler/global_configuration/global_configuration.cpp.o
-
-.PHONY : src/compiler/global_configuration/global_configuration.o
-
-# target to build an object file
-src/compiler/global_configuration/global_configuration.cpp.o:
-	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/compiler/global_configuration/global_configuration.cpp.o
-.PHONY : src/compiler/global_configuration/global_configuration.cpp.o
-
-src/compiler/global_configuration/global_configuration.i: src/compiler/global_configuration/global_configuration.cpp.i
-
-.PHONY : src/compiler/global_configuration/global_configuration.i
-
-# target to preprocess a source file
-src/compiler/global_configuration/global_configuration.cpp.i:
-	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/compiler/global_configuration/global_configuration.cpp.i
-.PHONY : src/compiler/global_configuration/global_configuration.cpp.i
-
-src/compiler/global_configuration/global_configuration.s: src/compiler/global_configuration/global_configuration.cpp.s
-
-.PHONY : src/compiler/global_configuration/global_configuration.s
-
-# target to generate assembly for a file
-src/compiler/global_configuration/global_configuration.cpp.s:
-	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/compiler/global_configuration/global_configuration.cpp.s
-.PHONY : src/compiler/global_configuration/global_configuration.cpp.s
-
 src/compiler/ir_generator/ir_generator.o: src/compiler/ir_generator/ir_generator.cpp.o
 
 .PHONY : src/compiler/ir_generator/ir_generator.o
@@ -486,32 +459,32 @@ src/compiler/parser/main.cpp.s:
 	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/compiler/parser/main.cpp.s
 .PHONY : src/compiler/parser/main.cpp.s
 
-src/compiler/utils/utils.o: src/compiler/utils/utils.cpp.o
+src/compiler/utils/scope/scope.o: src/compiler/utils/scope/scope.cpp.o
 
-.PHONY : src/compiler/utils/utils.o
+.PHONY : src/compiler/utils/scope/scope.o
 
 # target to build an object file
-src/compiler/utils/utils.cpp.o:
-	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/compiler/utils/utils.cpp.o
-.PHONY : src/compiler/utils/utils.cpp.o
+src/compiler/utils/scope/scope.cpp.o:
+	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/compiler/utils/scope/scope.cpp.o
+.PHONY : src/compiler/utils/scope/scope.cpp.o
 
-src/compiler/utils/utils.i: src/compiler/utils/utils.cpp.i
+src/compiler/utils/scope/scope.i: src/compiler/utils/scope/scope.cpp.i
 
-.PHONY : src/compiler/utils/utils.i
+.PHONY : src/compiler/utils/scope/scope.i
 
 # target to preprocess a source file
-src/compiler/utils/utils.cpp.i:
-	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/compiler/utils/utils.cpp.i
-.PHONY : src/compiler/utils/utils.cpp.i
+src/compiler/utils/scope/scope.cpp.i:
+	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/compiler/utils/scope/scope.cpp.i
+.PHONY : src/compiler/utils/scope/scope.cpp.i
 
-src/compiler/utils/utils.s: src/compiler/utils/utils.cpp.s
+src/compiler/utils/scope/scope.s: src/compiler/utils/scope/scope.cpp.s
 
-.PHONY : src/compiler/utils/utils.s
+.PHONY : src/compiler/utils/scope/scope.s
 
 # target to generate assembly for a file
-src/compiler/utils/utils.cpp.s:
-	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/compiler/utils/utils.cpp.s
-.PHONY : src/compiler/utils/utils.cpp.s
+src/compiler/utils/scope/scope.cpp.s:
+	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/compiler/utils/scope/scope.cpp.s
+.PHONY : src/compiler/utils/scope/scope.cpp.s
 
 # Help Target
 help:
@@ -531,12 +504,12 @@ help:
 	@echo "... parser.o"
 	@echo "... parser.i"
 	@echo "... parser.s"
+	@echo "... src/compiler/ast/builder.o"
+	@echo "... src/compiler/ast/builder.i"
+	@echo "... src/compiler/ast/builder.s"
 	@echo "... src/compiler/ast/node.o"
 	@echo "... src/compiler/ast/node.i"
 	@echo "... src/compiler/ast/node.s"
-	@echo "... src/compiler/ast_generator/ast_generator.o"
-	@echo "... src/compiler/ast_generator/ast_generator.i"
-	@echo "... src/compiler/ast_generator/ast_generator.s"
 	@echo "... src/compiler/blawn_context/blawn_context.o"
 	@echo "... src/compiler/blawn_context/blawn_context.i"
 	@echo "... src/compiler/blawn_context/blawn_context.s"
@@ -549,9 +522,6 @@ help:
 	@echo "... src/compiler/errors/errors.o"
 	@echo "... src/compiler/errors/errors.i"
 	@echo "... src/compiler/errors/errors.s"
-	@echo "... src/compiler/global_configuration/global_configuration.o"
-	@echo "... src/compiler/global_configuration/global_configuration.i"
-	@echo "... src/compiler/global_configuration/global_configuration.s"
 	@echo "... src/compiler/ir_generator/ir_generator.o"
 	@echo "... src/compiler/ir_generator/ir_generator.i"
 	@echo "... src/compiler/ir_generator/ir_generator.s"
@@ -561,9 +531,9 @@ help:
 	@echo "... src/compiler/parser/main.o"
 	@echo "... src/compiler/parser/main.i"
 	@echo "... src/compiler/parser/main.s"
-	@echo "... src/compiler/utils/utils.o"
-	@echo "... src/compiler/utils/utils.i"
-	@echo "... src/compiler/utils/utils.s"
+	@echo "... src/compiler/utils/scope/scope.o"
+	@echo "... src/compiler/utils/scope/scope.i"
+	@echo "... src/compiler/utils/scope/scope.s"
 .PHONY : help
 
 

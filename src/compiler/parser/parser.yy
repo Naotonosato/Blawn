@@ -3,15 +3,16 @@
 
 %defines 
 %define api.namespace {Blawn}
-%define parser_class_name {Parser}
+%define api.parser.class {Parser}
 %locations
 %language "c++"
 
 %code requires{
+    #include <utility>
     #include <memory>
     #include <llvm/IR/IRBuilder.h>
     #include "../src/compiler/ast/node.hpp"
-    #include "../src/compiler/ast_generator/ast_generator.hpp"
+    #include "../src/compiler/ast/builder.hpp"
  
     namespace Blawn {
         class Driver;
@@ -62,10 +63,7 @@
 %token <std::string> FUNCTION_DEFINITION
 %token <std::string> METHOD_DEFINITION
 %token <std::string> CLASS_DEFINITION
-%token <std::string> C_TYPE_DEFINITION
-%token <std::string> C_FUNCTION_DECLARATION
 %token  RETURN
-%token <std::string> C_FUNCTION
 %token <std::string> MEMBER_IDENTIFIER
 %token <std::string> IDENTIFIER
 
@@ -94,32 +92,23 @@
         WHILE
         GLOBAL
         IMPORT
-        C_FUNCTION_ARGUMENT
-        C_FUNCTION_RETURN
         EOL
 %token <std::string> STRING_LITERAL
 %token <long long> INT_LITERAL
 %token <double> FLOAT_LITERAL
-%type <std::vector<std::shared_ptr<ast::Node>>> block
+%type <std::shared_ptr<ast::Node>> block
 %type <std::vector<std::shared_ptr<ast::Node>>> lines
 %type <std::shared_ptr<ast::Node>> line
 %type <std::shared_ptr<ast::Node>> line_content
 %type <std::shared_ptr<ast::Node>> definition
 %type <std::shared_ptr<ast::Node>> assign_variable
 %type <std::shared_ptr<ast::Node>> function_definition
-%type <std::string> function_start
+%type <std::pair<std::string,std::vector<std::string>>> function_name_and_argument_names
 %type <std::shared_ptr<ast::Node>> class_definition
-%type <std::string> class_start
-%type <std::shared_ptr<ast::Node>> c_type_definition
-%type <std::string> c_type_start
-%type <std::shared_ptr<ast::Node>> c_function_declaration
-%type <std::vector<std::shared_ptr<ast::FunctionNode>>> methods
-%type <std::shared_ptr<ast::FunctionNode>> method_definition
-%type <std::string> method_start
-%type <std::vector<std::shared_ptr<ast::Node>>> C_members_definition
-%type <std::vector<std::string>> C_type_identifier
-%type <std::vector<std::shared_ptr<ast::Node>>> C_arguments
-%type <std::shared_ptr<ast::Node>> C_returns
+%type <std::pair<std::string,std::vector<std::string>>> class_name_and_argument_names
+%type <std::vector<std::shared_ptr<ast::Node>>> methods
+%type <std::shared_ptr<ast::Node>> method_definition
+%type <std::pair<std::string,std::vector<std::string>>> method_name_and_argument_names
 %type <std::vector<std::shared_ptr<ast::Node>>> members_definition
 %type <std::vector<std::string>> arguments
 %type <std::vector<std::string>> definition_arguments
@@ -127,30 +116,41 @@
 %type <std::vector<std::shared_ptr<ast::Node>>> globals_variables
 %type <std::shared_ptr<ast::Node>> return_value
 %type <std::vector<std::shared_ptr<ast::Node>>> expressions
-%type <std::vector<std::shared_ptr<ast::Node>>> else_body
+%type <std::shared_ptr<ast::Node>> else_body
 %type <std::shared_ptr<ast::Node>> expression
 %type <std::vector<std::shared_ptr<ast::Node>>> for_start
 %type <std::shared_ptr<ast::Node>> list
-%type <std::shared_ptr<ast::AccessNode>> access
+%type <std::shared_ptr<ast::Node>> access
 %type <std::shared_ptr<ast::Node>> call
 %type <std::shared_ptr<ast::Node>> monomial
 %type <std::shared_ptr<ast::Node>> variable
 
-/*std::vector<Type> members_type;
-        std::shared_ptr<Type> type = std::make_shared<Type>("FLOAT",members_type);
-        $$ = std::shared_ptr<ast::Node>(new ast::Node(type));*/
+
+
+/*
+def f()
+    retunr val;
+
+def f()
+    if:
+        return val;
+    else:
+        return val;
+    return val;
+*/
+
+
 %%
 program: 
     block
     {
-        driver.ast_generator->break_out_of_namespace();
-        driver.ast_generator->generate(std::move($1));
+        driver.ast_builder->break_out_of_scope();
+        driver.ast_builder->set_all_program(std::move($1));
     };  
 block:
     lines
     {
-        $$ = std::move($1);
-        $$.push_back(driver.ast_generator->create_block_end());
+        $$ = driver.ast_builder->create_block(std::move($1));
     };
 lines:
     line
@@ -174,13 +174,8 @@ line:
     |definition
     {
         $$ = $1;
-    }
-    |import
-    {
-        $$ = driver.ast_generator->no_value_node;
     };
-import:
-    IMPORT STRING_LITERAL EOL;
+
 line_content:
     expression
     {
@@ -195,68 +190,50 @@ definition:
     {
         $$ = std::move($1);
     }
-    |c_type_definition
-    {
-        $$ = std::move($1);
-    }
     |globals_definition
-    {
-        $$ = std::move($1);
-    }
-    |c_function_declaration
     {
         $$ = std::move($1);
     };
 function_definition:
-    function_start arguments EOL block return_value EOL
+    function_name_and_argument_names EOL block return_value EOL
     {
-        $$ = driver.ast_generator->add_function($1,std::move($2),std::move($4),std::move($5));
-        driver.ast_generator->break_out_of_namespace();
+        $$ = driver.ast_builder->create_generic_function_definition($1.first,std::move($1.second),std::move($3),std::move($4));
+        driver.ast_builder->break_out_of_scope();
     }
-    |function_start arguments EOL return_value EOL
+    |function_name_and_argument_names EOL return_value EOL
     {
-        $$ = driver.ast_generator->add_function($1,std::move($2),{},std::move($4));
-        driver.ast_generator->break_out_of_namespace();
+        $$ = driver.ast_builder->create_generic_function_definition($1.first,std::move($1.second),{},std::move($3));
+        driver.ast_builder->break_out_of_scope();
     };
-function_start:
-    FUNCTION_DEFINITION
+function_name_and_argument_names:
+    FUNCTION_DEFINITION arguments
     {
-        $$ = $1;
-        driver.ast_generator->into_namespace($1);
+        $$ = std::make_pair($1,$2);
+        driver.ast_builder->create_generic_function_declaration($1,$2);
+        driver.ast_builder->into_named_scope($1);
     };
 class_definition:
-    class_start arguments EOL members_definition methods
+    class_name_and_argument_names EOL members_definition methods
     { 
-        $$ = std::move(driver.ast_generator->create_class($1,$2,$4,$5));
-        driver.ast_generator->break_out_of_namespace();
+        $$ = std::move(driver.ast_builder->create_generic_class_definition($1.first,std::move($1.second),$3,$4));
+        driver.ast_builder->break_out_of_scope();
     }
-    |class_start arguments EOL members_definition
+    |class_name_and_argument_names EOL members_definition
     {
-        $$ = std::move(driver.ast_generator->create_class($1,$2,$4,{}));
-        driver.ast_generator->break_out_of_namespace();
+        $$ = std::move(driver.ast_builder->create_generic_class_definition($1.first,std::move($1.second),$3,{}));
+        driver.ast_builder->break_out_of_scope();
     }
-    |class_start arguments EOL methods
+    |class_name_and_argument_names EOL methods
     {
-        $$ = std::move(driver.ast_generator->create_class($1,$2,{},$4));
-        driver.ast_generator->break_out_of_namespace();
+        $$ = std::move(driver.ast_builder->create_generic_class_definition($1.first,std::move($1.second),{},$3));
+        driver.ast_builder->break_out_of_scope();
     };
-class_start:
-    CLASS_DEFINITION
+class_name_and_argument_names:
+    CLASS_DEFINITION arguments
     {
-        $$ = $1;
-        driver.ast_generator->into_namespace($1);
-    };
-c_type_definition:
-    c_type_start EOL C_members_definition
-    {
-        $$ = std::move(driver.ast_generator->create_C_type($1,$3));
-        driver.ast_generator->break_out_of_namespace();
-    };
-c_type_start:
-    C_TYPE_DEFINITION
-    {
-        $$ = $1;
-        driver.ast_generator->into_namespace($1);
+        $$ = std::make_pair($1,$2);
+        driver.ast_builder->create_generic_class_declaration($1,$2);
+        driver.ast_builder->into_named_scope($1);
     };
 methods:
     method_definition EOL
@@ -268,80 +245,34 @@ methods:
         $$ = std::move($1);
         $$.push_back($2);
     };
-method_start:
-    METHOD_DEFINITION
+method_name_and_argument_names:
+    METHOD_DEFINITION arguments
     {
-        $$ = $1;
-        driver.ast_generator->into_namespace($1);
+        $2.insert($2.begin(),"self");
+        $$ = std::make_pair($1,$2);
+        driver.ast_builder->create_generic_function_declaration($1,$2);
+        driver.ast_builder->into_named_scope($1);
     };
 method_definition:
-    method_start arguments EOL block return_value
+    method_name_and_argument_names EOL block return_value
     {
-        auto args = std::move($2);
-        args.insert(args.begin(),"self");
-        $$ = driver.ast_generator->add_function($1,std::move(args),std::move($4),std::move($5));
-        driver.ast_generator->break_out_of_namespace();
+        $$ = driver.ast_builder->create_generic_function_definition($1.first,std::move($1.second),std::move($3),std::move($4));
+        driver.ast_builder->break_out_of_scope();
     }
-    |method_start arguments EOL return_value
+    |method_name_and_argument_names EOL return_value
     {
-        auto args = std::move($2);
-        args.insert(args.begin(),"self");
-        $$ = driver.ast_generator->add_function($1,std::move(args),{driver.ast_generator->create_block_end()},std::move($4));
-        driver.ast_generator->break_out_of_namespace();
+        $$ = driver.ast_builder->create_generic_function_definition($1.first,std::move($1.second),{},std::move($3));
+        driver.ast_builder->break_out_of_scope();
     };  
 members_definition:
     MEMBER_IDENTIFIER EQUAL expression EOL
     {
-        $$.push_back(driver.ast_generator->create_assign($1,std::move($3),false));
+        $$.push_back(driver.ast_builder->create_member_variable_definition($1,std::move($3)));
     }
     |members_definition MEMBER_IDENTIFIER EQUAL expression EOL
     {
         $$ = std::move($1);
-        $$.push_back(driver.ast_generator->create_assign($2,std::move($4),false));
-    };
-C_members_definition:
-    MEMBER_IDENTIFIER EQUAL C_type_identifier EOL
-    {
-        std::string type_identifier = join($3);
-        auto assign_value = driver.ast_generator->create_C_member(type_identifier);
-        $$.push_back(driver.ast_generator->create_assign($1,std::move(assign_value),false));
-    }
-    |C_members_definition MEMBER_IDENTIFIER EQUAL C_type_identifier EOL
-    {
-        std::string type_identifier = join($4);
-        auto assign_value = driver.ast_generator->create_C_member(type_identifier);
-        $$ = std::move($1);
-        $$.push_back(driver.ast_generator->create_assign($2,std::move(assign_value),false));
-    };
-C_type_identifier:
-    IDENTIFIER
-    {
-        $$.push_back($1);
-    }
-    |C_type_identifier IDENTIFIER
-    {
-        $$ = std::move($1);
-        $$.push_back($2);
-    };
-C_arguments:
-    C_type_identifier
-    {
-        std::string type_identifier = join($1);
-        auto assign_value = driver.ast_generator->create_C_member(type_identifier);
-        $$.push_back(assign_value);
-    }
-    |C_arguments COMMA C_type_identifier
-    {
-        $$ = std::move($1);
-        std::string type_identifier = join($3);
-        auto assign_value = driver.ast_generator->create_C_member(type_identifier);
-        $$.push_back(assign_value);
-    };
-C_returns:
-    C_type_identifier
-    {
-        std::string type_identifier = join($1);
-        $$ = driver.ast_generator->create_C_member(type_identifier);
+        $$.push_back(driver.ast_builder->create_member_variable_definition($2,std::move($4)));
     };
 return_value:
     RETURN expression 
@@ -350,7 +281,7 @@ return_value:
     }
     |RETURN
     {
-        $$ = nullptr;
+        $$ = driver.ast_builder->create_void();
     };
 arguments:
     LEFT_PARENTHESIS definition_arguments RIGHT_PARENTHESIS
@@ -365,19 +296,17 @@ definition_arguments:
     IDENTIFIER
     {
         $$.push_back($1);
-        driver.ast_generator->add_argument($1);
     }
     |definition_arguments COMMA IDENTIFIER
     {
         $$ = std::move($1);
         $$.push_back($3);
-        driver.ast_generator->add_argument($3);
     };
 globals_definition:
     global_start EOL LEFT_PARENTHESIS EOL globals_variables EOL RIGHT_PARENTHESIS EOL
     {
         is_global = NOT_GLOBAL;
-        $$ = driver.ast_generator->no_value_node;
+        $$ = $5.back();
     };
 global_start:
     GLOBAL
@@ -394,15 +323,7 @@ globals_variables:
         $$ = std::move($1);
         $$.push_back(std::move($3));
     };
-c_function_declaration:
-    C_FUNCTION_DECLARATION EOL C_FUNCTION_ARGUMENT C_arguments EOL C_FUNCTION_RETURN C_returns EOL
-    {
-        $$ = driver.ast_generator->declare_C_function($1,$4,$7);
-    }
-    |C_FUNCTION_DECLARATION EOL C_FUNCTION_ARGUMENT EOL C_FUNCTION_RETURN C_returns EOL
-    {
-        $$ = driver.ast_generator->declare_C_function($1,{},$6);
-    };
+
 expressions:
     expression
     {
@@ -416,17 +337,17 @@ expressions:
 if_start:
     IF
     {
-        driver.ast_generator->into_namespace();
+        driver.ast_builder->into_anonymous_scope();
     };
 else_start:
     ELSE
     {
-        driver.ast_generator->into_namespace();
+        driver.ast_builder->into_anonymous_scope();
     };
 for_start:
     FOR expression COMMA expression COMMA expression
     {
-        driver.ast_generator->into_namespace();
+        driver.ast_builder->into_anonymous_scope();
         $$.push_back($2);
         $$.push_back($4);
         $$.push_back($6);
@@ -436,22 +357,22 @@ else_body:
     else_start EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
     {
         $$ = std::move($5);
-        driver.ast_generator->break_out_of_namespace();
+        driver.ast_builder->break_out_of_scope();
     };
 expression:
     if_start expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
     {
-        $$ = driver.ast_generator->create_if($2,$6,{});
-        driver.ast_generator->break_out_of_namespace();
+        $$ = driver.ast_builder->create_if($2,$6,{});
+        driver.ast_builder->break_out_of_scope();
     }
     |if_start expression EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS else_body
     {
-        $$ = driver.ast_generator->create_if($2,$6,$8);
+        $$ = driver.ast_builder->create_if($2,$6,$8);
     }
     |for_start EOL LEFT_PARENTHESIS EOL block RIGHT_PARENTHESIS
     {
-        $$ = driver.ast_generator->create_for($1[0],$1[1],$1[2],$5);
-        driver.ast_generator->break_out_of_namespace();
+        $$ = driver.ast_builder->create_for($1[0],$1[1],$1[2],$5);
+        driver.ast_builder->break_out_of_scope();
     }
     |assign_variable
     {
@@ -459,55 +380,55 @@ expression:
     }
     |expression ARROW expression
     {
-        $$ = driver.ast_generator->create_store($1,$3);
+        $$ = driver.ast_builder->create_deep_copy($1,$3);
     }
     |expression PLUS expression
     {
-        $$ = driver.ast_generator->attach_operator(std::move($1),std::move($3),"+");
+        $$ = driver.ast_builder->create_binary_expression(std::move($1),std::move($3),"+");
     }
     |expression MINUS expression
     {
-        $$ = driver.ast_generator->attach_operator(std::move($1),std::move($3),"-");
+        $$ = driver.ast_builder->create_binary_expression(std::move($1),std::move($3),"-");
     }
     |expression ASTERISK expression
     {
-        $$ = driver.ast_generator->attach_operator(std::move($1),std::move($3),"*");
+        $$ = driver.ast_builder->create_binary_expression(std::move($1),std::move($3),"*");
     }
     |expression SLASH expression
     {
-        $$ = driver.ast_generator->attach_operator(std::move($1),std::move($3),"/");
+        $$ = driver.ast_builder->create_binary_expression(std::move($1),std::move($3),"/");
     }
     |expression OP_AND expression
     {
-        $$ = driver.ast_generator->attach_operator(std::move($1),std::move($3),"and");
+        $$ = driver.ast_builder->create_binary_expression(std::move($1),std::move($3),"and");
     }
     |expression OP_OR expression
     {
-        $$ = driver.ast_generator->attach_operator(std::move($1),std::move($3),"or");
+        $$ = driver.ast_builder->create_binary_expression(std::move($1),std::move($3),"or");
     }
     |expression OP_MORE_EQUAL expression
     {
-        $$ = driver.ast_generator->attach_operator(std::move($1),std::move($3),">=");
+        $$ = driver.ast_builder->create_binary_expression(std::move($1),std::move($3),">=");
     }
     |expression OP_LESS_EQUAL expression
     {
-        $$ = driver.ast_generator->attach_operator(std::move($1),std::move($3),"<=");
+        $$ = driver.ast_builder->create_binary_expression(std::move($1),std::move($3),"<=");
     }
     |expression OP_MORE expression
     {
-        $$ = driver.ast_generator->attach_operator(std::move($1),std::move($3),">");
+        $$ = driver.ast_builder->create_binary_expression(std::move($1),std::move($3),">");
     }
     |expression OP_LESS expression
     {
-        $$ = driver.ast_generator->attach_operator(std::move($1),std::move($3),"<");
+        $$ = driver.ast_builder->create_binary_expression(std::move($1),std::move($3),"<");
     }
     |expression OP_NOT_EQUAL expression
     {
-        $$ = driver.ast_generator->attach_operator(std::move($1),std::move($3),"!=");
+        $$ = driver.ast_builder->create_binary_expression(std::move($1),std::move($3),"!=");
     }
     |expression OP_EQUAL expression
     {
-        $$ = driver.ast_generator->attach_operator(std::move($1),std::move($3),"==");
+        $$ = driver.ast_builder->create_binary_expression(std::move($1),std::move($3),"==");
     }
     |monomial
     {
@@ -523,7 +444,7 @@ expression:
     }
     | MINUS expression %prec UMINUS
     {
-        $$ = driver.ast_generator->create_minus($2);
+        $$ = driver.ast_builder->create_minus($2);
     }
     |LEFT_PARENTHESIS expression RIGHT_PARENTHESIS
     {
@@ -532,28 +453,38 @@ expression:
 list:
     LEFT_CURLY_BRACE expressions RIGHT_CURLY_BRACE
     {
-        $$ = driver.ast_generator->create_list(std::move($2));
+        $$ = driver.ast_builder->create_array(std::move($2));
     }
     |LEFT_CURLY_BRACE RIGHT_CURLY_BRACE
     {
-        $$ = driver.ast_generator->create_list();
+        $$ = driver.ast_builder->create_array();
     };
 access:
     expression DOT_IDENTIFIER
     {
-        $$ = driver.ast_generator->create_access($1,$2);
+        $$ = driver.ast_builder->create_access($1,$2);
     };
 assign_variable:
     IDENTIFIER EQUAL expression
     {
         if (is_global == NOT_GLOBAL)
-        {$$ = driver.ast_generator->create_assign($1,std::move($3),false);}
+        {
+            if (driver.ast_builder->exist($1))
+            {
+                $$ = driver.ast_builder->create_assignment($1,std::move())
+            }
+            else
+            {
+                $$ = driver.ast_builder->create_variable_definition($1,std::move($3));
+            }
+
+        }
         if (is_global == GLOBAL)
-        {$$ = driver.ast_generator->create_assign($1,std::move($3),true);}
+        {$$ = driver.ast_builder->create_global_variable_definition($1,std::move($3));}
     }
     |access EQUAL expression
     {
-        $$ = driver.ast_generator->create_assign($1,std::move($3));
+        $$ = driver.ast_builder->create_assignment($1,std::move($3));
     };
 monomial:
     call
@@ -562,15 +493,15 @@ monomial:
     }
     |STRING_LITERAL
     {
-        $$ = driver.ast_generator->create_string($1);
+        $$ = driver.ast_builder->create_string($1);
     }
     |FLOAT_LITERAL
     {
-        $$ = driver.ast_generator->create_float($1);
+        $$ = driver.ast_builder->create_float($1);
     }
     |INT_LITERAL
     { 
-        $$ = driver.ast_generator->create_integer($1);
+        $$ = driver.ast_builder->create_integer($1);
     }
     |variable
     {
@@ -579,24 +510,26 @@ monomial:
 call:
     IDENTIFIER LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
     {
-        $$ = driver.ast_generator->create_call($1,$3);
+        auto function = driver.ast_builder->get_named_node($1);
+        $$ = driver.ast_builder->create_call(function,$3);
     }
     |IDENTIFIER LEFT_PARENTHESIS RIGHT_PARENTHESIS
     {
-        $$ = driver.ast_generator->create_call($1,{});
+        auto function = driver.ast_builder->get_named_node($1);
+        $$ = driver.ast_builder->create_call(function,{});
     }
     |access LEFT_PARENTHESIS expressions RIGHT_PARENTHESIS
     {
-        $$ = driver.ast_generator->create_call($1,$3);
+        $$ = driver.ast_builder->create_call($1,$3);
     }
     |access LEFT_PARENTHESIS RIGHT_PARENTHESIS
     {
-        $$ = driver.ast_generator->create_call($1,{});
+        $$ = driver.ast_builder->create_call($1,{});
     };
 variable:
     IDENTIFIER
     {
-        $$ = driver.ast_generator->get_named_value($1);
+        $$ = driver.ast_builder->get_named_node($1);
     };
 %%
 

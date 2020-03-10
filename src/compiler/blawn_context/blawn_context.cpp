@@ -85,7 +85,8 @@ void BlawnContext::add_class(std::string name,
     classes[name] = class_;
 }
 
-std::shared_ptr<ast::GenericClassNode> BlawnContext::get_class(std::string name) {
+std::shared_ptr<ast::GenericClassNode> BlawnContext::get_class(
+    std::string name) {
     if (classes.count(name))
         return classes[name];
     else

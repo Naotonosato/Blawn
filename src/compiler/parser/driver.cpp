@@ -1,9 +1,7 @@
 #include "driver.hpp"
-#include <llvm/IR/IRBuilder.h>
 #include <cassert>
 #include <cctype>
 #include <fstream>
-#include "../ir_generator/ir_generator.hpp"
 
 Blawn::Driver::~Driver() {
     delete (scanner);

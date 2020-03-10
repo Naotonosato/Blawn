@@ -48,12 +48,8 @@ IN          in
 WHILE       while
 GLOBAL      global
 IMPORT      import
-C_FUNCTION_DECLARATION  \[Cfunction[ \t]+[a-zA-Z_][0-9a-zA-Z_]*\]
-C_FUNCTION_ARGUMENT     arguments:
-C_FUNCTION_RETURN       return:
 FUNCTION_DEFINITION     function[ \t]+[a-zA-Z_][0-9a-zA-Z_]*
 METHOD_DEFINITION       @function[ \t]+[a-zA-Z_][0-9a-zA-Z_]*
-C_TYPE_DEFINITION       Ctype[ \t]+[a-zA-Z_][0-9a-zA-Z_]* 
 CLASS_DEFINITION        class[ \t]+[a-zA-Z_][0-9a-zA-Z_]*
 RETURN                  return
 LEFT_PARENTHESIS  \(
@@ -64,17 +60,16 @@ LEFT_CURLY_BRACE \{
 RIGHT_CURLY_BRACE \}
 
 CALL        .+\(.*\)
-C_FUNCTION  c\.[a-zA-Z_][0-9a-zA-Z_]*
 MEMBER_IDENTIFIER @[a-zA-Z_][0-9a-zA-Z_]* 
 IDENTIFIER  [a-zA-Z_][0-9a-zA-Z_]*
 EOL                 \n|\r\n
 
 %%
 
-^[ \t]*\n {loc->lines();driver->ast_generator->line_number += 1;}
-^[ \t]*\r\n {loc->lines();driver->ast_generator->line_number += 1;}
+^[ \t]*\n {loc->lines();driver->ast_builder->count_line_number();}
+^[ \t]*\r\n {loc->lines();driver->ast_builder->count_line_number();}
 [ \t] {}
-{COMMENT} {loc->lines();driver->ast_generator->line_number += 1;}
+{COMMENT} {loc->lines();driver->ast_builder->count_line_number();}
 {STRING_LITERAL} {
     std::string text = yytext;
     text = text.substr(1,text.size()-2);
@@ -194,9 +189,6 @@ EOL                 \n|\r\n
     std::reverse_copy(definition.begin(),definition.end(),std::back_inserter(reversed));
     int index = definition.size() - reversed.find(" ");
     definition.erase(0,index);
-    driver->ast_generator->into_namespace(definition);
-    driver->ast_generator->book_function(definition);
-    driver->ast_generator->add_argument("self");
     lval->build<std::string>() = definition;
     
     return Blawn::Parser::token::METHOD_DEFINITION;
@@ -207,7 +199,6 @@ EOL                 \n|\r\n
     std::reverse_copy(definition.begin(),definition.end(),std::back_inserter(reversed));
     int index = definition.size() - reversed.find(" ");
     definition.erase(0,index);
-    driver->ast_generator->book_function(definition);
     lval->build<std::string>() = definition;
     
     return Blawn::Parser::token::FUNCTION_DEFINITION;
@@ -221,38 +212,9 @@ EOL                 \n|\r\n
     lval->build<std::string>() = definition;
     return Blawn::Parser::token::CLASS_DEFINITION;
 }
-{C_TYPE_DEFINITION} {
-    std::string definition = yytext;
-    std::string reversed;
-    std::reverse_copy(definition.begin(),definition.end(),std::back_inserter(reversed));
-    int index = definition.size() - reversed.find(" ");
-    definition.erase(0,index);
-    lval->build<std::string>() = definition;
-    return Blawn::Parser::token::C_TYPE_DEFINITION;
-}
-{C_FUNCTION_DECLARATION} {
-    //example: [Cfunction cf]
-    std::string definition = yytext;
-    std::string reversed;
-    std::reverse_copy(definition.begin(),definition.end(),std::back_inserter(reversed));
-    int index = definition.size() - reversed.find(" ");
-    definition.erase(0,index);
-    definition.erase(definition.size()-1);
-    lval->build<std::string>() = definition;
-    return Blawn::Parser::token::C_FUNCTION_DECLARATION;
-}
-{C_FUNCTION_ARGUMENT} {
-    return Blawn::Parser::token::C_FUNCTION_ARGUMENT;
-}
-{C_FUNCTION_RETURN} {
-    return Blawn::Parser::token::C_FUNCTION_RETURN;
-}
+
 {RETURN} {
     return Blawn::Parser::token::RETURN;
-}
-{C_FUNCTION} {
-    lval->build<std::string>() = yytext;
-    return Blawn::Parser::token::C_FUNCTION;
 }
 
 {MEMBER_IDENTIFIER} {
@@ -265,7 +227,7 @@ EOL                 \n|\r\n
 }
 {EOL} {
     loc->lines();
-    driver->ast_generator->line_number += 1;
+    driver->ast_builder->count_line_number();
     return Blawn::Parser::token::EOL;
 }
 <<EOF>> {return 0;}

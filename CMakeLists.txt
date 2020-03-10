@@ -23,10 +23,9 @@ llvm_map_components_to_libnames(llvm_libs support core irreader)
 
 
 add_executable(blawn
-    ./src/compiler/ast_generator/ast_generator.cpp
+    ./src/compiler/ast/builder.cpp
     ./src/compiler/blawn_context/blawn_context.cpp
-    ./src/compiler/utils/utils.cpp
-    ./src/compiler/global_configuration/global_configuration.cpp
+    ./src/compiler/utils/scope/scope.cpp
     ./src/compiler/parser/driver.cpp
     ./src/compiler/parser/main.cpp
     ./src/compiler/builtins/builtins.cpp
