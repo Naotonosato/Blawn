@@ -310,7 +310,7 @@ int yyFlexLexer::yylex()
 	return 0;
 	}
 
-#define YY_DECL int Blawn::Scanner::yylex()
+#define YY_DECL int blawn::Scanner::yylex()
 
 /* Done after the current pattern has been matched and before the
  * corresponding action - sets up yytext.
@@ -495,8 +495,8 @@ static const flex_int16_t yy_chk[205] =
 #include "parser.hpp"
 #include "../src/compiler/parser/scanner.hpp"
 #undef  YY_DECL
-#define YY_DECL int Blawn::Scanner::yylex( Blawn::Parser::semantic_type * const lval, Blawn::Parser::location_type *loc )
-#define yyterminate() return Blawn::Parser::token::END;
+#define YY_DECL int blawn::Scanner::yylex( blawn::Parser::semantic_type * const lval, blawn::Parser::location_type *loc )
+#define yyterminate() return blawn::Parser::token::END;
 #define YY_NO_UNISTD_H
 #define YY_USER_ACTION loc->step(); loc->columns(yyleng);
 #line 502 "/Users/ueharanaoto/Desktop/Blawn/build/lexer.cpp"
@@ -701,13 +701,13 @@ case 1:
 /* rule 1 can match eol */
 YY_RULE_SETUP
 #line 69 "./src/compiler/parser/lexer.ll"
-{loc->lines();driver->ast_builder->count_line_number();}
+{loc->lines();driver.ast_builder->count_line_number();}
 	YY_BREAK
 case 2:
 /* rule 2 can match eol */
 YY_RULE_SETUP
 #line 70 "./src/compiler/parser/lexer.ll"
-{loc->lines();driver->ast_builder->count_line_number();}
+{loc->lines();driver.ast_builder->count_line_number();}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
@@ -718,7 +718,7 @@ case 4:
 /* rule 4 can match eol */
 YY_RULE_SETUP
 #line 72 "./src/compiler/parser/lexer.ll"
-{loc->lines();driver->ast_builder->count_line_number();}
+{loc->lines();driver.ast_builder->count_line_number();}
 	YY_BREAK
 case 5:
 /* rule 5 can match eol */
@@ -728,7 +728,7 @@ YY_RULE_SETUP
     std::string text = yytext;
     text = text.substr(1,text.size()-2);
     lval->build<std::string>() = text;
-    return Blawn::Parser::token::STRING_LITERAL;
+    return blawn::Parser::token::STRING_LITERAL;
 }
 	YY_BREAK
 case 6:
@@ -736,7 +736,7 @@ YY_RULE_SETUP
 #line 79 "./src/compiler/parser/lexer.ll"
 {
     lval->build<long long>() = std::stoll(yytext);
-    return Blawn::Parser::token::INT_LITERAL;
+    return blawn::Parser::token::INT_LITERAL;
 }
 	YY_BREAK
 case 7:
@@ -744,14 +744,14 @@ YY_RULE_SETUP
 #line 83 "./src/compiler/parser/lexer.ll"
 {
     lval->build<double>() = std::stod(yytext);
-    return Blawn::Parser::token::FLOAT_LITERAL;
+    return blawn::Parser::token::FLOAT_LITERAL;
 }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
 #line 87 "./src/compiler/parser/lexer.ll"
 {
-    return Blawn::Parser::token::USE;
+    return blawn::Parser::token::USE;
 }
 	YY_BREAK
 case 9:
@@ -761,217 +761,217 @@ YY_RULE_SETUP
     std::string text = yytext;
     text = text.substr(1,text.size()-1);
     lval->build<std::string>() = text;
-    return Blawn::Parser::token::DOT_IDENTIFIER;
+    return blawn::Parser::token::DOT_IDENTIFIER;
 }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
 #line 96 "./src/compiler/parser/lexer.ll"
 {
-    return Blawn::Parser::token::ASTERISK;
+    return blawn::Parser::token::ASTERISK;
 }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
 #line 99 "./src/compiler/parser/lexer.ll"
 {
-    return Blawn::Parser::token::SLASH;
+    return blawn::Parser::token::SLASH;
 }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
 #line 102 "./src/compiler/parser/lexer.ll"
 {
-    return Blawn::Parser::token::PLUS;
+    return blawn::Parser::token::PLUS;
 }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
 #line 105 "./src/compiler/parser/lexer.ll"
 {
-    return Blawn::Parser::token::MINUS;
+    return blawn::Parser::token::MINUS;
 }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
 #line 108 "./src/compiler/parser/lexer.ll"
 {
-    return Blawn::Parser::token::EQUAL;
+    return blawn::Parser::token::EQUAL;
 }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
 #line 111 "./src/compiler/parser/lexer.ll"
 {
-    return Blawn::Parser::token::ARROW;
+    return blawn::Parser::token::ARROW;
 }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
 #line 114 "./src/compiler/parser/lexer.ll"
 {
-    return Blawn::Parser::token::OP_EQUAL;
+    return blawn::Parser::token::OP_EQUAL;
 }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
 #line 117 "./src/compiler/parser/lexer.ll"
 {
-    return Blawn::Parser::token::OP_NOT_EQUAL;
+    return blawn::Parser::token::OP_NOT_EQUAL;
 }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
 #line 120 "./src/compiler/parser/lexer.ll"
 {
-    return Blawn::Parser::token::OP_MORE_EQUAL;
+    return blawn::Parser::token::OP_MORE_EQUAL;
 }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
 #line 123 "./src/compiler/parser/lexer.ll"
 {
-    return Blawn::Parser::token::OP_LESS_EQUAL;
+    return blawn::Parser::token::OP_LESS_EQUAL;
 }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
 #line 126 "./src/compiler/parser/lexer.ll"
 {
-    return Blawn::Parser::token::OP_MORE;
+    return blawn::Parser::token::OP_MORE;
 }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
 #line 129 "./src/compiler/parser/lexer.ll"
 {
-    return Blawn::Parser::token::OP_LESS;
+    return blawn::Parser::token::OP_LESS;
 }
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
 #line 132 "./src/compiler/parser/lexer.ll"
 {
-    return Blawn::Parser::token::OP_AND;
+    return blawn::Parser::token::OP_AND;
 }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
 #line 135 "./src/compiler/parser/lexer.ll"
 {
-    return Blawn::Parser::token::OP_OR;
+    return blawn::Parser::token::OP_OR;
 }
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
 #line 138 "./src/compiler/parser/lexer.ll"
 {
-    return Blawn::Parser::token::COLON;
+    return blawn::Parser::token::COLON;
 }
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
 #line 141 "./src/compiler/parser/lexer.ll"
 {
-    return Blawn::Parser::token::SEMICOLON;
+    return blawn::Parser::token::SEMICOLON;
 }
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
 #line 144 "./src/compiler/parser/lexer.ll"
 {
-    return Blawn::Parser::token::COMMA;
+    return blawn::Parser::token::COMMA;
 }
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
 #line 147 "./src/compiler/parser/lexer.ll"
 {
-    return Blawn::Parser::token::LEFT_PARENTHESIS;
+    return blawn::Parser::token::LEFT_PARENTHESIS;
 }
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
 #line 150 "./src/compiler/parser/lexer.ll"
 {
-    return Blawn::Parser::token::RIGHT_PARENTHESIS;
+    return blawn::Parser::token::RIGHT_PARENTHESIS;
 }
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
 #line 153 "./src/compiler/parser/lexer.ll"
 {
-    return Blawn::Parser::token::LEFT_BRACKET;
+    return blawn::Parser::token::LEFT_BRACKET;
 }
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
 #line 156 "./src/compiler/parser/lexer.ll"
 {
-    return Blawn::Parser::token::RIGHT_BRACKET;
+    return blawn::Parser::token::RIGHT_BRACKET;
 }
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
 #line 159 "./src/compiler/parser/lexer.ll"
 {
-    return Blawn::Parser::token::LEFT_CURLY_BRACE;
+    return blawn::Parser::token::LEFT_CURLY_BRACE;
 }
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
 #line 162 "./src/compiler/parser/lexer.ll"
 {
-    return Blawn::Parser::token::RIGHT_CURLY_BRACE;
+    return blawn::Parser::token::RIGHT_CURLY_BRACE;
 }
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
 #line 165 "./src/compiler/parser/lexer.ll"
 {
-    return Blawn::Parser::token::IF;
+    return blawn::Parser::token::IF;
 }
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
 #line 168 "./src/compiler/parser/lexer.ll"
 {
-    return Blawn::Parser::token::ELSE;
+    return blawn::Parser::token::ELSE;
 }
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
 #line 171 "./src/compiler/parser/lexer.ll"
 {
-    return Blawn::Parser::token::FOR;
+    return blawn::Parser::token::FOR;
 }
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
 #line 174 "./src/compiler/parser/lexer.ll"
 {
-    return Blawn::Parser::token::IN;
+    return blawn::Parser::token::IN;
 }
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
 #line 177 "./src/compiler/parser/lexer.ll"
 {
-    return Blawn::Parser::token::WHILE;
+    return blawn::Parser::token::WHILE;
 }
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
 #line 180 "./src/compiler/parser/lexer.ll"
 {
-    return Blawn::Parser::token::GLOBAL;
+    return blawn::Parser::token::GLOBAL;
 }
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
 #line 183 "./src/compiler/parser/lexer.ll"
 {
-    return Blawn::Parser::token::IMPORT;
+    return blawn::Parser::token::IMPORT;
 }
 	YY_BREAK
 case 40:
@@ -985,7 +985,7 @@ YY_RULE_SETUP
     definition.erase(0,index);
     lval->build<std::string>() = definition;
     
-    return Blawn::Parser::token::METHOD_DEFINITION;
+    return blawn::Parser::token::METHOD_DEFINITION;
 }
 	YY_BREAK
 case 41:
@@ -999,7 +999,7 @@ YY_RULE_SETUP
     definition.erase(0,index);
     lval->build<std::string>() = definition;
     
-    return Blawn::Parser::token::FUNCTION_DEFINITION;
+    return blawn::Parser::token::FUNCTION_DEFINITION;
 }
 	YY_BREAK
 case 42:
@@ -1012,14 +1012,14 @@ YY_RULE_SETUP
     int index = definition.size() - reversed.find(" ");
     definition.erase(0,index);
     lval->build<std::string>() = definition;
-    return Blawn::Parser::token::CLASS_DEFINITION;
+    return blawn::Parser::token::CLASS_DEFINITION;
 }
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
 #line 216 "./src/compiler/parser/lexer.ll"
 {
-    return Blawn::Parser::token::RETURN;
+    return blawn::Parser::token::RETURN;
 }
 	YY_BREAK
 case 44:
@@ -1027,7 +1027,7 @@ YY_RULE_SETUP
 #line 220 "./src/compiler/parser/lexer.ll"
 {
     lval->build<std::string>() = yytext;
-    return Blawn::Parser::token::MEMBER_IDENTIFIER;
+    return blawn::Parser::token::MEMBER_IDENTIFIER;
 }
 	YY_BREAK
 case 45:
@@ -1035,7 +1035,7 @@ YY_RULE_SETUP
 #line 224 "./src/compiler/parser/lexer.ll"
 {
     lval->build<std::string>() = yytext;
-    return Blawn::Parser::token::IDENTIFIER;
+    return blawn::Parser::token::IDENTIFIER;
 }
 	YY_BREAK
 case 46:
@@ -1044,8 +1044,8 @@ YY_RULE_SETUP
 #line 228 "./src/compiler/parser/lexer.ll"
 {
     loc->lines();
-    driver->ast_builder->count_line_number();
-    return Blawn::Parser::token::EOL;
+    driver.ast_builder->count_line_number();
+    return blawn::Parser::token::EOL;
 }
 	YY_BREAK
 case YY_STATE_EOF(INITIAL):

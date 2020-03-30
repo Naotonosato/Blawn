@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 #include <optional>
-#include <variant>
+#include "../utils/variant_wrapper.hpp"
 
 namespace ast {
 
@@ -20,6 +20,29 @@ class NodeBase {
     NodeBase() = delete;
     NodeBase(const NodeBase&) = delete;
     NodeBase(NodeBase&&) = default;
+
+    public:
+    template <typename... Args>
+    void* operator new(size_t, Args&&...) {
+        // delay evaluation until instantiation
+        constexpr bool operator_new_is_not_used = [] { return false; }();
+        static_assert(operator_new_is_not_used,
+                      "Class that inherits from SharedFromThis cannot be "
+                      "instantiated with operator new.");
+    }
+};
+
+class BlockNode;
+
+class RootNode : public NodeBase {
+    private:
+    std::shared_ptr<BlockNode> child_block;
+
+    public:
+    RootNode(uint64_t line_number, std::shared_ptr<BlockNode> child_block)
+        : NodeBase(line_number), child_block(child_block) {}
+
+    std::shared_ptr<BlockNode> get_child_block() const;
 };
 
 class IntegerNode : public NodeBase {
@@ -29,7 +52,7 @@ class IntegerNode : public NodeBase {
     public:
     IntegerNode(uint64_t line_number, uint64_t initial_value)
         : NodeBase(line_number), initial_value(initial_value) {}
-    const std::optional<uint64_t>& get_initial_value() const;
+    const uint64_t get_initial_value() const;
 };
 
 class FloatNode : public NodeBase {
@@ -39,7 +62,7 @@ class FloatNode : public NodeBase {
     public:
     FloatNode(uint64_t line_number, double initial_value)
         : NodeBase(line_number), initial_value(initial_value) {}
-    const std::optional<double>& get_initial_value() const;
+    const double get_initial_value() const;
 };
 
 class ArrayNode : public NodeBase {
@@ -63,7 +86,7 @@ class StringNode : public NodeBase {
     public:
     StringNode(uint64_t line_number, const std::string initial_value)
         : NodeBase(line_number), initial_value(initial_value) {}
-    const std::optional<std::string>& get_initial_value() const;
+    const std::string& get_initial_value() const;
 };
 
 class VariableNode : public NodeBase {
@@ -75,16 +98,32 @@ class VariableNode : public NodeBase {
     VariableNode(uint64_t line_number, std::string name,
                  std::shared_ptr<Node> initial_value)
         : NodeBase(line_number), name(name), initial_value(initial_value) {}
+
+    const std::string& get_name() const;
+    std::shared_ptr<Node> get_initial_value() const;
 };
 
 class GlobalVariableNode : public NodeBase {
+    private:
+    std::string name;
+    std::shared_ptr<Node> initial_value;
+
     public:
-    GlobalVariableNode(uint64_t line_number) : NodeBase(line_number) {}
+    GlobalVariableNode(uint64_t line_number, std::string name,
+                       std::shared_ptr<Node> initial_value)
+        : NodeBase(line_number), name(name), initial_value(initial_value) {}
+
+    std::shared_ptr<Node> get_initial_value() const;
 };
 
 class ArgumentNode : public NodeBase {
+    private:
+    std::string name;
+
     public:
-    ArgumentNode(uint64_t line_number) : NodeBase(line_number) {}
+    ArgumentNode(uint64_t line_number, std::string name)
+        : NodeBase(line_number), name(name) {}
+    const std::string get_name() const;
 };
 
 class AssignmentNode : public NodeBase {
@@ -104,6 +143,8 @@ class AssignmentNode : public NodeBase {
 };
 
 enum BinaryExpressionKind { ADD, SUB, MUL, DIV };
+
+BinaryExpressionKind string_to_operator_type(const std::string& name);
 
 class BinaryExpressionNode : public NodeBase {
     private:
@@ -125,22 +166,23 @@ class BinaryExpressionNode : public NodeBase {
     std::shared_ptr<Node> get_right_hand_side() const;
 };
 
-class GenericFunctionNode;
+class GenericFunctionDeclarationNode;
 
 class CallFunctionNode : public NodeBase {
     private:
-    std::shared_ptr<GenericFunctionNode> function;
+    std::shared_ptr<GenericFunctionDeclarationNode> function;
     std::vector<std::shared_ptr<Node>> arguments;
 
     public:
     CallFunctionNode(uint64_t line_number,
-                     std::shared_ptr<GenericFunctionNode> function,
+                     std::shared_ptr<GenericFunctionDeclarationNode> function,
                      std::vector<std::shared_ptr<Node>> arguments)
         : NodeBase(line_number),
           function(function),
           arguments(std::move(arguments)) {}
-    std::shared_ptr<Node> get_function() const;
-    std::vector<std::shared_ptr<Node>>& get_arguments() const;
+
+    std::shared_ptr<GenericFunctionDeclarationNode> get_function() const;
+    std::vector<std::shared_ptr<Node>>& get_arguments();
 };
 
 class AccessElementNode : public NodeBase {
@@ -182,86 +224,108 @@ class BlockNode : public NodeBase {
     BlockNode(uint64_t line_number,
               std::vector<std::shared_ptr<Node>>&& expressions)
         : NodeBase(line_number), expressions(std::move(expressions)) {}
-    std::vector<std::shared_ptr<Node>>& get_expressions() const;
+    std::vector<std::shared_ptr<Node>>& get_expressions();
 };
 
 class IfNode : public NodeBase {
     private:
-    std::shared_ptr<Node> block;
     std::shared_ptr<Node> condition;
+    std::shared_ptr<BlockNode> block;
 
     public:
-    IfNode(uint64_t line_number, std::shared_ptr<Node> block,
-           std::shared_ptr<Node> condition)
+    IfNode(uint64_t line_number, std::shared_ptr<Node> condition,
+           std::shared_ptr<BlockNode> block)
         : NodeBase(line_number), block(block), condition(condition) {}
-    std::shared_ptr<Node> get_block() const;
+    std::shared_ptr<BlockNode> get_block() const;
     std::shared_ptr<Node> get_condition() const;
 };
 
 class ForNode : public NodeBase {
     private:
-    std::shared_ptr<Node> block;
     std::shared_ptr<Node> first_expression;
     std::shared_ptr<Node> condition;
     std::shared_ptr<Node> last_expression;
+    std::shared_ptr<BlockNode> block;
 
     public:
-    ForNode(uint64_t line_number, std::shared_ptr<Node> block,
-            std::shared_ptr<Node> first_expression,
+    ForNode(uint64_t line_number, std::shared_ptr<Node> first_expression,
             std::shared_ptr<Node> condition,
-            std::shared_ptr<Node> last_expression)
+            std::shared_ptr<Node> last_expression,
+            std::shared_ptr<BlockNode> block)
         : NodeBase(line_number),
-          block(block),
           first_expression(first_expression),
           condition(condition),
-          last_expression(last_expression) {}
-    std::shared_ptr<Node> get_block() const;
+          last_expression(last_expression),
+          block(block) {}
     std::shared_ptr<Node> get_first_expression() const;
     std::shared_ptr<Node> get_condition() const;
     std::shared_ptr<Node> get_last_expression() const;
+    std::shared_ptr<BlockNode> get_block() const;
+};
+
+class GenericFunctionNode;
+
+class GenericFunctionDeclarationNode : public NodeBase {
+    private:
+    std::string name;
+    int num_arguments;
+    std::optional<std::shared_ptr<GenericFunctionNode>> definition;
+
+    public:
+    GenericFunctionDeclarationNode(uint64_t line_number, std::string name,
+                                   int num_arguments)
+        : NodeBase(line_number), name(name), num_arguments(num_arguments) {}
+    const std::string& get_name() const;
+    const int get_num_arguments() const;
+    void set_definition(std::shared_ptr<GenericFunctionNode> definition_);
+    std::optional<std::shared_ptr<GenericFunctionNode>> get_definition() const;
 };
 
 class GenericFunctionNode : public NodeBase {
     private:
     std::string name;
-    std::vector<std::string> argument_names;
-    std::optional<std::shared_ptr<Node>> body;
-    std::optional<std::shared_ptr<Node>> return_value;
+    std::vector<std::shared_ptr<ArgumentNode>> arguments;
+    std::shared_ptr<BlockNode> body;
+    std::shared_ptr<Node> return_value;
 
     public:
     GenericFunctionNode(uint64_t line_number, std::string name,
-                        std::vector<std::string> argument_names)
+                        std::vector<std::shared_ptr<ArgumentNode>> arguments,
+                        std::shared_ptr<BlockNode> body,
+                        std::shared_ptr<Node> return_value)
         : NodeBase(line_number),
           name(name),
-          argument_names(std::move(argument_names)) {}
+          arguments(std::move(arguments)),
+          body(body),
+          return_value(return_value) {}
     const std::string& get_name() const;
-    const std::vector<std::string>& get_argument_names() const;
-    std::optional<std::shared_ptr<Node>> get_body();
-    std::optional<std::shared_ptr<Node>> get_return_value();
-    std::optional<std::shared_ptr<Node>> set_body(std::shared_ptr<Node> body);
-    std::optional<std::shared_ptr<Node>> set_return_value(
-        std::shared_ptr<Node> return_value);
+    std::vector<std::shared_ptr<ArgumentNode>>& get_arguments();
+    std::shared_ptr<BlockNode> get_body() const;
+    std::shared_ptr<Node> get_return_value() const;
 };
 
 class GenericClassNode : public NodeBase {
     private:
     std::string name;
-    std::vector<std::shared_ptr<Node>> member_variables;
-    std::vector<std::shared_ptr<Node>> methods;
+    std::vector<std::shared_ptr<ArgumentNode>> arguments;
+    std::vector<std::shared_ptr<VariableNode>> member_variables;
+    std::vector<std::shared_ptr<GenericFunctionNode>> methods;
 
     public:
-    GenericClassNode(uint64_t line_number, std::string name,
-                     std::vector<std::shared_ptr<Node>> member_variables,
-                     std::vector<std::shared_ptr<Node>> methods)
+    GenericClassNode(
+        uint64_t line_number, std::string name,
+        std::vector<std::shared_ptr<ArgumentNode>> arguments,
+        std::vector<std::shared_ptr<VariableNode>> member_variables,
+        std::vector<std::shared_ptr<GenericFunctionNode>> methods)
         : NodeBase(line_number),
           name(name),
-          member_variables(std::move(member_variables)),
-          methods(std::move(methods)) {}
+          arguments(arguments),
+          member_variables(member_variables),
+          methods(methods) {}
     const std::string& get_name() const;
-    std::vector<std::shared_ptr<Node>> get_member_variables() const;
+    std::vector<std::shared_ptr<ArgumentNode>>& get_arguments();
+    std::vector<std::shared_ptr<VariableNode>> get_member_variables() const;
     std::vector<std::shared_ptr<GenericFunctionNode>> get_methods() const;
-    void set_member_variables(std::vector<std::shared_ptr<Node>> members) const;
-    void set_methods(std::vector<std::shared_ptr<Node>> methods) const;
 };
 
 class TypeIdNode : public NodeBase {
@@ -291,51 +355,95 @@ class CastNode : public NodeBase {
     std::shared_ptr<Node> get_node() const;
 };
 
-class Node {
-    public:
-    using variant_type = std::variant<
-        IntegerNode, FloatNode, ArrayNode, StringNode, VariableNode,
-        AssignmentNode, AssignmentNode, BinaryExpressionNode, CallFunctionNode,
-        AccessElementNode, DeepCopyNode, BlockNode, IfNode, ForNode,
-        GenericFunctionNode, GenericClassNode, TypeIdNode, CastNode>;
-
+class Node
+    : public utils::VariantWrapper<
+          std::shared_ptr<RootNode>, std::shared_ptr<IntegerNode>,
+          std::shared_ptr<FloatNode>, std::shared_ptr<ArrayNode>,
+          std::shared_ptr<StringNode>, std::shared_ptr<VariableNode>,
+          std::shared_ptr<GlobalVariableNode>, std::shared_ptr<AssignmentNode>,
+          std::shared_ptr<ArgumentNode>, std::shared_ptr<BinaryExpressionNode>,
+          std::shared_ptr<CallFunctionNode>, std::shared_ptr<AccessElementNode>,
+          std::shared_ptr<DeepCopyNode>, std::shared_ptr<BlockNode>,
+          std::shared_ptr<IfNode>, std::shared_ptr<ForNode>,
+          std::shared_ptr<GenericFunctionDeclarationNode>,
+          std::shared_ptr<GenericFunctionNode>,
+          std::shared_ptr<GenericClassNode>, std::shared_ptr<TypeIdNode>,
+          std::shared_ptr<CastNode>> {
     private:
-    variant_type content;
+    using parent_type = utils::VariantWrapper<
+        std::shared_ptr<RootNode>, std::shared_ptr<IntegerNode>,
+        std::shared_ptr<FloatNode>, std::shared_ptr<ArrayNode>,
+        std::shared_ptr<StringNode>, std::shared_ptr<VariableNode>,
+        std::shared_ptr<GlobalVariableNode>, std::shared_ptr<AssignmentNode>,
+        std::shared_ptr<ArgumentNode>, std::shared_ptr<BinaryExpressionNode>,
+        std::shared_ptr<CallFunctionNode>, std::shared_ptr<AccessElementNode>,
+        std::shared_ptr<DeepCopyNode>, std::shared_ptr<BlockNode>,
+        std::shared_ptr<IfNode>, std::shared_ptr<ForNode>,
+        std::shared_ptr<GenericFunctionDeclarationNode>,
+        std::shared_ptr<GenericFunctionNode>, std::shared_ptr<GenericClassNode>,
+        std::shared_ptr<TypeIdNode>, std::shared_ptr<CastNode>>;
 
-    template <typename Base>
-    struct CreateHelper : Base {
-        template <typename... Args>
-        CreateHelper(Args&&... args) : Base(std::forward<Args>(args)...) {}
-    };
-
+    protected:
     template <class T>
-    Node(T&& content) : content(std::move(content)) {}
+    Node(T&& initial_content)
+        : utils::VariantWrapper<
+              std::shared_ptr<RootNode>, std::shared_ptr<IntegerNode>,
+              std::shared_ptr<FloatNode>, std::shared_ptr<ArrayNode>,
+              std::shared_ptr<StringNode>, std::shared_ptr<VariableNode>,
+              std::shared_ptr<GlobalVariableNode>,
+              std::shared_ptr<AssignmentNode>, std::shared_ptr<ArgumentNode>,
+              std::shared_ptr<BinaryExpressionNode>,
+              std::shared_ptr<CallFunctionNode>,
+              std::shared_ptr<AccessElementNode>, std::shared_ptr<DeepCopyNode>,
+              std::shared_ptr<BlockNode>, std::shared_ptr<IfNode>,
+              std::shared_ptr<ForNode>,
+              std::shared_ptr<GenericFunctionDeclarationNode>,
+              std::shared_ptr<GenericFunctionNode>,
+              std::shared_ptr<GenericClassNode>, std::shared_ptr<TypeIdNode>,
+              std::shared_ptr<CastNode>>(std::move(initial_content)) {}
 
     public:
     template <typename NodeType, typename... Args>
     static std::shared_ptr<Node> create(Args&&... args) {
-        auto type_variable = std::make_shared<CreateHelper<Node>>(
-            std::move(NodeType(std::forward<Args>(args)...)));
-        return type_variable;
+        auto node = std::make_shared<CreateHelper<Node>>(
+            std::make_shared<NodeType>(std::forward<Args>(args)...));
+        return node;
     }
 
-    template <typename VisitorType>
-    auto accept(VisitorType& visitor) {
-        return std::visit(visitor, content);
-    }
-
-    template <typename Type>
-    bool is_type() {
-        return std::holds_alternative<Type>(content);
+    template <typename NodeType>
+    static std::shared_ptr<Node> create(
+        std::shared_ptr<NodeType> initial_value) {
+        auto node = std::make_shared<CreateHelper<Node>>(initial_value);
+        return node;
     }
 
     template <typename ContentType>
-    ContentType get() {
-        assert(std::holds_alternative<ContentType>(content) &&
-               (bool)std::string(std::string("This Instance must have ") +
-                                 typeid(ContentType).name()));
-        return std::get<ContentType>(content);
+    bool is_type() {
+        return parent_type::is_type<std::shared_ptr<ContentType>>();
     }
-};
 
+    template <typename ContentType>
+    ContentType& get() {
+        auto& res = parent_type::get<std::shared_ptr<ContentType>>();
+        return *res;
+    }
+
+    template <typename ContentType>
+    std::shared_ptr<ContentType> get_pointer() {
+        return parent_type::get<std::shared_ptr<ContentType>>();
+    }
+
+    template <typename ContentType>
+    Node& operator=(ContentType new_content) {
+        assign(new_content);
+        return *this;
+    }
+    /*
+    template <typename ContentType>
+    Node& operator=(ContentType&& new_content) {
+        assign(new_content);
+        return *this;
+    }
+    */
+};
 }  // namespace ast

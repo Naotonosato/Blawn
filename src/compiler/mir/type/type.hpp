@@ -3,7 +3,7 @@
 #include <unordered_map>
 #include <memory>
 #include <variant>
-#include "../algorithm/union_find/union_find.hpp"
+#include "../../algorithm/union_find/union_find.hpp"
 #include "../type_solver/type_solver.hpp"
 #include "../module/module.hpp"
 #include "../../behaviors/has_variant_behavior.hpp"

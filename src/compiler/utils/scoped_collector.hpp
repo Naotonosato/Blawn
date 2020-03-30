@@ -30,7 +30,7 @@ class ScopedCollector {
         elements[scope][name] = new_element;
     }
 
-    std::optional<T> get(std::string name, Scope scope) const {
+    std::optional<T> get(const std::string& name, Scope scope) {
         auto accessible = scope.enumerate_accesible_scopes();
         for (const auto& accessible_scope : accessible) {
             if (elements[accessible_scope].count(name)) {
@@ -40,7 +40,7 @@ class ScopedCollector {
         return std::nullopt;
     }
 
-    std::optional<T> get(std::string name) const {
+    std::optional<T> get(const std::string& name) {
         return get(name, current_scope);
     }
 
@@ -56,17 +56,15 @@ class ScopedCollector {
 
     Scope& get_scope() { return current_scope; }
 
-    /*
     void dump() {
-        for (auto& node_map : nodes) {
-            std::cout << "in scope '" << get_namespace_as_string(node_map.first)
-                      << "':" << std::endl;
-            for (auto& name : nodes[node_map.first].second) {
-                std::cout << "    " << name << std::endl;
-                // nodes[node_map.first].first[name];
+        for (auto& pair : elements) {
+            auto& scope = pair.first;
+            auto& element_map = pair.second;
+            std::cout << "in scope " << scope.to_string() << std::endl;
+            for (auto& name_and_element : elements[scope]) {
+                std::cout << "    " << name_and_element.first << std::endl;
             }
         }
     }
-    */
 };
 }  // namespace utils

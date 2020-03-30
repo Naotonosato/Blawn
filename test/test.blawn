@@ -1,1 +1,7 @@
-print("duh")
+a = 0
+b = "12"
+
+class Person(name)
+    @name = name
+    @function hello()
+        return 0

@@ -51,6 +51,10 @@ bool Scope::operator==(const Scope& scope) const {
 
 bool Scope::operator!=(const Scope& scope) const { return !(*this == scope); }
 
+bool Scope::operator<(const Scope& scope) const {
+    return to_string() < scope.to_string();
+}
+
 bool Scope::is_deeper_than(const Scope& scope) const {
     if (scope_names.size() < scope.scope_names.size()) return false;
     int idx = 0;
@@ -67,7 +71,7 @@ bool Scope::is_shallower_than(const Scope& scope) const {
 
 std::string Scope::to_string() const { return std::string(c_str()); }
 
-std::vector<Scope> Scope::enumerate_accesible_scopes() {
+const std::vector<Scope> Scope::enumerate_accesible_scopes() {
     std::vector<Scope> enumerated;
     std::string previous_scope_name;
     for (const auto& scope_name : scope_names) {

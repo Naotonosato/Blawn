@@ -1,3 +1,4 @@
+#pragma once
 #include <vector>
 #include <string>
 
@@ -23,9 +24,10 @@ class Scope final : protected std::string {
     std::string to_string() const;
     bool operator==(const Scope&) const;
     bool operator!=(const Scope&) const;
+    bool operator<(const Scope&) const;
     bool is_deeper_than(const Scope& scope) const;
     bool is_shallower_than(const Scope& scope) const;
-    std::vector<Scope> enumerate_accesible_scopes();
+    const std::vector<Scope> enumerate_accesible_scopes();
 };
 
 }  // namespace utils

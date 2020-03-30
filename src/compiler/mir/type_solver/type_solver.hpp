@@ -1,5 +1,5 @@
 #pragma once
-#include "../algorithm/union_find/union_find.hpp"
+#include "../../algorithm/union_find/union_find.hpp"
 #include "../type/type.hpp"
 
 namespace mir {

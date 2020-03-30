@@ -33,7 +33,7 @@
 
 /**
  ** \file /Users/ueharanaoto/Desktop/Blawn/build/parser.hpp
- ** Define the Blawn::parser class.
+ ** Define the blawn::parser class.
  */
 
 // C++ LALR(1) parser skeleton written by Akim Demaille.
@@ -52,7 +52,7 @@
     #include "../src/compiler/ast/node.hpp"
     #include "../src/compiler/ast/builder.hpp"
  
-    namespace Blawn {
+    namespace blawn {
         class Driver;
         class Scanner;
     }
@@ -200,7 +200,7 @@
 #endif
 
 #line 5 "./src/compiler/parser/parser.yy"
-namespace Blawn {
+namespace blawn {
 #line 205 "/Users/ueharanaoto/Desktop/Blawn/build/parser.hpp"
 
 
@@ -411,29 +411,45 @@ namespace Blawn {
       // INT_LITERAL
       char dummy2[sizeof (long long)];
 
-      // function_name_and_argument_names
-      // class_name_and_argument_names
-      // method_name_and_argument_names
-      char dummy3[sizeof (std::pair<std::string,std::vector<std::string>>)];
+      // function_start
+      // method_start
+      char dummy3[sizeof (std::pair<std::string,std::vector<std::shared_ptr<ast::ArgumentNode>>>)];
+
+      // access
+      char dummy4[sizeof (std::shared_ptr<ast::AccessElementNode>)];
+
+      // array
+      char dummy5[sizeof (std::shared_ptr<ast::ArrayNode>)];
 
       // block
+      // else_body
+      char dummy6[sizeof (std::shared_ptr<ast::BlockNode>)];
+
+      // call
+      char dummy7[sizeof (std::shared_ptr<ast::CallFunctionNode>)];
+
+      // class_definition
+      char dummy8[sizeof (std::shared_ptr<ast::GenericClassNode>)];
+
+      // function_definition
+      // method_definition
+      char dummy9[sizeof (std::shared_ptr<ast::GenericFunctionNode>)];
+
+      // global_variable_definition
+      char dummy10[sizeof (std::shared_ptr<ast::GlobalVariableNode>)];
+
       // line
       // line_content
       // definition
-      // function_definition
-      // class_definition
-      // method_definition
       // return_value
-      // globals_definition
-      // else_body
       // expression
-      // list
-      // access
       // assign_variable
       // monomial
-      // call
-      // variable
-      char dummy4[sizeof (std::shared_ptr<ast::Node>)];
+      // named_value
+      char dummy11[sizeof (std::shared_ptr<ast::Node>)];
+
+      // program
+      char dummy12[sizeof (std::shared_ptr<ast::RootNode>)];
 
       // FUNCTION_DEFINITION
       // METHOD_DEFINITION
@@ -442,19 +458,25 @@ namespace Blawn {
       // IDENTIFIER
       // DOT_IDENTIFIER
       // STRING_LITERAL
-      char dummy5[sizeof (std::string)];
-
-      // lines
-      // methods
-      // members_definition
-      // globals_variables
-      // expressions
-      // for_start
-      char dummy6[sizeof (std::vector<std::shared_ptr<ast::Node>>)];
+      // function_name
+      // class_name
+      // method_name
+      char dummy13[sizeof (std::string)];
 
       // arguments
       // definition_arguments
-      char dummy7[sizeof (std::vector<std::string>)];
+      char dummy14[sizeof (std::vector<std::shared_ptr<ast::ArgumentNode>>)];
+
+      // methods
+      char dummy15[sizeof (std::vector<std::shared_ptr<ast::GenericFunctionNode>>)];
+
+      // lines
+      // expressions
+      // for_start
+      char dummy16[sizeof (std::vector<std::shared_ptr<ast::Node>>)];
+
+      // members_definition
+      char dummy17[sizeof (std::vector<std::shared_ptr<ast::VariableNode>>)];
     };
 
     /// The size of the largest semantic type.
@@ -626,13 +648,104 @@ namespace Blawn {
       {}
 #endif
 #if 201103L <= YY_CPLUSPLUS
-      basic_symbol (typename Base::kind_type t, std::pair<std::string,std::vector<std::string>>&& v, location_type&& l)
+      basic_symbol (typename Base::kind_type t, std::pair<std::string,std::vector<std::shared_ptr<ast::ArgumentNode>>>&& v, location_type&& l)
         : Base (t)
         , value (std::move (v))
         , location (std::move (l))
       {}
 #else
-      basic_symbol (typename Base::kind_type t, const std::pair<std::string,std::vector<std::string>>& v, const location_type& l)
+      basic_symbol (typename Base::kind_type t, const std::pair<std::string,std::vector<std::shared_ptr<ast::ArgumentNode>>>& v, const location_type& l)
+        : Base (t)
+        , value (v)
+        , location (l)
+      {}
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      basic_symbol (typename Base::kind_type t, std::shared_ptr<ast::AccessElementNode>&& v, location_type&& l)
+        : Base (t)
+        , value (std::move (v))
+        , location (std::move (l))
+      {}
+#else
+      basic_symbol (typename Base::kind_type t, const std::shared_ptr<ast::AccessElementNode>& v, const location_type& l)
+        : Base (t)
+        , value (v)
+        , location (l)
+      {}
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      basic_symbol (typename Base::kind_type t, std::shared_ptr<ast::ArrayNode>&& v, location_type&& l)
+        : Base (t)
+        , value (std::move (v))
+        , location (std::move (l))
+      {}
+#else
+      basic_symbol (typename Base::kind_type t, const std::shared_ptr<ast::ArrayNode>& v, const location_type& l)
+        : Base (t)
+        , value (v)
+        , location (l)
+      {}
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      basic_symbol (typename Base::kind_type t, std::shared_ptr<ast::BlockNode>&& v, location_type&& l)
+        : Base (t)
+        , value (std::move (v))
+        , location (std::move (l))
+      {}
+#else
+      basic_symbol (typename Base::kind_type t, const std::shared_ptr<ast::BlockNode>& v, const location_type& l)
+        : Base (t)
+        , value (v)
+        , location (l)
+      {}
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      basic_symbol (typename Base::kind_type t, std::shared_ptr<ast::CallFunctionNode>&& v, location_type&& l)
+        : Base (t)
+        , value (std::move (v))
+        , location (std::move (l))
+      {}
+#else
+      basic_symbol (typename Base::kind_type t, const std::shared_ptr<ast::CallFunctionNode>& v, const location_type& l)
+        : Base (t)
+        , value (v)
+        , location (l)
+      {}
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      basic_symbol (typename Base::kind_type t, std::shared_ptr<ast::GenericClassNode>&& v, location_type&& l)
+        : Base (t)
+        , value (std::move (v))
+        , location (std::move (l))
+      {}
+#else
+      basic_symbol (typename Base::kind_type t, const std::shared_ptr<ast::GenericClassNode>& v, const location_type& l)
+        : Base (t)
+        , value (v)
+        , location (l)
+      {}
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      basic_symbol (typename Base::kind_type t, std::shared_ptr<ast::GenericFunctionNode>&& v, location_type&& l)
+        : Base (t)
+        , value (std::move (v))
+        , location (std::move (l))
+      {}
+#else
+      basic_symbol (typename Base::kind_type t, const std::shared_ptr<ast::GenericFunctionNode>& v, const location_type& l)
+        : Base (t)
+        , value (v)
+        , location (l)
+      {}
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      basic_symbol (typename Base::kind_type t, std::shared_ptr<ast::GlobalVariableNode>&& v, location_type&& l)
+        : Base (t)
+        , value (std::move (v))
+        , location (std::move (l))
+      {}
+#else
+      basic_symbol (typename Base::kind_type t, const std::shared_ptr<ast::GlobalVariableNode>& v, const location_type& l)
         : Base (t)
         , value (v)
         , location (l)
@@ -652,6 +765,19 @@ namespace Blawn {
       {}
 #endif
 #if 201103L <= YY_CPLUSPLUS
+      basic_symbol (typename Base::kind_type t, std::shared_ptr<ast::RootNode>&& v, location_type&& l)
+        : Base (t)
+        , value (std::move (v))
+        , location (std::move (l))
+      {}
+#else
+      basic_symbol (typename Base::kind_type t, const std::shared_ptr<ast::RootNode>& v, const location_type& l)
+        : Base (t)
+        , value (v)
+        , location (l)
+      {}
+#endif
+#if 201103L <= YY_CPLUSPLUS
       basic_symbol (typename Base::kind_type t, std::string&& v, location_type&& l)
         : Base (t)
         , value (std::move (v))
@@ -659,6 +785,32 @@ namespace Blawn {
       {}
 #else
       basic_symbol (typename Base::kind_type t, const std::string& v, const location_type& l)
+        : Base (t)
+        , value (v)
+        , location (l)
+      {}
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      basic_symbol (typename Base::kind_type t, std::vector<std::shared_ptr<ast::ArgumentNode>>&& v, location_type&& l)
+        : Base (t)
+        , value (std::move (v))
+        , location (std::move (l))
+      {}
+#else
+      basic_symbol (typename Base::kind_type t, const std::vector<std::shared_ptr<ast::ArgumentNode>>& v, const location_type& l)
+        : Base (t)
+        , value (v)
+        , location (l)
+      {}
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      basic_symbol (typename Base::kind_type t, std::vector<std::shared_ptr<ast::GenericFunctionNode>>&& v, location_type&& l)
+        : Base (t)
+        , value (std::move (v))
+        , location (std::move (l))
+      {}
+#else
+      basic_symbol (typename Base::kind_type t, const std::vector<std::shared_ptr<ast::GenericFunctionNode>>& v, const location_type& l)
         : Base (t)
         , value (v)
         , location (l)
@@ -678,13 +830,13 @@ namespace Blawn {
       {}
 #endif
 #if 201103L <= YY_CPLUSPLUS
-      basic_symbol (typename Base::kind_type t, std::vector<std::string>&& v, location_type&& l)
+      basic_symbol (typename Base::kind_type t, std::vector<std::shared_ptr<ast::VariableNode>>&& v, location_type&& l)
         : Base (t)
         , value (std::move (v))
         , location (std::move (l))
       {}
 #else
-      basic_symbol (typename Base::kind_type t, const std::vector<std::string>& v, const location_type& l)
+      basic_symbol (typename Base::kind_type t, const std::vector<std::shared_ptr<ast::VariableNode>>& v, const location_type& l)
         : Base (t)
         , value (v)
         , location (l)
@@ -721,30 +873,54 @@ switch (yytype)
         value.template destroy< long long > ();
         break;
 
-      case 54: // function_name_and_argument_names
-      case 56: // class_name_and_argument_names
-      case 58: // method_name_and_argument_names
-        value.template destroy< std::pair<std::string,std::vector<std::string>> > ();
+      case 55: // function_start
+      case 60: // method_start
+        value.template destroy< std::pair<std::string,std::vector<std::shared_ptr<ast::ArgumentNode>>> > ();
+        break;
+
+      case 73: // access
+        value.template destroy< std::shared_ptr<ast::AccessElementNode> > ();
+        break;
+
+      case 72: // array
+        value.template destroy< std::shared_ptr<ast::ArrayNode> > ();
         break;
 
       case 48: // block
+      case 70: // else_body
+        value.template destroy< std::shared_ptr<ast::BlockNode> > ();
+        break;
+
+      case 77: // call
+        value.template destroy< std::shared_ptr<ast::CallFunctionNode> > ();
+        break;
+
+      case 56: // class_definition
+        value.template destroy< std::shared_ptr<ast::GenericClassNode> > ();
+        break;
+
+      case 53: // function_definition
+      case 61: // method_definition
+        value.template destroy< std::shared_ptr<ast::GenericFunctionNode> > ();
+        break;
+
+      case 74: // global_variable_definition
+        value.template destroy< std::shared_ptr<ast::GlobalVariableNode> > ();
+        break;
+
       case 50: // line
       case 51: // line_content
       case 52: // definition
-      case 53: // function_definition
-      case 55: // class_definition
-      case 59: // method_definition
-      case 61: // return_value
-      case 64: // globals_definition
-      case 71: // else_body
-      case 72: // expression
-      case 73: // list
-      case 74: // access
+      case 63: // return_value
+      case 71: // expression
       case 75: // assign_variable
       case 76: // monomial
-      case 77: // call
-      case 78: // variable
+      case 78: // named_value
         value.template destroy< std::shared_ptr<ast::Node> > ();
+        break;
+
+      case 47: // program
+        value.template destroy< std::shared_ptr<ast::RootNode> > ();
         break;
 
       case 3: // FUNCTION_DEFINITION
@@ -754,21 +930,29 @@ switch (yytype)
       case 8: // IDENTIFIER
       case 24: // DOT_IDENTIFIER
       case 43: // STRING_LITERAL
+      case 54: // function_name
+      case 57: // class_name
+      case 59: // method_name
         value.template destroy< std::string > ();
         break;
 
+      case 64: // arguments
+      case 65: // definition_arguments
+        value.template destroy< std::vector<std::shared_ptr<ast::ArgumentNode>> > ();
+        break;
+
+      case 58: // methods
+        value.template destroy< std::vector<std::shared_ptr<ast::GenericFunctionNode>> > ();
+        break;
+
       case 49: // lines
-      case 57: // methods
-      case 60: // members_definition
-      case 66: // globals_variables
-      case 67: // expressions
-      case 70: // for_start
+      case 66: // expressions
+      case 69: // for_start
         value.template destroy< std::vector<std::shared_ptr<ast::Node>> > ();
         break;
 
-      case 62: // arguments
-      case 63: // definition_arguments
-        value.template destroy< std::vector<std::string> > ();
+      case 62: // members_definition
+        value.template destroy< std::vector<std::shared_ptr<ast::VariableNode>> > ();
         break;
 
       default:
@@ -1648,7 +1832,7 @@ switch (yytype)
     // YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
     // positive, shift that token.  If negative, reduce the rule whose
     // number is the opposite.  If YYTABLE_NINF, syntax error.
-    static const short yytable_[];
+    static const unsigned char yytable_[];
 
     static const short yycheck_[];
 
@@ -1895,9 +2079,9 @@ switch (yytype)
     enum
     {
       yyeof_ = 0,
-      yylast_ = 369,     ///< Last index in yytable_.
+      yylast_ = 335,     ///< Last index in yytable_.
       yynnts_ = 33,  ///< Number of nonterminal symbols.
-      yyfinal_ = 45, ///< Termination state number.
+      yyfinal_ = 43, ///< Termination state number.
       yyntokens_ = 46  ///< Number of tokens.
     };
 
@@ -1909,8 +2093,8 @@ switch (yytype)
 
 
 #line 5 "./src/compiler/parser/parser.yy"
-} // Blawn
-#line 1914 "/Users/ueharanaoto/Desktop/Blawn/build/parser.hpp"
+} // blawn
+#line 2098 "/Users/ueharanaoto/Desktop/Blawn/build/parser.hpp"
 
 
 

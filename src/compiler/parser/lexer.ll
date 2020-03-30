@@ -4,13 +4,13 @@
 #include "parser.hpp"
 #include "../src/compiler/parser/scanner.hpp"
 #undef  YY_DECL
-#define YY_DECL int Blawn::Scanner::yylex( Blawn::Parser::semantic_type * const lval, Blawn::Parser::location_type *loc )
-#define yyterminate() return Blawn::Parser::token::END;
+#define YY_DECL int blawn::Scanner::yylex( blawn::Parser::semantic_type * const lval, blawn::Parser::location_type *loc )
+#define yyterminate() return blawn::Parser::token::END;
 #define YY_NO_UNISTD_H
 #define YY_USER_ACTION loc->step(); loc->columns(yyleng);
 %}
 
-%option yyclass="Blawn::Scanner"
+%option yyclass="blawn::Scanner"
 %option noyywrap
 %option noinput
 %option nounput
@@ -66,122 +66,122 @@ EOL                 \n|\r\n
 
 %%
 
-^[ \t]*\n {loc->lines();driver->ast_builder->count_line_number();}
-^[ \t]*\r\n {loc->lines();driver->ast_builder->count_line_number();}
+^[ \t]*\n {loc->lines();driver.ast_builder->count_line_number();}
+^[ \t]*\r\n {loc->lines();driver.ast_builder->count_line_number();}
 [ \t] {}
-{COMMENT} {loc->lines();driver->ast_builder->count_line_number();}
+{COMMENT} {loc->lines();driver.ast_builder->count_line_number();}
 {STRING_LITERAL} {
     std::string text = yytext;
     text = text.substr(1,text.size()-2);
     lval->build<std::string>() = text;
-    return Blawn::Parser::token::STRING_LITERAL;
+    return blawn::Parser::token::STRING_LITERAL;
 }
 {INT_LITERAL} {
     lval->build<long long>() = std::stoll(yytext);
-    return Blawn::Parser::token::INT_LITERAL;
+    return blawn::Parser::token::INT_LITERAL;
 }
 {FLOAT_LITERAL} {
     lval->build<double>() = std::stod(yytext);
-    return Blawn::Parser::token::FLOAT_LITERAL;
+    return blawn::Parser::token::FLOAT_LITERAL;
 }
 {USE} {
-    return Blawn::Parser::token::USE;
+    return blawn::Parser::token::USE;
 }
 {DOT_IDENTIFIER} {
     std::string text = yytext;
     text = text.substr(1,text.size()-1);
     lval->build<std::string>() = text;
-    return Blawn::Parser::token::DOT_IDENTIFIER;
+    return blawn::Parser::token::DOT_IDENTIFIER;
 }
 {ASTERISK} {
-    return Blawn::Parser::token::ASTERISK;
+    return blawn::Parser::token::ASTERISK;
 }
 {SLASH} {
-    return Blawn::Parser::token::SLASH;
+    return blawn::Parser::token::SLASH;
 }
 {PLUS} {
-    return Blawn::Parser::token::PLUS;
+    return blawn::Parser::token::PLUS;
 }
 {MINUS} {
-    return Blawn::Parser::token::MINUS;
+    return blawn::Parser::token::MINUS;
 }
 {EQUAL} {
-    return Blawn::Parser::token::EQUAL;
+    return blawn::Parser::token::EQUAL;
 }
 {ARROW} {
-    return Blawn::Parser::token::ARROW;
+    return blawn::Parser::token::ARROW;
 }
 {OP_EQUAL} {
-    return Blawn::Parser::token::OP_EQUAL;
+    return blawn::Parser::token::OP_EQUAL;
 }
 {OP_NOT_EQUAL} {
-    return Blawn::Parser::token::OP_NOT_EQUAL;
+    return blawn::Parser::token::OP_NOT_EQUAL;
 }
 {OP_MORE_EQUAL} {
-    return Blawn::Parser::token::OP_MORE_EQUAL;
+    return blawn::Parser::token::OP_MORE_EQUAL;
 }
 {OP_LESS_EQUAL} {
-    return Blawn::Parser::token::OP_LESS_EQUAL;
+    return blawn::Parser::token::OP_LESS_EQUAL;
 }
 {OP_MORE} {
-    return Blawn::Parser::token::OP_MORE;
+    return blawn::Parser::token::OP_MORE;
 }
 {OP_LESS} {
-    return Blawn::Parser::token::OP_LESS;
+    return blawn::Parser::token::OP_LESS;
 }
 {OP_AND} {
-    return Blawn::Parser::token::OP_AND;
+    return blawn::Parser::token::OP_AND;
 }
 {OP_OR} {
-    return Blawn::Parser::token::OP_OR;
+    return blawn::Parser::token::OP_OR;
 }
 {COLON} {
-    return Blawn::Parser::token::COLON;
+    return blawn::Parser::token::COLON;
 }
 {SEMICOLON} {
-    return Blawn::Parser::token::SEMICOLON;
+    return blawn::Parser::token::SEMICOLON;
 }
 {COMMA} {
-    return Blawn::Parser::token::COMMA;
+    return blawn::Parser::token::COMMA;
 }
 {LEFT_PARENTHESIS} {
-    return Blawn::Parser::token::LEFT_PARENTHESIS;
+    return blawn::Parser::token::LEFT_PARENTHESIS;
 }
 {RIGHT_PARENTHESIS} {
-    return Blawn::Parser::token::RIGHT_PARENTHESIS;
+    return blawn::Parser::token::RIGHT_PARENTHESIS;
 }
 {LEFT_BRACKET} {
-    return Blawn::Parser::token::LEFT_BRACKET;
+    return blawn::Parser::token::LEFT_BRACKET;
 }
 {RIGHT_BRACKET} {
-    return Blawn::Parser::token::RIGHT_BRACKET;
+    return blawn::Parser::token::RIGHT_BRACKET;
 }
 {LEFT_CURLY_BRACE} {
-    return Blawn::Parser::token::LEFT_CURLY_BRACE;
+    return blawn::Parser::token::LEFT_CURLY_BRACE;
 }
 {RIGHT_CURLY_BRACE} {
-    return Blawn::Parser::token::RIGHT_CURLY_BRACE;
+    return blawn::Parser::token::RIGHT_CURLY_BRACE;
 }
 {IF} {
-    return Blawn::Parser::token::IF;
+    return blawn::Parser::token::IF;
 }
 {ELSE} {
-    return Blawn::Parser::token::ELSE;
+    return blawn::Parser::token::ELSE;
 }
 {FOR} {
-    return Blawn::Parser::token::FOR;
+    return blawn::Parser::token::FOR;
 }
 {IN} {
-    return Blawn::Parser::token::IN;
+    return blawn::Parser::token::IN;
 }
 {WHILE} {
-    return Blawn::Parser::token::WHILE;
+    return blawn::Parser::token::WHILE;
 }
 {GLOBAL} {
-    return Blawn::Parser::token::GLOBAL;
+    return blawn::Parser::token::GLOBAL;
 }
 {IMPORT} {
-    return Blawn::Parser::token::IMPORT;
+    return blawn::Parser::token::IMPORT;
 }
 {METHOD_DEFINITION} {
     std::string definition = yytext;
@@ -191,7 +191,7 @@ EOL                 \n|\r\n
     definition.erase(0,index);
     lval->build<std::string>() = definition;
     
-    return Blawn::Parser::token::METHOD_DEFINITION;
+    return blawn::Parser::token::METHOD_DEFINITION;
 }
 {FUNCTION_DEFINITION} {
     std::string definition = yytext;
@@ -201,7 +201,7 @@ EOL                 \n|\r\n
     definition.erase(0,index);
     lval->build<std::string>() = definition;
     
-    return Blawn::Parser::token::FUNCTION_DEFINITION;
+    return blawn::Parser::token::FUNCTION_DEFINITION;
 }
 {CLASS_DEFINITION} {
     std::string definition = yytext;
@@ -210,25 +210,25 @@ EOL                 \n|\r\n
     int index = definition.size() - reversed.find(" ");
     definition.erase(0,index);
     lval->build<std::string>() = definition;
-    return Blawn::Parser::token::CLASS_DEFINITION;
+    return blawn::Parser::token::CLASS_DEFINITION;
 }
 
 {RETURN} {
-    return Blawn::Parser::token::RETURN;
+    return blawn::Parser::token::RETURN;
 }
 
 {MEMBER_IDENTIFIER} {
     lval->build<std::string>() = yytext;
-    return Blawn::Parser::token::MEMBER_IDENTIFIER;
+    return blawn::Parser::token::MEMBER_IDENTIFIER;
 }
 {IDENTIFIER} {
     lval->build<std::string>() = yytext;
-    return Blawn::Parser::token::IDENTIFIER;
+    return blawn::Parser::token::IDENTIFIER;
 }
 {EOL} {
     loc->lines();
-    driver->ast_builder->count_line_number();
-    return Blawn::Parser::token::EOL;
+    driver.ast_builder->count_line_number();
+    return blawn::Parser::token::EOL;
 }
 <<EOF>> {return 0;}
 %%

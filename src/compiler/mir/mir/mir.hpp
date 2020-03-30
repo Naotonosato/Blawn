@@ -1,6 +1,8 @@
+#pragma once
 #include <vector>
 #include <memory>
 #include <string>
+#include "../../utils/variant_wrapper.hpp"
 
 namespace llvm {
 class Value;
@@ -13,13 +15,13 @@ class TypeVariable;
 
 namespace mir {
 
-class MIR {
+class MIRBase {
     private:
     std::shared_ptr<TypeVariable> type;
     uint64_t line_number;
 
     public:
-    MIR(std::shared_ptr<TypeVariable>&& type, uint64_t line_number)
+    MIRBase(std::shared_ptr<TypeVariable>&& type, uint64_t line_number)
         : type(std::move(type)), line_number(line_number) {}
     std::string print();
 };
@@ -46,7 +48,7 @@ class FreeHeap {};
 
 class Block {
     private:
-    std::vector<std::shared_ptr<MIR>> body;
+    std::vector<std::shared_ptr<MIRBase>> body;
     std::vector<std::shared_ptr<Block>> from_blocks;
     std::vector<std::shared_ptr<Block>> to_blocks;
 };
@@ -60,13 +62,34 @@ class Jump {
 class CallFunction {
     private:
     std::shared_ptr<Block> function;
-    std::vector<std::shared_ptr<MIR>> arguments;
+    std::vector<std::shared_ptr<MIRBase>> arguments;
 };
 
 class Argument {};
 
 class Cast {};
 
+class MIR
+    : public utils::VariantWrapper<Integer, Float, String, BinaryExpression,
+                                   Array, Store, Variable, GlobalVariable,
+                                   AllocateHeap, FreeHeap, Block, Jump,
+                                   CallFunction, Argument, Cast> {
+    protected:
+    template <class T>
+    MIR(T&& initial_content)
+        : utils::VariantWrapper<Integer, Float, String, BinaryExpression, Array,
+                                Store, Variable, GlobalVariable, AllocateHeap,
+                                FreeHeap, Block, Jump, CallFunction, Argument,
+                                Cast>(std::move(initial_content)) {}
+
+    public:
+    template <typename MIRType, typename... Args>
+    static std::unique_ptr<MIR> create(Args&&... args) {
+        auto mir = std::make_unique<CreateHelper<MIR>>(
+            std::move(MIRType(std::forward<Args>(args)...)));
+        return mir;
+    }
+};
 }  // namespace mir
 
 /*

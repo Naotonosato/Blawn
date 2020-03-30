@@ -6,7 +6,7 @@ class Module;
 class StructType;
 class FunctionType;
 
-class MIR;
+class MIRBase;
 class Integer;
 class Float;
 class Array;

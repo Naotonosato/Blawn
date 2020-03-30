@@ -32,7 +32,7 @@
 
 /**
  ** \file /Users/ueharanaoto/Desktop/Blawn/build/location.hh
- ** Define the Blawn::location class.
+ ** Define the blawn::location class.
  */
 
 #ifndef YY_YY_USERS_UEHARANAOTO_DESKTOP_BLAWN_BUILD_LOCATION_HH_INCLUDED
@@ -54,7 +54,7 @@
 # endif
 
 #line 5 "./src/compiler/parser/parser.yy"
-namespace Blawn {
+namespace blawn {
 #line 59 "/Users/ueharanaoto/Desktop/Blawn/build/location.hh"
 
   /// A point in a source file.
@@ -328,7 +328,7 @@ namespace Blawn {
   }
 
 #line 5 "./src/compiler/parser/parser.yy"
-} // Blawn
+} // blawn
 #line 333 "/Users/ueharanaoto/Desktop/Blawn/build/location.hh"
 
 #endif // !YY_YY_USERS_UEHARANAOTO_DESKTOP_BLAWN_BUILD_LOCATION_HH_INCLUDED

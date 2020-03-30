@@ -8,22 +8,21 @@
 #include "location.hh"
 #include "parser.hpp"
 
-namespace Blawn {
+namespace blawn {
 
 class Scanner : public yyFlexLexer {
     public:
-    Driver *driver;
-    Scanner(std::istream *in, Driver *driver)
+    Driver &driver;
+    Scanner(std::istream *in, Driver &driver)
         : yyFlexLexer(in), driver(driver){};
-    virtual ~Scanner(){};
 
     using FlexLexer::yylex;
 
-    virtual int yylex(Blawn::Parser::semantic_type *const lval,
-                      Blawn::Parser::location_type *location);
+    virtual int yylex(blawn::Parser::semantic_type *const lval,
+                      blawn::Parser::location_type *location);
 
     private:
-    Blawn::Parser::semantic_type *yylval = nullptr;
+    blawn::Parser::semantic_type *yylval = nullptr;
 };
 
-}  // namespace Blawn
+}  // namespace blawn
