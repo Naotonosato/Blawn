@@ -44,13 +44,13 @@
 #ifndef YY_YY_USERS_UEHARANAOTO_DESKTOP_BLAWN_BUILD_PARSER_HPP_INCLUDED
 # define YY_YY_USERS_UEHARANAOTO_DESKTOP_BLAWN_BUILD_PARSER_HPP_INCLUDED
 // "%code requires" blocks.
-#line 10 "./src/compiler/parser/parser.yy"
+#line 10 "./src/lib/blawn/parser/parser.yy"
 
     #include <utility>
     #include <memory>
     #include <llvm/IR/IRBuilder.h>
-    #include "../src/compiler/ast/node.hpp"
-    #include "../src/compiler/ast/builder.hpp"
+    #include "include/ast/node.hpp"
+    #include "include/ast/builder.hpp"
  
     namespace blawn {
         class Driver;
@@ -199,7 +199,7 @@
 # define YYDEBUG 0
 #endif
 
-#line 5 "./src/compiler/parser/parser.yy"
+#line 5 "./src/lib/blawn/parser/parser.yy"
 namespace blawn {
 #line 205 "/Users/ueharanaoto/Desktop/Blawn/build/parser.hpp"
 
@@ -2092,7 +2092,7 @@ switch (yytype)
   };
 
 
-#line 5 "./src/compiler/parser/parser.yy"
+#line 5 "./src/lib/blawn/parser/parser.yy"
 } // blawn
 #line 2098 "/Users/ueharanaoto/Desktop/Blawn/build/parser.hpp"
 

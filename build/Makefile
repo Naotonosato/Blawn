@@ -216,248 +216,248 @@ parser.cpp.s:
 	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/parser.cpp.s
 .PHONY : parser.cpp.s
 
-src/compiler/ast/builder.o: src/compiler/ast/builder.cpp.o
+src/lib/ast/builder.o: src/lib/ast/builder.cpp.o
 
-.PHONY : src/compiler/ast/builder.o
-
-# target to build an object file
-src/compiler/ast/builder.cpp.o:
-	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/compiler/ast/builder.cpp.o
-.PHONY : src/compiler/ast/builder.cpp.o
-
-src/compiler/ast/builder.i: src/compiler/ast/builder.cpp.i
-
-.PHONY : src/compiler/ast/builder.i
-
-# target to preprocess a source file
-src/compiler/ast/builder.cpp.i:
-	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/compiler/ast/builder.cpp.i
-.PHONY : src/compiler/ast/builder.cpp.i
-
-src/compiler/ast/builder.s: src/compiler/ast/builder.cpp.s
-
-.PHONY : src/compiler/ast/builder.s
-
-# target to generate assembly for a file
-src/compiler/ast/builder.cpp.s:
-	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/compiler/ast/builder.cpp.s
-.PHONY : src/compiler/ast/builder.cpp.s
-
-src/compiler/ast/node.o: src/compiler/ast/node.cpp.o
-
-.PHONY : src/compiler/ast/node.o
+.PHONY : src/lib/ast/builder.o
 
 # target to build an object file
-src/compiler/ast/node.cpp.o:
-	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/compiler/ast/node.cpp.o
-.PHONY : src/compiler/ast/node.cpp.o
+src/lib/ast/builder.cpp.o:
+	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/lib/ast/builder.cpp.o
+.PHONY : src/lib/ast/builder.cpp.o
 
-src/compiler/ast/node.i: src/compiler/ast/node.cpp.i
+src/lib/ast/builder.i: src/lib/ast/builder.cpp.i
 
-.PHONY : src/compiler/ast/node.i
+.PHONY : src/lib/ast/builder.i
 
 # target to preprocess a source file
-src/compiler/ast/node.cpp.i:
-	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/compiler/ast/node.cpp.i
-.PHONY : src/compiler/ast/node.cpp.i
+src/lib/ast/builder.cpp.i:
+	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/lib/ast/builder.cpp.i
+.PHONY : src/lib/ast/builder.cpp.i
 
-src/compiler/ast/node.s: src/compiler/ast/node.cpp.s
+src/lib/ast/builder.s: src/lib/ast/builder.cpp.s
 
-.PHONY : src/compiler/ast/node.s
+.PHONY : src/lib/ast/builder.s
 
 # target to generate assembly for a file
-src/compiler/ast/node.cpp.s:
-	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/compiler/ast/node.cpp.s
-.PHONY : src/compiler/ast/node.cpp.s
+src/lib/ast/builder.cpp.s:
+	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/lib/ast/builder.cpp.s
+.PHONY : src/lib/ast/builder.cpp.s
 
-src/compiler/compiler/compiler.o: src/compiler/compiler/compiler.cpp.o
+src/lib/ast/node.o: src/lib/ast/node.cpp.o
 
-.PHONY : src/compiler/compiler/compiler.o
+.PHONY : src/lib/ast/node.o
 
 # target to build an object file
-src/compiler/compiler/compiler.cpp.o:
-	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/compiler/compiler/compiler.cpp.o
-.PHONY : src/compiler/compiler/compiler.cpp.o
+src/lib/ast/node.cpp.o:
+	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/lib/ast/node.cpp.o
+.PHONY : src/lib/ast/node.cpp.o
 
-src/compiler/compiler/compiler.i: src/compiler/compiler/compiler.cpp.i
+src/lib/ast/node.i: src/lib/ast/node.cpp.i
 
-.PHONY : src/compiler/compiler/compiler.i
+.PHONY : src/lib/ast/node.i
 
 # target to preprocess a source file
-src/compiler/compiler/compiler.cpp.i:
-	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/compiler/compiler/compiler.cpp.i
-.PHONY : src/compiler/compiler/compiler.cpp.i
+src/lib/ast/node.cpp.i:
+	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/lib/ast/node.cpp.i
+.PHONY : src/lib/ast/node.cpp.i
 
-src/compiler/compiler/compiler.s: src/compiler/compiler/compiler.cpp.s
+src/lib/ast/node.s: src/lib/ast/node.cpp.s
 
-.PHONY : src/compiler/compiler/compiler.s
+.PHONY : src/lib/ast/node.s
 
 # target to generate assembly for a file
-src/compiler/compiler/compiler.cpp.s:
-	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/compiler/compiler/compiler.cpp.s
-.PHONY : src/compiler/compiler/compiler.cpp.s
+src/lib/ast/node.cpp.s:
+	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/lib/ast/node.cpp.s
+.PHONY : src/lib/ast/node.cpp.s
 
-src/compiler/converter/ast_to_mir/converter.o: src/compiler/converter/ast_to_mir/converter.cpp.o
+src/lib/blawn/compiler.o: src/lib/blawn/compiler.cpp.o
 
-.PHONY : src/compiler/converter/ast_to_mir/converter.o
+.PHONY : src/lib/blawn/compiler.o
 
 # target to build an object file
-src/compiler/converter/ast_to_mir/converter.cpp.o:
-	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/compiler/converter/ast_to_mir/converter.cpp.o
-.PHONY : src/compiler/converter/ast_to_mir/converter.cpp.o
+src/lib/blawn/compiler.cpp.o:
+	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/lib/blawn/compiler.cpp.o
+.PHONY : src/lib/blawn/compiler.cpp.o
 
-src/compiler/converter/ast_to_mir/converter.i: src/compiler/converter/ast_to_mir/converter.cpp.i
+src/lib/blawn/compiler.i: src/lib/blawn/compiler.cpp.i
 
-.PHONY : src/compiler/converter/ast_to_mir/converter.i
+.PHONY : src/lib/blawn/compiler.i
 
 # target to preprocess a source file
-src/compiler/converter/ast_to_mir/converter.cpp.i:
-	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/compiler/converter/ast_to_mir/converter.cpp.i
-.PHONY : src/compiler/converter/ast_to_mir/converter.cpp.i
+src/lib/blawn/compiler.cpp.i:
+	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/lib/blawn/compiler.cpp.i
+.PHONY : src/lib/blawn/compiler.cpp.i
 
-src/compiler/converter/ast_to_mir/converter.s: src/compiler/converter/ast_to_mir/converter.cpp.s
+src/lib/blawn/compiler.s: src/lib/blawn/compiler.cpp.s
 
-.PHONY : src/compiler/converter/ast_to_mir/converter.s
+.PHONY : src/lib/blawn/compiler.s
 
 # target to generate assembly for a file
-src/compiler/converter/ast_to_mir/converter.cpp.s:
-	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/compiler/converter/ast_to_mir/converter.cpp.s
-.PHONY : src/compiler/converter/ast_to_mir/converter.cpp.s
+src/lib/blawn/compiler.cpp.s:
+	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/lib/blawn/compiler.cpp.s
+.PHONY : src/lib/blawn/compiler.cpp.s
 
-src/compiler/errors/errors.o: src/compiler/errors/errors.cpp.o
+src/lib/blawn/converter/ast_to_mir/converter.o: src/lib/blawn/converter/ast_to_mir/converter.cpp.o
 
-.PHONY : src/compiler/errors/errors.o
+.PHONY : src/lib/blawn/converter/ast_to_mir/converter.o
 
 # target to build an object file
-src/compiler/errors/errors.cpp.o:
-	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/compiler/errors/errors.cpp.o
-.PHONY : src/compiler/errors/errors.cpp.o
+src/lib/blawn/converter/ast_to_mir/converter.cpp.o:
+	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/lib/blawn/converter/ast_to_mir/converter.cpp.o
+.PHONY : src/lib/blawn/converter/ast_to_mir/converter.cpp.o
 
-src/compiler/errors/errors.i: src/compiler/errors/errors.cpp.i
+src/lib/blawn/converter/ast_to_mir/converter.i: src/lib/blawn/converter/ast_to_mir/converter.cpp.i
 
-.PHONY : src/compiler/errors/errors.i
+.PHONY : src/lib/blawn/converter/ast_to_mir/converter.i
 
 # target to preprocess a source file
-src/compiler/errors/errors.cpp.i:
-	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/compiler/errors/errors.cpp.i
-.PHONY : src/compiler/errors/errors.cpp.i
+src/lib/blawn/converter/ast_to_mir/converter.cpp.i:
+	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/lib/blawn/converter/ast_to_mir/converter.cpp.i
+.PHONY : src/lib/blawn/converter/ast_to_mir/converter.cpp.i
 
-src/compiler/errors/errors.s: src/compiler/errors/errors.cpp.s
+src/lib/blawn/converter/ast_to_mir/converter.s: src/lib/blawn/converter/ast_to_mir/converter.cpp.s
 
-.PHONY : src/compiler/errors/errors.s
+.PHONY : src/lib/blawn/converter/ast_to_mir/converter.s
 
 # target to generate assembly for a file
-src/compiler/errors/errors.cpp.s:
-	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/compiler/errors/errors.cpp.s
-.PHONY : src/compiler/errors/errors.cpp.s
+src/lib/blawn/converter/ast_to_mir/converter.cpp.s:
+	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/lib/blawn/converter/ast_to_mir/converter.cpp.s
+.PHONY : src/lib/blawn/converter/ast_to_mir/converter.cpp.s
 
-src/compiler/main.o: src/compiler/main.cpp.o
+src/lib/blawn/main.o: src/lib/blawn/main.cpp.o
 
-.PHONY : src/compiler/main.o
+.PHONY : src/lib/blawn/main.o
 
 # target to build an object file
-src/compiler/main.cpp.o:
-	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/compiler/main.cpp.o
-.PHONY : src/compiler/main.cpp.o
+src/lib/blawn/main.cpp.o:
+	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/lib/blawn/main.cpp.o
+.PHONY : src/lib/blawn/main.cpp.o
 
-src/compiler/main.i: src/compiler/main.cpp.i
+src/lib/blawn/main.i: src/lib/blawn/main.cpp.i
 
-.PHONY : src/compiler/main.i
+.PHONY : src/lib/blawn/main.i
 
 # target to preprocess a source file
-src/compiler/main.cpp.i:
-	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/compiler/main.cpp.i
-.PHONY : src/compiler/main.cpp.i
+src/lib/blawn/main.cpp.i:
+	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/lib/blawn/main.cpp.i
+.PHONY : src/lib/blawn/main.cpp.i
 
-src/compiler/main.s: src/compiler/main.cpp.s
+src/lib/blawn/main.s: src/lib/blawn/main.cpp.s
 
-.PHONY : src/compiler/main.s
+.PHONY : src/lib/blawn/main.s
 
 # target to generate assembly for a file
-src/compiler/main.cpp.s:
-	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/compiler/main.cpp.s
-.PHONY : src/compiler/main.cpp.s
+src/lib/blawn/main.cpp.s:
+	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/lib/blawn/main.cpp.s
+.PHONY : src/lib/blawn/main.cpp.s
 
-src/compiler/parser/driver.o: src/compiler/parser/driver.cpp.o
+src/lib/blawn/module/module.o: src/lib/blawn/module/module.cpp.o
 
-.PHONY : src/compiler/parser/driver.o
+.PHONY : src/lib/blawn/module/module.o
 
 # target to build an object file
-src/compiler/parser/driver.cpp.o:
-	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/compiler/parser/driver.cpp.o
-.PHONY : src/compiler/parser/driver.cpp.o
+src/lib/blawn/module/module.cpp.o:
+	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/lib/blawn/module/module.cpp.o
+.PHONY : src/lib/blawn/module/module.cpp.o
 
-src/compiler/parser/driver.i: src/compiler/parser/driver.cpp.i
+src/lib/blawn/module/module.i: src/lib/blawn/module/module.cpp.i
 
-.PHONY : src/compiler/parser/driver.i
+.PHONY : src/lib/blawn/module/module.i
 
 # target to preprocess a source file
-src/compiler/parser/driver.cpp.i:
-	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/compiler/parser/driver.cpp.i
-.PHONY : src/compiler/parser/driver.cpp.i
+src/lib/blawn/module/module.cpp.i:
+	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/lib/blawn/module/module.cpp.i
+.PHONY : src/lib/blawn/module/module.cpp.i
 
-src/compiler/parser/driver.s: src/compiler/parser/driver.cpp.s
+src/lib/blawn/module/module.s: src/lib/blawn/module/module.cpp.s
 
-.PHONY : src/compiler/parser/driver.s
+.PHONY : src/lib/blawn/module/module.s
 
 # target to generate assembly for a file
-src/compiler/parser/driver.cpp.s:
-	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/compiler/parser/driver.cpp.s
-.PHONY : src/compiler/parser/driver.cpp.s
+src/lib/blawn/module/module.cpp.s:
+	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/lib/blawn/module/module.cpp.s
+.PHONY : src/lib/blawn/module/module.cpp.s
 
-src/compiler/utils/scope/scope.o: src/compiler/utils/scope/scope.cpp.o
+src/lib/blawn/parser/driver.o: src/lib/blawn/parser/driver.cpp.o
 
-.PHONY : src/compiler/utils/scope/scope.o
+.PHONY : src/lib/blawn/parser/driver.o
 
 # target to build an object file
-src/compiler/utils/scope/scope.cpp.o:
-	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/compiler/utils/scope/scope.cpp.o
-.PHONY : src/compiler/utils/scope/scope.cpp.o
+src/lib/blawn/parser/driver.cpp.o:
+	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/lib/blawn/parser/driver.cpp.o
+.PHONY : src/lib/blawn/parser/driver.cpp.o
 
-src/compiler/utils/scope/scope.i: src/compiler/utils/scope/scope.cpp.i
+src/lib/blawn/parser/driver.i: src/lib/blawn/parser/driver.cpp.i
 
-.PHONY : src/compiler/utils/scope/scope.i
+.PHONY : src/lib/blawn/parser/driver.i
 
 # target to preprocess a source file
-src/compiler/utils/scope/scope.cpp.i:
-	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/compiler/utils/scope/scope.cpp.i
-.PHONY : src/compiler/utils/scope/scope.cpp.i
+src/lib/blawn/parser/driver.cpp.i:
+	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/lib/blawn/parser/driver.cpp.i
+.PHONY : src/lib/blawn/parser/driver.cpp.i
 
-src/compiler/utils/scope/scope.s: src/compiler/utils/scope/scope.cpp.s
+src/lib/blawn/parser/driver.s: src/lib/blawn/parser/driver.cpp.s
 
-.PHONY : src/compiler/utils/scope/scope.s
+.PHONY : src/lib/blawn/parser/driver.s
 
 # target to generate assembly for a file
-src/compiler/utils/scope/scope.cpp.s:
-	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/compiler/utils/scope/scope.cpp.s
-.PHONY : src/compiler/utils/scope/scope.cpp.s
+src/lib/blawn/parser/driver.cpp.s:
+	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/lib/blawn/parser/driver.cpp.s
+.PHONY : src/lib/blawn/parser/driver.cpp.s
 
-src/compiler/utils/unique_number/unique_number.o: src/compiler/utils/unique_number/unique_number.cpp.o
+src/lib/utils/scope.o: src/lib/utils/scope.cpp.o
 
-.PHONY : src/compiler/utils/unique_number/unique_number.o
+.PHONY : src/lib/utils/scope.o
 
 # target to build an object file
-src/compiler/utils/unique_number/unique_number.cpp.o:
-	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/compiler/utils/unique_number/unique_number.cpp.o
-.PHONY : src/compiler/utils/unique_number/unique_number.cpp.o
+src/lib/utils/scope.cpp.o:
+	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/lib/utils/scope.cpp.o
+.PHONY : src/lib/utils/scope.cpp.o
 
-src/compiler/utils/unique_number/unique_number.i: src/compiler/utils/unique_number/unique_number.cpp.i
+src/lib/utils/scope.i: src/lib/utils/scope.cpp.i
 
-.PHONY : src/compiler/utils/unique_number/unique_number.i
+.PHONY : src/lib/utils/scope.i
 
 # target to preprocess a source file
-src/compiler/utils/unique_number/unique_number.cpp.i:
-	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/compiler/utils/unique_number/unique_number.cpp.i
-.PHONY : src/compiler/utils/unique_number/unique_number.cpp.i
+src/lib/utils/scope.cpp.i:
+	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/lib/utils/scope.cpp.i
+.PHONY : src/lib/utils/scope.cpp.i
 
-src/compiler/utils/unique_number/unique_number.s: src/compiler/utils/unique_number/unique_number.cpp.s
+src/lib/utils/scope.s: src/lib/utils/scope.cpp.s
 
-.PHONY : src/compiler/utils/unique_number/unique_number.s
+.PHONY : src/lib/utils/scope.s
 
 # target to generate assembly for a file
-src/compiler/utils/unique_number/unique_number.cpp.s:
-	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/compiler/utils/unique_number/unique_number.cpp.s
-.PHONY : src/compiler/utils/unique_number/unique_number.cpp.s
+src/lib/utils/scope.cpp.s:
+	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/lib/utils/scope.cpp.s
+.PHONY : src/lib/utils/scope.cpp.s
+
+src/lib/utils/unique_number.o: src/lib/utils/unique_number.cpp.o
+
+.PHONY : src/lib/utils/unique_number.o
+
+# target to build an object file
+src/lib/utils/unique_number.cpp.o:
+	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/lib/utils/unique_number.cpp.o
+.PHONY : src/lib/utils/unique_number.cpp.o
+
+src/lib/utils/unique_number.i: src/lib/utils/unique_number.cpp.i
+
+.PHONY : src/lib/utils/unique_number.i
+
+# target to preprocess a source file
+src/lib/utils/unique_number.cpp.i:
+	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/lib/utils/unique_number.cpp.i
+.PHONY : src/lib/utils/unique_number.cpp.i
+
+src/lib/utils/unique_number.s: src/lib/utils/unique_number.cpp.s
+
+.PHONY : src/lib/utils/unique_number.s
+
+# target to generate assembly for a file
+src/lib/utils/unique_number.cpp.s:
+	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/lib/utils/unique_number.cpp.s
+.PHONY : src/lib/utils/unique_number.cpp.s
 
 # Help Target
 help:
@@ -477,33 +477,33 @@ help:
 	@echo "... parser.o"
 	@echo "... parser.i"
 	@echo "... parser.s"
-	@echo "... src/compiler/ast/builder.o"
-	@echo "... src/compiler/ast/builder.i"
-	@echo "... src/compiler/ast/builder.s"
-	@echo "... src/compiler/ast/node.o"
-	@echo "... src/compiler/ast/node.i"
-	@echo "... src/compiler/ast/node.s"
-	@echo "... src/compiler/compiler/compiler.o"
-	@echo "... src/compiler/compiler/compiler.i"
-	@echo "... src/compiler/compiler/compiler.s"
-	@echo "... src/compiler/converter/ast_to_mir/converter.o"
-	@echo "... src/compiler/converter/ast_to_mir/converter.i"
-	@echo "... src/compiler/converter/ast_to_mir/converter.s"
-	@echo "... src/compiler/errors/errors.o"
-	@echo "... src/compiler/errors/errors.i"
-	@echo "... src/compiler/errors/errors.s"
-	@echo "... src/compiler/main.o"
-	@echo "... src/compiler/main.i"
-	@echo "... src/compiler/main.s"
-	@echo "... src/compiler/parser/driver.o"
-	@echo "... src/compiler/parser/driver.i"
-	@echo "... src/compiler/parser/driver.s"
-	@echo "... src/compiler/utils/scope/scope.o"
-	@echo "... src/compiler/utils/scope/scope.i"
-	@echo "... src/compiler/utils/scope/scope.s"
-	@echo "... src/compiler/utils/unique_number/unique_number.o"
-	@echo "... src/compiler/utils/unique_number/unique_number.i"
-	@echo "... src/compiler/utils/unique_number/unique_number.s"
+	@echo "... src/lib/ast/builder.o"
+	@echo "... src/lib/ast/builder.i"
+	@echo "... src/lib/ast/builder.s"
+	@echo "... src/lib/ast/node.o"
+	@echo "... src/lib/ast/node.i"
+	@echo "... src/lib/ast/node.s"
+	@echo "... src/lib/blawn/compiler.o"
+	@echo "... src/lib/blawn/compiler.i"
+	@echo "... src/lib/blawn/compiler.s"
+	@echo "... src/lib/blawn/converter/ast_to_mir/converter.o"
+	@echo "... src/lib/blawn/converter/ast_to_mir/converter.i"
+	@echo "... src/lib/blawn/converter/ast_to_mir/converter.s"
+	@echo "... src/lib/blawn/main.o"
+	@echo "... src/lib/blawn/main.i"
+	@echo "... src/lib/blawn/main.s"
+	@echo "... src/lib/blawn/module/module.o"
+	@echo "... src/lib/blawn/module/module.i"
+	@echo "... src/lib/blawn/module/module.s"
+	@echo "... src/lib/blawn/parser/driver.o"
+	@echo "... src/lib/blawn/parser/driver.i"
+	@echo "... src/lib/blawn/parser/driver.s"
+	@echo "... src/lib/utils/scope.o"
+	@echo "... src/lib/utils/scope.i"
+	@echo "... src/lib/utils/scope.s"
+	@echo "... src/lib/utils/unique_number.o"
+	@echo "... src/lib/utils/unique_number.i"
+	@echo "... src/lib/utils/unique_number.s"
 .PHONY : help
 
 

@@ -54,7 +54,7 @@ CMAKE_BINARY_DIR = /Users/ueharanaoto/Desktop/Blawn/build
 include CMakeFiles/format.dir/progress.make
 
 CMakeFiles/format:
-	python3 /Users/ueharanaoto/Desktop/Blawn/src/dev_utils/format_cpp.py /Users/ueharanaoto/Desktop/Blawn/src
+	python3 /Users/ueharanaoto/Desktop/Blawn/dev_utils/format_cpp.py /Users/ueharanaoto/Desktop/Blawn/src
 
 format: CMakeFiles/format
 format: CMakeFiles/format.dir/build.make

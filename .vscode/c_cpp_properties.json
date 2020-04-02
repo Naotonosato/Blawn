@@ -5,7 +5,8 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "/usr/local/opt/llvm/include",
-                "/usr/local/opt/flex/include"
+                "/usr/local/opt/flex/include",
+                "${workspaceFolder}/src/"
             ],
             "defines": [],
             "macFrameworkPath": [

@@ -6,20 +6,21 @@ set(CMAKE_DEPENDS_LANGUAGES
 set(CMAKE_DEPENDS_CHECK_CXX
   "/Users/ueharanaoto/Desktop/Blawn/build/lexer.cpp" "/Users/ueharanaoto/Desktop/Blawn/build/CMakeFiles/blawn.dir/lexer.cpp.o"
   "/Users/ueharanaoto/Desktop/Blawn/build/parser.cpp" "/Users/ueharanaoto/Desktop/Blawn/build/CMakeFiles/blawn.dir/parser.cpp.o"
-  "/Users/ueharanaoto/Desktop/Blawn/src/compiler/ast/builder.cpp" "/Users/ueharanaoto/Desktop/Blawn/build/CMakeFiles/blawn.dir/src/compiler/ast/builder.cpp.o"
-  "/Users/ueharanaoto/Desktop/Blawn/src/compiler/ast/node.cpp" "/Users/ueharanaoto/Desktop/Blawn/build/CMakeFiles/blawn.dir/src/compiler/ast/node.cpp.o"
-  "/Users/ueharanaoto/Desktop/Blawn/src/compiler/compiler/compiler.cpp" "/Users/ueharanaoto/Desktop/Blawn/build/CMakeFiles/blawn.dir/src/compiler/compiler/compiler.cpp.o"
-  "/Users/ueharanaoto/Desktop/Blawn/src/compiler/converter/ast_to_mir/converter.cpp" "/Users/ueharanaoto/Desktop/Blawn/build/CMakeFiles/blawn.dir/src/compiler/converter/ast_to_mir/converter.cpp.o"
-  "/Users/ueharanaoto/Desktop/Blawn/src/compiler/errors/errors.cpp" "/Users/ueharanaoto/Desktop/Blawn/build/CMakeFiles/blawn.dir/src/compiler/errors/errors.cpp.o"
-  "/Users/ueharanaoto/Desktop/Blawn/src/compiler/main.cpp" "/Users/ueharanaoto/Desktop/Blawn/build/CMakeFiles/blawn.dir/src/compiler/main.cpp.o"
-  "/Users/ueharanaoto/Desktop/Blawn/src/compiler/parser/driver.cpp" "/Users/ueharanaoto/Desktop/Blawn/build/CMakeFiles/blawn.dir/src/compiler/parser/driver.cpp.o"
-  "/Users/ueharanaoto/Desktop/Blawn/src/compiler/utils/scope/scope.cpp" "/Users/ueharanaoto/Desktop/Blawn/build/CMakeFiles/blawn.dir/src/compiler/utils/scope/scope.cpp.o"
-  "/Users/ueharanaoto/Desktop/Blawn/src/compiler/utils/unique_number/unique_number.cpp" "/Users/ueharanaoto/Desktop/Blawn/build/CMakeFiles/blawn.dir/src/compiler/utils/unique_number/unique_number.cpp.o"
+  "/Users/ueharanaoto/Desktop/Blawn/src/lib/ast/builder.cpp" "/Users/ueharanaoto/Desktop/Blawn/build/CMakeFiles/blawn.dir/src/lib/ast/builder.cpp.o"
+  "/Users/ueharanaoto/Desktop/Blawn/src/lib/ast/node.cpp" "/Users/ueharanaoto/Desktop/Blawn/build/CMakeFiles/blawn.dir/src/lib/ast/node.cpp.o"
+  "/Users/ueharanaoto/Desktop/Blawn/src/lib/blawn/compiler.cpp" "/Users/ueharanaoto/Desktop/Blawn/build/CMakeFiles/blawn.dir/src/lib/blawn/compiler.cpp.o"
+  "/Users/ueharanaoto/Desktop/Blawn/src/lib/blawn/converter/ast_to_mir/converter.cpp" "/Users/ueharanaoto/Desktop/Blawn/build/CMakeFiles/blawn.dir/src/lib/blawn/converter/ast_to_mir/converter.cpp.o"
+  "/Users/ueharanaoto/Desktop/Blawn/src/lib/blawn/main.cpp" "/Users/ueharanaoto/Desktop/Blawn/build/CMakeFiles/blawn.dir/src/lib/blawn/main.cpp.o"
+  "/Users/ueharanaoto/Desktop/Blawn/src/lib/blawn/module/module.cpp" "/Users/ueharanaoto/Desktop/Blawn/build/CMakeFiles/blawn.dir/src/lib/blawn/module/module.cpp.o"
+  "/Users/ueharanaoto/Desktop/Blawn/src/lib/blawn/parser/driver.cpp" "/Users/ueharanaoto/Desktop/Blawn/build/CMakeFiles/blawn.dir/src/lib/blawn/parser/driver.cpp.o"
+  "/Users/ueharanaoto/Desktop/Blawn/src/lib/utils/scope.cpp" "/Users/ueharanaoto/Desktop/Blawn/build/CMakeFiles/blawn.dir/src/lib/utils/scope.cpp.o"
+  "/Users/ueharanaoto/Desktop/Blawn/src/lib/utils/unique_number.cpp" "/Users/ueharanaoto/Desktop/Blawn/build/CMakeFiles/blawn.dir/src/lib/utils/unique_number.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "Clang")
 
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
+  "../src"
   "/usr/local/opt/llvm/include"
   "."
   "/usr/local/opt/flex/include"

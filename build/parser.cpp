@@ -41,13 +41,13 @@
 
 
 // Unqualified %code blocks.
-#line 35 "./src/compiler/parser/parser.yy"
+#line 35 "./src/lib/blawn/parser/parser.yy"
 
     #include <iostream>
     #include <cstdlib>
     #include <fstream>
     #include <memory>
-    #include "../src/compiler/parser/driver.hpp"
+    #include "include/blawn/parser/driver.hpp"
     #undef yylex
     #define yylex scanner.yylex
     enum BLAWN_STATE
@@ -156,7 +156,7 @@
 #define YYERROR         goto yyerrorlab
 #define YYRECOVERING()  (!!yyerrstatus_)
 
-#line 5 "./src/compiler/parser/parser.yy"
+#line 5 "./src/lib/blawn/parser/parser.yy"
 namespace blawn {
 #line 162 "/Users/ueharanaoto/Desktop/Blawn/build/parser.cpp"
 
@@ -1355,7 +1355,7 @@ namespace blawn {
           switch (yyn)
             {
   case 2:
-#line 148 "./src/compiler/parser/parser.yy"
+#line 148 "./src/lib/blawn/parser/parser.yy"
     {
         driver.ast_builder->break_out_of_scope();
         yylhs.value.as < std::shared_ptr<ast::RootNode> > () = driver.ast_builder->create_root(yystack_[0].value.as < std::shared_ptr<ast::BlockNode> > ());
@@ -1364,7 +1364,7 @@ namespace blawn {
     break;
 
   case 3:
-#line 154 "./src/compiler/parser/parser.yy"
+#line 154 "./src/lib/blawn/parser/parser.yy"
     {
         yylhs.value.as < std::shared_ptr<ast::BlockNode> > () = driver.ast_builder->create_block(std::move(yystack_[0].value.as < std::vector<std::shared_ptr<ast::Node>> > ()));
     }
@@ -1372,7 +1372,7 @@ namespace blawn {
     break;
 
   case 4:
-#line 159 "./src/compiler/parser/parser.yy"
+#line 159 "./src/lib/blawn/parser/parser.yy"
     {
         yylhs.value.as < std::vector<std::shared_ptr<ast::Node>> > ().push_back(yystack_[0].value.as < std::shared_ptr<ast::Node> > ());
     }
@@ -1380,7 +1380,7 @@ namespace blawn {
     break;
 
   case 5:
-#line 163 "./src/compiler/parser/parser.yy"
+#line 163 "./src/lib/blawn/parser/parser.yy"
     {
         yylhs.value.as < std::vector<std::shared_ptr<ast::Node>> > () = (yystack_[1].value.as < std::vector<std::shared_ptr<ast::Node>> > ());
         yylhs.value.as < std::vector<std::shared_ptr<ast::Node>> > ().push_back(yystack_[0].value.as < std::shared_ptr<ast::Node> > ());
@@ -1389,7 +1389,7 @@ namespace blawn {
     break;
 
   case 6:
-#line 169 "./src/compiler/parser/parser.yy"
+#line 169 "./src/lib/blawn/parser/parser.yy"
     {
         yylhs.value.as < std::shared_ptr<ast::Node> > () = (yystack_[1].value.as < std::shared_ptr<ast::Node> > ());
     }
@@ -1397,7 +1397,7 @@ namespace blawn {
     break;
 
   case 7:
-#line 173 "./src/compiler/parser/parser.yy"
+#line 173 "./src/lib/blawn/parser/parser.yy"
     {
         yylhs.value.as < std::shared_ptr<ast::Node> > () = (yystack_[1].value.as < std::shared_ptr<ast::Node> > ());
     }
@@ -1405,7 +1405,7 @@ namespace blawn {
     break;
 
   case 8:
-#line 177 "./src/compiler/parser/parser.yy"
+#line 177 "./src/lib/blawn/parser/parser.yy"
     {
         yylhs.value.as < std::shared_ptr<ast::Node> > () = yystack_[0].value.as < std::shared_ptr<ast::Node> > ();
     }
@@ -1413,7 +1413,7 @@ namespace blawn {
     break;
 
   case 9:
-#line 183 "./src/compiler/parser/parser.yy"
+#line 183 "./src/lib/blawn/parser/parser.yy"
     {
         yylhs.value.as < std::shared_ptr<ast::Node> > () = (yystack_[0].value.as < std::shared_ptr<ast::Node> > ());
     }
@@ -1421,7 +1421,7 @@ namespace blawn {
     break;
 
   case 10:
-#line 188 "./src/compiler/parser/parser.yy"
+#line 188 "./src/lib/blawn/parser/parser.yy"
     {
         yylhs.value.as < std::shared_ptr<ast::Node> > () = ast::Node::create(yystack_[0].value.as < std::shared_ptr<ast::GenericFunctionNode> > ());;
     }
@@ -1429,7 +1429,7 @@ namespace blawn {
     break;
 
   case 11:
-#line 192 "./src/compiler/parser/parser.yy"
+#line 192 "./src/lib/blawn/parser/parser.yy"
     {
         yylhs.value.as < std::shared_ptr<ast::Node> > () = ast::Node::create(yystack_[0].value.as < std::shared_ptr<ast::GenericClassNode> > ());;
     }
@@ -1437,7 +1437,7 @@ namespace blawn {
     break;
 
   case 12:
-#line 197 "./src/compiler/parser/parser.yy"
+#line 197 "./src/lib/blawn/parser/parser.yy"
     {
         yylhs.value.as < std::shared_ptr<ast::GenericFunctionNode> > () = driver.ast_builder->create_generic_function_definition(yystack_[4].value.as < std::pair<std::string,std::vector<std::shared_ptr<ast::ArgumentNode>>> > ().first,std::move(yystack_[4].value.as < std::pair<std::string,std::vector<std::shared_ptr<ast::ArgumentNode>>> > ().second),yystack_[2].value.as < std::shared_ptr<ast::BlockNode> > (),yystack_[1].value.as < std::shared_ptr<ast::Node> > ());
         driver.ast_builder->break_out_of_scope();
@@ -1446,7 +1446,7 @@ namespace blawn {
     break;
 
   case 13:
-#line 202 "./src/compiler/parser/parser.yy"
+#line 202 "./src/lib/blawn/parser/parser.yy"
     {
         yylhs.value.as < std::shared_ptr<ast::GenericFunctionNode> > () = driver.ast_builder->create_generic_function_definition(yystack_[3].value.as < std::pair<std::string,std::vector<std::shared_ptr<ast::ArgumentNode>>> > ().first,std::move(yystack_[3].value.as < std::pair<std::string,std::vector<std::shared_ptr<ast::ArgumentNode>>> > ().second),{},yystack_[1].value.as < std::shared_ptr<ast::Node> > ());
         driver.ast_builder->break_out_of_scope();
@@ -1455,7 +1455,7 @@ namespace blawn {
     break;
 
   case 14:
-#line 208 "./src/compiler/parser/parser.yy"
+#line 208 "./src/lib/blawn/parser/parser.yy"
     {
         yylhs.value.as < std::string > () = yystack_[0].value.as < std::string > ();
         driver.ast_builder->into_named_scope(yystack_[0].value.as < std::string > ());
@@ -1464,7 +1464,7 @@ namespace blawn {
     break;
 
   case 15:
-#line 214 "./src/compiler/parser/parser.yy"
+#line 214 "./src/lib/blawn/parser/parser.yy"
     {
         driver.ast_builder->break_out_of_scope();
         driver.ast_builder->create_generic_function_declaration(yystack_[1].value.as < std::string > (),yystack_[0].value.as < std::vector<std::shared_ptr<ast::ArgumentNode>> > ());
@@ -1475,7 +1475,7 @@ namespace blawn {
     break;
 
   case 16:
-#line 222 "./src/compiler/parser/parser.yy"
+#line 222 "./src/lib/blawn/parser/parser.yy"
     { 
         yylhs.value.as < std::shared_ptr<ast::GenericClassNode> > () = driver.ast_builder->create_generic_class_definition(yystack_[4].value.as < std::string > (),std::move(yystack_[3].value.as < std::vector<std::shared_ptr<ast::ArgumentNode>> > ()),yystack_[1].value.as < std::vector<std::shared_ptr<ast::VariableNode>> > (),yystack_[0].value.as < std::vector<std::shared_ptr<ast::GenericFunctionNode>> > ());
         driver.ast_builder->break_out_of_scope();
@@ -1484,7 +1484,7 @@ namespace blawn {
     break;
 
   case 17:
-#line 227 "./src/compiler/parser/parser.yy"
+#line 227 "./src/lib/blawn/parser/parser.yy"
     {
         yylhs.value.as < std::shared_ptr<ast::GenericClassNode> > () = driver.ast_builder->create_generic_class_definition(yystack_[3].value.as < std::string > (),std::move(yystack_[2].value.as < std::vector<std::shared_ptr<ast::ArgumentNode>> > ()),yystack_[0].value.as < std::vector<std::shared_ptr<ast::VariableNode>> > (),{});
         driver.ast_builder->break_out_of_scope();
@@ -1493,7 +1493,7 @@ namespace blawn {
     break;
 
   case 18:
-#line 232 "./src/compiler/parser/parser.yy"
+#line 232 "./src/lib/blawn/parser/parser.yy"
     {
         yylhs.value.as < std::shared_ptr<ast::GenericClassNode> > () = (driver.ast_builder->create_generic_class_definition(yystack_[3].value.as < std::string > (),std::move(yystack_[2].value.as < std::vector<std::shared_ptr<ast::ArgumentNode>> > ()),{},yystack_[0].value.as < std::vector<std::shared_ptr<ast::GenericFunctionNode>> > ()));
         driver.ast_builder->break_out_of_scope();
@@ -1502,7 +1502,7 @@ namespace blawn {
     break;
 
   case 19:
-#line 238 "./src/compiler/parser/parser.yy"
+#line 238 "./src/lib/blawn/parser/parser.yy"
     {
         yylhs.value.as < std::string > () = yystack_[0].value.as < std::string > ();
         driver.ast_builder->into_named_scope(yystack_[0].value.as < std::string > ());
@@ -1511,7 +1511,7 @@ namespace blawn {
     break;
 
   case 20:
-#line 244 "./src/compiler/parser/parser.yy"
+#line 244 "./src/lib/blawn/parser/parser.yy"
     {
         yylhs.value.as < std::vector<std::shared_ptr<ast::GenericFunctionNode>> > ().push_back(yystack_[1].value.as < std::shared_ptr<ast::GenericFunctionNode> > ());
     }
@@ -1519,7 +1519,7 @@ namespace blawn {
     break;
 
   case 21:
-#line 248 "./src/compiler/parser/parser.yy"
+#line 248 "./src/lib/blawn/parser/parser.yy"
     {
         yylhs.value.as < std::vector<std::shared_ptr<ast::GenericFunctionNode>> > () = (yystack_[2].value.as < std::vector<std::shared_ptr<ast::GenericFunctionNode>> > ());
         yylhs.value.as < std::vector<std::shared_ptr<ast::GenericFunctionNode>> > ().push_back(yystack_[1].value.as < std::shared_ptr<ast::GenericFunctionNode> > ());
@@ -1528,7 +1528,7 @@ namespace blawn {
     break;
 
   case 22:
-#line 254 "./src/compiler/parser/parser.yy"
+#line 254 "./src/lib/blawn/parser/parser.yy"
     {
         yylhs.value.as < std::string > () = yystack_[0].value.as < std::string > ();
         driver.ast_builder->into_named_scope(yystack_[0].value.as < std::string > ());
@@ -1537,7 +1537,7 @@ namespace blawn {
     break;
 
   case 23:
-#line 260 "./src/compiler/parser/parser.yy"
+#line 260 "./src/lib/blawn/parser/parser.yy"
     {
         yystack_[0].value.as < std::vector<std::shared_ptr<ast::ArgumentNode>> > ().insert(yystack_[0].value.as < std::vector<std::shared_ptr<ast::ArgumentNode>> > ().begin(),driver.ast_builder->create_argument("self"));
         driver.ast_builder->break_out_of_scope();
@@ -1549,7 +1549,7 @@ namespace blawn {
     break;
 
   case 24:
-#line 269 "./src/compiler/parser/parser.yy"
+#line 269 "./src/lib/blawn/parser/parser.yy"
     {
         yylhs.value.as < std::shared_ptr<ast::GenericFunctionNode> > () = driver.ast_builder->create_generic_function_definition(yystack_[3].value.as < std::pair<std::string,std::vector<std::shared_ptr<ast::ArgumentNode>>> > ().first,std::move(yystack_[3].value.as < std::pair<std::string,std::vector<std::shared_ptr<ast::ArgumentNode>>> > ().second),(yystack_[1].value.as < std::shared_ptr<ast::BlockNode> > ()),(yystack_[0].value.as < std::shared_ptr<ast::Node> > ()));
         driver.ast_builder->break_out_of_scope();
@@ -1558,7 +1558,7 @@ namespace blawn {
     break;
 
   case 25:
-#line 274 "./src/compiler/parser/parser.yy"
+#line 274 "./src/lib/blawn/parser/parser.yy"
     {
         yylhs.value.as < std::shared_ptr<ast::GenericFunctionNode> > () = driver.ast_builder->create_generic_function_definition(yystack_[2].value.as < std::pair<std::string,std::vector<std::shared_ptr<ast::ArgumentNode>>> > ().first,std::move(yystack_[2].value.as < std::pair<std::string,std::vector<std::shared_ptr<ast::ArgumentNode>>> > ().second),{},(yystack_[0].value.as < std::shared_ptr<ast::Node> > ()));
         driver.ast_builder->break_out_of_scope();
@@ -1567,7 +1567,7 @@ namespace blawn {
     break;
 
   case 26:
-#line 280 "./src/compiler/parser/parser.yy"
+#line 280 "./src/lib/blawn/parser/parser.yy"
     {
         yylhs.value.as < std::vector<std::shared_ptr<ast::VariableNode>> > ().push_back(driver.ast_builder->create_member_variable_definition(yystack_[3].value.as < std::string > (),(yystack_[1].value.as < std::shared_ptr<ast::Node> > ())));
     }
@@ -1575,7 +1575,7 @@ namespace blawn {
     break;
 
   case 27:
-#line 284 "./src/compiler/parser/parser.yy"
+#line 284 "./src/lib/blawn/parser/parser.yy"
     {
         yylhs.value.as < std::vector<std::shared_ptr<ast::VariableNode>> > () = std::move(yystack_[4].value.as < std::vector<std::shared_ptr<ast::VariableNode>> > ());
         yylhs.value.as < std::vector<std::shared_ptr<ast::VariableNode>> > ().push_back(driver.ast_builder->create_member_variable_definition(yystack_[3].value.as < std::string > (),(yystack_[1].value.as < std::shared_ptr<ast::Node> > ())));
@@ -1584,7 +1584,7 @@ namespace blawn {
     break;
 
   case 28:
-#line 290 "./src/compiler/parser/parser.yy"
+#line 290 "./src/lib/blawn/parser/parser.yy"
     {
         yylhs.value.as < std::shared_ptr<ast::Node> > () = yystack_[0].value.as < std::shared_ptr<ast::Node> > ();
     }
@@ -1592,7 +1592,7 @@ namespace blawn {
     break;
 
   case 29:
-#line 294 "./src/compiler/parser/parser.yy"
+#line 294 "./src/lib/blawn/parser/parser.yy"
     {
         yylhs.value.as < std::shared_ptr<ast::Node> > () = driver.ast_builder->create_void();
     }
@@ -1600,7 +1600,7 @@ namespace blawn {
     break;
 
   case 30:
-#line 299 "./src/compiler/parser/parser.yy"
+#line 299 "./src/lib/blawn/parser/parser.yy"
     {
         yylhs.value.as < std::vector<std::shared_ptr<ast::ArgumentNode>> > () = std::move(yystack_[1].value.as < std::vector<std::shared_ptr<ast::ArgumentNode>> > ());
     }
@@ -1608,7 +1608,7 @@ namespace blawn {
     break;
 
   case 31:
-#line 303 "./src/compiler/parser/parser.yy"
+#line 303 "./src/lib/blawn/parser/parser.yy"
     {
         yylhs.value.as < std::vector<std::shared_ptr<ast::ArgumentNode>> > () = {};
     }
@@ -1616,7 +1616,7 @@ namespace blawn {
     break;
 
   case 32:
-#line 308 "./src/compiler/parser/parser.yy"
+#line 308 "./src/lib/blawn/parser/parser.yy"
     {
         yylhs.value.as < std::vector<std::shared_ptr<ast::ArgumentNode>> > ().push_back(driver.ast_builder->create_argument(yystack_[0].value.as < std::string > ()));
     }
@@ -1624,7 +1624,7 @@ namespace blawn {
     break;
 
   case 33:
-#line 312 "./src/compiler/parser/parser.yy"
+#line 312 "./src/lib/blawn/parser/parser.yy"
     {
         yylhs.value.as < std::vector<std::shared_ptr<ast::ArgumentNode>> > () = std::move(yystack_[2].value.as < std::vector<std::shared_ptr<ast::ArgumentNode>> > ());
         yylhs.value.as < std::vector<std::shared_ptr<ast::ArgumentNode>> > ().push_back(driver.ast_builder->create_argument(yystack_[0].value.as < std::string > ()));
@@ -1633,7 +1633,7 @@ namespace blawn {
     break;
 
   case 34:
-#line 321 "./src/compiler/parser/parser.yy"
+#line 321 "./src/lib/blawn/parser/parser.yy"
     {
         yylhs.value.as < std::vector<std::shared_ptr<ast::Node>> > ().push_back(yystack_[0].value.as < std::shared_ptr<ast::Node> > ());
     }
@@ -1641,7 +1641,7 @@ namespace blawn {
     break;
 
   case 35:
-#line 325 "./src/compiler/parser/parser.yy"
+#line 325 "./src/lib/blawn/parser/parser.yy"
     {
         yylhs.value.as < std::vector<std::shared_ptr<ast::Node>> > () = (yystack_[2].value.as < std::vector<std::shared_ptr<ast::Node>> > ());
         yylhs.value.as < std::vector<std::shared_ptr<ast::Node>> > ().push_back((yystack_[0].value.as < std::shared_ptr<ast::Node> > ()));
@@ -1650,7 +1650,7 @@ namespace blawn {
     break;
 
   case 36:
-#line 331 "./src/compiler/parser/parser.yy"
+#line 331 "./src/lib/blawn/parser/parser.yy"
     {
         driver.ast_builder->into_anonymous_scope();
     }
@@ -1658,7 +1658,7 @@ namespace blawn {
     break;
 
   case 37:
-#line 336 "./src/compiler/parser/parser.yy"
+#line 336 "./src/lib/blawn/parser/parser.yy"
     {
         driver.ast_builder->into_anonymous_scope();
     }
@@ -1666,7 +1666,7 @@ namespace blawn {
     break;
 
   case 38:
-#line 341 "./src/compiler/parser/parser.yy"
+#line 341 "./src/lib/blawn/parser/parser.yy"
     {
         driver.ast_builder->into_anonymous_scope();
         yylhs.value.as < std::vector<std::shared_ptr<ast::Node>> > ().push_back(yystack_[4].value.as < std::shared_ptr<ast::Node> > ());
@@ -1677,7 +1677,7 @@ namespace blawn {
     break;
 
   case 39:
-#line 350 "./src/compiler/parser/parser.yy"
+#line 350 "./src/lib/blawn/parser/parser.yy"
     {
         yylhs.value.as < std::shared_ptr<ast::BlockNode> > () = (yystack_[1].value.as < std::shared_ptr<ast::BlockNode> > ());
         driver.ast_builder->break_out_of_scope();
@@ -1686,7 +1686,7 @@ namespace blawn {
     break;
 
   case 40:
-#line 356 "./src/compiler/parser/parser.yy"
+#line 356 "./src/lib/blawn/parser/parser.yy"
     {
         yylhs.value.as < std::shared_ptr<ast::Node> > () = ast::Node::create(driver.ast_builder->create_if(yystack_[5].value.as < std::shared_ptr<ast::Node> > (),yystack_[1].value.as < std::shared_ptr<ast::BlockNode> > (),{}));;
         driver.ast_builder->break_out_of_scope();
@@ -1695,7 +1695,7 @@ namespace blawn {
     break;
 
   case 41:
-#line 361 "./src/compiler/parser/parser.yy"
+#line 361 "./src/lib/blawn/parser/parser.yy"
     {
         yylhs.value.as < std::shared_ptr<ast::Node> > () = ast::Node::create(driver.ast_builder->create_if(yystack_[6].value.as < std::shared_ptr<ast::Node> > (),yystack_[2].value.as < std::shared_ptr<ast::BlockNode> > (),yystack_[0].value.as < std::shared_ptr<ast::BlockNode> > ()));;
         //driver.ast_builder->break_out_of_scope();
@@ -1704,7 +1704,7 @@ namespace blawn {
     break;
 
   case 42:
-#line 366 "./src/compiler/parser/parser.yy"
+#line 366 "./src/lib/blawn/parser/parser.yy"
     {
         yylhs.value.as < std::shared_ptr<ast::Node> > () = ast::Node::create(driver.ast_builder->create_for(yystack_[5].value.as < std::vector<std::shared_ptr<ast::Node>> > ()[0],yystack_[5].value.as < std::vector<std::shared_ptr<ast::Node>> > ()[1],yystack_[5].value.as < std::vector<std::shared_ptr<ast::Node>> > ()[2],yystack_[1].value.as < std::shared_ptr<ast::BlockNode> > ()));;
         driver.ast_builder->break_out_of_scope();
@@ -1713,7 +1713,7 @@ namespace blawn {
     break;
 
   case 43:
-#line 371 "./src/compiler/parser/parser.yy"
+#line 371 "./src/lib/blawn/parser/parser.yy"
     {
         yylhs.value.as < std::shared_ptr<ast::Node> > () = yystack_[0].value.as < std::shared_ptr<ast::Node> > ();
     }
@@ -1721,7 +1721,7 @@ namespace blawn {
     break;
 
   case 44:
-#line 375 "./src/compiler/parser/parser.yy"
+#line 375 "./src/lib/blawn/parser/parser.yy"
     {
         yylhs.value.as < std::shared_ptr<ast::Node> > () = ast::Node::create(yystack_[0].value.as < std::shared_ptr<ast::GlobalVariableNode> > ());;
     }
@@ -1729,7 +1729,7 @@ namespace blawn {
     break;
 
   case 45:
-#line 379 "./src/compiler/parser/parser.yy"
+#line 379 "./src/lib/blawn/parser/parser.yy"
     {
         yylhs.value.as < std::shared_ptr<ast::Node> > () = ast::Node::create(driver.ast_builder->create_deep_copy(yystack_[2].value.as < std::shared_ptr<ast::Node> > (),yystack_[0].value.as < std::shared_ptr<ast::Node> > ()));;
     }
@@ -1737,7 +1737,7 @@ namespace blawn {
     break;
 
   case 46:
-#line 383 "./src/compiler/parser/parser.yy"
+#line 383 "./src/lib/blawn/parser/parser.yy"
     {
         yylhs.value.as < std::shared_ptr<ast::Node> > () = ast::Node::create(driver.ast_builder->create_binary_expression((yystack_[2].value.as < std::shared_ptr<ast::Node> > ()),(yystack_[0].value.as < std::shared_ptr<ast::Node> > ()),"ADD"));;
     }
@@ -1745,7 +1745,7 @@ namespace blawn {
     break;
 
   case 47:
-#line 387 "./src/compiler/parser/parser.yy"
+#line 387 "./src/lib/blawn/parser/parser.yy"
     {
         yylhs.value.as < std::shared_ptr<ast::Node> > () = ast::Node::create(driver.ast_builder->create_binary_expression((yystack_[2].value.as < std::shared_ptr<ast::Node> > ()),(yystack_[0].value.as < std::shared_ptr<ast::Node> > ()),"SUB"));;
     }
@@ -1753,7 +1753,7 @@ namespace blawn {
     break;
 
   case 48:
-#line 391 "./src/compiler/parser/parser.yy"
+#line 391 "./src/lib/blawn/parser/parser.yy"
     {
         yylhs.value.as < std::shared_ptr<ast::Node> > () = ast::Node::create(driver.ast_builder->create_binary_expression((yystack_[2].value.as < std::shared_ptr<ast::Node> > ()),(yystack_[0].value.as < std::shared_ptr<ast::Node> > ()),"MUL"));;
     }
@@ -1761,7 +1761,7 @@ namespace blawn {
     break;
 
   case 49:
-#line 395 "./src/compiler/parser/parser.yy"
+#line 395 "./src/lib/blawn/parser/parser.yy"
     {
         yylhs.value.as < std::shared_ptr<ast::Node> > () = ast::Node::create(driver.ast_builder->create_binary_expression((yystack_[2].value.as < std::shared_ptr<ast::Node> > ()),(yystack_[0].value.as < std::shared_ptr<ast::Node> > ()),"DIV"));;
     }
@@ -1769,7 +1769,7 @@ namespace blawn {
     break;
 
   case 50:
-#line 399 "./src/compiler/parser/parser.yy"
+#line 399 "./src/lib/blawn/parser/parser.yy"
     {
         yylhs.value.as < std::shared_ptr<ast::Node> > () = ast::Node::create(driver.ast_builder->create_binary_expression((yystack_[2].value.as < std::shared_ptr<ast::Node> > ()),(yystack_[0].value.as < std::shared_ptr<ast::Node> > ()),"and"));;
     }
@@ -1777,7 +1777,7 @@ namespace blawn {
     break;
 
   case 51:
-#line 403 "./src/compiler/parser/parser.yy"
+#line 403 "./src/lib/blawn/parser/parser.yy"
     {
         yylhs.value.as < std::shared_ptr<ast::Node> > () = ast::Node::create(driver.ast_builder->create_binary_expression((yystack_[2].value.as < std::shared_ptr<ast::Node> > ()),(yystack_[0].value.as < std::shared_ptr<ast::Node> > ()),"or"));;
     }
@@ -1785,7 +1785,7 @@ namespace blawn {
     break;
 
   case 52:
-#line 407 "./src/compiler/parser/parser.yy"
+#line 407 "./src/lib/blawn/parser/parser.yy"
     {
         yylhs.value.as < std::shared_ptr<ast::Node> > () = ast::Node::create(driver.ast_builder->create_binary_expression((yystack_[2].value.as < std::shared_ptr<ast::Node> > ()),(yystack_[0].value.as < std::shared_ptr<ast::Node> > ()),">="));;
     }
@@ -1793,7 +1793,7 @@ namespace blawn {
     break;
 
   case 53:
-#line 411 "./src/compiler/parser/parser.yy"
+#line 411 "./src/lib/blawn/parser/parser.yy"
     {
         yylhs.value.as < std::shared_ptr<ast::Node> > () = ast::Node::create(driver.ast_builder->create_binary_expression((yystack_[2].value.as < std::shared_ptr<ast::Node> > ()),(yystack_[0].value.as < std::shared_ptr<ast::Node> > ()),"<="));;
     }
@@ -1801,7 +1801,7 @@ namespace blawn {
     break;
 
   case 54:
-#line 415 "./src/compiler/parser/parser.yy"
+#line 415 "./src/lib/blawn/parser/parser.yy"
     {
         yylhs.value.as < std::shared_ptr<ast::Node> > () = ast::Node::create(driver.ast_builder->create_binary_expression((yystack_[2].value.as < std::shared_ptr<ast::Node> > ()),(yystack_[0].value.as < std::shared_ptr<ast::Node> > ()),">"));;
     }
@@ -1809,7 +1809,7 @@ namespace blawn {
     break;
 
   case 55:
-#line 419 "./src/compiler/parser/parser.yy"
+#line 419 "./src/lib/blawn/parser/parser.yy"
     {
         yylhs.value.as < std::shared_ptr<ast::Node> > () = ast::Node::create(driver.ast_builder->create_binary_expression((yystack_[2].value.as < std::shared_ptr<ast::Node> > ()),(yystack_[0].value.as < std::shared_ptr<ast::Node> > ()),"<"));;
     }
@@ -1817,7 +1817,7 @@ namespace blawn {
     break;
 
   case 56:
-#line 423 "./src/compiler/parser/parser.yy"
+#line 423 "./src/lib/blawn/parser/parser.yy"
     {
         yylhs.value.as < std::shared_ptr<ast::Node> > () = ast::Node::create(driver.ast_builder->create_binary_expression((yystack_[2].value.as < std::shared_ptr<ast::Node> > ()),(yystack_[0].value.as < std::shared_ptr<ast::Node> > ()),"!="));;
     }
@@ -1825,7 +1825,7 @@ namespace blawn {
     break;
 
   case 57:
-#line 427 "./src/compiler/parser/parser.yy"
+#line 427 "./src/lib/blawn/parser/parser.yy"
     {
         yylhs.value.as < std::shared_ptr<ast::Node> > () = ast::Node::create(driver.ast_builder->create_binary_expression((yystack_[2].value.as < std::shared_ptr<ast::Node> > ()),(yystack_[0].value.as < std::shared_ptr<ast::Node> > ()),"=="));;
     }
@@ -1833,7 +1833,7 @@ namespace blawn {
     break;
 
   case 58:
-#line 431 "./src/compiler/parser/parser.yy"
+#line 431 "./src/lib/blawn/parser/parser.yy"
     {
         yylhs.value.as < std::shared_ptr<ast::Node> > () = (yystack_[0].value.as < std::shared_ptr<ast::Node> > ());
     }
@@ -1841,7 +1841,7 @@ namespace blawn {
     break;
 
   case 59:
-#line 435 "./src/compiler/parser/parser.yy"
+#line 435 "./src/lib/blawn/parser/parser.yy"
     {
         yylhs.value.as < std::shared_ptr<ast::Node> > () = ast::Node::create(yystack_[0].value.as < std::shared_ptr<ast::ArrayNode> > ());;
     }
@@ -1849,7 +1849,7 @@ namespace blawn {
     break;
 
   case 60:
-#line 439 "./src/compiler/parser/parser.yy"
+#line 439 "./src/lib/blawn/parser/parser.yy"
     {
         yylhs.value.as < std::shared_ptr<ast::Node> > () = ast::Node::create(yystack_[0].value.as < std::shared_ptr<ast::AccessElementNode> > ());;
     }
@@ -1857,7 +1857,7 @@ namespace blawn {
     break;
 
   case 61:
-#line 443 "./src/compiler/parser/parser.yy"
+#line 443 "./src/lib/blawn/parser/parser.yy"
     {
         yylhs.value.as < std::shared_ptr<ast::Node> > () = driver.ast_builder->create_minus(yystack_[0].value.as < std::shared_ptr<ast::Node> > ());
     }
@@ -1865,7 +1865,7 @@ namespace blawn {
     break;
 
   case 62:
-#line 447 "./src/compiler/parser/parser.yy"
+#line 447 "./src/lib/blawn/parser/parser.yy"
     {
         yylhs.value.as < std::shared_ptr<ast::Node> > () = (yystack_[1].value.as < std::shared_ptr<ast::Node> > ());
     }
@@ -1873,7 +1873,7 @@ namespace blawn {
     break;
 
   case 63:
-#line 452 "./src/compiler/parser/parser.yy"
+#line 452 "./src/lib/blawn/parser/parser.yy"
     {
         yylhs.value.as < std::shared_ptr<ast::ArrayNode> > () = driver.ast_builder->create_array((yystack_[1].value.as < std::vector<std::shared_ptr<ast::Node>> > ()));
     }
@@ -1881,7 +1881,7 @@ namespace blawn {
     break;
 
   case 64:
-#line 456 "./src/compiler/parser/parser.yy"
+#line 456 "./src/lib/blawn/parser/parser.yy"
     {
         yylhs.value.as < std::shared_ptr<ast::ArrayNode> > () = driver.ast_builder->create_array();
     }
@@ -1889,7 +1889,7 @@ namespace blawn {
     break;
 
   case 65:
-#line 461 "./src/compiler/parser/parser.yy"
+#line 461 "./src/lib/blawn/parser/parser.yy"
     {
         yylhs.value.as < std::shared_ptr<ast::AccessElementNode> > () = driver.ast_builder->create_access(yystack_[1].value.as < std::shared_ptr<ast::Node> > (),yystack_[0].value.as < std::string > ());
     }
@@ -1897,7 +1897,7 @@ namespace blawn {
     break;
 
   case 66:
-#line 466 "./src/compiler/parser/parser.yy"
+#line 466 "./src/lib/blawn/parser/parser.yy"
     {
         yylhs.value.as < std::shared_ptr<ast::GlobalVariableNode> > () = driver.ast_builder->create_global_variable_definition(yystack_[2].value.as < std::string > (),yystack_[0].value.as < std::shared_ptr<ast::Node> > ());
     }
@@ -1905,7 +1905,7 @@ namespace blawn {
     break;
 
   case 67:
-#line 471 "./src/compiler/parser/parser.yy"
+#line 471 "./src/lib/blawn/parser/parser.yy"
     {
         if (driver.ast_builder->exist(yystack_[2].value.as < std::string > ()))
         {
@@ -1921,7 +1921,7 @@ namespace blawn {
     break;
 
   case 68:
-#line 483 "./src/compiler/parser/parser.yy"
+#line 483 "./src/lib/blawn/parser/parser.yy"
     {
         yylhs.value.as < std::shared_ptr<ast::Node> > () = ast::Node::create(driver.ast_builder->create_assignment(yystack_[2].value.as < std::shared_ptr<ast::AccessElementNode> > (),(yystack_[0].value.as < std::shared_ptr<ast::Node> > ())));;
     }
@@ -1929,7 +1929,7 @@ namespace blawn {
     break;
 
   case 69:
-#line 488 "./src/compiler/parser/parser.yy"
+#line 488 "./src/lib/blawn/parser/parser.yy"
     {
         yylhs.value.as < std::shared_ptr<ast::Node> > () = ast::Node::create(yystack_[0].value.as < std::shared_ptr<ast::CallFunctionNode> > ());
     }
@@ -1937,7 +1937,7 @@ namespace blawn {
     break;
 
   case 70:
-#line 492 "./src/compiler/parser/parser.yy"
+#line 492 "./src/lib/blawn/parser/parser.yy"
     {
         yylhs.value.as < std::shared_ptr<ast::Node> > () = ast::Node::create(driver.ast_builder->create_string(yystack_[0].value.as < std::string > ()));
     }
@@ -1945,7 +1945,7 @@ namespace blawn {
     break;
 
   case 71:
-#line 496 "./src/compiler/parser/parser.yy"
+#line 496 "./src/lib/blawn/parser/parser.yy"
     {
         yylhs.value.as < std::shared_ptr<ast::Node> > () = ast::Node::create(driver.ast_builder->create_float(yystack_[0].value.as < double > ()));
     }
@@ -1953,7 +1953,7 @@ namespace blawn {
     break;
 
   case 72:
-#line 500 "./src/compiler/parser/parser.yy"
+#line 500 "./src/lib/blawn/parser/parser.yy"
     { 
         yylhs.value.as < std::shared_ptr<ast::Node> > () = ast::Node::create(driver.ast_builder->create_integer(yystack_[0].value.as < long long > ()));;
     }
@@ -1961,7 +1961,7 @@ namespace blawn {
     break;
 
   case 73:
-#line 504 "./src/compiler/parser/parser.yy"
+#line 504 "./src/lib/blawn/parser/parser.yy"
     {
         yylhs.value.as < std::shared_ptr<ast::Node> > () = yystack_[0].value.as < std::shared_ptr<ast::Node> > ();
     }
@@ -1969,7 +1969,7 @@ namespace blawn {
     break;
 
   case 74:
-#line 509 "./src/compiler/parser/parser.yy"
+#line 509 "./src/lib/blawn/parser/parser.yy"
     {
         yylhs.value.as < std::shared_ptr<ast::CallFunctionNode> > () = driver.ast_builder->create_call(yystack_[3].value.as < std::string > (),yystack_[1].value.as < std::vector<std::shared_ptr<ast::Node>> > ());
     }
@@ -1977,7 +1977,7 @@ namespace blawn {
     break;
 
   case 75:
-#line 513 "./src/compiler/parser/parser.yy"
+#line 513 "./src/lib/blawn/parser/parser.yy"
     {
         yylhs.value.as < std::shared_ptr<ast::CallFunctionNode> > () = driver.ast_builder->create_call(yystack_[2].value.as < std::string > (),{});
     }
@@ -1985,7 +1985,7 @@ namespace blawn {
     break;
 
   case 76:
-#line 517 "./src/compiler/parser/parser.yy"
+#line 517 "./src/lib/blawn/parser/parser.yy"
     {
         yylhs.value.as < std::shared_ptr<ast::CallFunctionNode> > () = driver.ast_builder->create_call(yystack_[3].value.as < std::shared_ptr<ast::AccessElementNode> > (),yystack_[1].value.as < std::vector<std::shared_ptr<ast::Node>> > ());
     }
@@ -1993,7 +1993,7 @@ namespace blawn {
     break;
 
   case 77:
-#line 521 "./src/compiler/parser/parser.yy"
+#line 521 "./src/lib/blawn/parser/parser.yy"
     {
         yylhs.value.as < std::shared_ptr<ast::CallFunctionNode> > () = driver.ast_builder->create_call(yystack_[2].value.as < std::shared_ptr<ast::AccessElementNode> > (),{});
     }
@@ -2001,7 +2001,7 @@ namespace blawn {
     break;
 
   case 78:
-#line 526 "./src/compiler/parser/parser.yy"
+#line 526 "./src/lib/blawn/parser/parser.yy"
     {
         yylhs.value.as < std::shared_ptr<ast::Node> > () = driver.ast_builder->get_named_node(yystack_[0].value.as < std::string > ());
     }
@@ -2499,11 +2499,11 @@ namespace blawn {
       return yy_undef_token_;
   }
 
-#line 5 "./src/compiler/parser/parser.yy"
+#line 5 "./src/lib/blawn/parser/parser.yy"
 } // blawn
 #line 2505 "/Users/ueharanaoto/Desktop/Blawn/build/parser.cpp"
 
-#line 529 "./src/compiler/parser/parser.yy"
+#line 529 "./src/lib/blawn/parser/parser.yy"
 
 
 void blawn::Parser::error( const location_type &l, const std::string &err_message )

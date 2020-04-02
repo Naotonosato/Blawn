@@ -53,7 +53,7 @@
 #  endif
 # endif
 
-#line 5 "./src/compiler/parser/parser.yy"
+#line 5 "./src/lib/blawn/parser/parser.yy"
 namespace blawn {
 #line 59 "/Users/ueharanaoto/Desktop/Blawn/build/location.hh"
 
@@ -327,7 +327,7 @@ namespace blawn {
     return ostr;
   }
 
-#line 5 "./src/compiler/parser/parser.yy"
+#line 5 "./src/lib/blawn/parser/parser.yy"
 } // blawn
 #line 333 "/Users/ueharanaoto/Desktop/Blawn/build/location.hh"
 

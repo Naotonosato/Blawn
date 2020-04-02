@@ -488,12 +488,12 @@ static const flex_int16_t yy_chk[205] =
 #define yymore() yymore_used_but_not_detected
 #define YY_MORE_ADJ 0
 #define YY_RESTORE_YY_MORE_OFFSET
-#line 1 "./src/compiler/parser/lexer.ll"
-#line 2 "./src/compiler/parser/lexer.ll"
+#line 1 "./src/lib/blawn/parser/lexer.ll"
+#line 2 "./src/lib/blawn/parser/lexer.ll"
 #include <string>
 #include <algorithm>
 #include "parser.hpp"
-#include "../src/compiler/parser/scanner.hpp"
+#include "include/blawn/parser/scanner.hpp"
 #undef  YY_DECL
 #define YY_DECL int blawn::Scanner::yylex( blawn::Parser::semantic_type * const lval, blawn::Parser::location_type *loc )
 #define yyterminate() return blawn::Parser::token::END;
@@ -636,7 +636,7 @@ YY_DECL
 		}
 
 	{
-#line 67 "./src/compiler/parser/lexer.ll"
+#line 67 "./src/lib/blawn/parser/lexer.ll"
 
 
 #line 642 "/Users/ueharanaoto/Desktop/Blawn/build/lexer.cpp"
@@ -700,30 +700,30 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 /* rule 1 can match eol */
 YY_RULE_SETUP
-#line 69 "./src/compiler/parser/lexer.ll"
+#line 69 "./src/lib/blawn/parser/lexer.ll"
 {loc->lines();driver.ast_builder->count_line_number();}
 	YY_BREAK
 case 2:
 /* rule 2 can match eol */
 YY_RULE_SETUP
-#line 70 "./src/compiler/parser/lexer.ll"
+#line 70 "./src/lib/blawn/parser/lexer.ll"
 {loc->lines();driver.ast_builder->count_line_number();}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 71 "./src/compiler/parser/lexer.ll"
+#line 71 "./src/lib/blawn/parser/lexer.ll"
 {}
 	YY_BREAK
 case 4:
 /* rule 4 can match eol */
 YY_RULE_SETUP
-#line 72 "./src/compiler/parser/lexer.ll"
+#line 72 "./src/lib/blawn/parser/lexer.ll"
 {loc->lines();driver.ast_builder->count_line_number();}
 	YY_BREAK
 case 5:
 /* rule 5 can match eol */
 YY_RULE_SETUP
-#line 73 "./src/compiler/parser/lexer.ll"
+#line 73 "./src/lib/blawn/parser/lexer.ll"
 {
     std::string text = yytext;
     text = text.substr(1,text.size()-2);
@@ -733,7 +733,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 79 "./src/compiler/parser/lexer.ll"
+#line 79 "./src/lib/blawn/parser/lexer.ll"
 {
     lval->build<long long>() = std::stoll(yytext);
     return blawn::Parser::token::INT_LITERAL;
@@ -741,7 +741,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 83 "./src/compiler/parser/lexer.ll"
+#line 83 "./src/lib/blawn/parser/lexer.ll"
 {
     lval->build<double>() = std::stod(yytext);
     return blawn::Parser::token::FLOAT_LITERAL;
@@ -749,14 +749,14 @@ YY_RULE_SETUP
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 87 "./src/compiler/parser/lexer.ll"
+#line 87 "./src/lib/blawn/parser/lexer.ll"
 {
     return blawn::Parser::token::USE;
 }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 90 "./src/compiler/parser/lexer.ll"
+#line 90 "./src/lib/blawn/parser/lexer.ll"
 {
     std::string text = yytext;
     text = text.substr(1,text.size()-1);
@@ -766,217 +766,217 @@ YY_RULE_SETUP
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 96 "./src/compiler/parser/lexer.ll"
+#line 96 "./src/lib/blawn/parser/lexer.ll"
 {
     return blawn::Parser::token::ASTERISK;
 }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 99 "./src/compiler/parser/lexer.ll"
+#line 99 "./src/lib/blawn/parser/lexer.ll"
 {
     return blawn::Parser::token::SLASH;
 }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 102 "./src/compiler/parser/lexer.ll"
+#line 102 "./src/lib/blawn/parser/lexer.ll"
 {
     return blawn::Parser::token::PLUS;
 }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 105 "./src/compiler/parser/lexer.ll"
+#line 105 "./src/lib/blawn/parser/lexer.ll"
 {
     return blawn::Parser::token::MINUS;
 }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 108 "./src/compiler/parser/lexer.ll"
+#line 108 "./src/lib/blawn/parser/lexer.ll"
 {
     return blawn::Parser::token::EQUAL;
 }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 111 "./src/compiler/parser/lexer.ll"
+#line 111 "./src/lib/blawn/parser/lexer.ll"
 {
     return blawn::Parser::token::ARROW;
 }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 114 "./src/compiler/parser/lexer.ll"
+#line 114 "./src/lib/blawn/parser/lexer.ll"
 {
     return blawn::Parser::token::OP_EQUAL;
 }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 117 "./src/compiler/parser/lexer.ll"
+#line 117 "./src/lib/blawn/parser/lexer.ll"
 {
     return blawn::Parser::token::OP_NOT_EQUAL;
 }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 120 "./src/compiler/parser/lexer.ll"
+#line 120 "./src/lib/blawn/parser/lexer.ll"
 {
     return blawn::Parser::token::OP_MORE_EQUAL;
 }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 123 "./src/compiler/parser/lexer.ll"
+#line 123 "./src/lib/blawn/parser/lexer.ll"
 {
     return blawn::Parser::token::OP_LESS_EQUAL;
 }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 126 "./src/compiler/parser/lexer.ll"
+#line 126 "./src/lib/blawn/parser/lexer.ll"
 {
     return blawn::Parser::token::OP_MORE;
 }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 129 "./src/compiler/parser/lexer.ll"
+#line 129 "./src/lib/blawn/parser/lexer.ll"
 {
     return blawn::Parser::token::OP_LESS;
 }
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 132 "./src/compiler/parser/lexer.ll"
+#line 132 "./src/lib/blawn/parser/lexer.ll"
 {
     return blawn::Parser::token::OP_AND;
 }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 135 "./src/compiler/parser/lexer.ll"
+#line 135 "./src/lib/blawn/parser/lexer.ll"
 {
     return blawn::Parser::token::OP_OR;
 }
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 138 "./src/compiler/parser/lexer.ll"
+#line 138 "./src/lib/blawn/parser/lexer.ll"
 {
     return blawn::Parser::token::COLON;
 }
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 141 "./src/compiler/parser/lexer.ll"
+#line 141 "./src/lib/blawn/parser/lexer.ll"
 {
     return blawn::Parser::token::SEMICOLON;
 }
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 144 "./src/compiler/parser/lexer.ll"
+#line 144 "./src/lib/blawn/parser/lexer.ll"
 {
     return blawn::Parser::token::COMMA;
 }
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 147 "./src/compiler/parser/lexer.ll"
+#line 147 "./src/lib/blawn/parser/lexer.ll"
 {
     return blawn::Parser::token::LEFT_PARENTHESIS;
 }
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 150 "./src/compiler/parser/lexer.ll"
+#line 150 "./src/lib/blawn/parser/lexer.ll"
 {
     return blawn::Parser::token::RIGHT_PARENTHESIS;
 }
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 153 "./src/compiler/parser/lexer.ll"
+#line 153 "./src/lib/blawn/parser/lexer.ll"
 {
     return blawn::Parser::token::LEFT_BRACKET;
 }
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 156 "./src/compiler/parser/lexer.ll"
+#line 156 "./src/lib/blawn/parser/lexer.ll"
 {
     return blawn::Parser::token::RIGHT_BRACKET;
 }
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 159 "./src/compiler/parser/lexer.ll"
+#line 159 "./src/lib/blawn/parser/lexer.ll"
 {
     return blawn::Parser::token::LEFT_CURLY_BRACE;
 }
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 162 "./src/compiler/parser/lexer.ll"
+#line 162 "./src/lib/blawn/parser/lexer.ll"
 {
     return blawn::Parser::token::RIGHT_CURLY_BRACE;
 }
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 165 "./src/compiler/parser/lexer.ll"
+#line 165 "./src/lib/blawn/parser/lexer.ll"
 {
     return blawn::Parser::token::IF;
 }
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 168 "./src/compiler/parser/lexer.ll"
+#line 168 "./src/lib/blawn/parser/lexer.ll"
 {
     return blawn::Parser::token::ELSE;
 }
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 171 "./src/compiler/parser/lexer.ll"
+#line 171 "./src/lib/blawn/parser/lexer.ll"
 {
     return blawn::Parser::token::FOR;
 }
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 174 "./src/compiler/parser/lexer.ll"
+#line 174 "./src/lib/blawn/parser/lexer.ll"
 {
     return blawn::Parser::token::IN;
 }
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 177 "./src/compiler/parser/lexer.ll"
+#line 177 "./src/lib/blawn/parser/lexer.ll"
 {
     return blawn::Parser::token::WHILE;
 }
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 180 "./src/compiler/parser/lexer.ll"
+#line 180 "./src/lib/blawn/parser/lexer.ll"
 {
     return blawn::Parser::token::GLOBAL;
 }
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 183 "./src/compiler/parser/lexer.ll"
+#line 183 "./src/lib/blawn/parser/lexer.ll"
 {
     return blawn::Parser::token::IMPORT;
 }
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 186 "./src/compiler/parser/lexer.ll"
+#line 186 "./src/lib/blawn/parser/lexer.ll"
 {
     std::string definition = yytext;
     std::string reversed;
@@ -990,7 +990,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 196 "./src/compiler/parser/lexer.ll"
+#line 196 "./src/lib/blawn/parser/lexer.ll"
 {
     std::string definition = yytext;
     std::string reversed;
@@ -1004,7 +1004,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 206 "./src/compiler/parser/lexer.ll"
+#line 206 "./src/lib/blawn/parser/lexer.ll"
 {
     std::string definition = yytext;
     std::string reversed;
@@ -1017,14 +1017,14 @@ YY_RULE_SETUP
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 216 "./src/compiler/parser/lexer.ll"
+#line 216 "./src/lib/blawn/parser/lexer.ll"
 {
     return blawn::Parser::token::RETURN;
 }
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 220 "./src/compiler/parser/lexer.ll"
+#line 220 "./src/lib/blawn/parser/lexer.ll"
 {
     lval->build<std::string>() = yytext;
     return blawn::Parser::token::MEMBER_IDENTIFIER;
@@ -1032,7 +1032,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 224 "./src/compiler/parser/lexer.ll"
+#line 224 "./src/lib/blawn/parser/lexer.ll"
 {
     lval->build<std::string>() = yytext;
     return blawn::Parser::token::IDENTIFIER;
@@ -1041,7 +1041,7 @@ YY_RULE_SETUP
 case 46:
 /* rule 46 can match eol */
 YY_RULE_SETUP
-#line 228 "./src/compiler/parser/lexer.ll"
+#line 228 "./src/lib/blawn/parser/lexer.ll"
 {
     loc->lines();
     driver.ast_builder->count_line_number();
@@ -1049,12 +1049,12 @@ YY_RULE_SETUP
 }
 	YY_BREAK
 case YY_STATE_EOF(INITIAL):
-#line 233 "./src/compiler/parser/lexer.ll"
+#line 233 "./src/lib/blawn/parser/lexer.ll"
 {return 0;}
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 234 "./src/compiler/parser/lexer.ll"
+#line 234 "./src/lib/blawn/parser/lexer.ll"
 ECHO;
 	YY_BREAK
 #line 1060 "/Users/ueharanaoto/Desktop/Blawn/build/lexer.cpp"
@@ -2021,5 +2021,5 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 234 "./src/compiler/parser/lexer.ll"
+#line 234 "./src/lib/blawn/parser/lexer.ll"
 
