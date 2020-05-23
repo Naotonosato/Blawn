@@ -1,17 +1,21 @@
 #pragma once
 
-namespace ast {
+namespace ast
+{
 class Builder;
 }
-namespace mir {
+namespace mir
+{
 class Builder;
 }
 
 int compile(int argc, char** argv);
 
-namespace compiler {
+namespace compiler
+{
 class CompilerOptions;
-class Compiler {
+class Compiler
+{
     private:
     CompilerOptions& options;
 

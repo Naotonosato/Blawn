@@ -7,7 +7,46 @@
 #define YY_DECL int blawn::Scanner::yylex( blawn::Parser::semantic_type * const lval, blawn::Parser::location_type *loc )
 #define yyterminate() return blawn::Parser::token::END;
 #define YY_NO_UNISTD_H
-#define YY_USER_ACTION loc->step(); loc->columns(yyleng);
+#define YY_USER_ACTION loc->step(); loc->columns(yyleng); driver.ast_builder->set_token(std::string(yytext)); driver.ast_builder->count_token_index(yyleng);
+
+
+std::unique_ptr<blawn::DeclarationInfo> to_declaration_info(std::string token_text)
+{
+    //"function func  (a,b , c  )"
+
+    char last_char = '\0';
+    std::string::size_type identifier_start = 0;
+
+    for (auto c:token_text)
+    {
+        if (last_char == ' ' and c != ' ') break;
+        last_char = c;
+        identifier_start += 1;
+    }
+
+    std::string::size_type identifier_end = token_text.find("(",identifier_start);
+    std::string identifier = token_text.substr(identifier_start,identifier_end - identifier_start);
+    //identifier = "func"
+
+    std::string without_identifier = token_text.substr(identifier_end);
+    std::string current_argument;
+    std::vector<std::string> arguments;
+    
+    for (auto c:without_identifier)
+    {
+        if (c == ' ' or c == '(') continue;
+        if (c == ')') break;
+        if (c == ',')
+        {
+            arguments.push_back(current_argument);
+            current_argument = "";
+            continue;
+        }
+        current_argument += c;
+    }
+    return std::make_unique<blawn::DeclarationInfo>(identifier, std::move(arguments));
+}
+
 %}
 
 %option yyclass="blawn::Scanner"
@@ -20,6 +59,7 @@ COMMENT             \/\/.*\n
 STRING_LITERAL      \"[^\"]*\"
 INT_LITERAL         [0-9]+
 FLOAT_LITERAL       [0-9]+\.[0-9]*
+LAZY                lazy
 USE                 use
 
 OP_EQUAL    ==
@@ -48,11 +88,13 @@ IN          in
 WHILE       while
 GLOBAL      global
 IMPORT      import
-FUNCTION_DEFINITION     function[ \t]+[a-zA-Z_][0-9a-zA-Z_]*
-METHOD_DEFINITION       @function[ \t]+[a-zA-Z_][0-9a-zA-Z_]*
-CLASS_DEFINITION        class[ \t]+[a-zA-Z_][0-9a-zA-Z_]*
 RETURN                  return
+FUNCTION_DEFINITION function[ \t]+[a-zA-Z_][0-9a-zA-Z_]*[ \t]*\(([a-zA-Z_][0-9a-zA-Z_]*)*([ \t]*,[ \t]*[a-zA-Z_][0-9a-zA-Z_]*[ \t]*)*\)
+METHOD_DEFINITION   @function[ \t]+[a-zA-Z_][0-9a-zA-Z_]*[ \t]*\(([a-zA-Z_][0-9a-zA-Z_]*)*([ \t]*,[ \t]*[a-zA-Z_][0-9a-zA-Z_]*[ \t]*)*\)
+CLASS_DEFINITION  class[ \t]+[a-zA-Z_][0-9a-zA-Z_]*[ \t]*\(([a-zA-Z_][0-9a-zA-Z_]*)*([ \t]*,[ \t]*[a-zA-Z_][0-9a-zA-Z_]*[ \t]*)*\)
+
 LEFT_PARENTHESIS  \(
+LEFT_PARENTHESIS_AND_EOL \(\n
 RIGHT_PARENTHESIS \)
 LEFT_BRACKET    \[
 RIGHT_BRACKET   \]
@@ -68,7 +110,11 @@ EOL                 \n|\r\n
 
 ^[ \t]*\n {loc->lines();driver.ast_builder->count_line_number();}
 ^[ \t]*\r\n {loc->lines();driver.ast_builder->count_line_number();}
-[ \t] {}
+{EOL} {
+    loc->lines();
+    driver.ast_builder->count_line_number();
+    return blawn::Parser::token::EOL;
+}
 {COMMENT} {loc->lines();driver.ast_builder->count_line_number();}
 {STRING_LITERAL} {
     std::string text = yytext;
@@ -83,6 +129,9 @@ EOL                 \n|\r\n
 {FLOAT_LITERAL} {
     lval->build<double>() = std::stod(yytext);
     return blawn::Parser::token::FLOAT_LITERAL;
+}
+{LAZY} {
+    return blawn::Parser::token::LAZY;
 }
 {USE} {
     return blawn::Parser::token::USE;
@@ -135,6 +184,21 @@ EOL                 \n|\r\n
 {OP_OR} {
     return blawn::Parser::token::OP_OR;
 }
+
+{METHOD_DEFINITION} {
+    lval->build<std::unique_ptr<blawn::DeclarationInfo>>() = to_declaration_info(yytext);
+    
+    return blawn::Parser::token::METHOD_DEFINITION;
+}
+{FUNCTION_DEFINITION} {
+    lval->build<std::unique_ptr<blawn::DeclarationInfo>>() = to_declaration_info(yytext);
+    return blawn::Parser::token::FUNCTION_DEFINITION;
+}
+{CLASS_DEFINITION} {
+    lval->build<std::unique_ptr<blawn::DeclarationInfo>>() = to_declaration_info(yytext);
+    return blawn::Parser::token::CLASS_DEFINITION;
+}
+
 {COLON} {
     return blawn::Parser::token::COLON;
 }
@@ -146,6 +210,11 @@ EOL                 \n|\r\n
 }
 {LEFT_PARENTHESIS} {
     return blawn::Parser::token::LEFT_PARENTHESIS;
+}
+{LEFT_PARENTHESIS_AND_EOL} {
+    loc->lines();
+    driver.ast_builder->count_line_number();
+    return blawn::Parser::token::LEFT_PARENTHESIS_AND_EOL;
 }
 {RIGHT_PARENTHESIS} {
     return blawn::Parser::token::RIGHT_PARENTHESIS;
@@ -183,35 +252,6 @@ EOL                 \n|\r\n
 {IMPORT} {
     return blawn::Parser::token::IMPORT;
 }
-{METHOD_DEFINITION} {
-    std::string definition = yytext;
-    std::string reversed;
-    std::reverse_copy(definition.begin(),definition.end(),std::back_inserter(reversed));
-    int index = definition.size() - reversed.find(" ");
-    definition.erase(0,index);
-    lval->build<std::string>() = definition;
-    
-    return blawn::Parser::token::METHOD_DEFINITION;
-}
-{FUNCTION_DEFINITION} {
-    std::string definition = yytext;
-    std::string reversed;
-    std::reverse_copy(definition.begin(),definition.end(),std::back_inserter(reversed));
-    int index = definition.size() - reversed.find(" ");
-    definition.erase(0,index);
-    lval->build<std::string>() = definition;
-    
-    return blawn::Parser::token::FUNCTION_DEFINITION;
-}
-{CLASS_DEFINITION} {
-    std::string definition = yytext;
-    std::string reversed;
-    std::reverse_copy(definition.begin(),definition.end(),std::back_inserter(reversed));
-    int index = definition.size() - reversed.find(" ");
-    definition.erase(0,index);
-    lval->build<std::string>() = definition;
-    return blawn::Parser::token::CLASS_DEFINITION;
-}
 
 {RETURN} {
     return blawn::Parser::token::RETURN;
@@ -225,10 +265,6 @@ EOL                 \n|\r\n
     lval->build<std::string>() = yytext;
     return blawn::Parser::token::IDENTIFIER;
 }
-{EOL} {
-    loc->lines();
-    driver.ast_builder->count_line_number();
-    return blawn::Parser::token::EOL;
-}
+[ \t] {}
 <<EOF>> {return 0;}
 %%

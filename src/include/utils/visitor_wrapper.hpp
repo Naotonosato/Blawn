@@ -1,13 +1,14 @@
 #include <memory>
 #include <type_traits>
 
-namespace utils {
-
+namespace utils
+{
 template <typename T>
 class VisitorWrapper;
 
 template <typename T>
-class VisitorBase {
+class VisitorBase
+{
     protected:
     VisitorWrapper<T>& visitor_ref;
 
@@ -16,24 +17,30 @@ class VisitorBase {
 };
 
 template <typename VisitorType>
-class VisitorWrapper {
+class VisitorWrapper
+{
     private:
     std::unique_ptr<VisitorType> visitor;
 
     protected:
     template <typename Base>
-    struct CreateHelper : Base {
+    struct CreateHelper : Base
+    {
         template <typename... Args>
-        CreateHelper(Args&&... args) : Base(std::forward<Args>(args)...) {}
+        CreateHelper(Args&&... args) : Base(std::forward<Args>(args)...)
+        {
+        }
     };
     VisitorWrapper() = default;
-    void set_visitor(std::unique_ptr<VisitorType>&& visitor_) {
+    void set_visitor(std::unique_ptr<VisitorType>&& visitor_)
+    {
         visitor = std::move(visitor_);
     }
 
     public:
     template <typename... Args>
-    static std::unique_ptr<VisitorWrapper> create(Args&&... args) {
+    static std::unique_ptr<VisitorWrapper> create(Args&&... args)
+    {
         static_assert(std::is_base_of<VisitorBase<VisitorType>, VisitorType>(),
                       "");
         auto visitor_wrapper = std::make_unique<CreateHelper<VisitorWrapper>>();
@@ -43,7 +50,8 @@ class VisitorWrapper {
     }
 
     template <typename ArgType>
-    auto operator()(ArgType& arg) {
+    auto operator()(ArgType& arg) const
+    {
         return visitor->visit(arg);
     }
 };

@@ -48,13 +48,13 @@
 
     #include <utility>
     #include <memory>
-    #include <llvm/IR/IRBuilder.h>
     #include "include/ast/node.hpp"
     #include "include/ast/builder.hpp"
  
     namespace blawn {
         class Driver;
         class Scanner;
+        class DeclarationInfo;
     }
 
     // The following definitions is missing when %locations isn't used
@@ -274,7 +274,7 @@ namespace blawn {
       YY_ASSERT (!yytypeid_);
       YY_ASSERT (sizeof (T) <= size);
       yytypeid_ = & typeid (T);
-      return *new (yyas_<T> ()) T (t);
+      return *new (yyas_<T> ()) T (std::move((T&)t));
     }
 # endif
 
@@ -412,71 +412,46 @@ namespace blawn {
       char dummy2[sizeof (long long)];
 
       // function_start
+      // class_start
       // method_start
-      char dummy3[sizeof (std::pair<std::string,std::vector<std::shared_ptr<ast::ArgumentNode>>>)];
+      char dummy3[sizeof (std::pair< std::string,std::vector<std::unique_ptr<ast::Node>>> )];
 
-      // access
-      char dummy4[sizeof (std::shared_ptr<ast::AccessElementNode>)];
-
-      // array
-      char dummy5[sizeof (std::shared_ptr<ast::ArrayNode>)];
-
-      // block
-      // else_body
-      char dummy6[sizeof (std::shared_ptr<ast::BlockNode>)];
-
-      // call
-      char dummy7[sizeof (std::shared_ptr<ast::CallFunctionNode>)];
-
-      // class_definition
-      char dummy8[sizeof (std::shared_ptr<ast::GenericClassNode>)];
-
-      // function_definition
-      // method_definition
-      char dummy9[sizeof (std::shared_ptr<ast::GenericFunctionNode>)];
-
-      // global_variable_definition
-      char dummy10[sizeof (std::shared_ptr<ast::GlobalVariableNode>)];
-
-      // line
-      // line_content
-      // definition
-      // return_value
-      // expression
-      // assign_variable
-      // monomial
-      // named_value
-      char dummy11[sizeof (std::shared_ptr<ast::Node>)];
-
-      // program
-      char dummy12[sizeof (std::shared_ptr<ast::RootNode>)];
-
-      // FUNCTION_DEFINITION
-      // METHOD_DEFINITION
-      // CLASS_DEFINITION
       // MEMBER_IDENTIFIER
       // IDENTIFIER
       // DOT_IDENTIFIER
       // STRING_LITERAL
-      // function_name
-      // class_name
-      // method_name
-      char dummy13[sizeof (std::string)];
+      char dummy4[sizeof (std::string)];
 
-      // arguments
-      // definition_arguments
-      char dummy14[sizeof (std::vector<std::shared_ptr<ast::ArgumentNode>>)];
+      // program
+      // block
+      // line
+      // definition
+      // function_definition
+      // class_definition
+      // method_definition
+      // else_body
+      // expression
+      // array
+      // access
+      // global_variable_definition
+      // assign_variable
+      // return_value
+      // monomial
+      // call
+      // named_value
+      char dummy5[sizeof (std::unique_ptr<ast::Node>)];
 
-      // methods
-      char dummy15[sizeof (std::vector<std::shared_ptr<ast::GenericFunctionNode>>)];
+      // FUNCTION_DEFINITION
+      // METHOD_DEFINITION
+      // CLASS_DEFINITION
+      char dummy6[sizeof (std::unique_ptr<blawn::DeclarationInfo>)];
 
       // lines
+      // methods
+      // members_definition
       // expressions
       // for_start
-      char dummy16[sizeof (std::vector<std::shared_ptr<ast::Node>>)];
-
-      // members_definition
-      char dummy17[sizeof (std::vector<std::shared_ptr<ast::VariableNode>>)];
+      char dummy7[sizeof (std::vector<std::unique_ptr<ast::Node>>)];
     };
 
     /// The size of the largest semantic type.
@@ -525,49 +500,51 @@ namespace blawn {
       enum yytokentype
       {
         END = 0,
-        FUNCTION_DEFINITION = 258,
-        METHOD_DEFINITION = 259,
-        CLASS_DEFINITION = 260,
-        RETURN = 261,
-        MEMBER_IDENTIFIER = 262,
-        IDENTIFIER = 263,
-        EQUAL = 264,
-        ARROW = 265,
-        OP_AND = 266,
-        OP_OR = 267,
-        OP_EQUAL = 268,
-        OP_NOT_EQUAL = 269,
-        OP_MORE_EQUAL = 270,
-        OP_LESS_EQUAL = 271,
-        OP_MORE = 272,
-        OP_LESS = 273,
-        PLUS = 274,
-        MINUS = 275,
-        ASTERISK = 276,
-        SLASH = 277,
-        UMINUS = 278,
-        DOT_IDENTIFIER = 279,
-        USE = 280,
-        COLON = 281,
-        SEMICOLON = 282,
-        COMMA = 283,
-        LEFT_PARENTHESIS = 284,
-        RIGHT_PARENTHESIS = 285,
-        LEFT_CURLY_BRACE = 286,
-        RIGHT_CURLY_BRACE = 287,
-        LEFT_BRACKET = 288,
-        RIGHT_BRACKET = 289,
-        IF = 290,
-        ELSE = 291,
-        FOR = 292,
-        IN = 293,
-        WHILE = 294,
-        GLOBAL = 295,
-        IMPORT = 296,
-        EOL = 297,
-        STRING_LITERAL = 298,
-        INT_LITERAL = 299,
-        FLOAT_LITERAL = 300
+        MEMBER_IDENTIFIER = 258,
+        IDENTIFIER = 259,
+        RETURN = 260,
+        COLON = 261,
+        SEMICOLON = 262,
+        LEFT_BRACKET = 263,
+        RIGHT_BRACKET = 264,
+        LEFT_CURLY_BRACE = 265,
+        RIGHT_CURLY_BRACE = 266,
+        LEFT_PARENTHESIS = 267,
+        RIGHT_PARENTHESIS = 268,
+        LEFT_PARENTHESIS_AND_EOL = 269,
+        EQUAL = 270,
+        ARROW = 271,
+        OP_AND = 272,
+        OP_OR = 273,
+        OP_EQUAL = 274,
+        OP_NOT_EQUAL = 275,
+        OP_MORE_EQUAL = 276,
+        OP_LESS_EQUAL = 277,
+        OP_MORE = 278,
+        OP_LESS = 279,
+        PLUS = 280,
+        MINUS = 281,
+        ASTERISK = 282,
+        SLASH = 283,
+        UMINUS = 284,
+        DOT_IDENTIFIER = 285,
+        FUNCTION_DEFINITION = 286,
+        METHOD_DEFINITION = 287,
+        CLASS_DEFINITION = 288,
+        USE = 289,
+        LAZY = 290,
+        COMMA = 291,
+        IF = 292,
+        ELSE = 293,
+        FOR = 294,
+        IN = 295,
+        WHILE = 296,
+        GLOBAL = 297,
+        IMPORT = 298,
+        STRING_LITERAL = 299,
+        INT_LITERAL = 300,
+        FLOAT_LITERAL = 301,
+        EOL = 302
       };
     };
 
@@ -648,130 +625,13 @@ namespace blawn {
       {}
 #endif
 #if 201103L <= YY_CPLUSPLUS
-      basic_symbol (typename Base::kind_type t, std::pair<std::string,std::vector<std::shared_ptr<ast::ArgumentNode>>>&& v, location_type&& l)
+      basic_symbol (typename Base::kind_type t, std::pair< std::string,std::vector<std::unique_ptr<ast::Node>>> && v, location_type&& l)
         : Base (t)
         , value (std::move (v))
         , location (std::move (l))
       {}
 #else
-      basic_symbol (typename Base::kind_type t, const std::pair<std::string,std::vector<std::shared_ptr<ast::ArgumentNode>>>& v, const location_type& l)
-        : Base (t)
-        , value (v)
-        , location (l)
-      {}
-#endif
-#if 201103L <= YY_CPLUSPLUS
-      basic_symbol (typename Base::kind_type t, std::shared_ptr<ast::AccessElementNode>&& v, location_type&& l)
-        : Base (t)
-        , value (std::move (v))
-        , location (std::move (l))
-      {}
-#else
-      basic_symbol (typename Base::kind_type t, const std::shared_ptr<ast::AccessElementNode>& v, const location_type& l)
-        : Base (t)
-        , value (v)
-        , location (l)
-      {}
-#endif
-#if 201103L <= YY_CPLUSPLUS
-      basic_symbol (typename Base::kind_type t, std::shared_ptr<ast::ArrayNode>&& v, location_type&& l)
-        : Base (t)
-        , value (std::move (v))
-        , location (std::move (l))
-      {}
-#else
-      basic_symbol (typename Base::kind_type t, const std::shared_ptr<ast::ArrayNode>& v, const location_type& l)
-        : Base (t)
-        , value (v)
-        , location (l)
-      {}
-#endif
-#if 201103L <= YY_CPLUSPLUS
-      basic_symbol (typename Base::kind_type t, std::shared_ptr<ast::BlockNode>&& v, location_type&& l)
-        : Base (t)
-        , value (std::move (v))
-        , location (std::move (l))
-      {}
-#else
-      basic_symbol (typename Base::kind_type t, const std::shared_ptr<ast::BlockNode>& v, const location_type& l)
-        : Base (t)
-        , value (v)
-        , location (l)
-      {}
-#endif
-#if 201103L <= YY_CPLUSPLUS
-      basic_symbol (typename Base::kind_type t, std::shared_ptr<ast::CallFunctionNode>&& v, location_type&& l)
-        : Base (t)
-        , value (std::move (v))
-        , location (std::move (l))
-      {}
-#else
-      basic_symbol (typename Base::kind_type t, const std::shared_ptr<ast::CallFunctionNode>& v, const location_type& l)
-        : Base (t)
-        , value (v)
-        , location (l)
-      {}
-#endif
-#if 201103L <= YY_CPLUSPLUS
-      basic_symbol (typename Base::kind_type t, std::shared_ptr<ast::GenericClassNode>&& v, location_type&& l)
-        : Base (t)
-        , value (std::move (v))
-        , location (std::move (l))
-      {}
-#else
-      basic_symbol (typename Base::kind_type t, const std::shared_ptr<ast::GenericClassNode>& v, const location_type& l)
-        : Base (t)
-        , value (v)
-        , location (l)
-      {}
-#endif
-#if 201103L <= YY_CPLUSPLUS
-      basic_symbol (typename Base::kind_type t, std::shared_ptr<ast::GenericFunctionNode>&& v, location_type&& l)
-        : Base (t)
-        , value (std::move (v))
-        , location (std::move (l))
-      {}
-#else
-      basic_symbol (typename Base::kind_type t, const std::shared_ptr<ast::GenericFunctionNode>& v, const location_type& l)
-        : Base (t)
-        , value (v)
-        , location (l)
-      {}
-#endif
-#if 201103L <= YY_CPLUSPLUS
-      basic_symbol (typename Base::kind_type t, std::shared_ptr<ast::GlobalVariableNode>&& v, location_type&& l)
-        : Base (t)
-        , value (std::move (v))
-        , location (std::move (l))
-      {}
-#else
-      basic_symbol (typename Base::kind_type t, const std::shared_ptr<ast::GlobalVariableNode>& v, const location_type& l)
-        : Base (t)
-        , value (v)
-        , location (l)
-      {}
-#endif
-#if 201103L <= YY_CPLUSPLUS
-      basic_symbol (typename Base::kind_type t, std::shared_ptr<ast::Node>&& v, location_type&& l)
-        : Base (t)
-        , value (std::move (v))
-        , location (std::move (l))
-      {}
-#else
-      basic_symbol (typename Base::kind_type t, const std::shared_ptr<ast::Node>& v, const location_type& l)
-        : Base (t)
-        , value (v)
-        , location (l)
-      {}
-#endif
-#if 201103L <= YY_CPLUSPLUS
-      basic_symbol (typename Base::kind_type t, std::shared_ptr<ast::RootNode>&& v, location_type&& l)
-        : Base (t)
-        , value (std::move (v))
-        , location (std::move (l))
-      {}
-#else
-      basic_symbol (typename Base::kind_type t, const std::shared_ptr<ast::RootNode>& v, const location_type& l)
+      basic_symbol (typename Base::kind_type t, const std::pair< std::string,std::vector<std::unique_ptr<ast::Node>>> & v, const location_type& l)
         : Base (t)
         , value (v)
         , location (l)
@@ -791,52 +651,39 @@ namespace blawn {
       {}
 #endif
 #if 201103L <= YY_CPLUSPLUS
-      basic_symbol (typename Base::kind_type t, std::vector<std::shared_ptr<ast::ArgumentNode>>&& v, location_type&& l)
+      basic_symbol (typename Base::kind_type t, std::unique_ptr<ast::Node>&& v, location_type&& l)
         : Base (t)
         , value (std::move (v))
         , location (std::move (l))
       {}
 #else
-      basic_symbol (typename Base::kind_type t, const std::vector<std::shared_ptr<ast::ArgumentNode>>& v, const location_type& l)
+      basic_symbol (typename Base::kind_type t, const std::unique_ptr<ast::Node>& v, const location_type& l)
         : Base (t)
         , value (v)
         , location (l)
       {}
 #endif
 #if 201103L <= YY_CPLUSPLUS
-      basic_symbol (typename Base::kind_type t, std::vector<std::shared_ptr<ast::GenericFunctionNode>>&& v, location_type&& l)
+      basic_symbol (typename Base::kind_type t, std::unique_ptr<blawn::DeclarationInfo>&& v, location_type&& l)
         : Base (t)
         , value (std::move (v))
         , location (std::move (l))
       {}
 #else
-      basic_symbol (typename Base::kind_type t, const std::vector<std::shared_ptr<ast::GenericFunctionNode>>& v, const location_type& l)
+      basic_symbol (typename Base::kind_type t, const std::unique_ptr<blawn::DeclarationInfo>& v, const location_type& l)
         : Base (t)
         , value (v)
         , location (l)
       {}
 #endif
 #if 201103L <= YY_CPLUSPLUS
-      basic_symbol (typename Base::kind_type t, std::vector<std::shared_ptr<ast::Node>>&& v, location_type&& l)
+      basic_symbol (typename Base::kind_type t, std::vector<std::unique_ptr<ast::Node>>&& v, location_type&& l)
         : Base (t)
         , value (std::move (v))
         , location (std::move (l))
       {}
 #else
-      basic_symbol (typename Base::kind_type t, const std::vector<std::shared_ptr<ast::Node>>& v, const location_type& l)
-        : Base (t)
-        , value (v)
-        , location (l)
-      {}
-#endif
-#if 201103L <= YY_CPLUSPLUS
-      basic_symbol (typename Base::kind_type t, std::vector<std::shared_ptr<ast::VariableNode>>&& v, location_type&& l)
-        : Base (t)
-        , value (std::move (v))
-        , location (std::move (l))
-      {}
-#else
-      basic_symbol (typename Base::kind_type t, const std::vector<std::shared_ptr<ast::VariableNode>>& v, const location_type& l)
+      basic_symbol (typename Base::kind_type t, const std::vector<std::unique_ptr<ast::Node>>& v, const location_type& l)
         : Base (t)
         , value (v)
         , location (l)
@@ -865,94 +712,59 @@ namespace blawn {
         // Type destructor.
 switch (yytype)
     {
-      case 45: // FLOAT_LITERAL
+      case 46: // FLOAT_LITERAL
         value.template destroy< double > ();
         break;
 
-      case 44: // INT_LITERAL
+      case 45: // INT_LITERAL
         value.template destroy< long long > ();
         break;
 
-      case 55: // function_start
+      case 56: // function_start
+      case 58: // class_start
       case 60: // method_start
-        value.template destroy< std::pair<std::string,std::vector<std::shared_ptr<ast::ArgumentNode>>> > ();
+        value.template destroy< std::pair< std::string,std::vector<std::unique_ptr<ast::Node>>>  > ();
         break;
 
-      case 73: // access
-        value.template destroy< std::shared_ptr<ast::AccessElementNode> > ();
-        break;
-
-      case 72: // array
-        value.template destroy< std::shared_ptr<ast::ArrayNode> > ();
-        break;
-
-      case 48: // block
-      case 70: // else_body
-        value.template destroy< std::shared_ptr<ast::BlockNode> > ();
-        break;
-
-      case 77: // call
-        value.template destroy< std::shared_ptr<ast::CallFunctionNode> > ();
-        break;
-
-      case 56: // class_definition
-        value.template destroy< std::shared_ptr<ast::GenericClassNode> > ();
-        break;
-
-      case 53: // function_definition
-      case 61: // method_definition
-        value.template destroy< std::shared_ptr<ast::GenericFunctionNode> > ();
-        break;
-
-      case 74: // global_variable_definition
-        value.template destroy< std::shared_ptr<ast::GlobalVariableNode> > ();
-        break;
-
-      case 50: // line
-      case 51: // line_content
-      case 52: // definition
-      case 63: // return_value
-      case 71: // expression
-      case 75: // assign_variable
-      case 76: // monomial
-      case 78: // named_value
-        value.template destroy< std::shared_ptr<ast::Node> > ();
-        break;
-
-      case 47: // program
-        value.template destroy< std::shared_ptr<ast::RootNode> > ();
-        break;
-
-      case 3: // FUNCTION_DEFINITION
-      case 4: // METHOD_DEFINITION
-      case 5: // CLASS_DEFINITION
-      case 7: // MEMBER_IDENTIFIER
-      case 8: // IDENTIFIER
-      case 24: // DOT_IDENTIFIER
-      case 43: // STRING_LITERAL
-      case 54: // function_name
-      case 57: // class_name
-      case 59: // method_name
+      case 3: // MEMBER_IDENTIFIER
+      case 4: // IDENTIFIER
+      case 30: // DOT_IDENTIFIER
+      case 44: // STRING_LITERAL
         value.template destroy< std::string > ();
         break;
 
-      case 64: // arguments
-      case 65: // definition_arguments
-        value.template destroy< std::vector<std::shared_ptr<ast::ArgumentNode>> > ();
+      case 49: // program
+      case 50: // block
+      case 53: // line
+      case 54: // definition
+      case 55: // function_definition
+      case 57: // class_definition
+      case 61: // method_definition
+      case 67: // else_body
+      case 68: // expression
+      case 69: // array
+      case 70: // access
+      case 71: // global_variable_definition
+      case 72: // assign_variable
+      case 73: // return_value
+      case 74: // monomial
+      case 75: // call
+      case 76: // named_value
+        value.template destroy< std::unique_ptr<ast::Node> > ();
         break;
 
-      case 58: // methods
-        value.template destroy< std::vector<std::shared_ptr<ast::GenericFunctionNode>> > ();
+      case 31: // FUNCTION_DEFINITION
+      case 32: // METHOD_DEFINITION
+      case 33: // CLASS_DEFINITION
+        value.template destroy< std::unique_ptr<blawn::DeclarationInfo> > ();
         break;
 
-      case 49: // lines
-      case 66: // expressions
-      case 69: // for_start
-        value.template destroy< std::vector<std::shared_ptr<ast::Node>> > ();
-        break;
-
+      case 52: // lines
+      case 59: // methods
       case 62: // members_definition
-        value.template destroy< std::vector<std::shared_ptr<ast::VariableNode>> > ();
+      case 63: // expressions
+      case 66: // for_start
+        value.template destroy< std::vector<std::unique_ptr<ast::Node>> > ();
         break;
 
       default:
@@ -1031,13 +843,13 @@ switch (yytype)
       symbol_type (int tok, location_type l)
         : super_type(token_type (tok), std::move (l))
       {
-        YY_ASSERT (tok == token::END || tok == token::RETURN || tok == token::EQUAL || tok == token::ARROW || tok == token::OP_AND || tok == token::OP_OR || tok == token::OP_EQUAL || tok == token::OP_NOT_EQUAL || tok == token::OP_MORE_EQUAL || tok == token::OP_LESS_EQUAL || tok == token::OP_MORE || tok == token::OP_LESS || tok == token::PLUS || tok == token::MINUS || tok == token::ASTERISK || tok == token::SLASH || tok == token::UMINUS || tok == token::USE || tok == token::COLON || tok == token::SEMICOLON || tok == token::COMMA || tok == token::LEFT_PARENTHESIS || tok == token::RIGHT_PARENTHESIS || tok == token::LEFT_CURLY_BRACE || tok == token::RIGHT_CURLY_BRACE || tok == token::LEFT_BRACKET || tok == token::RIGHT_BRACKET || tok == token::IF || tok == token::ELSE || tok == token::FOR || tok == token::IN || tok == token::WHILE || tok == token::GLOBAL || tok == token::IMPORT || tok == token::EOL);
+        YY_ASSERT (tok == token::END || tok == token::RETURN || tok == token::COLON || tok == token::SEMICOLON || tok == token::LEFT_BRACKET || tok == token::RIGHT_BRACKET || tok == token::LEFT_CURLY_BRACE || tok == token::RIGHT_CURLY_BRACE || tok == token::LEFT_PARENTHESIS || tok == token::RIGHT_PARENTHESIS || tok == token::LEFT_PARENTHESIS_AND_EOL || tok == token::EQUAL || tok == token::ARROW || tok == token::OP_AND || tok == token::OP_OR || tok == token::OP_EQUAL || tok == token::OP_NOT_EQUAL || tok == token::OP_MORE_EQUAL || tok == token::OP_LESS_EQUAL || tok == token::OP_MORE || tok == token::OP_LESS || tok == token::PLUS || tok == token::MINUS || tok == token::ASTERISK || tok == token::SLASH || tok == token::UMINUS || tok == token::USE || tok == token::LAZY || tok == token::COMMA || tok == token::IF || tok == token::ELSE || tok == token::FOR || tok == token::IN || tok == token::WHILE || tok == token::GLOBAL || tok == token::IMPORT || tok == token::EOL);
       }
 #else
       symbol_type (int tok, const location_type& l)
         : super_type(token_type (tok), l)
       {
-        YY_ASSERT (tok == token::END || tok == token::RETURN || tok == token::EQUAL || tok == token::ARROW || tok == token::OP_AND || tok == token::OP_OR || tok == token::OP_EQUAL || tok == token::OP_NOT_EQUAL || tok == token::OP_MORE_EQUAL || tok == token::OP_LESS_EQUAL || tok == token::OP_MORE || tok == token::OP_LESS || tok == token::PLUS || tok == token::MINUS || tok == token::ASTERISK || tok == token::SLASH || tok == token::UMINUS || tok == token::USE || tok == token::COLON || tok == token::SEMICOLON || tok == token::COMMA || tok == token::LEFT_PARENTHESIS || tok == token::RIGHT_PARENTHESIS || tok == token::LEFT_CURLY_BRACE || tok == token::RIGHT_CURLY_BRACE || tok == token::LEFT_BRACKET || tok == token::RIGHT_BRACKET || tok == token::IF || tok == token::ELSE || tok == token::FOR || tok == token::IN || tok == token::WHILE || tok == token::GLOBAL || tok == token::IMPORT || tok == token::EOL);
+        YY_ASSERT (tok == token::END || tok == token::RETURN || tok == token::COLON || tok == token::SEMICOLON || tok == token::LEFT_BRACKET || tok == token::RIGHT_BRACKET || tok == token::LEFT_CURLY_BRACE || tok == token::RIGHT_CURLY_BRACE || tok == token::LEFT_PARENTHESIS || tok == token::RIGHT_PARENTHESIS || tok == token::LEFT_PARENTHESIS_AND_EOL || tok == token::EQUAL || tok == token::ARROW || tok == token::OP_AND || tok == token::OP_OR || tok == token::OP_EQUAL || tok == token::OP_NOT_EQUAL || tok == token::OP_MORE_EQUAL || tok == token::OP_LESS_EQUAL || tok == token::OP_MORE || tok == token::OP_LESS || tok == token::PLUS || tok == token::MINUS || tok == token::ASTERISK || tok == token::SLASH || tok == token::UMINUS || tok == token::USE || tok == token::LAZY || tok == token::COMMA || tok == token::IF || tok == token::ELSE || tok == token::FOR || tok == token::IN || tok == token::WHILE || tok == token::GLOBAL || tok == token::IMPORT || tok == token::EOL);
       }
 #endif
 #if 201103L <= YY_CPLUSPLUS
@@ -1070,13 +882,26 @@ switch (yytype)
       symbol_type (int tok, std::string v, location_type l)
         : super_type(token_type (tok), std::move (v), std::move (l))
       {
-        YY_ASSERT (tok == token::FUNCTION_DEFINITION || tok == token::METHOD_DEFINITION || tok == token::CLASS_DEFINITION || tok == token::MEMBER_IDENTIFIER || tok == token::IDENTIFIER || tok == token::DOT_IDENTIFIER || tok == token::STRING_LITERAL);
+        YY_ASSERT (tok == token::MEMBER_IDENTIFIER || tok == token::IDENTIFIER || tok == token::DOT_IDENTIFIER || tok == token::STRING_LITERAL);
       }
 #else
       symbol_type (int tok, const std::string& v, const location_type& l)
         : super_type(token_type (tok), v, l)
       {
-        YY_ASSERT (tok == token::FUNCTION_DEFINITION || tok == token::METHOD_DEFINITION || tok == token::CLASS_DEFINITION || tok == token::MEMBER_IDENTIFIER || tok == token::IDENTIFIER || tok == token::DOT_IDENTIFIER || tok == token::STRING_LITERAL);
+        YY_ASSERT (tok == token::MEMBER_IDENTIFIER || tok == token::IDENTIFIER || tok == token::DOT_IDENTIFIER || tok == token::STRING_LITERAL);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      symbol_type (int tok, std::unique_ptr<blawn::DeclarationInfo> v, location_type l)
+        : super_type(token_type (tok), std::move (v), std::move (l))
+      {
+        YY_ASSERT (tok == token::FUNCTION_DEFINITION || tok == token::METHOD_DEFINITION || tok == token::CLASS_DEFINITION);
+      }
+#else
+      symbol_type (int tok, const std::unique_ptr<blawn::DeclarationInfo>& v, const location_type& l)
+        : super_type(token_type (tok), v, l)
+      {
+        YY_ASSERT (tok == token::FUNCTION_DEFINITION || tok == token::METHOD_DEFINITION || tok == token::CLASS_DEFINITION);
       }
 #endif
     };
@@ -1134,66 +959,6 @@ switch (yytype)
 #if 201103L <= YY_CPLUSPLUS
       static
       symbol_type
-      make_FUNCTION_DEFINITION (std::string v, location_type l)
-      {
-        return symbol_type (token::FUNCTION_DEFINITION, std::move (v), std::move (l));
-      }
-#else
-      static
-      symbol_type
-      make_FUNCTION_DEFINITION (const std::string& v, const location_type& l)
-      {
-        return symbol_type (token::FUNCTION_DEFINITION, v, l);
-      }
-#endif
-#if 201103L <= YY_CPLUSPLUS
-      static
-      symbol_type
-      make_METHOD_DEFINITION (std::string v, location_type l)
-      {
-        return symbol_type (token::METHOD_DEFINITION, std::move (v), std::move (l));
-      }
-#else
-      static
-      symbol_type
-      make_METHOD_DEFINITION (const std::string& v, const location_type& l)
-      {
-        return symbol_type (token::METHOD_DEFINITION, v, l);
-      }
-#endif
-#if 201103L <= YY_CPLUSPLUS
-      static
-      symbol_type
-      make_CLASS_DEFINITION (std::string v, location_type l)
-      {
-        return symbol_type (token::CLASS_DEFINITION, std::move (v), std::move (l));
-      }
-#else
-      static
-      symbol_type
-      make_CLASS_DEFINITION (const std::string& v, const location_type& l)
-      {
-        return symbol_type (token::CLASS_DEFINITION, v, l);
-      }
-#endif
-#if 201103L <= YY_CPLUSPLUS
-      static
-      symbol_type
-      make_RETURN (location_type l)
-      {
-        return symbol_type (token::RETURN, std::move (l));
-      }
-#else
-      static
-      symbol_type
-      make_RETURN (const location_type& l)
-      {
-        return symbol_type (token::RETURN, l);
-      }
-#endif
-#if 201103L <= YY_CPLUSPLUS
-      static
-      symbol_type
       make_MEMBER_IDENTIFIER (std::string v, location_type l)
       {
         return symbol_type (token::MEMBER_IDENTIFIER, std::move (v), std::move (l));
@@ -1219,6 +984,156 @@ switch (yytype)
       make_IDENTIFIER (const std::string& v, const location_type& l)
       {
         return symbol_type (token::IDENTIFIER, v, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_RETURN (location_type l)
+      {
+        return symbol_type (token::RETURN, std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_RETURN (const location_type& l)
+      {
+        return symbol_type (token::RETURN, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_COLON (location_type l)
+      {
+        return symbol_type (token::COLON, std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_COLON (const location_type& l)
+      {
+        return symbol_type (token::COLON, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_SEMICOLON (location_type l)
+      {
+        return symbol_type (token::SEMICOLON, std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_SEMICOLON (const location_type& l)
+      {
+        return symbol_type (token::SEMICOLON, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_LEFT_BRACKET (location_type l)
+      {
+        return symbol_type (token::LEFT_BRACKET, std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_LEFT_BRACKET (const location_type& l)
+      {
+        return symbol_type (token::LEFT_BRACKET, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_RIGHT_BRACKET (location_type l)
+      {
+        return symbol_type (token::RIGHT_BRACKET, std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_RIGHT_BRACKET (const location_type& l)
+      {
+        return symbol_type (token::RIGHT_BRACKET, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_LEFT_CURLY_BRACE (location_type l)
+      {
+        return symbol_type (token::LEFT_CURLY_BRACE, std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_LEFT_CURLY_BRACE (const location_type& l)
+      {
+        return symbol_type (token::LEFT_CURLY_BRACE, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_RIGHT_CURLY_BRACE (location_type l)
+      {
+        return symbol_type (token::RIGHT_CURLY_BRACE, std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_RIGHT_CURLY_BRACE (const location_type& l)
+      {
+        return symbol_type (token::RIGHT_CURLY_BRACE, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_LEFT_PARENTHESIS (location_type l)
+      {
+        return symbol_type (token::LEFT_PARENTHESIS, std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_LEFT_PARENTHESIS (const location_type& l)
+      {
+        return symbol_type (token::LEFT_PARENTHESIS, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_RIGHT_PARENTHESIS (location_type l)
+      {
+        return symbol_type (token::RIGHT_PARENTHESIS, std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_RIGHT_PARENTHESIS (const location_type& l)
+      {
+        return symbol_type (token::RIGHT_PARENTHESIS, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_LEFT_PARENTHESIS_AND_EOL (location_type l)
+      {
+        return symbol_type (token::LEFT_PARENTHESIS_AND_EOL, std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_LEFT_PARENTHESIS_AND_EOL (const location_type& l)
+      {
+        return symbol_type (token::LEFT_PARENTHESIS_AND_EOL, l);
       }
 #endif
 #if 201103L <= YY_CPLUSPLUS
@@ -1464,6 +1379,51 @@ switch (yytype)
 #if 201103L <= YY_CPLUSPLUS
       static
       symbol_type
+      make_FUNCTION_DEFINITION (std::unique_ptr<blawn::DeclarationInfo> v, location_type l)
+      {
+        return symbol_type (token::FUNCTION_DEFINITION, std::move (v), std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_FUNCTION_DEFINITION (const std::unique_ptr<blawn::DeclarationInfo>& v, const location_type& l)
+      {
+        return symbol_type (token::FUNCTION_DEFINITION, v, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_METHOD_DEFINITION (std::unique_ptr<blawn::DeclarationInfo> v, location_type l)
+      {
+        return symbol_type (token::METHOD_DEFINITION, std::move (v), std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_METHOD_DEFINITION (const std::unique_ptr<blawn::DeclarationInfo>& v, const location_type& l)
+      {
+        return symbol_type (token::METHOD_DEFINITION, v, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_CLASS_DEFINITION (std::unique_ptr<blawn::DeclarationInfo> v, location_type l)
+      {
+        return symbol_type (token::CLASS_DEFINITION, std::move (v), std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_CLASS_DEFINITION (const std::unique_ptr<blawn::DeclarationInfo>& v, const location_type& l)
+      {
+        return symbol_type (token::CLASS_DEFINITION, v, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
       make_USE (location_type l)
       {
         return symbol_type (token::USE, std::move (l));
@@ -1479,31 +1439,16 @@ switch (yytype)
 #if 201103L <= YY_CPLUSPLUS
       static
       symbol_type
-      make_COLON (location_type l)
+      make_LAZY (location_type l)
       {
-        return symbol_type (token::COLON, std::move (l));
+        return symbol_type (token::LAZY, std::move (l));
       }
 #else
       static
       symbol_type
-      make_COLON (const location_type& l)
+      make_LAZY (const location_type& l)
       {
-        return symbol_type (token::COLON, l);
-      }
-#endif
-#if 201103L <= YY_CPLUSPLUS
-      static
-      symbol_type
-      make_SEMICOLON (location_type l)
-      {
-        return symbol_type (token::SEMICOLON, std::move (l));
-      }
-#else
-      static
-      symbol_type
-      make_SEMICOLON (const location_type& l)
-      {
-        return symbol_type (token::SEMICOLON, l);
+        return symbol_type (token::LAZY, l);
       }
 #endif
 #if 201103L <= YY_CPLUSPLUS
@@ -1519,96 +1464,6 @@ switch (yytype)
       make_COMMA (const location_type& l)
       {
         return symbol_type (token::COMMA, l);
-      }
-#endif
-#if 201103L <= YY_CPLUSPLUS
-      static
-      symbol_type
-      make_LEFT_PARENTHESIS (location_type l)
-      {
-        return symbol_type (token::LEFT_PARENTHESIS, std::move (l));
-      }
-#else
-      static
-      symbol_type
-      make_LEFT_PARENTHESIS (const location_type& l)
-      {
-        return symbol_type (token::LEFT_PARENTHESIS, l);
-      }
-#endif
-#if 201103L <= YY_CPLUSPLUS
-      static
-      symbol_type
-      make_RIGHT_PARENTHESIS (location_type l)
-      {
-        return symbol_type (token::RIGHT_PARENTHESIS, std::move (l));
-      }
-#else
-      static
-      symbol_type
-      make_RIGHT_PARENTHESIS (const location_type& l)
-      {
-        return symbol_type (token::RIGHT_PARENTHESIS, l);
-      }
-#endif
-#if 201103L <= YY_CPLUSPLUS
-      static
-      symbol_type
-      make_LEFT_CURLY_BRACE (location_type l)
-      {
-        return symbol_type (token::LEFT_CURLY_BRACE, std::move (l));
-      }
-#else
-      static
-      symbol_type
-      make_LEFT_CURLY_BRACE (const location_type& l)
-      {
-        return symbol_type (token::LEFT_CURLY_BRACE, l);
-      }
-#endif
-#if 201103L <= YY_CPLUSPLUS
-      static
-      symbol_type
-      make_RIGHT_CURLY_BRACE (location_type l)
-      {
-        return symbol_type (token::RIGHT_CURLY_BRACE, std::move (l));
-      }
-#else
-      static
-      symbol_type
-      make_RIGHT_CURLY_BRACE (const location_type& l)
-      {
-        return symbol_type (token::RIGHT_CURLY_BRACE, l);
-      }
-#endif
-#if 201103L <= YY_CPLUSPLUS
-      static
-      symbol_type
-      make_LEFT_BRACKET (location_type l)
-      {
-        return symbol_type (token::LEFT_BRACKET, std::move (l));
-      }
-#else
-      static
-      symbol_type
-      make_LEFT_BRACKET (const location_type& l)
-      {
-        return symbol_type (token::LEFT_BRACKET, l);
-      }
-#endif
-#if 201103L <= YY_CPLUSPLUS
-      static
-      symbol_type
-      make_RIGHT_BRACKET (location_type l)
-      {
-        return symbol_type (token::RIGHT_BRACKET, std::move (l));
-      }
-#else
-      static
-      symbol_type
-      make_RIGHT_BRACKET (const location_type& l)
-      {
-        return symbol_type (token::RIGHT_BRACKET, l);
       }
 #endif
 #if 201103L <= YY_CPLUSPLUS
@@ -1719,21 +1574,6 @@ switch (yytype)
 #if 201103L <= YY_CPLUSPLUS
       static
       symbol_type
-      make_EOL (location_type l)
-      {
-        return symbol_type (token::EOL, std::move (l));
-      }
-#else
-      static
-      symbol_type
-      make_EOL (const location_type& l)
-      {
-        return symbol_type (token::EOL, l);
-      }
-#endif
-#if 201103L <= YY_CPLUSPLUS
-      static
-      symbol_type
       make_STRING_LITERAL (std::string v, location_type l)
       {
         return symbol_type (token::STRING_LITERAL, std::move (v), std::move (l));
@@ -1774,6 +1614,21 @@ switch (yytype)
       make_FLOAT_LITERAL (const double& v, const location_type& l)
       {
         return symbol_type (token::FLOAT_LITERAL, v, l);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_EOL (location_type l)
+      {
+        return symbol_type (token::EOL, std::move (l));
+      }
+#else
+      static
+      symbol_type
+      make_EOL (const location_type& l)
+      {
+        return symbol_type (token::EOL, l);
       }
 #endif
 
@@ -2079,10 +1934,10 @@ switch (yytype)
     enum
     {
       yyeof_ = 0,
-      yylast_ = 335,     ///< Last index in yytable_.
-      yynnts_ = 33,  ///< Number of nonterminal symbols.
-      yyfinal_ = 43, ///< Termination state number.
-      yyntokens_ = 46  ///< Number of tokens.
+      yylast_ = 350,     ///< Last index in yytable_.
+      yynnts_ = 29,  ///< Number of nonterminal symbols.
+      yyfinal_ = 42, ///< Termination state number.
+      yyntokens_ = 48  ///< Number of tokens.
     };
 
 
@@ -2094,7 +1949,7 @@ switch (yytype)
 
 #line 5 "./src/lib/blawn/parser/parser.yy"
 } // blawn
-#line 2098 "/Users/ueharanaoto/Desktop/Blawn/build/parser.hpp"
+#line 1953 "/Users/ueharanaoto/Desktop/Blawn/build/parser.hpp"
 
 
 

@@ -8,7 +8,7 @@
             "name": "clang++ build and debug active file",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${fileDirname}/${fileBasenameNoExtension}",
+            "program": "${workspaceFolder}/build/blawn",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",

@@ -3,22 +3,26 @@
 #include <iostream>
 #include "union_find.hpp"
 
-class Type {
+class Type
+{
     public:
     std::string name;
     Type() : name("LAZY") {}
     Type(std::string name) : name(name) {}
 };
 
-void dump(algorithm::UnionFindTree<std::shared_ptr<Type>> t) {
-    for (auto& node_pair : t.get_parents()) {
+void dump(algorithm::UnionFindTree<std::shared_ptr<Type>> t)
+{
+    for (auto& node_pair : t.get_parents())
+    {
         auto child = node_pair.first;
         auto parent = t.get_root(child);
         std::cout << child->name << " 's root is " << parent->name << std::endl;
     }
 }
 
-int main() {
+int main()
+{
     auto it = std::make_shared<Type>("INT");
     auto lt = std::make_shared<Type>("LAZY");
     auto t1 = std::make_shared<Type>("1");

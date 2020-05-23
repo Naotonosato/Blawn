@@ -120,35 +120,61 @@ CMakeFiles/blawn.dir/src/lib/blawn/compiler.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/blawn.dir/src/lib/blawn/compiler.cpp.s"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ueharanaoto/Desktop/Blawn/src/lib/blawn/compiler.cpp -o CMakeFiles/blawn.dir/src/lib/blawn/compiler.cpp.s
 
-CMakeFiles/blawn.dir/src/lib/blawn/converter/ast_to_mir/converter.cpp.o: CMakeFiles/blawn.dir/flags.make
-CMakeFiles/blawn.dir/src/lib/blawn/converter/ast_to_mir/converter.cpp.o: ../src/lib/blawn/converter/ast_to_mir/converter.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/ueharanaoto/Desktop/Blawn/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/blawn.dir/src/lib/blawn/converter/ast_to_mir/converter.cpp.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/blawn.dir/src/lib/blawn/converter/ast_to_mir/converter.cpp.o -c /Users/ueharanaoto/Desktop/Blawn/src/lib/blawn/converter/ast_to_mir/converter.cpp
+CMakeFiles/blawn.dir/src/lib/blawn/visitors/ast_to_mir.cpp.o: CMakeFiles/blawn.dir/flags.make
+CMakeFiles/blawn.dir/src/lib/blawn/visitors/ast_to_mir.cpp.o: ../src/lib/blawn/visitors/ast_to_mir.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/ueharanaoto/Desktop/Blawn/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/blawn.dir/src/lib/blawn/visitors/ast_to_mir.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/blawn.dir/src/lib/blawn/visitors/ast_to_mir.cpp.o -c /Users/ueharanaoto/Desktop/Blawn/src/lib/blawn/visitors/ast_to_mir.cpp
 
-CMakeFiles/blawn.dir/src/lib/blawn/converter/ast_to_mir/converter.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/blawn.dir/src/lib/blawn/converter/ast_to_mir/converter.cpp.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ueharanaoto/Desktop/Blawn/src/lib/blawn/converter/ast_to_mir/converter.cpp > CMakeFiles/blawn.dir/src/lib/blawn/converter/ast_to_mir/converter.cpp.i
+CMakeFiles/blawn.dir/src/lib/blawn/visitors/ast_to_mir.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/blawn.dir/src/lib/blawn/visitors/ast_to_mir.cpp.i"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ueharanaoto/Desktop/Blawn/src/lib/blawn/visitors/ast_to_mir.cpp > CMakeFiles/blawn.dir/src/lib/blawn/visitors/ast_to_mir.cpp.i
 
-CMakeFiles/blawn.dir/src/lib/blawn/converter/ast_to_mir/converter.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/blawn.dir/src/lib/blawn/converter/ast_to_mir/converter.cpp.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ueharanaoto/Desktop/Blawn/src/lib/blawn/converter/ast_to_mir/converter.cpp -o CMakeFiles/blawn.dir/src/lib/blawn/converter/ast_to_mir/converter.cpp.s
+CMakeFiles/blawn.dir/src/lib/blawn/visitors/ast_to_mir.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/blawn.dir/src/lib/blawn/visitors/ast_to_mir.cpp.s"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ueharanaoto/Desktop/Blawn/src/lib/blawn/visitors/ast_to_mir.cpp -o CMakeFiles/blawn.dir/src/lib/blawn/visitors/ast_to_mir.cpp.s
 
-CMakeFiles/blawn.dir/src/lib/utils/scope.cpp.o: CMakeFiles/blawn.dir/flags.make
-CMakeFiles/blawn.dir/src/lib/utils/scope.cpp.o: ../src/lib/utils/scope.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/ueharanaoto/Desktop/Blawn/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/blawn.dir/src/lib/utils/scope.cpp.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/blawn.dir/src/lib/utils/scope.cpp.o -c /Users/ueharanaoto/Desktop/Blawn/src/lib/utils/scope.cpp
+CMakeFiles/blawn.dir/src/lib/debug/debug_info.cpp.o: CMakeFiles/blawn.dir/flags.make
+CMakeFiles/blawn.dir/src/lib/debug/debug_info.cpp.o: ../src/lib/debug/debug_info.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/ueharanaoto/Desktop/Blawn/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/blawn.dir/src/lib/debug/debug_info.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/blawn.dir/src/lib/debug/debug_info.cpp.o -c /Users/ueharanaoto/Desktop/Blawn/src/lib/debug/debug_info.cpp
 
-CMakeFiles/blawn.dir/src/lib/utils/scope.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/blawn.dir/src/lib/utils/scope.cpp.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ueharanaoto/Desktop/Blawn/src/lib/utils/scope.cpp > CMakeFiles/blawn.dir/src/lib/utils/scope.cpp.i
+CMakeFiles/blawn.dir/src/lib/debug/debug_info.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/blawn.dir/src/lib/debug/debug_info.cpp.i"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ueharanaoto/Desktop/Blawn/src/lib/debug/debug_info.cpp > CMakeFiles/blawn.dir/src/lib/debug/debug_info.cpp.i
 
-CMakeFiles/blawn.dir/src/lib/utils/scope.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/blawn.dir/src/lib/utils/scope.cpp.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ueharanaoto/Desktop/Blawn/src/lib/utils/scope.cpp -o CMakeFiles/blawn.dir/src/lib/utils/scope.cpp.s
+CMakeFiles/blawn.dir/src/lib/debug/debug_info.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/blawn.dir/src/lib/debug/debug_info.cpp.s"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ueharanaoto/Desktop/Blawn/src/lib/debug/debug_info.cpp -o CMakeFiles/blawn.dir/src/lib/debug/debug_info.cpp.s
+
+CMakeFiles/blawn.dir/src/lib/scope/scope.cpp.o: CMakeFiles/blawn.dir/flags.make
+CMakeFiles/blawn.dir/src/lib/scope/scope.cpp.o: ../src/lib/scope/scope.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/ueharanaoto/Desktop/Blawn/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/blawn.dir/src/lib/scope/scope.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/blawn.dir/src/lib/scope/scope.cpp.o -c /Users/ueharanaoto/Desktop/Blawn/src/lib/scope/scope.cpp
+
+CMakeFiles/blawn.dir/src/lib/scope/scope.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/blawn.dir/src/lib/scope/scope.cpp.i"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ueharanaoto/Desktop/Blawn/src/lib/scope/scope.cpp > CMakeFiles/blawn.dir/src/lib/scope/scope.cpp.i
+
+CMakeFiles/blawn.dir/src/lib/scope/scope.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/blawn.dir/src/lib/scope/scope.cpp.s"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ueharanaoto/Desktop/Blawn/src/lib/scope/scope.cpp -o CMakeFiles/blawn.dir/src/lib/scope/scope.cpp.s
+
+CMakeFiles/blawn.dir/src/lib/scope/mangler.cpp.o: CMakeFiles/blawn.dir/flags.make
+CMakeFiles/blawn.dir/src/lib/scope/mangler.cpp.o: ../src/lib/scope/mangler.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/ueharanaoto/Desktop/Blawn/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/blawn.dir/src/lib/scope/mangler.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/blawn.dir/src/lib/scope/mangler.cpp.o -c /Users/ueharanaoto/Desktop/Blawn/src/lib/scope/mangler.cpp
+
+CMakeFiles/blawn.dir/src/lib/scope/mangler.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/blawn.dir/src/lib/scope/mangler.cpp.i"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ueharanaoto/Desktop/Blawn/src/lib/scope/mangler.cpp > CMakeFiles/blawn.dir/src/lib/scope/mangler.cpp.i
+
+CMakeFiles/blawn.dir/src/lib/scope/mangler.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/blawn.dir/src/lib/scope/mangler.cpp.s"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ueharanaoto/Desktop/Blawn/src/lib/scope/mangler.cpp -o CMakeFiles/blawn.dir/src/lib/scope/mangler.cpp.s
 
 CMakeFiles/blawn.dir/src/lib/utils/unique_number.cpp.o: CMakeFiles/blawn.dir/flags.make
 CMakeFiles/blawn.dir/src/lib/utils/unique_number.cpp.o: ../src/lib/utils/unique_number.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/ueharanaoto/Desktop/Blawn/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/blawn.dir/src/lib/utils/unique_number.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/ueharanaoto/Desktop/Blawn/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/blawn.dir/src/lib/utils/unique_number.cpp.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/blawn.dir/src/lib/utils/unique_number.cpp.o -c /Users/ueharanaoto/Desktop/Blawn/src/lib/utils/unique_number.cpp
 
 CMakeFiles/blawn.dir/src/lib/utils/unique_number.cpp.i: cmake_force
@@ -161,7 +187,7 @@ CMakeFiles/blawn.dir/src/lib/utils/unique_number.cpp.s: cmake_force
 
 CMakeFiles/blawn.dir/src/lib/blawn/parser/driver.cpp.o: CMakeFiles/blawn.dir/flags.make
 CMakeFiles/blawn.dir/src/lib/blawn/parser/driver.cpp.o: ../src/lib/blawn/parser/driver.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/ueharanaoto/Desktop/Blawn/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/blawn.dir/src/lib/blawn/parser/driver.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/ueharanaoto/Desktop/Blawn/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/blawn.dir/src/lib/blawn/parser/driver.cpp.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/blawn.dir/src/lib/blawn/parser/driver.cpp.o -c /Users/ueharanaoto/Desktop/Blawn/src/lib/blawn/parser/driver.cpp
 
 CMakeFiles/blawn.dir/src/lib/blawn/parser/driver.cpp.i: cmake_force
@@ -174,7 +200,7 @@ CMakeFiles/blawn.dir/src/lib/blawn/parser/driver.cpp.s: cmake_force
 
 CMakeFiles/blawn.dir/src/lib/ast/node.cpp.o: CMakeFiles/blawn.dir/flags.make
 CMakeFiles/blawn.dir/src/lib/ast/node.cpp.o: ../src/lib/ast/node.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/ueharanaoto/Desktop/Blawn/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/blawn.dir/src/lib/ast/node.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/ueharanaoto/Desktop/Blawn/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/blawn.dir/src/lib/ast/node.cpp.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/blawn.dir/src/lib/ast/node.cpp.o -c /Users/ueharanaoto/Desktop/Blawn/src/lib/ast/node.cpp
 
 CMakeFiles/blawn.dir/src/lib/ast/node.cpp.i: cmake_force
@@ -187,7 +213,7 @@ CMakeFiles/blawn.dir/src/lib/ast/node.cpp.s: cmake_force
 
 CMakeFiles/blawn.dir/parser.cpp.o: CMakeFiles/blawn.dir/flags.make
 CMakeFiles/blawn.dir/parser.cpp.o: parser.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/ueharanaoto/Desktop/Blawn/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/blawn.dir/parser.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/ueharanaoto/Desktop/Blawn/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/blawn.dir/parser.cpp.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/blawn.dir/parser.cpp.o -c /Users/ueharanaoto/Desktop/Blawn/build/parser.cpp
 
 CMakeFiles/blawn.dir/parser.cpp.i: cmake_force
@@ -201,7 +227,7 @@ CMakeFiles/blawn.dir/parser.cpp.s: cmake_force
 CMakeFiles/blawn.dir/lexer.cpp.o: CMakeFiles/blawn.dir/flags.make
 CMakeFiles/blawn.dir/lexer.cpp.o: lexer.cpp
 CMakeFiles/blawn.dir/lexer.cpp.o: parser.hpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/ueharanaoto/Desktop/Blawn/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/blawn.dir/lexer.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/ueharanaoto/Desktop/Blawn/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/blawn.dir/lexer.cpp.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/blawn.dir/lexer.cpp.o -c /Users/ueharanaoto/Desktop/Blawn/build/lexer.cpp
 
 CMakeFiles/blawn.dir/lexer.cpp.i: cmake_force
@@ -218,8 +244,10 @@ blawn_OBJECTS = \
 "CMakeFiles/blawn.dir/src/lib/blawn/module/module.cpp.o" \
 "CMakeFiles/blawn.dir/src/lib/ast/builder.cpp.o" \
 "CMakeFiles/blawn.dir/src/lib/blawn/compiler.cpp.o" \
-"CMakeFiles/blawn.dir/src/lib/blawn/converter/ast_to_mir/converter.cpp.o" \
-"CMakeFiles/blawn.dir/src/lib/utils/scope.cpp.o" \
+"CMakeFiles/blawn.dir/src/lib/blawn/visitors/ast_to_mir.cpp.o" \
+"CMakeFiles/blawn.dir/src/lib/debug/debug_info.cpp.o" \
+"CMakeFiles/blawn.dir/src/lib/scope/scope.cpp.o" \
+"CMakeFiles/blawn.dir/src/lib/scope/mangler.cpp.o" \
 "CMakeFiles/blawn.dir/src/lib/utils/unique_number.cpp.o" \
 "CMakeFiles/blawn.dir/src/lib/blawn/parser/driver.cpp.o" \
 "CMakeFiles/blawn.dir/src/lib/ast/node.cpp.o" \
@@ -233,8 +261,10 @@ blawn: CMakeFiles/blawn.dir/src/lib/blawn/main.cpp.o
 blawn: CMakeFiles/blawn.dir/src/lib/blawn/module/module.cpp.o
 blawn: CMakeFiles/blawn.dir/src/lib/ast/builder.cpp.o
 blawn: CMakeFiles/blawn.dir/src/lib/blawn/compiler.cpp.o
-blawn: CMakeFiles/blawn.dir/src/lib/blawn/converter/ast_to_mir/converter.cpp.o
-blawn: CMakeFiles/blawn.dir/src/lib/utils/scope.cpp.o
+blawn: CMakeFiles/blawn.dir/src/lib/blawn/visitors/ast_to_mir.cpp.o
+blawn: CMakeFiles/blawn.dir/src/lib/debug/debug_info.cpp.o
+blawn: CMakeFiles/blawn.dir/src/lib/scope/scope.cpp.o
+blawn: CMakeFiles/blawn.dir/src/lib/scope/mangler.cpp.o
 blawn: CMakeFiles/blawn.dir/src/lib/utils/unique_number.cpp.o
 blawn: CMakeFiles/blawn.dir/src/lib/blawn/parser/driver.cpp.o
 blawn: CMakeFiles/blawn.dir/src/lib/ast/node.cpp.o
@@ -253,7 +283,7 @@ blawn: /usr/local/opt/llvm/lib/libLLVMBitstreamReader.a
 blawn: /usr/local/opt/llvm/lib/libLLVMSupport.a
 blawn: /usr/local/opt/llvm/lib/libLLVMDemangle.a
 blawn: CMakeFiles/blawn.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/ueharanaoto/Desktop/Blawn/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Linking CXX executable blawn"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/ueharanaoto/Desktop/Blawn/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Linking CXX executable blawn"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/blawn.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

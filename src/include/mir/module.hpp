@@ -5,13 +5,16 @@
 #include <set>
 #include "include/mir/type_solver.hpp"
 
-namespace mir {
+namespace mir
+{
 class Type;
 }  // namespace mir
 // forward declarations
 
-namespace mir {
-class Module {
+namespace mir
+{
+class Module
+{
     private:
     TypeSolver type_solver;
 

@@ -1,6 +1,7 @@
 #include <memory>
 
-namespace mir {
+namespace mir
+{
 class Module;
 
 class StructType;
@@ -16,8 +17,10 @@ class Function;
 }  // namespace mir
 // forward declarations;
 
-namespace mir {
-class Builder {
+namespace mir
+{
+class Builder
+{
     private:
     std::shared_ptr<Module> module;
 

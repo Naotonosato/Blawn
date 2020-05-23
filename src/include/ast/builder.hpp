@@ -4,9 +4,10 @@
 #include <memory>
 #include <string>
 #include <vector>
-#include "include/utils/scoped_collector.hpp"
+#include "include/scope/scoped_collector.hpp"
 
-namespace ast {
+namespace ast
+{
 class NodeBase;
 class IntegerNode;
 class FloatNode;
@@ -30,25 +31,41 @@ class Node;
 class RootNode;
 }  // namespace ast
 
-namespace module {
-class Module;
+namespace debug
+{
+class DebugInfo;
 }
 
-namespace ast {
+namespace ast
+{
+enum NodeExistsState
+{
+    EXISTS,
+    NOT_EXISTS,
+    NO_DEFINITION
+};
 
-class Builder {
+class Builder
+{
     private:
-    std::shared_ptr<module::Module> module;
-    int current_line_number;
-    utils::Scope& current_scope;
-    std::shared_ptr<RootNode> root;
+    const std::string filename;
+    unsigned long current_line_number;
+    unsigned long current_token_index;
+    std::string current_token;
+    scope::ScopedCollector<NodeExistsState> ast_container;
+    scope::ScopeID& current_scope_id;
+    std::unique_ptr<Node> root;
 
     public:
-    Builder(std::shared_ptr<module::Module> module, int line_number = 1);
+    Builder(std::string filename);
 
     void count_line_number();
 
-    const int get_current_line_number() const;
+    void count_token_index(int index);
+
+    void set_token(std::string token);
+
+    debug::DebugInfo create_current_debug_info();
 
     void into_named_scope(std::string name);
 
@@ -56,95 +73,89 @@ class Builder {
 
     void break_out_of_scope();
 
-    std::shared_ptr<IntegerNode> create_integer(int num);
+    std::unique_ptr<Node> create_integer(int num);
 
-    std::shared_ptr<FloatNode> create_float(double num);
+    std::unique_ptr<Node> create_float(double num);
 
-    std::shared_ptr<Node> create_minus(std::shared_ptr<Node> expr);
+    std::unique_ptr<Node> create_minus(std::unique_ptr<Node>&& expr);
 
-    std::shared_ptr<StringNode> create_string(std::string str);
+    std::unique_ptr<Node> create_string(std::string str);
 
-    std::shared_ptr<Node> create_void();
+    std::unique_ptr<Node> create_void();
 
-    std::shared_ptr<ArrayNode> create_array(
-        std::vector<std::shared_ptr<Node>> elements);
+    std::unique_ptr<Node> create_lazy();
 
-    std::shared_ptr<ArrayNode> create_array();
+    std::unique_ptr<Node> create_array(
+        std::vector<std::unique_ptr<Node>>&& elements);
 
-    std::shared_ptr<BinaryExpressionNode> create_binary_expression(
-        std::shared_ptr<Node> node, std::shared_ptr<Node> other,
+    std::unique_ptr<Node> create_array();
+
+    std::unique_ptr<Node> create_binary_expression(
+        std::unique_ptr<Node>&& node, std::unique_ptr<Node>&& other,
         const std::string& operator_type);
 
-    std::shared_ptr<VariableNode> create_variable_definition(
-        std::string name, std::shared_ptr<Node> node);
+    std::unique_ptr<Node> create_variable_definition(
+        std::string name, std::unique_ptr<Node>&& node);
 
-    std::shared_ptr<VariableNode> create_member_variable_definition(
-        std::string name, std::shared_ptr<Node> node);
+    std::unique_ptr<Node> create_member_variable_definition(
+        std::string name, std::unique_ptr<Node>&& node);
 
-    std::shared_ptr<GlobalVariableNode> create_global_variable_definition(
-        std::string name, std::shared_ptr<Node>);
+    std::unique_ptr<Node> create_global_variable_definition(
+        std::string name, std::unique_ptr<Node>&&);
 
-    std::shared_ptr<ArgumentNode> create_argument(const std::string& name);
+    std::unique_ptr<Node> create_argument(std::string name);
 
-    std::shared_ptr<AssignmentNode> create_assignment(
-        std::shared_ptr<Node> left, std::shared_ptr<Node> right);
+    std::unique_ptr<Node> create_assignment(std::unique_ptr<Node>&& left,
+                                            std::unique_ptr<Node>&& right);
 
-    std::shared_ptr<AssignmentNode> create_assignment(
-        std::shared_ptr<AccessElementNode> left, std::shared_ptr<Node> right);
+    std::unique_ptr<Node> create_deep_copy(std::unique_ptr<Node>&& pointer,
+                                           std::unique_ptr<Node>&& object);
 
-    std::shared_ptr<DeepCopyNode> create_deep_copy(
-        std::shared_ptr<Node> pointer, std::shared_ptr<Node> object);
+    std::unique_ptr<Node> create_block(
+        std::vector<std::unique_ptr<Node>>&& expressions);
 
-    std::shared_ptr<BlockNode> create_block(
-        std::vector<std::shared_ptr<Node>>&& expressions);
+    std::unique_ptr<Node> create_call(
+        std::unique_ptr<Node>&&,
+        std::vector<std::unique_ptr<Node>>&& arguments);
 
-    std::shared_ptr<CallFunctionNode> create_call(
-        std::string name, std::vector<std::shared_ptr<Node>> arguments);
+    std::unique_ptr<Node> create_call(
+        const std::string& name,
+        std::vector<std::unique_ptr<Node>>&& arguments);
 
-    std::shared_ptr<CallFunctionNode> create_call(
-        std::shared_ptr<AccessElementNode>,
-        std::vector<std::shared_ptr<Node>> arguments);
+    std::unique_ptr<Node> create_if(std::unique_ptr<Node>&& cond,
+                                    std::unique_ptr<Node>&& if_body,
+                                    std::unique_ptr<Node>&& else_body);
 
-    std::shared_ptr<IfNode> create_if(std::shared_ptr<Node> cond,
-                                      std::shared_ptr<BlockNode> if_body,
-                                      std::shared_ptr<BlockNode> else_body);
+    std::unique_ptr<Node> create_for(std::unique_ptr<Node>&& first_expression,
+                                     std::unique_ptr<Node>&& condition,
+                                     std::unique_ptr<Node>&& last_expression,
+                                     std::unique_ptr<Node>&& body);
 
-    std::shared_ptr<ForNode> create_for(std::shared_ptr<Node>,
-                                        std::shared_ptr<Node>,
-                                        std::shared_ptr<Node>,
-                                        std::shared_ptr<BlockNode> body);
+    std::unique_ptr<Node> create_access(std::unique_ptr<Node>&& left,
+                                        std::string right);
 
-    std::shared_ptr<AccessElementNode> create_access(std::shared_ptr<Node> left,
-                                                     std::string right);
+    std::unique_ptr<Node> create_generic_function_declaration(
+        std::string name, std::vector<std::unique_ptr<Node>>&& arguments);
 
-    std::shared_ptr<GenericFunctionDeclarationNode>
-    create_generic_function_declaration(
-        std::string name, std::vector<std::shared_ptr<ArgumentNode>> arguments);
+    std::unique_ptr<Node> create_generic_function_declaration(
+        std::string name, int num_arguments);
 
-    std::shared_ptr<GenericFunctionDeclarationNode>
-    create_generic_function_declaration(std::string name, int num_arguments);
+    std::unique_ptr<Node> create_generic_function_definition(
+        const std::string& name, std::vector<std::unique_ptr<Node>>&& arguments,
+        std::unique_ptr<Node>&& body);
 
-    std::shared_ptr<GenericFunctionNode> create_generic_function_definition(
-        std::string name,
-        std::vector<std::shared_ptr<ast::ArgumentNode>> arguments,
-        std::shared_ptr<BlockNode> body, std::shared_ptr<Node> return_value);
+    std::unique_ptr<Node> create_generic_class_definition(
+        const std::string& name, std::vector<std::unique_ptr<Node>>&& arguments,
+        std::vector<std::unique_ptr<Node>>&& members_definition,
+        std::vector<std::unique_ptr<Node>>&& methods);
 
-    std::shared_ptr<GenericClassNode> create_generic_class_definition(
-        std::string name,
-        std::vector<std::shared_ptr<ast::ArgumentNode>> arguments,
-        std::vector<std::shared_ptr<VariableNode>> members_definition,
-        std::vector<std::shared_ptr<GenericFunctionNode>> methods);
+    bool exist_named_expression(std::string name);
 
-    /*std::shared_ptr<Node> create_generic_class_declaration(
-        std::string name, std::vector<std::string> argument_names);
-    */
-    bool exist(std::string);
+    std::unique_ptr<Node> create_named_node(std::string name);
 
-    std::shared_ptr<Node> get_named_node(std::string name);
+    void create_root(std::vector<std::unique_ptr<Node>>&& program);
 
-    std::shared_ptr<RootNode> create_root(std::shared_ptr<BlockNode> program);
-
-    std::shared_ptr<Node> build() const;
+    Node& build() const;
 };
 
 }  // namespace ast

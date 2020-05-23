@@ -8,9 +8,21 @@
 #include "location.hh"
 #include "parser.hpp"
 
-namespace blawn {
+namespace blawn
+{
+struct DeclarationInfo
+{
+    std::string name;
+    std::vector<std::string> argument_names;
+    DeclarationInfo() = default;
+    DeclarationInfo(std::string name, std::vector<std::string> &&argument_names)
+        : name(name), argument_names(std::move(argument_names))
+    {
+    }
+};
 
-class Scanner : public yyFlexLexer {
+class Scanner : public yyFlexLexer
+{
     public:
     Driver &driver;
     Scanner(std::istream *in, Driver &driver)

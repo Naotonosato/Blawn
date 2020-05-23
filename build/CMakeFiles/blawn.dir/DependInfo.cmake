@@ -9,11 +9,13 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/Users/ueharanaoto/Desktop/Blawn/src/lib/ast/builder.cpp" "/Users/ueharanaoto/Desktop/Blawn/build/CMakeFiles/blawn.dir/src/lib/ast/builder.cpp.o"
   "/Users/ueharanaoto/Desktop/Blawn/src/lib/ast/node.cpp" "/Users/ueharanaoto/Desktop/Blawn/build/CMakeFiles/blawn.dir/src/lib/ast/node.cpp.o"
   "/Users/ueharanaoto/Desktop/Blawn/src/lib/blawn/compiler.cpp" "/Users/ueharanaoto/Desktop/Blawn/build/CMakeFiles/blawn.dir/src/lib/blawn/compiler.cpp.o"
-  "/Users/ueharanaoto/Desktop/Blawn/src/lib/blawn/converter/ast_to_mir/converter.cpp" "/Users/ueharanaoto/Desktop/Blawn/build/CMakeFiles/blawn.dir/src/lib/blawn/converter/ast_to_mir/converter.cpp.o"
   "/Users/ueharanaoto/Desktop/Blawn/src/lib/blawn/main.cpp" "/Users/ueharanaoto/Desktop/Blawn/build/CMakeFiles/blawn.dir/src/lib/blawn/main.cpp.o"
   "/Users/ueharanaoto/Desktop/Blawn/src/lib/blawn/module/module.cpp" "/Users/ueharanaoto/Desktop/Blawn/build/CMakeFiles/blawn.dir/src/lib/blawn/module/module.cpp.o"
   "/Users/ueharanaoto/Desktop/Blawn/src/lib/blawn/parser/driver.cpp" "/Users/ueharanaoto/Desktop/Blawn/build/CMakeFiles/blawn.dir/src/lib/blawn/parser/driver.cpp.o"
-  "/Users/ueharanaoto/Desktop/Blawn/src/lib/utils/scope.cpp" "/Users/ueharanaoto/Desktop/Blawn/build/CMakeFiles/blawn.dir/src/lib/utils/scope.cpp.o"
+  "/Users/ueharanaoto/Desktop/Blawn/src/lib/blawn/visitors/ast_to_mir.cpp" "/Users/ueharanaoto/Desktop/Blawn/build/CMakeFiles/blawn.dir/src/lib/blawn/visitors/ast_to_mir.cpp.o"
+  "/Users/ueharanaoto/Desktop/Blawn/src/lib/debug/debug_info.cpp" "/Users/ueharanaoto/Desktop/Blawn/build/CMakeFiles/blawn.dir/src/lib/debug/debug_info.cpp.o"
+  "/Users/ueharanaoto/Desktop/Blawn/src/lib/scope/mangler.cpp" "/Users/ueharanaoto/Desktop/Blawn/build/CMakeFiles/blawn.dir/src/lib/scope/mangler.cpp.o"
+  "/Users/ueharanaoto/Desktop/Blawn/src/lib/scope/scope.cpp" "/Users/ueharanaoto/Desktop/Blawn/build/CMakeFiles/blawn.dir/src/lib/scope/scope.cpp.o"
   "/Users/ueharanaoto/Desktop/Blawn/src/lib/utils/unique_number.cpp" "/Users/ueharanaoto/Desktop/Blawn/build/CMakeFiles/blawn.dir/src/lib/utils/unique_number.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "Clang")

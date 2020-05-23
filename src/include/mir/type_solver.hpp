@@ -2,12 +2,15 @@
 #include "include/algorithm/union_find/union_find.hpp"
 #include "include/mir/type.hpp"
 
-namespace mir {
+namespace mir
+{
 class Type;
 }
 
-namespace mir {
-class TypeSolver {
+namespace mir
+{
+class TypeSolver
+{
     private:
     algorithm::UnionFindTree<std::shared_ptr<Type>> type_variables;
 

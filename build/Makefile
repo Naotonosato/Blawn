@@ -124,19 +124,6 @@ blawn/fast:
 .PHONY : blawn/fast
 
 #=============================================================================
-# Target rules for targets named copy
-
-# Build rule for target.
-copy: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 copy
-.PHONY : copy
-
-# fast build rule for target.
-copy/fast:
-	$(MAKE) -f CMakeFiles/copy.dir/build.make CMakeFiles/copy.dir/build
-.PHONY : copy/fast
-
-#=============================================================================
 # Target rules for targets named format
 
 # Build rule for target.
@@ -148,6 +135,19 @@ format: cmake_check_build_system
 format/fast:
 	$(MAKE) -f CMakeFiles/format.dir/build.make CMakeFiles/format.dir/build
 .PHONY : format/fast
+
+#=============================================================================
+# Target rules for targets named bison_patch
+
+# Build rule for target.
+bison_patch: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 bison_patch
+.PHONY : bison_patch
+
+# fast build rule for target.
+bison_patch/fast:
+	$(MAKE) -f CMakeFiles/bison_patch.dir/build.make CMakeFiles/bison_patch.dir/build
+.PHONY : bison_patch/fast
 
 #=============================================================================
 # Target rules for targets named intrinsics_gen
@@ -297,33 +297,6 @@ src/lib/blawn/compiler.cpp.s:
 	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/lib/blawn/compiler.cpp.s
 .PHONY : src/lib/blawn/compiler.cpp.s
 
-src/lib/blawn/converter/ast_to_mir/converter.o: src/lib/blawn/converter/ast_to_mir/converter.cpp.o
-
-.PHONY : src/lib/blawn/converter/ast_to_mir/converter.o
-
-# target to build an object file
-src/lib/blawn/converter/ast_to_mir/converter.cpp.o:
-	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/lib/blawn/converter/ast_to_mir/converter.cpp.o
-.PHONY : src/lib/blawn/converter/ast_to_mir/converter.cpp.o
-
-src/lib/blawn/converter/ast_to_mir/converter.i: src/lib/blawn/converter/ast_to_mir/converter.cpp.i
-
-.PHONY : src/lib/blawn/converter/ast_to_mir/converter.i
-
-# target to preprocess a source file
-src/lib/blawn/converter/ast_to_mir/converter.cpp.i:
-	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/lib/blawn/converter/ast_to_mir/converter.cpp.i
-.PHONY : src/lib/blawn/converter/ast_to_mir/converter.cpp.i
-
-src/lib/blawn/converter/ast_to_mir/converter.s: src/lib/blawn/converter/ast_to_mir/converter.cpp.s
-
-.PHONY : src/lib/blawn/converter/ast_to_mir/converter.s
-
-# target to generate assembly for a file
-src/lib/blawn/converter/ast_to_mir/converter.cpp.s:
-	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/lib/blawn/converter/ast_to_mir/converter.cpp.s
-.PHONY : src/lib/blawn/converter/ast_to_mir/converter.cpp.s
-
 src/lib/blawn/main.o: src/lib/blawn/main.cpp.o
 
 .PHONY : src/lib/blawn/main.o
@@ -405,32 +378,113 @@ src/lib/blawn/parser/driver.cpp.s:
 	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/lib/blawn/parser/driver.cpp.s
 .PHONY : src/lib/blawn/parser/driver.cpp.s
 
-src/lib/utils/scope.o: src/lib/utils/scope.cpp.o
+src/lib/blawn/visitors/ast_to_mir.o: src/lib/blawn/visitors/ast_to_mir.cpp.o
 
-.PHONY : src/lib/utils/scope.o
+.PHONY : src/lib/blawn/visitors/ast_to_mir.o
 
 # target to build an object file
-src/lib/utils/scope.cpp.o:
-	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/lib/utils/scope.cpp.o
-.PHONY : src/lib/utils/scope.cpp.o
+src/lib/blawn/visitors/ast_to_mir.cpp.o:
+	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/lib/blawn/visitors/ast_to_mir.cpp.o
+.PHONY : src/lib/blawn/visitors/ast_to_mir.cpp.o
 
-src/lib/utils/scope.i: src/lib/utils/scope.cpp.i
+src/lib/blawn/visitors/ast_to_mir.i: src/lib/blawn/visitors/ast_to_mir.cpp.i
 
-.PHONY : src/lib/utils/scope.i
+.PHONY : src/lib/blawn/visitors/ast_to_mir.i
 
 # target to preprocess a source file
-src/lib/utils/scope.cpp.i:
-	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/lib/utils/scope.cpp.i
-.PHONY : src/lib/utils/scope.cpp.i
+src/lib/blawn/visitors/ast_to_mir.cpp.i:
+	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/lib/blawn/visitors/ast_to_mir.cpp.i
+.PHONY : src/lib/blawn/visitors/ast_to_mir.cpp.i
 
-src/lib/utils/scope.s: src/lib/utils/scope.cpp.s
+src/lib/blawn/visitors/ast_to_mir.s: src/lib/blawn/visitors/ast_to_mir.cpp.s
 
-.PHONY : src/lib/utils/scope.s
+.PHONY : src/lib/blawn/visitors/ast_to_mir.s
 
 # target to generate assembly for a file
-src/lib/utils/scope.cpp.s:
-	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/lib/utils/scope.cpp.s
-.PHONY : src/lib/utils/scope.cpp.s
+src/lib/blawn/visitors/ast_to_mir.cpp.s:
+	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/lib/blawn/visitors/ast_to_mir.cpp.s
+.PHONY : src/lib/blawn/visitors/ast_to_mir.cpp.s
+
+src/lib/debug/debug_info.o: src/lib/debug/debug_info.cpp.o
+
+.PHONY : src/lib/debug/debug_info.o
+
+# target to build an object file
+src/lib/debug/debug_info.cpp.o:
+	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/lib/debug/debug_info.cpp.o
+.PHONY : src/lib/debug/debug_info.cpp.o
+
+src/lib/debug/debug_info.i: src/lib/debug/debug_info.cpp.i
+
+.PHONY : src/lib/debug/debug_info.i
+
+# target to preprocess a source file
+src/lib/debug/debug_info.cpp.i:
+	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/lib/debug/debug_info.cpp.i
+.PHONY : src/lib/debug/debug_info.cpp.i
+
+src/lib/debug/debug_info.s: src/lib/debug/debug_info.cpp.s
+
+.PHONY : src/lib/debug/debug_info.s
+
+# target to generate assembly for a file
+src/lib/debug/debug_info.cpp.s:
+	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/lib/debug/debug_info.cpp.s
+.PHONY : src/lib/debug/debug_info.cpp.s
+
+src/lib/scope/mangler.o: src/lib/scope/mangler.cpp.o
+
+.PHONY : src/lib/scope/mangler.o
+
+# target to build an object file
+src/lib/scope/mangler.cpp.o:
+	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/lib/scope/mangler.cpp.o
+.PHONY : src/lib/scope/mangler.cpp.o
+
+src/lib/scope/mangler.i: src/lib/scope/mangler.cpp.i
+
+.PHONY : src/lib/scope/mangler.i
+
+# target to preprocess a source file
+src/lib/scope/mangler.cpp.i:
+	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/lib/scope/mangler.cpp.i
+.PHONY : src/lib/scope/mangler.cpp.i
+
+src/lib/scope/mangler.s: src/lib/scope/mangler.cpp.s
+
+.PHONY : src/lib/scope/mangler.s
+
+# target to generate assembly for a file
+src/lib/scope/mangler.cpp.s:
+	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/lib/scope/mangler.cpp.s
+.PHONY : src/lib/scope/mangler.cpp.s
+
+src/lib/scope/scope.o: src/lib/scope/scope.cpp.o
+
+.PHONY : src/lib/scope/scope.o
+
+# target to build an object file
+src/lib/scope/scope.cpp.o:
+	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/lib/scope/scope.cpp.o
+.PHONY : src/lib/scope/scope.cpp.o
+
+src/lib/scope/scope.i: src/lib/scope/scope.cpp.i
+
+.PHONY : src/lib/scope/scope.i
+
+# target to preprocess a source file
+src/lib/scope/scope.cpp.i:
+	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/lib/scope/scope.cpp.i
+.PHONY : src/lib/scope/scope.cpp.i
+
+src/lib/scope/scope.s: src/lib/scope/scope.cpp.s
+
+.PHONY : src/lib/scope/scope.s
+
+# target to generate assembly for a file
+src/lib/scope/scope.cpp.s:
+	$(MAKE) -f CMakeFiles/blawn.dir/build.make CMakeFiles/blawn.dir/src/lib/scope/scope.cpp.s
+.PHONY : src/lib/scope/scope.cpp.s
 
 src/lib/utils/unique_number.o: src/lib/utils/unique_number.cpp.o
 
@@ -467,8 +521,8 @@ help:
 	@echo "... depend"
 	@echo "... blawn"
 	@echo "... edit_cache"
-	@echo "... copy"
 	@echo "... format"
+	@echo "... bison_patch"
 	@echo "... rebuild_cache"
 	@echo "... intrinsics_gen"
 	@echo "... lexer.o"
@@ -486,9 +540,6 @@ help:
 	@echo "... src/lib/blawn/compiler.o"
 	@echo "... src/lib/blawn/compiler.i"
 	@echo "... src/lib/blawn/compiler.s"
-	@echo "... src/lib/blawn/converter/ast_to_mir/converter.o"
-	@echo "... src/lib/blawn/converter/ast_to_mir/converter.i"
-	@echo "... src/lib/blawn/converter/ast_to_mir/converter.s"
 	@echo "... src/lib/blawn/main.o"
 	@echo "... src/lib/blawn/main.i"
 	@echo "... src/lib/blawn/main.s"
@@ -498,9 +549,18 @@ help:
 	@echo "... src/lib/blawn/parser/driver.o"
 	@echo "... src/lib/blawn/parser/driver.i"
 	@echo "... src/lib/blawn/parser/driver.s"
-	@echo "... src/lib/utils/scope.o"
-	@echo "... src/lib/utils/scope.i"
-	@echo "... src/lib/utils/scope.s"
+	@echo "... src/lib/blawn/visitors/ast_to_mir.o"
+	@echo "... src/lib/blawn/visitors/ast_to_mir.i"
+	@echo "... src/lib/blawn/visitors/ast_to_mir.s"
+	@echo "... src/lib/debug/debug_info.o"
+	@echo "... src/lib/debug/debug_info.i"
+	@echo "... src/lib/debug/debug_info.s"
+	@echo "... src/lib/scope/mangler.o"
+	@echo "... src/lib/scope/mangler.i"
+	@echo "... src/lib/scope/mangler.s"
+	@echo "... src/lib/scope/scope.o"
+	@echo "... src/lib/scope/scope.i"
+	@echo "... src/lib/scope/scope.s"
 	@echo "... src/lib/utils/unique_number.o"
 	@echo "... src/lib/utils/unique_number.i"
 	@echo "... src/lib/utils/unique_number.s"
