@@ -1,0 +1,8 @@
+build/
+tmp/
+*.code-workspace
+*.swp
+*.tmp
+*.s
+*.DS_Store
+*.txt

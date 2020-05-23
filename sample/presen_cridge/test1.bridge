@@ -1,0 +1,320 @@
+Ctype __fsid_t
+    @__NOT_SUPPORTED__1 = __C_UNKNOWN__SIZE_8
+Ctype _IO_FILE
+    @__NOT_SUPPORTED__2 = __C_UNKNOWN__SIZE_1
+Ctype __mbstate_t
+    @__count = __C_INT__SIZE_4
+    @__NOT_SUPPORTED__3 = __C_UNKNOWN__SIZE_4
+Ctype _G_fpos_t
+    @__pos = __C_LONG__SIZE_8
+    @__state = __mbstate_t
+Ctype _G_fpos64_t
+    @__pos = __C_LONG__SIZE_8
+    @__state = __mbstate_t
+Ctype _IO_marker
+    @__NOT_SUPPORTED__4 = __C_UNKNOWN__SIZE_8
+    @_sbuf = __PTR__ _IO_FILE
+    @_pos = __C_INT__SIZE_4
+[Cfunction __underflow]
+    arguments: __PTR__ _IO_FILE
+    return: __C_INT__SIZE_4
+[Cfunction __uflow]
+    arguments: __PTR__ _IO_FILE
+    return: __C_INT__SIZE_4
+[Cfunction __overflow]
+    arguments: __PTR__ _IO_FILE,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction _IO_getc]
+    arguments: __PTR__ _IO_FILE
+    return: __C_INT__SIZE_4
+[Cfunction _IO_putc]
+    arguments: __C_INT__SIZE_4,__PTR__ _IO_FILE
+    return: __C_INT__SIZE_4
+[Cfunction _IO_feof]
+    arguments: __PTR__ _IO_FILE
+    return: __C_INT__SIZE_4
+[Cfunction _IO_ferror]
+    arguments: __PTR__ _IO_FILE
+    return: __C_INT__SIZE_4
+[Cfunction _IO_peekc_locked]
+    arguments: __PTR__ _IO_FILE
+    return: __C_INT__SIZE_4
+[Cfunction _IO_flockfile]
+    arguments: __PTR__ _IO_FILE
+    return: __C_VOID__
+[Cfunction _IO_funlockfile]
+    arguments: __PTR__ _IO_FILE
+    return: __C_VOID__
+[Cfunction _IO_ftrylockfile]
+    arguments: __PTR__ _IO_FILE
+    return: __C_INT__SIZE_4
+[Cfunction _IO_vfscanf]
+    arguments: __PTR__ _IO_FILE,__PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4,__PTR__ __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction _IO_vfprintf]
+    arguments: __PTR__ _IO_FILE,__PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction _IO_padn]
+    arguments: __PTR__ _IO_FILE,__C_INT__SIZE_4,__C_LONG__SIZE_8
+    return: __C_LONG__SIZE_8
+[Cfunction _IO_sgetn]
+    arguments: __PTR__ _IO_FILE,__PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction _IO_seekoff]
+    arguments: __PTR__ _IO_FILE,__C_LONG__SIZE_8,__C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __C_LONG__SIZE_8
+[Cfunction _IO_seekpos]
+    arguments: __PTR__ _IO_FILE,__C_LONG__SIZE_8,__C_INT__SIZE_4
+    return: __C_LONG__SIZE_8
+[Cfunction _IO_free_backup_area]
+    arguments: __PTR__ _IO_FILE
+    return: __C_VOID__
+[Cfunction remove]
+    arguments: __PTR__ __C_CHAR__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction rename]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction renameat]
+    arguments: __C_INT__SIZE_4,__PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4,__PTR__ __C_CHAR__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction tmpfile]
+    arguments: 
+    return: __PTR__ _IO_FILE
+[Cfunction tmpnam]
+    arguments: __PTR__ __C_CHAR__SIZE_1
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction tmpnam_r]
+    arguments: __PTR__ __C_CHAR__SIZE_1
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction tempnam]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction fclose]
+    arguments: __PTR__ _IO_FILE
+    return: __C_INT__SIZE_4
+[Cfunction fflush]
+    arguments: __PTR__ _IO_FILE
+    return: __C_INT__SIZE_4
+[Cfunction fflush_unlocked]
+    arguments: __PTR__ _IO_FILE
+    return: __C_INT__SIZE_4
+[Cfunction fopen]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1
+    return: __PTR__ _IO_FILE
+[Cfunction freopen]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1,__PTR__ _IO_FILE
+    return: __PTR__ _IO_FILE
+[Cfunction fdopen]
+    arguments: __C_INT__SIZE_4,__PTR__ __C_CHAR__SIZE_1
+    return: __PTR__ _IO_FILE
+[Cfunction fmemopen]
+    arguments: __PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4,__PTR__ __C_CHAR__SIZE_1
+    return: __PTR__ _IO_FILE
+[Cfunction open_memstream]
+    arguments: __PTR__ __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_INT__SIZE_4
+    return: __PTR__ _IO_FILE
+[Cfunction setbuf]
+    arguments: __PTR__ _IO_FILE,__PTR__ __C_CHAR__SIZE_1
+    return: __C_VOID__
+[Cfunction setvbuf]
+    arguments: __PTR__ _IO_FILE,__PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction setbuffer]
+    arguments: __PTR__ _IO_FILE,__PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __C_VOID__
+[Cfunction setlinebuf]
+    arguments: __PTR__ _IO_FILE
+    return: __C_VOID__
+[Cfunction fprintf]
+    arguments: __PTR__ _IO_FILE,__PTR__ __C_CHAR__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction printf]
+    arguments: __PTR__ __C_CHAR__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction sprintf]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction vfprintf]
+    arguments: __PTR__ _IO_FILE,__PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction vprintf]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction vsprintf]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction snprintf]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4,__PTR__ __C_CHAR__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction vsnprintf]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4,__PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction vdprintf]
+    arguments: __C_INT__SIZE_4,__PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction dprintf]
+    arguments: __C_INT__SIZE_4,__PTR__ __C_CHAR__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction fscanf]
+    arguments: __PTR__ _IO_FILE,__PTR__ __C_CHAR__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction scanf]
+    arguments: __PTR__ __C_CHAR__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction sscanf]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction vfscanf]
+    arguments: __PTR__ _IO_FILE,__PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction vscanf]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction vsscanf]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction fgetc]
+    arguments: __PTR__ _IO_FILE
+    return: __C_INT__SIZE_4
+[Cfunction getc]
+    arguments: __PTR__ _IO_FILE
+    return: __C_INT__SIZE_4
+[Cfunction getchar]
+    arguments: 
+    return: __C_INT__SIZE_4
+[Cfunction getc_unlocked]
+    arguments: __PTR__ _IO_FILE
+    return: __C_INT__SIZE_4
+[Cfunction getchar_unlocked]
+    arguments: 
+    return: __C_INT__SIZE_4
+[Cfunction fgetc_unlocked]
+    arguments: __PTR__ _IO_FILE
+    return: __C_INT__SIZE_4
+[Cfunction fputc]
+    arguments: __C_INT__SIZE_4,__PTR__ _IO_FILE
+    return: __C_INT__SIZE_4
+[Cfunction putc]
+    arguments: __C_INT__SIZE_4,__PTR__ _IO_FILE
+    return: __C_INT__SIZE_4
+[Cfunction putchar]
+    arguments: __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction fputc_unlocked]
+    arguments: __C_INT__SIZE_4,__PTR__ _IO_FILE
+    return: __C_INT__SIZE_4
+[Cfunction putc_unlocked]
+    arguments: __C_INT__SIZE_4,__PTR__ _IO_FILE
+    return: __C_INT__SIZE_4
+[Cfunction putchar_unlocked]
+    arguments: __C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction getw]
+    arguments: __PTR__ _IO_FILE
+    return: __C_INT__SIZE_4
+[Cfunction putw]
+    arguments: __C_INT__SIZE_4,__PTR__ _IO_FILE
+    return: __C_INT__SIZE_4
+[Cfunction fgets]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__C_INT__SIZE_4,__PTR__ _IO_FILE
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction __getdelim]
+    arguments: __PTR__ __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_INT__SIZE_4,__C_INT__SIZE_4,__PTR__ _IO_FILE
+    return: __C_LONG__SIZE_8
+[Cfunction getdelim]
+    arguments: __PTR__ __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_INT__SIZE_4,__C_INT__SIZE_4,__PTR__ _IO_FILE
+    return: __C_LONG__SIZE_8
+[Cfunction getline]
+    arguments: __PTR__ __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_INT__SIZE_4,__PTR__ _IO_FILE
+    return: __C_LONG__SIZE_8
+[Cfunction fputs]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ _IO_FILE
+    return: __C_INT__SIZE_4
+[Cfunction puts]
+    arguments: __PTR__ __C_CHAR__SIZE_1
+    return: __C_INT__SIZE_4
+[Cfunction ungetc]
+    arguments: __C_INT__SIZE_4,__PTR__ _IO_FILE
+    return: __C_INT__SIZE_4
+[Cfunction fread]
+    arguments: __PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4,__C_INT__SIZE_4,__PTR__ _IO_FILE
+    return: __C_INT__SIZE_4
+[Cfunction fwrite]
+    arguments: __PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4,__C_INT__SIZE_4,__PTR__ _IO_FILE
+    return: __C_INT__SIZE_4
+[Cfunction fread_unlocked]
+    arguments: __PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4,__C_INT__SIZE_4,__PTR__ _IO_FILE
+    return: __C_INT__SIZE_4
+[Cfunction fwrite_unlocked]
+    arguments: __PTR__ __C_INT__SIZE_8,__C_INT__SIZE_4,__C_INT__SIZE_4,__PTR__ _IO_FILE
+    return: __C_INT__SIZE_4
+[Cfunction fseek]
+    arguments: __PTR__ _IO_FILE,__C_LONG__SIZE_8,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction ftell]
+    arguments: __PTR__ _IO_FILE
+    return: __C_LONG__SIZE_8
+[Cfunction rewind]
+    arguments: __PTR__ _IO_FILE
+    return: __C_VOID__
+[Cfunction fseeko]
+    arguments: __PTR__ _IO_FILE,__C_LONG__SIZE_8,__C_INT__SIZE_4
+    return: __C_INT__SIZE_4
+[Cfunction ftello]
+    arguments: __PTR__ _IO_FILE
+    return: __C_LONG__SIZE_8
+[Cfunction fgetpos]
+    arguments: __PTR__ _IO_FILE,__PTR__ _G_fpos_t
+    return: __C_INT__SIZE_4
+[Cfunction fsetpos]
+    arguments: __PTR__ _IO_FILE,__PTR__ _G_fpos_t
+    return: __C_INT__SIZE_4
+[Cfunction clearerr]
+    arguments: __PTR__ _IO_FILE
+    return: __C_VOID__
+[Cfunction feof]
+    arguments: __PTR__ _IO_FILE
+    return: __C_INT__SIZE_4
+[Cfunction ferror]
+    arguments: __PTR__ _IO_FILE
+    return: __C_INT__SIZE_4
+[Cfunction clearerr_unlocked]
+    arguments: __PTR__ _IO_FILE
+    return: __C_VOID__
+[Cfunction feof_unlocked]
+    arguments: __PTR__ _IO_FILE
+    return: __C_INT__SIZE_4
+[Cfunction ferror_unlocked]
+    arguments: __PTR__ _IO_FILE
+    return: __C_INT__SIZE_4
+[Cfunction perror]
+    arguments: __PTR__ __C_CHAR__SIZE_1
+    return: __C_VOID__
+[Cfunction fileno]
+    arguments: __PTR__ _IO_FILE
+    return: __C_INT__SIZE_4
+[Cfunction fileno_unlocked]
+    arguments: __PTR__ _IO_FILE
+    return: __C_INT__SIZE_4
+[Cfunction popen]
+    arguments: __PTR__ __C_CHAR__SIZE_1,__PTR__ __C_CHAR__SIZE_1
+    return: __PTR__ _IO_FILE
+[Cfunction pclose]
+    arguments: __PTR__ _IO_FILE
+    return: __C_INT__SIZE_4
+[Cfunction ctermid]
+    arguments: __PTR__ __C_CHAR__SIZE_1
+    return: __PTR__ __C_CHAR__SIZE_1
+[Cfunction flockfile]
+    arguments: __PTR__ _IO_FILE
+    return: __C_VOID__
+[Cfunction ftrylockfile]
+    arguments: __PTR__ _IO_FILE
+    return: __C_INT__SIZE_4
+[Cfunction funlockfile]
+    arguments: __PTR__ _IO_FILE
+    return: __C_VOID__
+[Cfunction c_function]
+    arguments: 
+    return: __C_INT__SIZE_4
