@@ -24,7 +24,7 @@ class BlawnLogger {
     void invalid_store_error(std::string type, std::string type2);
     void invalid_dot_error();
     void invalid_right_value_error();
-    void invalid_paramater_error(std::string func_name);
+    void invalid_parameter_error(std::string func_name);
     void has_no_member_error(std::string type, std::string name);
     void unknown_identifier_error(std::string kind, std::string identifier);
     void invalid_cast_error(std::string type, std::string to);
