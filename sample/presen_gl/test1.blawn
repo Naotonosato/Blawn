@@ -1,4 +1,0 @@
-import "gl.bridge"
-title = "this title is setted by Blawn!!".string
-window = create_window(title)
-draw(window)
