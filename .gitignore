@@ -1,5 +1,6 @@
 build/
 tmp/
+.vscode/
 *.code-workspace
 *.swp
 *.tmp
