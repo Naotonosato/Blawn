@@ -12,15 +12,14 @@ namespace mir
 class TypeSolver
 {
     private:
-    algorithm::UnionFindTree<std::shared_ptr<Type>> type_variables;
+    algorithm::UnionFindTree<std::shared_ptr<Type>> type_tree;
 
     public:
-    void add_type_variable(std::shared_ptr<Type> type_variable);
-    void bind(std::shared_ptr<Type> type_variable,
-              std::shared_ptr<Type> depend_on);
-    void fetch_type(std::shared_ptr<Type> type_variable,
-                    std::shared_ptr<Type> to_fetch);
-    std::shared_ptr<Type> solve(std::shared_ptr<Type> type_variable);
+    TypeSolver() = default;
+    void add_type_variable(std::shared_ptr<Type> new_type);
+    void bind(std::shared_ptr<Type> type, std::shared_ptr<Type> depend_on);
+    void fetch_type(std::shared_ptr<Type> type, std::shared_ptr<Type> to_fetch);
+    std::shared_ptr<Type> solve(std::shared_ptr<Type> type);
     const algorithm::UnionFindTree<std::shared_ptr<Type>>& get_all_types();
 };
 }  // namespace mir
