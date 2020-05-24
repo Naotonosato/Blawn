@@ -1,0 +1,34 @@
+class List(element)
+    @size = 0
+    @allocated_size = 1
+    @_element = element
+    @element_size = sizeof(element)
+    @element_typeid = typeid(element)
+    @array = {}
+    @function resize()
+        self.allocated_size = self.allocated_size * 2
+        self.array = __blawn_realloc__(self.array,self.element_size,self.allocated_size)
+        return
+    @function append(new_element)
+        if typeid(new_element) != self.element_typeid
+        (
+            print("Error: append invalid type element to list.")
+        )
+        if self.size + 1 >= self.allocated_size
+        (   
+            self.resize()
+        )
+        __blawn_memcpy__(self.array,self.size,self.element_size,new_element)
+        self.size = self.size + 1
+        return
+    @function get(index)
+        if self.size == 0
+        (
+            print("err")
+        )
+        data = __blawn_index__(self.array,self.size,self.element_size,index)
+        res = __blawn_cast__(typeid(self._element),data)
+        return res
+    @function set(value,index)
+        __blawn_set_element__(self.array,self.size,self.element_size,value,index)
+        return

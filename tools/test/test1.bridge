@@ -1,0 +1,8 @@
+Ctype T
+    @a = __C_INT__SIZE_4
+[Cfunction func]
+    arguments: 
+    return: __C_VOID__
+[Cfunction __for_declarations_for_blawn__]
+    arguments: 
+    return: __C_VOID__

@@ -1,0 +1,17 @@
+class Person(name)
+    @name = name
+    @function hello()
+        text = "Hello! I'm "
+        text.append(self.name)
+        print(text)
+        return
+
+john = Person("john")
+
+function rename(person)
+    bob = Person("Bob")
+    person <- bob
+    return
+
+rename(john)
+john.hello()

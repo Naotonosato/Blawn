@@ -1,0 +1,22 @@
+class Person(name)
+    @name = name
+    @function hello()
+        message = "Hello! I'm "
+        message.append(self.name)
+        print(message)
+        return
+
+function print_name(p)
+    print(p.name)
+    return
+
+if 1 > 0
+(
+    print("duh")
+)else
+(
+    print("you know,1 <= 0.")
+)
+
+John = Person("John")
+John.hello()
