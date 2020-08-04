@@ -34,7 +34,7 @@ int compile(int argc, char** argv)
     driver.parse(filename);
     auto& ast = ast_builder->build();
     auto ast_to_mir_converter =
-        utils::VisitorWrapper<converter::ast_to_mir::Converter>::create();
+        utils::VisitorWrapper<blawn::visitors::Converter>::create();
     auto mir = ast.accept(*ast_to_mir_converter);
     return 0;
 }

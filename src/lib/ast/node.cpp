@@ -12,7 +12,7 @@ const std::vector<std::unique_ptr<Node>>& RootNode::get_children() const
     return children;
 }
 
-const uint64_t IntegerNode::get_initial_value() const { return initial_value; }
+const int64_t IntegerNode::get_initial_value() const { return initial_value; }
 
 const double FloatNode::get_initial_value() const { return initial_value; }
 

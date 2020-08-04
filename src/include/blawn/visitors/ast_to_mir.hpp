@@ -1,6 +1,6 @@
 #pragma once
 #include <memory>
-#include "include/utils/visitor_wrapper.hpp"
+#include "include/blawn/visitors/visitor.hpp"
 
 namespace ast
 {
@@ -33,40 +33,11 @@ namespace mir
 class MIR;
 }
 
-namespace converter
+namespace blawn
 {
-namespace ast_to_mir
+namespace visitors
 {
-class Converter : public utils::VisitorBase<Converter>
-{
-    public:
-    Converter(utils::VisitorWrapper<Converter>& visitor_ref)
-        : utils::VisitorBase<Converter>(visitor_ref)
-    {
-    }
-    int visit(const ast::RootNode& node) const;
-    int visit(const ast::IntegerNode& node) const;
-    int visit(const ast::FloatNode& node) const;
-    int visit(const ast::ArrayNode& node) const;
-    int visit(const ast::StringNode& node) const;
-    int visit(const ast::LazyNode& node) const;
-    int visit(const ast::VariableNode& node) const;
-    int visit(const ast::VariableDefinitionNode& node) const;
-    int visit(const ast::GlobalVariableNode& node) const;
-    int visit(const ast::AssignmentNode& node) const;
-    int visit(const ast::ArgumentNode& node) const;
-    int visit(const ast::BinaryExpressionNode& node) const;
-    int visit(const ast::CallFunctionNode& node) const;
-    int visit(const ast::AccessElementNode& node) const;
-    int visit(const ast::DeepCopyNode& node) const;
-    int visit(const ast::BlockNode& node) const;
-    int visit(const ast::IfNode& node) const;
-    int visit(const ast::ForNode& node) const;
-    int visit(const ast::GenericFunctionDeclarationNode& node) const;
-    int visit(const ast::GenericFunctionNode& node) const;
-    int visit(const ast::GenericClassNode& node) const;
-    int visit(const ast::TypeIdNode& node) const;
-    int visit(const ast::CastNode& node) const;
-};
-}  // namespace ast_to_mir
-}  // namespace converter
+template class ASTVisitor<std::unique_ptr<mir::MIR>>;
+using Converter = class ASTVisitor<std::unique_ptr<mir::MIR>>;
+}  // namespace visitors
+}  // namespace blawn

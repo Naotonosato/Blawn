@@ -135,19 +135,12 @@ class Match
                 }
                 else
                 {
-                    if constexpr (is_comparable<match_type, match_type>::value)
+                    static_assert(is_comparable<match_type, match_type>::value,
+                                  "Error: cannnot check match or not "
+                                  "pattern");
+                    if (std::get<match_type>(variant) == pattern.value())
                     {
-                        if (std::get<match_type>(variant) == pattern.value())
-                        {
-                            result_ref.template emplace<Index>(
-                                function(variant));
-                        }
-                        else
-                        {
-                            std::cout
-                                << "Error: cannnot check match or not pattern"
-                                << std::endl;
-                        }
+                        result_ref.template emplace<Index>(function(variant));
                     }
                 }
             }

@@ -21,8 +21,8 @@ class NodeBase
     debug::DebugInfo debug_info;
 
     public:
-    NodeBase(debug::DebugInfo&& debug_info)
-        : id(utils::get_unique_number()), debug_info(std::move(debug_info))
+    NodeBase(debug::DebugInfo debug_info)
+        : id(utils::get_unique_number()), debug_info(debug_info)
     {
     }
     NodeBase() = delete;
@@ -51,9 +51,9 @@ class RootNode : public NodeBase
     std::vector<std::unique_ptr<Node>> children;
 
     public:
-    RootNode(debug::DebugInfo&& debug_info,
+    RootNode(debug::DebugInfo debug_info,
              std::vector<std::unique_ptr<Node>>&& children)
-        : NodeBase(std::move(debug_info)), children(std::move(children))
+        : NodeBase(debug_info), children(std::move(children))
     {
     }
 
@@ -63,14 +63,14 @@ class RootNode : public NodeBase
 class IntegerNode : public NodeBase
 {
     private:
-    uint64_t initial_value;
+    int64_t initial_value;
 
     public:
-    IntegerNode(debug::DebugInfo&& debug_info, uint64_t initial_value)
-        : NodeBase(std::move(debug_info)), initial_value(initial_value)
+    IntegerNode(debug::DebugInfo debug_info, int64_t initial_value)
+        : NodeBase(debug_info), initial_value(initial_value)
     {
     }
-    const uint64_t get_initial_value() const;
+    const int64_t get_initial_value() const;
 };
 
 class FloatNode : public NodeBase
@@ -79,8 +79,8 @@ class FloatNode : public NodeBase
     double initial_value;
 
     public:
-    FloatNode(debug::DebugInfo&& debug_info, double initial_value)
-        : NodeBase(std::move(debug_info)), initial_value(initial_value)
+    FloatNode(debug::DebugInfo debug_info, double initial_value)
+        : NodeBase(debug_info), initial_value(initial_value)
     {
     }
     const double get_initial_value() const;
@@ -92,13 +92,10 @@ class ArrayNode : public NodeBase
     std::optional<std::vector<std::unique_ptr<Node>>> initial_values;
 
     public:
-    ArrayNode(debug::DebugInfo&& debug_info) : NodeBase(std::move(debug_info))
-    {
-    }
-    ArrayNode(debug::DebugInfo&& debug_info,
+    ArrayNode(debug::DebugInfo debug_info) : NodeBase(debug_info) {}
+    ArrayNode(debug::DebugInfo debug_info,
               std::vector<std::unique_ptr<Node>> initial_values)
-        : NodeBase(std::move(debug_info)),
-          initial_values(std::move(initial_values))
+        : NodeBase(debug_info), initial_values(std::move(initial_values))
     {
     }
 
@@ -112,8 +109,8 @@ class StringNode : public NodeBase
     std::string initial_value;
 
     public:
-    StringNode(debug::DebugInfo&& debug_info, const std::string initial_value)
-        : NodeBase(std::move(debug_info)), initial_value(initial_value)
+    StringNode(debug::DebugInfo debug_info, const std::string initial_value)
+        : NodeBase(debug_info), initial_value(initial_value)
     {
     }
     const std::string& get_initial_value() const;
@@ -122,7 +119,7 @@ class StringNode : public NodeBase
 class LazyNode : public NodeBase
 {
     public:
-    LazyNode(debug::DebugInfo&& debug_info) : NodeBase(std::move(debug_info)) {}
+    LazyNode(debug::DebugInfo debug_info) : NodeBase(debug_info) {}
 };
 
 class VariableNode : public NodeBase
@@ -131,8 +128,8 @@ class VariableNode : public NodeBase
     std::string name;
 
     public:
-    VariableNode(debug::DebugInfo&& debug_info, std::string name)
-        : NodeBase(std::move(debug_info)), name(name)
+    VariableNode(debug::DebugInfo debug_info, std::string name)
+        : NodeBase(debug_info), name(name)
     {
     }
     const std::string& get_name() const;
@@ -145,9 +142,9 @@ class VariableDefinitionNode : public NodeBase
     std::unique_ptr<Node> initial_value;
 
     public:
-    VariableDefinitionNode(debug::DebugInfo&& debug_info, std::string name,
+    VariableDefinitionNode(debug::DebugInfo debug_info, std::string name,
                            std::unique_ptr<Node>&& initial_value)
-        : NodeBase(std::move(debug_info)),
+        : NodeBase(debug_info),
           name(name),
           initial_value(std::move(initial_value))
     {
@@ -163,9 +160,9 @@ class GlobalVariableNode : public NodeBase
     std::unique_ptr<Node> initial_value;
 
     public:
-    GlobalVariableNode(debug::DebugInfo&& debug_info, std::string name,
+    GlobalVariableNode(debug::DebugInfo debug_info, std::string name,
                        std::unique_ptr<Node>&& initial_value)
-        : NodeBase(std::move(debug_info)),
+        : NodeBase(debug_info),
           name(name),
           initial_value(std::move(initial_value))
     {
@@ -180,8 +177,8 @@ class ArgumentNode : public NodeBase
     std::string name;
 
     public:
-    ArgumentNode(debug::DebugInfo&& debug_info, std::string name)
-        : NodeBase(std::move(debug_info)), name(name)
+    ArgumentNode(debug::DebugInfo debug_info, std::string name)
+        : NodeBase(debug_info), name(name)
     {
     }
     const std::string get_name() const;
@@ -194,10 +191,10 @@ class AssignmentNode : public NodeBase
     std::unique_ptr<Node> right_hand_side;
 
     public:
-    AssignmentNode(debug::DebugInfo&& debug_info,
+    AssignmentNode(debug::DebugInfo debug_info,
                    std::unique_ptr<Node>&& left_hand_side,
                    std::unique_ptr<Node>&& right_hand_side)
-        : NodeBase(std::move(debug_info)),
+        : NodeBase(debug_info),
           left_hand_side(std::move(left_hand_side)),
           right_hand_side(std::move(right_hand_side))
     {
@@ -224,11 +221,11 @@ class BinaryExpressionNode : public NodeBase
     BinaryExpressionKind operator_kind;
 
     public:
-    BinaryExpressionNode(debug::DebugInfo&& debug_info,
+    BinaryExpressionNode(debug::DebugInfo debug_info,
                          BinaryExpressionKind operator_kind,
                          std::unique_ptr<Node>&& left_hand_side,
                          std::unique_ptr<Node>&& right_hand_side)
-        : NodeBase(std::move(debug_info)),
+        : NodeBase(debug_info),
           operator_kind(operator_kind),
           left_hand_side(std::move(left_hand_side)),
           right_hand_side(std::move(right_hand_side))
@@ -248,10 +245,10 @@ class CallFunctionNode : public NodeBase
     std::vector<std::unique_ptr<Node>> arguments;
 
     public:
-    CallFunctionNode(debug::DebugInfo&& debug_info,
+    CallFunctionNode(debug::DebugInfo debug_info,
                      std::unique_ptr<Node>&& function,
                      std::vector<std::unique_ptr<Node>>&& arguments)
-        : NodeBase(std::move(debug_info)),
+        : NodeBase(debug_info),
           function(std::move(function)),
           arguments(std::move(arguments))
     {
@@ -268,10 +265,10 @@ class AccessElementNode : public NodeBase
     const std::string element_name;
 
     public:
-    AccessElementNode(debug::DebugInfo&& debug_info,
+    AccessElementNode(debug::DebugInfo debug_info,
                       std::unique_ptr<Node>&& left_hand_side,
                       std::string element_name)
-        : NodeBase(std::move(debug_info)),
+        : NodeBase(debug_info),
           left_hand_side(std::move(left_hand_side)),
           element_name(element_name)
     {
@@ -287,10 +284,10 @@ class DeepCopyNode : public NodeBase
     std::unique_ptr<Node> right_hand_side;
 
     public:
-    DeepCopyNode(debug::DebugInfo&& debug_info,
+    DeepCopyNode(debug::DebugInfo debug_info,
                  std::unique_ptr<Node>&& left_hand_side,
                  std::unique_ptr<Node>&& right_hand_side)
-        : NodeBase(std::move(debug_info)),
+        : NodeBase(debug_info),
           left_hand_side(std::move(left_hand_side)),
           right_hand_side(std::move(right_hand_side))
     {
@@ -305,9 +302,9 @@ class BlockNode : public NodeBase
     std::vector<std::unique_ptr<Node>> expressions;
 
     public:
-    BlockNode(debug::DebugInfo&& debug_info,
+    BlockNode(debug::DebugInfo debug_info,
               std::vector<std::unique_ptr<Node>>&& expressions)
-        : NodeBase(std::move(debug_info)), expressions(std::move(expressions))
+        : NodeBase(debug_info), expressions(std::move(expressions))
     {
     }
     const std::vector<std::unique_ptr<Node>>& get_expressions() const;
@@ -320,9 +317,9 @@ class IfNode : public NodeBase
     std::unique_ptr<Node> body;
 
     public:
-    IfNode(debug::DebugInfo&& debug_info, std::unique_ptr<Node>&& condition,
+    IfNode(debug::DebugInfo debug_info, std::unique_ptr<Node>&& condition,
            std::unique_ptr<Node>&& body)
-        : NodeBase(std::move(debug_info)),
+        : NodeBase(debug_info),
           body(std::move(body)),
           condition(std::move(condition))
     {
@@ -340,12 +337,12 @@ class ForNode : public NodeBase
     std::unique_ptr<Node> body;
 
     public:
-    ForNode(debug::DebugInfo&& debug_info,
+    ForNode(debug::DebugInfo debug_info,
             std::unique_ptr<Node>&& first_expression,
             std::unique_ptr<Node>&& condition,
             std::unique_ptr<Node>&& last_expression,
             std::unique_ptr<Node>&& body)
-        : NodeBase(std::move(debug_info)),
+        : NodeBase(debug_info),
           first_expression(std::move(first_expression)),
           condition(std::move(condition)),
           last_expression(std::move(last_expression)),
@@ -367,11 +364,9 @@ class GenericFunctionDeclarationNode : public NodeBase
     const int num_arguments;
 
     public:
-    GenericFunctionDeclarationNode(debug::DebugInfo&& debug_info,
+    GenericFunctionDeclarationNode(debug::DebugInfo debug_info,
                                    std::string name, int num_arguments)
-        : NodeBase(std::move(debug_info)),
-          name(name),
-          num_arguments(num_arguments)
+        : NodeBase(debug_info), name(name), num_arguments(num_arguments)
     {
     }
     const std::string& get_name() const;
@@ -387,10 +382,10 @@ class GenericFunctionNode : public NodeBase
     std::vector<std::unique_ptr<Node>> arguments;
 
     public:
-    GenericFunctionNode(debug::DebugInfo&& debug_info, const std::string& name,
+    GenericFunctionNode(debug::DebugInfo debug_info, const std::string& name,
                         std::vector<std::unique_ptr<Node>>&& arguments,
                         std::unique_ptr<Node>&& body)
-        : NodeBase(std::move(debug_info)),
+        : NodeBase(debug_info),
           name(name),
           arguments(std::move(arguments)),
           body(std::move(body))
@@ -410,11 +405,11 @@ class GenericClassNode : public NodeBase
     std::vector<std::unique_ptr<Node>> member_functions;
 
     public:
-    GenericClassNode(debug::DebugInfo&& debug_info, const std::string& name,
+    GenericClassNode(debug::DebugInfo debug_info, const std::string& name,
                      std::vector<std::unique_ptr<Node>>&& arguments,
                      std::vector<std::unique_ptr<Node>>&& member_variables,
                      std::vector<std::unique_ptr<Node>>&& member_functions)
-        : NodeBase(std::move(debug_info)),
+        : NodeBase(debug_info),
           name(name),
           arguments(std::move(arguments)),
           member_variables(std::move(member_variables)),
@@ -433,8 +428,8 @@ class TypeIdNode : public NodeBase
     std::unique_ptr<Node> node;
 
     public:
-    TypeIdNode(debug::DebugInfo&& debug_info, std::unique_ptr<Node> node)
-        : NodeBase(std::move(debug_info)), node(std::move(node))
+    TypeIdNode(debug::DebugInfo debug_info, std::unique_ptr<Node> node)
+        : NodeBase(debug_info), node(std::move(node))
     {
     }
 
@@ -448,10 +443,10 @@ class CastNode : public NodeBase
     std::unique_ptr<Node> node;
 
     public:
-    CastNode(debug::DebugInfo&& debug_info,
+    CastNode(debug::DebugInfo debug_info,
              std::unique_ptr<Node>&& target_type_id_node,
              std::unique_ptr<Node>&& node)
-        : NodeBase(std::move(debug_info)),
+        : NodeBase(debug_info),
           target_type_id_node(std::move(target_type_id_node)),
           node(std::move(node))
     {

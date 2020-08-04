@@ -35,7 +35,7 @@ class DebugInfo
 
     public:
     DebugInfo() = delete;
-    DebugInfo(DebugInfo&&) = default;
+    DebugInfo(const DebugInfo&) = default;
     DebugInfo(const std::string& filename, TokenInfo&& token_info,
               scope::ScopeID scope_id)
         : filename(filename),
@@ -47,6 +47,7 @@ class DebugInfo
     const std::string& get_filename() const;
     const TokenInfo& get_token_info() const;
     const scope::ScopeID get_scope_id() const;
+    size_t hash() const;
 };
 
 }  // namespace debug

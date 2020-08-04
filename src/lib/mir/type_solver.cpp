@@ -13,13 +13,13 @@ void TypeSolver::bind(std::shared_ptr<Type> type,
 {
     type_tree.unite(type, depend_on);
 
-    if (!type->is_type<LazyType>())
+    if (!type->is_type<UnsolvedType>())
     {
         auto root = type_tree.get_root(type);
         //*root = std::move(*type_variable);
         root.swap(type);
     }
-    if (!depend_on->is_type<LazyType>())
+    if (!depend_on->is_type<UnsolvedType>())
     {
         auto root = type_tree.get_root(type);
         //*root = std::move(*depend_on);

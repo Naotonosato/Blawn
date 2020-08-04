@@ -25,16 +25,22 @@ class TypeBase
     const std::string& get_name() const;
 };
 
+class VoidType : public TypeBase
+{
+    public:
+    VoidType() : TypeBase("void") {}
+};
+
 class IntegerType : public TypeBase
 {
     public:
-    IntegerType(const std::string& name = "int") : TypeBase(name) {}
+    IntegerType() : TypeBase("int") {}
 };
 
 class FloatType : public TypeBase
 {
     public:
-    FloatType(const std::string& name = "float") : TypeBase(name) {}
+    FloatType() : TypeBase("float") {}
 };
 
 class PointerType : public TypeBase
@@ -55,13 +61,16 @@ class ArrayType : public TypeBase
     std::shared_ptr<Type> element_type;
 
     public:
-    ArrayType(const std::string& name = "array") : TypeBase(name) {}
+    ArrayType(std::shared_ptr<Type> element_type)
+        : TypeBase("array"), element_type(element_type)
+    {
+    }
 };
 
 class StringType : public TypeBase
 {
     public:
-    StringType(const std::string& name = "string") : TypeBase(name) {}
+    StringType() : TypeBase("string") {}
 };
 
 class StructType : public TypeBase
@@ -94,18 +103,18 @@ class FunctionType : public TypeBase
     }
 };
 
-class LazyType : public TypeBase
+class UnsolvedType : public TypeBase
 {
     public:
-    LazyType(const std::string& name = "lazy") : TypeBase(name) {}
+    UnsolvedType() : TypeBase("unsolved") {}
 };
 
 class Type
 {
     public:
     using variant_type =
-        std::variant<IntegerType, FloatType, StringType, ArrayType, StructType,
-                     FunctionType, LazyType>;
+        std::variant<VoidType, IntegerType, FloatType, StringType, ArrayType,
+                     StructType, FunctionType, UnsolvedType>;
 
     private:
     variant_type content;
@@ -125,7 +134,7 @@ class Type
     }
 
     public:
-    template <class T = LazyType, typename... Args>
+    template <class T = UnsolvedType, typename... Args>
     static std::shared_ptr<Type> create(Args&&... args)
     {
         auto type = std::make_shared<CreateHelper<Type>>(

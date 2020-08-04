@@ -1,3 +1,4 @@
+#pragma once
 #include <memory>
 #include <type_traits>
 
@@ -39,10 +40,11 @@ class VisitorWrapper
 
     public:
     template <typename... Args>
-    static std::unique_ptr<VisitorWrapper> create(Args&&... args)
+    static std::unique_ptr<VisitorWrapper<VisitorType>> create(Args&&... args)
     {
-        static_assert(std::is_base_of<VisitorBase<VisitorType>, VisitorType>(),
-                      "");
+        static_assert(
+            std::is_base_of<VisitorBase<VisitorType>, VisitorType>(),
+            "Visitor Class must be derived from VisitorBase<`Visitor Class`>");
         auto visitor_wrapper = std::make_unique<CreateHelper<VisitorWrapper>>();
         visitor_wrapper->set_visitor(std::make_unique<VisitorType>(
             *visitor_wrapper, std::forward<Args>(args)...));
