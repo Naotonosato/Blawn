@@ -1,2 +1,2 @@
 # Blawn
-COMING SOON...
+I'm developing [Clawn](https://github.com/Naotonosato/Clawn) now.
