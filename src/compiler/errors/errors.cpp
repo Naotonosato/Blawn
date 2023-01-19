@@ -63,7 +63,7 @@ void BlawnLogger::invalid_right_value_error() {
     exit(1);
 }
 
-void BlawnLogger::invalid_paramater_error(std::string func_name) {
+void BlawnLogger::invalid_parameter_error(std::string func_name) {
     std::cerr << "Error: invalid parameter passed " << func_name << " at line "
               << line_number << std::endl;
     exit(1);
